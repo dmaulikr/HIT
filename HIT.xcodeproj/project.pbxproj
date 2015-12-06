@@ -8,12 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		3F62931A1C148C78005BD240 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293191C148C78005BD240 /* AppDelegate.swift */; };
-		3F62931C1C148C78005BD240 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F62931B1C148C78005BD240 /* ViewController.swift */; };
 		3F62931F1C148C78005BD240 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F62931D1C148C78005BD240 /* Main.storyboard */; };
 		3F6293211C148C78005BD240 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F6293201C148C78005BD240 /* Assets.xcassets */; };
 		3F6293241C148C78005BD240 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F6293221C148C78005BD240 /* LaunchScreen.storyboard */; };
 		3F62932F1C148C78005BD240 /* HITTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F62932E1C148C78005BD240 /* HITTests.swift */; };
 		3F62933A1C148C78005BD240 /* HITUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293391C148C78005BD240 /* HITUITests.swift */; };
+		3F6293481C149830005BD240 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293471C149830005BD240 /* MainViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +36,6 @@
 /* Begin PBXFileReference section */
 		3F6293161C148C78005BD240 /* HIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HIT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F6293191C148C78005BD240 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3F62931B1C148C78005BD240 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		3F62931E1C148C78005BD240 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3F6293201C148C78005BD240 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3F6293231C148C78005BD240 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +46,7 @@
 		3F6293351C148C78005BD240 /* HITUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HITUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F6293391C148C78005BD240 /* HITUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HITUITests.swift; sourceTree = "<group>"; };
 		3F62933B1C148C78005BD240 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3F6293471C149830005BD240 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,7 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				3F6293191C148C78005BD240 /* AppDelegate.swift */,
-				3F62931B1C148C78005BD240 /* ViewController.swift */,
+				3F6293471C149830005BD240 /* MainViewController.swift */,
 				3F62931D1C148C78005BD240 /* Main.storyboard */,
 				3F6293201C148C78005BD240 /* Assets.xcassets */,
 				3F6293221C148C78005BD240 /* LaunchScreen.storyboard */,
@@ -259,7 +259,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F62931C1C148C78005BD240 /* ViewController.swift in Sources */,
+				3F6293481C149830005BD240 /* MainViewController.swift in Sources */,
 				3F62931A1C148C78005BD240 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -487,6 +487,7 @@
 				3F6293401C148C78005BD240 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3F6293411C148C78005BD240 /* Build configuration list for PBXNativeTarget "HITTests" */ = {
 			isa = XCConfigurationList;
@@ -495,6 +496,7 @@
 				3F6293431C148C78005BD240 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3F6293441C148C78005BD240 /* Build configuration list for PBXNativeTarget "HITUITests" */ = {
 			isa = XCConfigurationList;
@@ -503,6 +505,7 @@
 				3F6293461C148C78005BD240 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
