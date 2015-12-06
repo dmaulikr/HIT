@@ -45,7 +45,7 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="wrk-yE-WFb"/>
                                 </connections>
                             </tableView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Selected Mantra" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Rfc-sZ-2G8">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Rfc-sZ-2G8">
                                 <rect key="frame" x="0.0" y="64" width="600" height="37"/>
                                 <color key="backgroundColor" red="0.0" green="0.65379575529923661" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>

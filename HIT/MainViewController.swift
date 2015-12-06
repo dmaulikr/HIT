@@ -44,10 +44,13 @@ class MainViewController: UIViewController,
     @IBAction func addMantraButtonPressed(sender: AnyObject) {
         let defaults = NSUserDefaults.standardUserDefaults()
         var mantraList = defaults.arrayForKey(ModelKeys.MantraList) as! [String]
-        mantraList.append("New Mantra")
+        mantraList.append("")
+        defaults.setInteger(mantraList.count-1, forKey: ModelKeys.CurrentMantraIndex)
         defaults.setObject(mantraList, forKey: ModelKeys.MantraList)
+        currentMantraTextView.text = ""
+        currentMantraTextView.becomeFirstResponder()
         
-        self.tableView.reloadData()
+//        self.tableView.reloadData()
     }
     
     
@@ -129,6 +132,7 @@ class MainViewController: UIViewController,
             }
             
             defaults.setObject(mantraList, forKey: ModelKeys.MantraList)
+            defaults.removeObjectForKey(ModelKeys.CurrentMantraIndex)
             self.tableView.reloadData()
         }
     }
