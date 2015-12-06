@@ -119,9 +119,16 @@ class MainViewController: UIViewController,
         if  let index = defaults.valueForKey(ModelKeys.CurrentMantraIndex) as? Int
             where index < mantraList.count
         {
-            mantraList[index] = textView.text
-            defaults.setObject(mantraList, forKey: ModelKeys.MantraList)
+            if textView.text.characters.count == 0
+            {
+                mantraList.removeAtIndex(index)
+            }
+            else
+            {
+                mantraList[index] = textView.text
+            }
             
+            defaults.setObject(mantraList, forKey: ModelKeys.MantraList)
             self.tableView.reloadData()
         }
     }
