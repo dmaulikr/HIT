@@ -19,8 +19,8 @@ class MainViewController: UIViewController,
     //
     // MARK: - Properties
     
-    var mantraList = [String]()
-    var currentMantraIndex: Int?
+//    var mantraList = [String]()
+//    var currentMantraIndex: Int?
     
     
     
@@ -42,7 +42,11 @@ class MainViewController: UIViewController,
     // MARK: - IBActions
     
     @IBAction func addMantraButtonPressed(sender: AnyObject) {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        var mantraList = defaults.arrayForKey(ModelKeys.MantraList) as! [String]
         mantraList.append("New Mantra")
+        defaults.setObject(mantraList, forKey: ModelKeys.MantraList)
+        
         self.tableView.reloadData()
     }
     
@@ -58,6 +62,11 @@ class MainViewController: UIViewController,
         static let MantraTableViewCellReuseIdentifier = "Mantra Table View Cell"
     }
     
+    struct ModelKeys {
+        static let MantraList = "HIT.ModelKeys.MantraList"
+        static let CurrentMantraIndex = "HIT.ModelKeys.CurrentMantraIndex"
+    }
+    
     
     
     //
@@ -69,18 +78,18 @@ class MainViewController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if defaults.arrayForKey(ModelKeys.MantraList) == nil
+        {
+            defaults.setObject([String](), forKey: ModelKeys.MantraList)
+        }
+            
+        let mantraList = defaults.arrayForKey(ModelKeys.MantraList) as! [String]
+        if  let index = defaults.valueForKey(ModelKeys.CurrentMantraIndex) as? Int
+            where index < mantraList.count
+        {
+            currentMantraTextView.text = mantraList[index]
+        }
     }
     
     
@@ -104,8 +113,15 @@ class MainViewController: UIViewController,
     
     func textViewDidEndEditing(textView: UITextView) {
         // save to list
-        if let index = currentMantraIndex where index < mantraList.count {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        var mantraList = defaults.arrayForKey(ModelKeys.MantraList) as! [String]
+        
+        if  let index = defaults.valueForKey(ModelKeys.CurrentMantraIndex) as? Int
+            where index < mantraList.count
+        {
             mantraList[index] = textView.text
+            defaults.setObject(mantraList, forKey: ModelKeys.MantraList)
+            
             self.tableView.reloadData()
         }
     }
@@ -123,6 +139,7 @@ class MainViewController: UIViewController,
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let mantraList = NSUserDefaults.standardUserDefaults().arrayForKey(ModelKeys.MantraList) as! [String]
         return mantraList.count
     }
 
@@ -130,13 +147,16 @@ class MainViewController: UIViewController,
         let cell = tableView.dequeueReusableCellWithIdentifier(StoryboardConstants.MantraTableViewCellReuseIdentifier, forIndexPath: indexPath)
 
         // Configure the cell...
+        let mantraList = NSUserDefaults.standardUserDefaults().arrayForKey(ModelKeys.MantraList) as! [String]
         cell.textLabel?.text = mantraList[indexPath.row]
 
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        currentMantraIndex = indexPath.row
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setInteger(indexPath.row, forKey: ModelKeys.CurrentMantraIndex)
+        let mantraList = defaults.arrayForKey(ModelKeys.MantraList) as! [String]
         currentMantraTextView.text = mantraList[indexPath.row]
     }
 
