@@ -22,6 +22,34 @@ class MainViewController: UIViewController,
 //    var mantraList = [String]()
 //    var currentMantraIndex: Int?
     
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
+    var mantraList: [String] {
+        get {
+            if defaults.arrayForKey(ModelKeys.MantraList) as? [String] == nil {
+                defaults.setObject([String](), forKey: ModelKeys.MantraList)
+            }
+            return defaults.arrayForKey(ModelKeys.MantraList) as! [String]
+        }
+        set {
+            defaults.setObject(newValue, forKey: ModelKeys.MantraList)
+        }
+    }
+    
+    var currentMantraIndex: Int? {
+        get {
+            return defaults.valueForKey(ModelKeys.CurrentMantraIndex) as? Int
+        }
+        set {
+            if let index = newValue {
+                defaults.setInteger(index, forKey: ModelKeys.CurrentMantraIndex)
+            }
+            else {
+                defaults.removeObjectForKey(ModelKeys.CurrentMantraIndex)
+            }
+        }
+    }
+    
     
     
     //
@@ -42,15 +70,11 @@ class MainViewController: UIViewController,
     // MARK: - IBActions
     
     @IBAction func addMantraButtonPressed(sender: AnyObject) {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        var mantraList = defaults.arrayForKey(ModelKeys.MantraList) as! [String]
         mantraList.append("")
-        defaults.setInteger(mantraList.count-1, forKey: ModelKeys.CurrentMantraIndex)
-        defaults.setObject(mantraList, forKey: ModelKeys.MantraList)
+        currentMantraIndex = mantraList.count-1
+        
         currentMantraTextView.text = ""
         currentMantraTextView.becomeFirstResponder()
-        
-//        self.tableView.reloadData()
     }
     
     
@@ -81,15 +105,7 @@ class MainViewController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if defaults.arrayForKey(ModelKeys.MantraList) == nil
-        {
-            defaults.setObject([String](), forKey: ModelKeys.MantraList)
-        }
-            
-        let mantraList = defaults.arrayForKey(ModelKeys.MantraList) as! [String]
-        if  let index = defaults.valueForKey(ModelKeys.CurrentMantraIndex) as? Int
-            where index < mantraList.count
+        if let index = currentMantraIndex where index < mantraList.count
         {
             currentMantraTextView.text = mantraList[index]
         }
@@ -116,23 +132,19 @@ class MainViewController: UIViewController,
     
     func textViewDidEndEditing(textView: UITextView) {
         // save to list
-        let defaults = NSUserDefaults.standardUserDefaults()
-        var mantraList = defaults.arrayForKey(ModelKeys.MantraList) as! [String]
         
-        if  let index = defaults.valueForKey(ModelKeys.CurrentMantraIndex) as? Int
-            where index < mantraList.count
+        if let index = currentMantraIndex where index < mantraList.count
         {
             if textView.text.characters.count == 0
             {
                 mantraList.removeAtIndex(index)
+                currentMantraIndex = nil
             }
             else
             {
                 mantraList[index] = textView.text
             }
-            
-            defaults.setObject(mantraList, forKey: ModelKeys.MantraList)
-            defaults.removeObjectForKey(ModelKeys.CurrentMantraIndex)
+    
             self.tableView.reloadData()
         }
     }
@@ -150,7 +162,6 @@ class MainViewController: UIViewController,
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let mantraList = NSUserDefaults.standardUserDefaults().arrayForKey(ModelKeys.MantraList) as! [String]
         return mantraList.count
     }
 
@@ -158,27 +169,14 @@ class MainViewController: UIViewController,
         let cell = tableView.dequeueReusableCellWithIdentifier(StoryboardConstants.MantraTableViewCellReuseIdentifier, forIndexPath: indexPath)
 
         // Configure the cell...
-        let mantraList = NSUserDefaults.standardUserDefaults().arrayForKey(ModelKeys.MantraList) as! [String]
         cell.textLabel?.text = mantraList[indexPath.row]
 
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setInteger(indexPath.row, forKey: ModelKeys.CurrentMantraIndex)
-        let mantraList = defaults.arrayForKey(ModelKeys.MantraList) as! [String]
+        currentMantraIndex = indexPath.row
         currentMantraTextView.text = mantraList[indexPath.row]
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
