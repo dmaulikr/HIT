@@ -14,6 +14,7 @@
 		3F62932F1C148C78005BD240 /* HITTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F62932E1C148C78005BD240 /* HITTests.swift */; };
 		3F62933A1C148C78005BD240 /* HITUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293391C148C78005BD240 /* HITUITests.swift */; };
 		3F6293481C149830005BD240 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293471C149830005BD240 /* MainViewController.swift */; };
+		3F62934A1C15DDCC005BD240 /* MantraCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293491C15DDCC005BD240 /* MantraCardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		3F6293391C148C78005BD240 /* HITUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HITUITests.swift; sourceTree = "<group>"; };
 		3F62933B1C148C78005BD240 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F6293471C149830005BD240 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		3F6293491C15DDCC005BD240 /* MantraCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MantraCardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 			children = (
 				3F6293191C148C78005BD240 /* AppDelegate.swift */,
 				3F6293471C149830005BD240 /* MainViewController.swift */,
+				3F6293491C15DDCC005BD240 /* MantraCardView.swift */,
 				3F62931D1C148C78005BD240 /* Main.storyboard */,
 				3F6293201C148C78005BD240 /* Assets.xcassets */,
 				3F6293221C148C78005BD240 /* LaunchScreen.storyboard */,
@@ -259,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F62934A1C15DDCC005BD240 /* MantraCardView.swift in Sources */,
 				3F6293481C149830005BD240 /* MainViewController.swift in Sources */,
 				3F62931A1C148C78005BD240 /* AppDelegate.swift in Sources */,
 			);
