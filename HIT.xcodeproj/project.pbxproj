@@ -15,6 +15,7 @@
 		3F62933A1C148C78005BD240 /* HITUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293391C148C78005BD240 /* HITUITests.swift */; };
 		3F6293481C149830005BD240 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293471C149830005BD240 /* MainViewController.swift */; };
 		3F62934A1C15DDCC005BD240 /* MantraCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293491C15DDCC005BD240 /* MantraCardView.swift */; };
+		3F62934C1C1BABA2005BD240 /* AutoLayoutTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		3F62933B1C148C78005BD240 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F6293471C149830005BD240 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		3F6293491C15DDCC005BD240 /* MantraCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MantraCardView.swift; sourceTree = "<group>"; };
+		3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoLayoutTestViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				3F6293471C149830005BD240 /* MainViewController.swift */,
 				3F6293491C15DDCC005BD240 /* MantraCardView.swift */,
 				3F62931D1C148C78005BD240 /* Main.storyboard */,
+				3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */,
 				3F6293201C148C78005BD240 /* Assets.xcassets */,
 				3F6293221C148C78005BD240 /* LaunchScreen.storyboard */,
 				3F6293251C148C78005BD240 /* Info.plist */,
@@ -265,6 +268,7 @@
 				3F62934A1C15DDCC005BD240 /* MantraCardView.swift in Sources */,
 				3F6293481C149830005BD240 /* MainViewController.swift in Sources */,
 				3F62931A1C148C78005BD240 /* AppDelegate.swift in Sources */,
+				3F62934C1C1BABA2005BD240 /* AutoLayoutTestViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
