@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A262e" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="IEW-am-j3m">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A278b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="IEW-am-j3m">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -43,7 +43,7 @@
                                                     <rect key="frame" x="15" y="0.0" width="570" height="36"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -130,7 +130,7 @@
                                                     <rect key="frame" x="15" y="0.0" width="570" height="36"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -194,7 +194,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J52-9p-QPM">
-                                <rect key="frame" x="40" y="30" width="520" height="462"/>
+                                <rect key="frame" x="40" y="70" width="520" height="392"/>
                                 <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <accessibility key="accessibilityConfiguration" identifier="The View"/>
                                 <gestureRecognizers/>
@@ -232,11 +232,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <accessibility key="accessibilityConfiguration" identifier="The Other View"/>
                         <constraints>
-                            <constraint firstItem="J52-9p-QPM" firstAttribute="top" secondItem="LCo-DD-Ksy" secondAttribute="bottom" constant="10" id="6rW-ic-U2b"/>
+                            <constraint firstItem="J52-9p-QPM" firstAttribute="top" secondItem="LCo-DD-Ksy" secondAttribute="bottom" constant="50" id="6rW-ic-U2b"/>
                             <constraint firstItem="WrP-VY-oc0" firstAttribute="top" secondItem="Rgn-3a-V8w" secondAttribute="bottom" constant="8" id="FJs-RE-uyv"/>
                             <constraint firstItem="J52-9p-QPM" firstAttribute="leading" secondItem="eDO-ES-ME6" secondAttribute="leadingMargin" constant="20" id="GGn-GR-cGU"/>
                             <constraint firstItem="UUF-1y-YTW" firstAttribute="top" secondItem="WrP-VY-oc0" secondAttribute="bottom" constant="20" id="H9W-LH-23o"/>
-                            <constraint firstItem="Rgn-3a-V8w" firstAttribute="top" secondItem="J52-9p-QPM" secondAttribute="bottom" constant="20" id="NAm-oG-Cia"/>
+                            <constraint firstItem="Rgn-3a-V8w" firstAttribute="top" secondItem="J52-9p-QPM" secondAttribute="bottom" constant="50" id="NAm-oG-Cia"/>
                             <constraint firstItem="Rgn-3a-V8w" firstAttribute="centerX" secondItem="WrP-VY-oc0" secondAttribute="centerX" id="QFq-rS-tjc"/>
                             <constraint firstItem="WrP-VY-oc0" firstAttribute="centerX" secondItem="eDO-ES-ME6" secondAttribute="centerX" id="Qbv-wh-wD9"/>
                             <constraint firstAttribute="trailingMargin" secondItem="J52-9p-QPM" secondAttribute="trailing" constant="20" id="fy5-8I-iXO"/>

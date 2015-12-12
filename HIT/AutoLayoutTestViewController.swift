@@ -55,8 +55,11 @@ class AutoLayoutTestViewController: UIViewController {
     
     @IBAction func handlePanGestureRecognizer(sender: UIPanGestureRecognizer) {
         let translation = sender.translationInView(self.view)
-        theView.center = CGPoint(x: theView.center.x + translation.x,
-            y: theView.center.y + translation.y)
+//        theView.center = CGPoint(x: theView.center.x + translation.x,
+//            y: theView.center.y + translation.y)
+        let rads = translation.x * CGFloat(M_PI/180)
+        let transform = CGAffineTransformRotate(theView.transform, rads);
+        theView.transform = transform;
         sender.setTranslation(CGPointZero, inView: theView)
     }
     
