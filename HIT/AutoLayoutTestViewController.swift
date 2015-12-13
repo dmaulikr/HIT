@@ -8,8 +8,51 @@
 
 import UIKit
 
-class AutoLayoutTestViewController: UIViewController {
+class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate {
     
+    
+    
+    //
+    //
+    //
+    //
+    // MARK: - Properties
+    
+    var animator: UIDynamicAnimator?
+    var panAttachmentBehavior: UIAttachmentBehavior?
+    var snapBehavior: UISnapBehavior?
+    
+    
+    
+    //
+    //
+    //
+    //
+    // MARK: - Methods
+    
+    func orientationChanged(notification: NSNotification) {
+        // pause animator
+        // add constraints back
+        animator?.removeAllBehaviors()
+        addConstraints()
+        theView.transform = CGAffineTransformIdentity
+    }
+    
+    func dropConstraints() {
+        theView.translatesAutoresizingMaskIntoConstraints = true
+        leftConstraint.active = false
+        rightConstraint.active = false
+        topConstraint.active = false
+        bottomConstraint.active = false
+    }
+    
+    func addConstraints() {
+        theView.translatesAutoresizingMaskIntoConstraints = false
+        leftConstraint.active = true
+        rightConstraint.active = true
+        topConstraint.active = true
+        bottomConstraint.active = true
+    }
     
     
     //
@@ -38,30 +81,61 @@ class AutoLayoutTestViewController: UIViewController {
     }
     
     @IBAction func dropConstraintsButtonPressed() {
-        theView.translatesAutoresizingMaskIntoConstraints = true
-        leftConstraint.active = false
-        rightConstraint.active = false
-        topConstraint.active = false
-        bottomConstraint.active = false
+        dropConstraints()
     }
     
     @IBAction func addConstraintsBackButtonPressed() {
-        theView.translatesAutoresizingMaskIntoConstraints = false
-        leftConstraint.active = true
-        rightConstraint.active = true
-        topConstraint.active = true
-        bottomConstraint.active = true
+        addConstraints()
     }
     
     @IBAction func handlePanGestureRecognizer(sender: UIPanGestureRecognizer) {
+        // run animator
+        // add attachment behavior
+        // drop constraints
+        
         let translation = sender.translationInView(self.view)
-//        theView.center = CGPoint(x: theView.center.x + translation.x,
-//            y: theView.center.y + translation.y)
-        let rads = translation.x * CGFloat(M_PI/180)
-        let transform = CGAffineTransformRotate(theView.transform, rads);
-        theView.transform = transform;
-        sender.setTranslation(CGPointZero, inView: theView)
+        if sender.state == .Began {
+            dropConstraints()
+            
+            panAttachmentBehavior = UIAttachmentBehavior(item: theView,
+                attachedToAnchor: theView.center)
+            panAttachmentBehavior?.length = 0
+            animator?.addBehavior(panAttachmentBehavior!)
+            
+            if snapBehavior == nil {
+                snapBehavior = UISnapBehavior(item: theView, snapToPoint: theView.center)
+                animator?.addBehavior(snapBehavior!)
+            }
+        }
+        else if sender.state == .Changed {
+            let anchor = panAttachmentBehavior!.anchorPoint
+            let newAnchor = CGPoint(x: anchor.x + translation.x,
+                y: anchor.y + translation.y)
+            panAttachmentBehavior?.anchorPoint = newAnchor
+        }
+        else if sender.state == .Ended {
+            animator?.removeBehavior(self.panAttachmentBehavior!)
+            panAttachmentBehavior = nil
+        }
+        
+        sender.setTranslation(CGPointZero, inView: self.view)
     }
+    
+    
+    
+    //
+    //
+    //
+    //
+    // MARK: - UIDynamicAnimatorDelegate
+    
+    func dynamicAnimatorDidPause(animator: UIDynamicAnimator) {
+        animator.removeAllBehaviors()
+        snapBehavior = nil
+        addConstraints()
+    }
+    
+    
     
     //
     //
@@ -71,13 +145,21 @@ class AutoLayoutTestViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        UIDevice.currentDevice().beginGeneratingDeviceOrientationNotifications()
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "orientationChanged:",
+            name: UIDeviceOrientationDidChangeNotification,
+            object: UIDevice.currentDevice())
+        
+        animator = UIDynamicAnimator(referenceView: self.view)
+        animator?.delegate = self
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // update behaviors
     }
     
 
