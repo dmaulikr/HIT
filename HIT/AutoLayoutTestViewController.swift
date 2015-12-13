@@ -21,6 +21,7 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
     var animator: UIDynamicAnimator?
     var panAttachmentBehavior: UIAttachmentBehavior?
     var snapBehavior: UISnapBehavior?
+    var dynamicItemBehavior: UIDynamicItemBehavior?
     
     
     
@@ -102,6 +103,12 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
             panAttachmentBehavior?.length = 0
             animator?.addBehavior(panAttachmentBehavior!)
             
+            if dynamicItemBehavior == nil {
+                dynamicItemBehavior = UIDynamicItemBehavior(items: [theView])
+                dynamicItemBehavior?.allowsRotation = false
+                animator?.addBehavior(dynamicItemBehavior!)
+            }
+            
             if snapBehavior == nil {
                 snapBehavior = UISnapBehavior(item: theView, snapToPoint: theView.center)
                 animator?.addBehavior(snapBehavior!)
@@ -132,6 +139,7 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
     func dynamicAnimatorDidPause(animator: UIDynamicAnimator) {
         animator.removeAllBehaviors()
         snapBehavior = nil
+        dynamicItemBehavior = nil
         addConstraints()
     }
     
