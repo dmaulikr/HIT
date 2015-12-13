@@ -116,7 +116,7 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
         }
         else if sender.state == .Changed {
             let anchor = panAttachmentBehavior!.anchorPoint
-            let newAnchor = CGPoint(x: anchor.x + translation.x,
+            let newAnchor = CGPoint(x: anchor.x,
                 y: anchor.y + translation.y)
             panAttachmentBehavior?.anchorPoint = newAnchor
         }
