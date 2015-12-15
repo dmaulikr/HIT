@@ -35,14 +35,25 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
     //
     // MARK: - Methods
     
+    var orientation: UIDeviceOrientation?
+    
     func orientationChanged(notification: NSNotification) {
         // pause animator
         // add constraints back
-        print("orientation changed")
+        print("orientation changed: \(UIDevice.currentDevice().orientation.rawValue)")
         
-        animator?.removeAllBehaviors()
-        addConstraints()
-        theView.transform = CGAffineTransformIdentity
+        let newOrientation = UIDevice.currentDevice().orientation
+        if newOrientation != .PortraitUpsideDown
+            && newOrientation != .FaceDown
+            && newOrientation != .FaceUp
+            && newOrientation != orientation
+        {
+            orientation = newOrientation
+            
+            animator?.removeAllBehaviors()
+            addConstraints()
+            theView.transform = CGAffineTransformIdentity
+        }
     }
     
     func dropConstraints() {
@@ -108,7 +119,6 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
             
             attachmentBehavior = UIAttachmentBehavior(item: theView,
                 attachedToAnchor: theView.center)
-            
             attachmentBehavior?.length = 0
             animator?.addBehavior(attachmentBehavior!)
             
@@ -126,19 +136,24 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
         else {
             print("\(NSDate()): \(sender.state.rawValue)\n")
             
-            if sender.velocityInView(self.view).y > 0 {
-                animator?.addBehavior(startStateSnapBehavior!)
-                animator?.removeBehavior(endStateSnapBehavior!)
-                currentEndStateView = startStateView
+            // device change orientations might prompt
+            // all behaviors to be removed in the middle of a pan gesture,
+            // so we only add a snapping behavior if that didn't happen
+            if let animator = animator where animator.behaviors.count > 0 {
+                if sender.velocityInView(self.view).y > 0 {
+                    animator.addBehavior(startStateSnapBehavior!)
+                    animator.removeBehavior(endStateSnapBehavior!)
+                    currentEndStateView = startStateView
+                }
+                else {
+                    animator.addBehavior(endStateSnapBehavior!)
+                    animator.removeBehavior(startStateSnapBehavior!)
+                    currentEndStateView = endStateView
+                }
+                
+                animator.removeBehavior(self.attachmentBehavior!)
+                attachmentBehavior = nil
             }
-            else {
-                animator?.addBehavior(endStateSnapBehavior!)
-                animator?.removeBehavior(startStateSnapBehavior!)
-                currentEndStateView = endStateView
-            }
-            
-            animator?.removeBehavior(self.attachmentBehavior!)
-            attachmentBehavior = nil
         }
         
         sender.setTranslation(CGPointZero, inView: self.view)
