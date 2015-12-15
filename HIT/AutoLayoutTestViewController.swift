@@ -117,9 +117,11 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
             dropConstraints()
             animator?.removeAllBehaviors()
             
+            let anchor = CGPoint(x: theView.center.x, y: theView.center.y + translation.y)
             attachmentBehavior = UIAttachmentBehavior(item: theView,
-                attachedToAnchor: theView.center)
+                attachedToAnchor: anchor)
             attachmentBehavior?.length = 0
+            attachmentBehavior?.damping = 1
             animator?.addBehavior(attachmentBehavior!)
             
             animator?.addBehavior(dynamicItemBehavior!)
