@@ -4,6 +4,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Main View Controller-->
@@ -194,66 +195,66 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J52-9p-QPM">
-                                <rect key="frame" x="40" y="70" width="520" height="392"/>
-                                <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="150" y="50" width="300" height="200"/>
+                                <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                                <accessibility key="accessibilityConfiguration" identifier="End State View"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L5X-gg-fEP">
+                                <rect key="frame" x="150" y="350" width="300" height="200"/>
+                                <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="0.5" colorSpace="calibratedRGB"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Start State View"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WcD-xx-gcs">
+                                <rect key="frame" x="150" y="200" width="300" height="200"/>
+                                <color key="backgroundColor" red="0.40000000600000002" green="1" blue="1" alpha="0.5" colorSpace="calibratedRGB"/>
                                 <accessibility key="accessibilityConfiguration" identifier="The View"/>
                                 <gestureRecognizers/>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="mUt-MP-C08" appends="YES" id="L9j-XP-mAe"/>
+                                    <outletCollection property="gestureRecognizers" destination="bvo-TL-NCd" appends="YES" id="R81-Fg-rhc"/>
                                 </connections>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rgn-3a-V8w">
-                                <rect key="frame" x="239" y="512" width="122" height="30"/>
-                                <state key="normal" title="Set Needs Layout"/>
-                                <connections>
-                                    <action selector="setNeedsLayoutButtonPressed" destination="IEW-am-j3m" eventType="touchUpInside" id="nID-pJ-ouK"/>
-                                </connections>
-                            </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="WrP-VY-oc0">
-                                <rect key="frame" x="155" y="550" width="290" height="30"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mBq-Qg-Hvy">
-                                        <rect key="frame" x="0.0" y="0.0" width="117" height="30"/>
-                                        <state key="normal" title="Drop Constraints"/>
-                                        <connections>
-                                            <action selector="dropConstraintsButtonPressed" destination="IEW-am-j3m" eventType="touchUpInside" id="Cu1-O9-0Uy"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="adq-qm-Uiv">
-                                        <rect key="frame" x="142" y="0.0" width="148" height="30"/>
-                                        <state key="normal" title="Add Constraints Back"/>
-                                        <connections>
-                                            <action selector="addConstraintsBackButtonPressed" destination="IEW-am-j3m" eventType="touchUpInside" id="3qL-sH-t3H"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <accessibility key="accessibilityConfiguration" identifier="The Other View"/>
+                        <accessibility key="accessibilityConfiguration" identifier="Main View"/>
                         <constraints>
-                            <constraint firstItem="J52-9p-QPM" firstAttribute="top" secondItem="LCo-DD-Ksy" secondAttribute="bottom" constant="50" id="6rW-ic-U2b"/>
-                            <constraint firstItem="WrP-VY-oc0" firstAttribute="top" secondItem="Rgn-3a-V8w" secondAttribute="bottom" constant="8" id="FJs-RE-uyv"/>
-                            <constraint firstItem="J52-9p-QPM" firstAttribute="leading" secondItem="eDO-ES-ME6" secondAttribute="leadingMargin" constant="20" id="GGn-GR-cGU"/>
-                            <constraint firstItem="UUF-1y-YTW" firstAttribute="top" secondItem="WrP-VY-oc0" secondAttribute="bottom" constant="20" id="H9W-LH-23o"/>
-                            <constraint firstItem="Rgn-3a-V8w" firstAttribute="top" secondItem="J52-9p-QPM" secondAttribute="bottom" constant="50" id="NAm-oG-Cia"/>
-                            <constraint firstItem="Rgn-3a-V8w" firstAttribute="centerX" secondItem="WrP-VY-oc0" secondAttribute="centerX" id="QFq-rS-tjc"/>
-                            <constraint firstItem="WrP-VY-oc0" firstAttribute="centerX" secondItem="eDO-ES-ME6" secondAttribute="centerX" id="Qbv-wh-wD9"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="J52-9p-QPM" secondAttribute="trailing" constant="20" id="fy5-8I-iXO"/>
+                            <constraint firstAttribute="height" secondItem="J52-9p-QPM" secondAttribute="height" multiplier="3" id="AXO-PD-sFP"/>
+                            <constraint firstAttribute="width" secondItem="L5X-gg-fEP" secondAttribute="width" multiplier="2" id="Dec-tF-aj1"/>
+                            <constraint firstItem="WcD-xx-gcs" firstAttribute="centerX" secondItem="eDO-ES-ME6" secondAttribute="centerX" id="NC1-F7-nRS"/>
+                            <constraint firstItem="L5X-gg-fEP" firstAttribute="centerY" secondItem="eDO-ES-ME6" secondAttribute="centerY" multiplier="1.5" id="T0D-6H-Meq"/>
+                            <constraint firstAttribute="height" secondItem="WcD-xx-gcs" secondAttribute="height" multiplier="3" id="WI0-jW-sTy"/>
+                            <constraint firstItem="WcD-xx-gcs" firstAttribute="centerY" secondItem="eDO-ES-ME6" secondAttribute="centerY" id="ZM9-tc-Ma4"/>
+                            <constraint firstAttribute="centerY" secondItem="J52-9p-QPM" secondAttribute="centerY" multiplier="2" id="aTG-E2-pme"/>
+                            <constraint firstAttribute="height" secondItem="L5X-gg-fEP" secondAttribute="height" multiplier="3" id="ctS-3f-7YD"/>
+                            <constraint firstItem="L5X-gg-fEP" firstAttribute="centerX" secondItem="eDO-ES-ME6" secondAttribute="centerX" id="jeD-R1-SgY"/>
+                            <constraint firstItem="J52-9p-QPM" firstAttribute="centerX" secondItem="eDO-ES-ME6" secondAttribute="centerX" id="kag-9O-lyf"/>
+                            <constraint firstAttribute="width" secondItem="WcD-xx-gcs" secondAttribute="width" multiplier="2" id="ojw-4V-x8n"/>
+                            <constraint firstAttribute="width" secondItem="J52-9p-QPM" secondAttribute="width" multiplier="2" id="xgR-gw-cdD"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="bottomConstraint" destination="NAm-oG-Cia" id="O0z-om-Y8o"/>
-                        <outlet property="leftConstraint" destination="GGn-GR-cGU" id="A96-wf-3UF"/>
-                        <outlet property="rightConstraint" destination="fy5-8I-iXO" id="LuW-r3-S9J"/>
-                        <outlet property="theView" destination="J52-9p-QPM" id="3YL-CV-YeO"/>
-                        <outlet property="topConstraint" destination="6rW-ic-U2b" id="TvM-e4-Yrt"/>
+                        <outlet property="endStateView" destination="J52-9p-QPM" id="POc-r8-v5z"/>
+                        <outlet property="endStateViewCenterXConstraint" destination="kag-9O-lyf" id="W4G-th-cvt"/>
+                        <outlet property="endStateViewCenterYConstraint" destination="aTG-E2-pme" id="X8G-za-ZWs"/>
+                        <outlet property="endStateViewHeightConstraint" destination="AXO-PD-sFP" id="hJF-1L-UAU"/>
+                        <outlet property="endStateViewWidthConstraint" destination="xgR-gw-cdD" id="q5U-3f-Szo"/>
+                        <outlet property="startStateView" destination="L5X-gg-fEP" id="BBM-dM-cxY"/>
+                        <outlet property="startStateViewCenterXConstraint" destination="jeD-R1-SgY" id="R2b-OL-8Cx"/>
+                        <outlet property="startStateViewCenterYConstraint" destination="T0D-6H-Meq" id="vGL-0F-5xc"/>
+                        <outlet property="startStateViewHeightConstraint" destination="ctS-3f-7YD" id="5Aq-gp-G8X"/>
+                        <outlet property="startStateViewWidthConstraint" destination="Dec-tF-aj1" id="fYp-w7-W9H"/>
+                        <outlet property="theView" destination="WcD-xx-gcs" id="8T8-7n-bup"/>
+                        <outlet property="theViewCenterXConstraint" destination="NC1-F7-nRS" id="g5N-NT-fXL"/>
+                        <outlet property="theViewCenterYConstraint" destination="ZM9-tc-Ma4" id="ZiA-Oh-0RO"/>
+                        <outlet property="theViewHeightConstraint" destination="WI0-jW-sTy" id="vMa-zE-9mr"/>
+                        <outlet property="theViewWidthConstraint" destination="ojw-4V-x8n" id="sSX-Ju-boE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O09-6Z-LwD" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="mUt-MP-C08">
+                <panGestureRecognizer minimumNumberOfTouches="1" id="bvo-TL-NCd">
                     <connections>
-                        <action selector="handlePanGestureRecognizer:" destination="IEW-am-j3m" id="Qqh-Fr-wAF"/>
+                        <action selector="handlePanGestureRecognizer:" destination="IEW-am-j3m" id="5Cz-nk-Z3L"/>
                     </connections>
                 </panGestureRecognizer>
             </objects>

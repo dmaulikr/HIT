@@ -20,8 +20,12 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
     
     var animator: UIDynamicAnimator?
     var panAttachmentBehavior: UIAttachmentBehavior?
-    var snapBehavior: UISnapBehavior?
+    var startStateSnapBehavior: UISnapBehavior?
+    var endStateSnapBehavior: UISnapBehavior?
     var dynamicItemBehavior: UIDynamicItemBehavior?
+    
+    var currentEndStateView: UIView!
+    var currentConstraintSet: [NSLayoutConstraint]!
     
     
     
@@ -34,25 +38,24 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
     func orientationChanged(notification: NSNotification) {
         // pause animator
         // add constraints back
+        print("orientation changed")
+        
         animator?.removeAllBehaviors()
         addConstraints()
         theView.transform = CGAffineTransformIdentity
     }
     
     func dropConstraints() {
+        NSLayoutConstraint.deactivateConstraints(
+            currentConstraintSet)
         theView.translatesAutoresizingMaskIntoConstraints = true
-        leftConstraint.active = false
-        rightConstraint.active = false
-        topConstraint.active = false
-        bottomConstraint.active = false
     }
     
     func addConstraints() {
+        print("added constraints")
+        
         theView.translatesAutoresizingMaskIntoConstraints = false
-        leftConstraint.active = true
-        rightConstraint.active = true
-        topConstraint.active = true
-        bottomConstraint.active = true
+        currentConstraintSet = theView.mirrorView(currentEndStateView, byReplacingConstraints: currentConstraintSet)
     }
     
     
@@ -63,12 +66,25 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
     // MARK: - Outlets
     
     @IBOutlet weak var theView: UIView!
+    @IBOutlet weak var startStateView: UIView!
+    @IBOutlet weak var endStateView: UIView!
     
-    @IBOutlet var leftConstraint: NSLayoutConstraint!
-    @IBOutlet var topConstraint: NSLayoutConstraint!
-    @IBOutlet var rightConstraint: NSLayoutConstraint!
-    @IBOutlet var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet var startStateViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var startStateViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var startStateViewCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet var startStateViewCenterYConstraint: NSLayoutConstraint!
     
+    @IBOutlet var endStateViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var endStateViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var endStateViewCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet var endStateViewCenterYConstraint: NSLayoutConstraint!
+    
+    @IBOutlet var theViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var theViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var theViewCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet var theViewCenterYConstraint: NSLayoutConstraint!
+    
+  
     
     
     //
@@ -77,18 +93,6 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
     //
     // MARK: - Actions
     
-    @IBAction func setNeedsLayoutButtonPressed() {
-        self.view.setNeedsLayout()
-    }
-    
-    @IBAction func dropConstraintsButtonPressed() {
-        dropConstraints()
-    }
-    
-    @IBAction func addConstraintsBackButtonPressed() {
-        addConstraints()
-    }
-    
     @IBAction func handlePanGestureRecognizer(sender: UIPanGestureRecognizer) {
         // run animator
         // add attachment behavior
@@ -96,6 +100,8 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
         
         let translation = sender.translationInView(self.view)
         if sender.state == .Began {
+            print("\(NSDate()): \(sender.state.rawValue)\n")
+            
             dropConstraints()
             
             panAttachmentBehavior = UIAttachmentBehavior(item: theView,
@@ -103,16 +109,7 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
             panAttachmentBehavior?.length = 0
             animator?.addBehavior(panAttachmentBehavior!)
             
-            if dynamicItemBehavior == nil {
-                dynamicItemBehavior = UIDynamicItemBehavior(items: [theView])
-                dynamicItemBehavior?.allowsRotation = false
-                animator?.addBehavior(dynamicItemBehavior!)
-            }
-            
-            if snapBehavior == nil {
-                snapBehavior = UISnapBehavior(item: theView, snapToPoint: theView.center)
-                animator?.addBehavior(snapBehavior!)
-            }
+            animator?.addBehavior(dynamicItemBehavior!)
         }
         else if sender.state == .Changed {
             let anchor = panAttachmentBehavior!.anchorPoint
@@ -120,7 +117,20 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
                 y: anchor.y + translation.y)
             panAttachmentBehavior?.anchorPoint = newAnchor
         }
-        else if sender.state == .Ended {
+        else {
+            print("\(NSDate()): \(sender.state.rawValue)\n")
+            
+            if sender.velocityInView(self.view).y > 0 {
+                animator?.addBehavior(startStateSnapBehavior!)
+                animator?.removeBehavior(endStateSnapBehavior!)
+                currentEndStateView = startStateView
+            }
+            else {
+                animator?.addBehavior(endStateSnapBehavior!)
+                animator?.removeBehavior(startStateSnapBehavior!)
+                currentEndStateView = endStateView
+            }
+            
             animator?.removeBehavior(self.panAttachmentBehavior!)
             panAttachmentBehavior = nil
         }
@@ -137,10 +147,16 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
     // MARK: - UIDynamicAnimatorDelegate
     
     func dynamicAnimatorDidPause(animator: UIDynamicAnimator) {
-        animator.removeAllBehaviors()
-        snapBehavior = nil
-        dynamicItemBehavior = nil
-        addConstraints()
+        // condition ensures that animation didn't pause
+        // just because user hasn't moved their finger
+        print("animator paused")
+        
+        if panAttachmentBehavior == nil {
+            print("and attachment is nil")
+            
+            animator.removeAllBehaviors()
+            addConstraints()
+        }
     }
     
     
@@ -162,12 +178,24 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
         
         animator = UIDynamicAnimator(referenceView: self.view)
         animator?.delegate = self
+        
+        dynamicItemBehavior = UIDynamicItemBehavior(items: [theView])
+        dynamicItemBehavior?.allowsRotation = false
+        
+        currentConstraintSet = [theViewWidthConstraint, theViewHeightConstraint, theViewCenterXConstraint, theViewCenterYConstraint]
+        currentEndStateView = startStateView
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+        print("laid out subviews")
+        
         // update behaviors
+        startStateSnapBehavior = UISnapBehavior(item: theView, snapToPoint: startStateView.center)
+        startStateSnapBehavior?.damping = 0.5
+        endStateSnapBehavior = UISnapBehavior(item: theView, snapToPoint: endStateView.center)
+        endStateSnapBehavior?.damping = 0.1
     }
     
 

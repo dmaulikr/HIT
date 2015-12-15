@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3F3137721C1CDA1D008D021D /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3137711C1CDA1D008D021D /* PlaceholderView.swift */; };
+		3F3137741C1E472E008D021D /* UIView+Doppelganger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3137731C1E472E008D021D /* UIView+Doppelganger.swift */; };
 		3F62931A1C148C78005BD240 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293191C148C78005BD240 /* AppDelegate.swift */; };
 		3F62931F1C148C78005BD240 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F62931D1C148C78005BD240 /* Main.storyboard */; };
 		3F6293211C148C78005BD240 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F6293201C148C78005BD240 /* Assets.xcassets */; };
@@ -38,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		3F3137711C1CDA1D008D021D /* PlaceholderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
+		3F3137731C1E472E008D021D /* UIView+Doppelganger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Doppelganger.swift"; sourceTree = "<group>"; };
 		3F6293161C148C78005BD240 /* HIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HIT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F6293191C148C78005BD240 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F62931E1C148C78005BD240 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				3F6293471C149830005BD240 /* MainViewController.swift */,
 				3F6293491C15DDCC005BD240 /* MantraCardView.swift */,
 				3F62931D1C148C78005BD240 /* Main.storyboard */,
+				3F3137731C1E472E008D021D /* UIView+Doppelganger.swift */,
 				3F3137711C1CDA1D008D021D /* PlaceholderView.swift */,
 				3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */,
 				3F6293201C148C78005BD240 /* Assets.xcassets */,
@@ -269,6 +272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F62934A1C15DDCC005BD240 /* MantraCardView.swift in Sources */,
+				3F3137741C1E472E008D021D /* UIView+Doppelganger.swift in Sources */,
 				3F6293481C149830005BD240 /* MainViewController.swift in Sources */,
 				3F62931A1C148C78005BD240 /* AppDelegate.swift in Sources */,
 				3F3137721C1CDA1D008D021D /* PlaceholderView.swift in Sources */,
