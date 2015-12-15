@@ -19,7 +19,7 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
     // MARK: - Properties
     
     var animator: UIDynamicAnimator?
-    var panAttachmentBehavior: UIAttachmentBehavior?
+    var attachmentBehavior: UIAttachmentBehavior?
     var startStateSnapBehavior: UISnapBehavior?
     var endStateSnapBehavior: UISnapBehavior?
     var dynamicItemBehavior: UIDynamicItemBehavior?
@@ -46,6 +46,7 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
     }
     
     func dropConstraints() {
+        print("dropping constraints")
         NSLayoutConstraint.deactivateConstraints(
             currentConstraintSet)
         theView.translatesAutoresizingMaskIntoConstraints = true
@@ -103,19 +104,24 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
             print("\(NSDate()): \(sender.state.rawValue)\n")
             
             dropConstraints()
+            animator?.removeAllBehaviors()
             
-            panAttachmentBehavior = UIAttachmentBehavior(item: theView,
+            attachmentBehavior = UIAttachmentBehavior(item: theView,
                 attachedToAnchor: theView.center)
-            panAttachmentBehavior?.length = 0
-            animator?.addBehavior(panAttachmentBehavior!)
+            
+            attachmentBehavior?.length = 0
+            animator?.addBehavior(attachmentBehavior!)
             
             animator?.addBehavior(dynamicItemBehavior!)
         }
         else if sender.state == .Changed {
-            let anchor = panAttachmentBehavior!.anchorPoint
+            
+//            print("\(NSDate()): \(sender.state.rawValue)\n")
+            
+            let anchor = attachmentBehavior!.anchorPoint
             let newAnchor = CGPoint(x: anchor.x,
                 y: anchor.y + translation.y)
-            panAttachmentBehavior?.anchorPoint = newAnchor
+            attachmentBehavior?.anchorPoint = newAnchor
         }
         else {
             print("\(NSDate()): \(sender.state.rawValue)\n")
@@ -131,8 +137,8 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
                 currentEndStateView = endStateView
             }
             
-            animator?.removeBehavior(self.panAttachmentBehavior!)
-            panAttachmentBehavior = nil
+            animator?.removeBehavior(self.attachmentBehavior!)
+            attachmentBehavior = nil
         }
         
         sender.setTranslation(CGPointZero, inView: self.view)
@@ -151,7 +157,7 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
         // just because user hasn't moved their finger
         print("animator paused")
         
-        if panAttachmentBehavior == nil {
+        if attachmentBehavior == nil {
             print("and attachment is nil")
             
             animator.removeAllBehaviors()

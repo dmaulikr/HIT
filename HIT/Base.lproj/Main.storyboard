@@ -195,14 +195,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J52-9p-QPM">
-                                <rect key="frame" x="150" y="50" width="300" height="200"/>
-                                <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="0.0" y="100" width="600" height="600"/>
+                                <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="0.068453663793103442" colorSpace="calibratedRGB"/>
                                 <accessibility key="accessibilityConfiguration" identifier="End State View"/>
                                 <gestureRecognizers/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L5X-gg-fEP">
-                                <rect key="frame" x="150" y="350" width="300" height="200"/>
-                                <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="0.5" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="0.0" y="525" width="600" height="600"/>
+                                <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="0.05274784482758621" colorSpace="calibratedRGB"/>
                                 <accessibility key="accessibilityConfiguration" identifier="Start State View"/>
                                 <gestureRecognizers/>
                             </view>
@@ -219,18 +219,18 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <accessibility key="accessibilityConfiguration" identifier="Main View"/>
                         <constraints>
-                            <constraint firstAttribute="height" secondItem="J52-9p-QPM" secondAttribute="height" multiplier="3" id="AXO-PD-sFP"/>
-                            <constraint firstAttribute="width" secondItem="L5X-gg-fEP" secondAttribute="width" multiplier="2" id="Dec-tF-aj1"/>
+                            <constraint firstAttribute="height" secondItem="J52-9p-QPM" secondAttribute="height" id="AXO-PD-sFP"/>
+                            <constraint firstAttribute="width" secondItem="L5X-gg-fEP" secondAttribute="width" id="Dec-tF-aj1"/>
                             <constraint firstItem="WcD-xx-gcs" firstAttribute="centerX" secondItem="eDO-ES-ME6" secondAttribute="centerX" id="NC1-F7-nRS"/>
-                            <constraint firstItem="L5X-gg-fEP" firstAttribute="centerY" secondItem="eDO-ES-ME6" secondAttribute="centerY" multiplier="1.5" id="T0D-6H-Meq"/>
+                            <constraint firstItem="L5X-gg-fEP" firstAttribute="top" secondItem="eDO-ES-ME6" secondAttribute="bottom" constant="-75" id="T0D-6H-Meq"/>
                             <constraint firstAttribute="height" secondItem="WcD-xx-gcs" secondAttribute="height" multiplier="3" id="WI0-jW-sTy"/>
                             <constraint firstItem="WcD-xx-gcs" firstAttribute="centerY" secondItem="eDO-ES-ME6" secondAttribute="centerY" id="ZM9-tc-Ma4"/>
-                            <constraint firstAttribute="centerY" secondItem="J52-9p-QPM" secondAttribute="centerY" multiplier="2" id="aTG-E2-pme"/>
-                            <constraint firstAttribute="height" secondItem="L5X-gg-fEP" secondAttribute="height" multiplier="3" id="ctS-3f-7YD"/>
+                            <constraint firstAttribute="top" secondItem="J52-9p-QPM" secondAttribute="top" constant="-100" id="aTG-E2-pme"/>
+                            <constraint firstAttribute="height" secondItem="L5X-gg-fEP" secondAttribute="height" id="ctS-3f-7YD"/>
                             <constraint firstItem="L5X-gg-fEP" firstAttribute="centerX" secondItem="eDO-ES-ME6" secondAttribute="centerX" id="jeD-R1-SgY"/>
                             <constraint firstItem="J52-9p-QPM" firstAttribute="centerX" secondItem="eDO-ES-ME6" secondAttribute="centerX" id="kag-9O-lyf"/>
                             <constraint firstAttribute="width" secondItem="WcD-xx-gcs" secondAttribute="width" multiplier="2" id="ojw-4V-x8n"/>
-                            <constraint firstAttribute="width" secondItem="J52-9p-QPM" secondAttribute="width" multiplier="2" id="xgR-gw-cdD"/>
+                            <constraint firstAttribute="width" secondItem="J52-9p-QPM" secondAttribute="width" id="xgR-gw-cdD"/>
                         </constraints>
                     </view>
                     <connections>
