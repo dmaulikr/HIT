@@ -18,6 +18,10 @@
 		3F6293481C149830005BD240 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293471C149830005BD240 /* MainViewController.swift */; };
 		3F62934A1C15DDCC005BD240 /* MantraCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293491C15DDCC005BD240 /* MantraCardView.swift */; };
 		3F62934C1C1BABA2005BD240 /* AutoLayoutTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */; };
+		3F8397D91C24F23C0002002E /* CardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F8397D81C24F23C0002002E /* CardView.xib */; };
+		3FF21E2C1C21F90C0079C67F /* CardTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3FF21E2B1C21F90C0079C67F /* CardTableView.xib */; };
+		3FF21E301C2202CB0079C67F /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF21E2F1C2202CB0079C67F /* CardView.swift */; };
+		3FF21E351C24EDCD0079C67F /* NSLayoutConstraint+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF21E341C24EDCD0079C67F /* NSLayoutConstraint+Helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +59,10 @@
 		3F6293471C149830005BD240 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		3F6293491C15DDCC005BD240 /* MantraCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MantraCardView.swift; sourceTree = "<group>"; };
 		3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoLayoutTestViewController.swift; sourceTree = "<group>"; };
+		3F8397D81C24F23C0002002E /* CardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardView.xib; sourceTree = "<group>"; };
+		3FF21E2B1C21F90C0079C67F /* CardTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardTableView.xib; sourceTree = "<group>"; };
+		3FF21E2F1C2202CB0079C67F /* CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		3FF21E341C24EDCD0079C67F /* NSLayoutConstraint+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+Helpers.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,7 +117,10 @@
 				3F6293471C149830005BD240 /* MainViewController.swift */,
 				3F6293491C15DDCC005BD240 /* MantraCardView.swift */,
 				3F62931D1C148C78005BD240 /* Main.storyboard */,
+				3FF21E2B1C21F90C0079C67F /* CardTableView.xib */,
+				3FF21E311C2203500079C67F /* Views */,
 				3F3137731C1E472E008D021D /* UIView+Doppelganger.swift */,
+				3FF21E341C24EDCD0079C67F /* NSLayoutConstraint+Helpers.swift */,
 				3F3137711C1CDA1D008D021D /* PlaceholderView.swift */,
 				3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */,
 				3F6293201C148C78005BD240 /* Assets.xcassets */,
@@ -135,6 +146,15 @@
 				3F62933B1C148C78005BD240 /* Info.plist */,
 			);
 			path = HITUITests;
+			sourceTree = "<group>";
+		};
+		3FF21E311C2203500079C67F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3FF21E2F1C2202CB0079C67F /* CardView.swift */,
+				3F8397D81C24F23C0002002E /* CardView.xib */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -246,7 +266,9 @@
 			files = (
 				3F6293241C148C78005BD240 /* LaunchScreen.storyboard in Resources */,
 				3F6293211C148C78005BD240 /* Assets.xcassets in Resources */,
+				3F8397D91C24F23C0002002E /* CardView.xib in Resources */,
 				3F62931F1C148C78005BD240 /* Main.storyboard in Resources */,
+				3FF21E2C1C21F90C0079C67F /* CardTableView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,7 +293,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FF21E301C2202CB0079C67F /* CardView.swift in Sources */,
 				3F62934A1C15DDCC005BD240 /* MantraCardView.swift in Sources */,
+				3FF21E351C24EDCD0079C67F /* NSLayoutConstraint+Helpers.swift in Sources */,
 				3F3137741C1E472E008D021D /* UIView+Doppelganger.swift in Sources */,
 				3F6293481C149830005BD240 /* MainViewController.swift in Sources */,
 				3F62931A1C148C78005BD240 /* AppDelegate.swift in Sources */,

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15A278b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardView" customModule="HIT" customModuleProvider="target">
+            <connections>
+                <outlet property="cardTitleView" destination="Ob9-pW-fwV" id="hKt-N9-jG6"/>
+                <outlet property="cardTitleViewInitialCenterXConstraint" destination="3Wl-yA-iRZ" id="U81-x0-0L6"/>
+                <outlet property="cardTitleViewInitialTopConstraint" destination="2y0-3l-6ws" id="nvA-h4-OYF"/>
+                <outlet property="revealedVisibilityStateView" destination="kwZ-09-W8W" id="paH-1p-L3q"/>
+                <outlet property="revealedVisibilityStateViewCenterXConstraint" destination="yCt-xT-QiF" id="C61-lR-LVX"/>
+                <outlet property="revealedVisibilityStateViewCenterYConstraint" destination="XTa-sY-vLH" id="Mqg-Ac-mic"/>
+                <outlet property="tableVisibilityStateView" destination="EeC-8S-KjH" id="q9I-8I-I5B"/>
+                <outlet property="tableVisibilityStateViewCenterXConstraint" destination="RHW-Tv-PQ0" id="tls-Wv-JCO"/>
+                <outlet property="tableVisibilityStateViewTopConstraint" destination="xau-Tt-stK" id="RN8-0i-MmV"/>
+                <outlet property="xibView" destination="iN0-l3-epB" id="Ytq-TB-73I"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EeC-8S-KjH">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="67"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Table visible title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Qq-Na-eKn">
+                            <rect key="frame" x="8" y="23" width="584" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.40000000600000002" green="1" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <accessibility key="accessibilityConfiguration" identifier="Embedded In Table Visible State" label="Embedded In Table Visible State">
+                        <bool key="isElement" value="NO"/>
+                    </accessibility>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="0Qq-Na-eKn" secondAttribute="bottom" constant="23" id="UwY-9L-pm8"/>
+                        <constraint firstItem="0Qq-Na-eKn" firstAttribute="top" secondItem="EeC-8S-KjH" secondAttribute="top" constant="23" id="Z2Z-Rp-P70"/>
+                        <constraint firstAttribute="trailing" secondItem="0Qq-Na-eKn" secondAttribute="trailing" constant="8" id="o1q-ag-s5U"/>
+                        <constraint firstItem="0Qq-Na-eKn" firstAttribute="leading" secondItem="EeC-8S-KjH" secondAttribute="leading" constant="8" id="wtV-df-QGp"/>
+                    </constraints>
+                </view>
+                <view hidden="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kwZ-09-W8W">
+                    <rect key="frame" x="0.0" y="230" width="600" height="106"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d9M-nm-7dz">
+                            <rect key="frame" x="8" y="23" width="584" height="60"/>
+                            <string key="text">Full visibility title: Lorem ipsum Lorem ipsumLorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum  </string>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.40000000600000002" green="1" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <accessibility key="accessibilityConfiguration" identifier="Full Display Visible State" label="Full Display Visible State"/>
+                    <constraints>
+                        <constraint firstItem="d9M-nm-7dz" firstAttribute="top" secondItem="kwZ-09-W8W" secondAttribute="top" constant="23" id="Zht-gT-K9j"/>
+                        <constraint firstAttribute="trailing" secondItem="d9M-nm-7dz" secondAttribute="trailing" constant="8" id="bQS-o4-fDv"/>
+                        <constraint firstAttribute="bottom" secondItem="d9M-nm-7dz" secondAttribute="bottom" constant="23" id="r6d-y4-2oW"/>
+                        <constraint firstItem="d9M-nm-7dz" firstAttribute="leading" secondItem="kwZ-09-W8W" secondAttribute="leading" constant="8" id="t2w-Cn-Yv6"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ob9-pW-fwV">
+                    <rect key="frame" x="0.0" y="100" width="600" height="67"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Table visible title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IQg-Eo-VIH">
+                            <rect key="frame" x="8" y="23" width="584" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.40000000600000002" green="1" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <accessibility key="accessibilityConfiguration" identifier="Embedded In Table Visible State" label="Embedded In Table Visible State">
+                        <bool key="isElement" value="NO"/>
+                    </accessibility>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="IQg-Eo-VIH" secondAttribute="trailing" constant="8" id="1ZS-zI-TiG"/>
+                        <constraint firstItem="IQg-Eo-VIH" firstAttribute="leading" secondItem="Ob9-pW-fwV" secondAttribute="leading" constant="8" id="SiG-VB-ncd"/>
+                        <constraint firstItem="IQg-Eo-VIH" firstAttribute="top" secondItem="Ob9-pW-fwV" secondAttribute="top" constant="23" id="jja-9f-KgY"/>
+                        <constraint firstAttribute="bottom" secondItem="IQg-Eo-VIH" secondAttribute="bottom" constant="23" id="qtb-mH-evW"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="Ob9-pW-fwV" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="100" id="2y0-3l-6ws"/>
+                <constraint firstItem="Ob9-pW-fwV" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="3Wl-yA-iRZ"/>
+                <constraint firstItem="EeC-8S-KjH" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="DLX-59-UGh"/>
+                <constraint firstItem="kwZ-09-W8W" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="PIh-is-OqJ"/>
+                <constraint firstItem="EeC-8S-KjH" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="RHW-Tv-PQ0"/>
+                <constraint firstItem="kwZ-09-W8W" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="XTa-sY-vLH"/>
+                <constraint firstItem="Ob9-pW-fwV" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="aHe-Gp-ZFJ"/>
+                <constraint firstItem="EeC-8S-KjH" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="xau-Tt-stK"/>
+                <constraint firstItem="kwZ-09-W8W" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="yCt-xT-QiF"/>
+            </constraints>
+            <point key="canvasLocation" x="400" y="405"/>
+        </view>
+    </objects>
+</document>

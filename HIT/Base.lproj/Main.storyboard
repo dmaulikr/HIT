@@ -206,9 +206,9 @@
                                 <accessibility key="accessibilityConfiguration" identifier="Start State View"/>
                                 <gestureRecognizers/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WcD-xx-gcs">
-                                <rect key="frame" x="150" y="200" width="300" height="200"/>
-                                <color key="backgroundColor" red="0.40000000600000002" green="1" blue="1" alpha="0.5" colorSpace="calibratedRGB"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WcD-xx-gcs" customClass="CardView" customModule="HIT" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="200" width="600" height="200"/>
+                                <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <accessibility key="accessibilityConfiguration" identifier="The View"/>
                                 <gestureRecognizers/>
                                 <connections>
@@ -229,7 +229,7 @@
                             <constraint firstAttribute="height" secondItem="L5X-gg-fEP" secondAttribute="height" id="ctS-3f-7YD"/>
                             <constraint firstItem="L5X-gg-fEP" firstAttribute="centerX" secondItem="eDO-ES-ME6" secondAttribute="centerX" id="jeD-R1-SgY"/>
                             <constraint firstItem="J52-9p-QPM" firstAttribute="centerX" secondItem="eDO-ES-ME6" secondAttribute="centerX" id="kag-9O-lyf"/>
-                            <constraint firstAttribute="width" secondItem="WcD-xx-gcs" secondAttribute="width" multiplier="2" id="ojw-4V-x8n"/>
+                            <constraint firstAttribute="width" secondItem="WcD-xx-gcs" secondAttribute="width" id="ojw-4V-x8n"/>
                             <constraint firstAttribute="width" secondItem="J52-9p-QPM" secondAttribute="width" id="xgR-gw-cdD"/>
                         </constraints>
                     </view>
@@ -244,7 +244,7 @@
                         <outlet property="startStateViewCenterYConstraint" destination="T0D-6H-Meq" id="vGL-0F-5xc"/>
                         <outlet property="startStateViewHeightConstraint" destination="ctS-3f-7YD" id="5Aq-gp-G8X"/>
                         <outlet property="startStateViewWidthConstraint" destination="Dec-tF-aj1" id="fYp-w7-W9H"/>
-                        <outlet property="theView" destination="WcD-xx-gcs" id="8T8-7n-bup"/>
+                        <outlet property="theView" destination="WcD-xx-gcs" id="Lnd-U4-eON"/>
                         <outlet property="theViewCenterXConstraint" destination="NC1-F7-nRS" id="g5N-NT-fXL"/>
                         <outlet property="theViewCenterYConstraint" destination="ZM9-tc-Ma4" id="ZiA-Oh-0RO"/>
                         <outlet property="theViewHeightConstraint" destination="WI0-jW-sTy" id="vMa-zE-9mr"/>

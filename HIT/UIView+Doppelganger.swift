@@ -9,8 +9,14 @@
 import Foundation
 import UIKit
 
-extension UIView {
-    func mirrorView(otherView: UIView, byReplacingConstraints oldConstraints: [NSLayoutConstraint]) -> [NSLayoutConstraint] {
+extension UIView
+{
+    func mirrorView(
+        otherView: UIView,
+        byReplacingConstraints oldConstraints: [NSLayoutConstraint])
+        
+        -> [NSLayoutConstraint]
+    {
         NSLayoutConstraint.deactivateConstraints(oldConstraints)
         
         let widthConstraint = NSLayoutConstraint(
@@ -53,13 +59,44 @@ extension UIView {
         NSLayoutConstraint.activateConstraints(newConstraints)
         
         return newConstraints
+    }
+    
+    
+    
+    func mirrorConstraints(
+        constraints: [NSLayoutConstraint],
+        ofView otherView: UIView,
+        byReplacingConstraints oldConstraints: [NSLayoutConstraint])
         
-        // assure superview is shared
+        -> [NSLayoutConstraint]
+    {
+        var newConstraints = [NSLayoutConstraint]()
         
-        // what about constraints owned by otherView that are equal to constants
-        // e.g. constant width, constant height
-        // do they have a 'second item'?
+        for constraint in constraints
+        {
+            let firstItem = constraint.firstItem as? UIView == otherView
+                ? self
+                : constraint.firstItem
+            
+            let secondItem = constraint.secondItem as? UIView == otherView
+                ? self
+                : constraint.secondItem
+            
+            let mirrorConstraint = NSLayoutConstraint(
+                item: firstItem,
+                attribute: constraint.firstAttribute,
+                relatedBy: constraint.relation,
+                toItem: secondItem,
+                attribute: constraint.secondAttribute,
+                multiplier: constraint.multiplier,
+                constant: constraint.constant)
+            
+            newConstraints.append(mirrorConstraint)
+        }
         
-        // experiment with views whose width is derived from subviews with intrinsic size
+        NSLayoutConstraint.deactivateConstraints(oldConstraints)
+        NSLayoutConstraint.activateConstraints(newConstraints)
+        
+        return newConstraints
     }
 }

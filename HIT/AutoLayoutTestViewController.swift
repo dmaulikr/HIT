@@ -77,7 +77,7 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
     //
     // MARK: - Outlets
     
-    @IBOutlet weak var theView: UIView!
+    @IBOutlet weak var theView: CardView!
     @IBOutlet weak var startStateView: UIView!
     @IBOutlet weak var endStateView: UIView!
     
@@ -207,6 +207,8 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
         
         currentConstraintSet = [theViewWidthConstraint, theViewHeightConstraint, theViewCenterXConstraint, theViewCenterYConstraint]
         currentEndStateView = startStateView
+        
+//        theView.performSetup()
     }
 
     override func viewDidLayoutSubviews() {
