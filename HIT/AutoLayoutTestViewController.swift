@@ -53,6 +53,13 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
             animator?.removeAllBehaviors()
             addConstraints()
             theView.transform = CGAffineTransformIdentity
+            
+            if currentEndStateView == startStateView {
+                theView.switchToTableVisibilityState()
+            }
+            else if currentEndStateView == endStateView {
+                theView.switchToRevealedVisibilityState()
+            }
         }
     }
     
@@ -155,6 +162,20 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
                 
                 animator.removeBehavior(self.attachmentBehavior!)
                 attachmentBehavior = nil
+                
+                if currentEndStateView == startStateView {
+                    theView.switchToTableVisibilityState()
+                }
+                else if currentEndStateView == endStateView {
+                    theView.switchToRevealedVisibilityState()
+                }
+                UIView.animateWithDuration(0.25,
+                    delay: 0,
+                    options: .CurveEaseInOut,
+                    animations: {
+                        self.theView.layoutIfNeeded()
+                    },
+                    completion: nil)
             }
         }
         
@@ -207,8 +228,6 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
         
         currentConstraintSet = [theViewWidthConstraint, theViewHeightConstraint, theViewCenterXConstraint, theViewCenterYConstraint]
         currentEndStateView = startStateView
-        
-//        theView.performSetup()
     }
 
     override func viewDidLayoutSubviews() {
@@ -220,7 +239,7 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
         startStateSnapBehavior = UISnapBehavior(item: theView, snapToPoint: startStateView.center)
         startStateSnapBehavior?.damping = 0.5
         endStateSnapBehavior = UISnapBehavior(item: theView, snapToPoint: endStateView.center)
-        endStateSnapBehavior?.damping = 0.1
+        endStateSnapBehavior?.damping = 0.25
     }
     
 

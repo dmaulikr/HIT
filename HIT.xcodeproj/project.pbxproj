@@ -117,7 +117,6 @@
 				3F6293471C149830005BD240 /* MainViewController.swift */,
 				3F6293491C15DDCC005BD240 /* MantraCardView.swift */,
 				3F62931D1C148C78005BD240 /* Main.storyboard */,
-				3FF21E2B1C21F90C0079C67F /* CardTableView.xib */,
 				3FF21E311C2203500079C67F /* Views */,
 				3F3137731C1E472E008D021D /* UIView+Doppelganger.swift */,
 				3FF21E341C24EDCD0079C67F /* NSLayoutConstraint+Helpers.swift */,
@@ -153,6 +152,7 @@
 			children = (
 				3FF21E2F1C2202CB0079C67F /* CardView.swift */,
 				3F8397D81C24F23C0002002E /* CardView.xib */,
+				3FF21E2B1C21F90C0079C67F /* CardTableView.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
