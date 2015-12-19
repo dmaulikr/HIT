@@ -16,7 +16,7 @@
                 <outlet property="tableVisibilityStateView" destination="EeC-8S-KjH" id="q9I-8I-I5B"/>
                 <outlet property="tableVisibilityStateViewCenterXConstraint" destination="RHW-Tv-PQ0" id="tls-Wv-JCO"/>
                 <outlet property="tableVisibilityStateViewTopConstraint" destination="xau-Tt-stK" id="RN8-0i-MmV"/>
-                <outlet property="xibView" destination="iN0-l3-epB" id="Ytq-TB-73I"/>
+                <outlet property="xibView" destination="iN0-l3-epB" id="i9p-nz-ATn"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

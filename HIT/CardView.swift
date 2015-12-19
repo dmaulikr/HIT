@@ -8,7 +8,7 @@
 
 import UIKit
 
-@IBDesignable class CardView: UIView {
+@IBDesignable class CardView: XibDesignedView {
     
     
     
@@ -31,9 +31,6 @@ import UIKit
     //
     //
     // MARK: - Outlets
-    
-    // facilitates embedding this xib-designed view inside another xib or storyboard
-    @IBOutlet weak var xibView: UIView!
 
     @IBOutlet weak var tableVisibilityStateView: UIView!
     @IBOutlet weak var revealedVisibilityStateView: UIView!
@@ -69,28 +66,13 @@ import UIKit
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        xibSetup()
         setupAutolayoutStates()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        xibSetup()
         setupAutolayoutStates()
-    }
-    
-    func xibSetup() {
-        NSBundle(forClass: self.dynamicType).loadNibNamed("CardView", owner: self, options: nil)
-//        NSBundle.mainBundle().loadNibNamed("CardView", owner: self, options: nil)
-        self.addSubview(self.xibView)
-        
-        // pin xibView to self
-        self.xibView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.pinItem(self, toItem: self.xibView, withAttribute: .Top).active = true
-        NSLayoutConstraint.pinItem(self, toItem: self.xibView, withAttribute: .Leading).active = true
-        NSLayoutConstraint.pinItem(self, toItem: self.xibView, withAttribute: .Trailing).active = true
-        NSLayoutConstraint.pinItem(self, toItem: self.xibView, withAttribute: .Bottom).active = true
     }
     
     func setupAutolayoutStates() {
@@ -103,10 +85,6 @@ import UIKit
         switchToTableVisibilityState()
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    
     func switchToRevealedVisibilityState() {
         currentPositionConstraintSet = cardTitleView.mirrorConstraints(
             revealedVisibilityStatePositionConstraintSet!,
@@ -114,19 +92,11 @@ import UIKit
             byReplacingConstraints: currentPositionConstraintSet!)
     }
     
-    func animateToRevealedVisibilityState() {
-        
-    }
-    
     func switchToTableVisibilityState() {
         currentPositionConstraintSet = cardTitleView.mirrorConstraints(
             tableVisibilityStatePositionConstraintSet!,
             ofView: tableVisibilityStateView,
             byReplacingConstraints: currentPositionConstraintSet!)
-    }
-    
-    func animateToTableVisibilityState() {
-        
     }
 
 }
