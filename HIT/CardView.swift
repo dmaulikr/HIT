@@ -73,6 +73,11 @@ import UIKit
         super.init(coder: aDecoder)
         
         setupAutolayoutStates()
+        
+        xibView.layer.shadowColor = UIColor.blackColor().CGColor
+        xibView.layer.shadowOffset = CGSizeZero;
+        xibView.layer.shadowRadius = 5.0;
+        xibView.layer.shadowOpacity = 0.5;
     }
     
     func setupAutolayoutStates() {

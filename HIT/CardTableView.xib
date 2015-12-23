@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15A278b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9531"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardTableView" customModule="HIT" customModuleProvider="target">
+            <connections>
+                <outlet property="pulledCardStateView" destination="fww-kx-oML" id="AB4-4q-Zao"/>
+                <outlet property="pulledCardStateViewCenterXConstraint" destination="bIQ-ge-hZp" id="YNE-JD-64t"/>
+                <outlet property="pulledCardStateViewCenterYConstraint" destination="Xej-3h-FHE" id="i0n-4h-E07"/>
+                <outlet property="pulledCardStateViewHeightConstraint" destination="yYa-hl-3bC" id="BzC-rV-SnT"/>
+                <outlet property="tableCollapsedStateView" destination="lCG-tm-YGt" id="z3D-Mn-xHh"/>
+                <outlet property="tableCollapsedStateViewHeightConstraint" destination="sKX-NF-0KM" id="vX3-mQ-cT4"/>
+                <outlet property="tableExtensionStateView" destination="Ezj-vb-hrh" id="7uI-6f-sj7"/>
+                <outlet property="tableExtensionStateViewTopConstraint" destination="Qkc-Eu-WEl" id="3SM-pY-MRf"/>
+                <outlet property="xibView" destination="iN0-l3-epB" id="gzs-Gd-iEv"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ezj-vb-hrh" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                            <color key="value" red="0.73222884935088373" green="1" blue="0.49635304472452513" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fww-kx-oML" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="59" width="320" height="450"/>
+                    <color key="backgroundColor" red="0.0" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="450" id="yYa-hl-3bC"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                            <color key="value" red="0.51113691072372935" green="0.62921514580263427" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lCG-tm-YGt" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="470" width="320" height="98"/>
+                    <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="98" id="sKX-NF-0KM"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                            <color key="value" red="1" green="0.67219261422177512" blue="0.16994276566560851" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="lCG-tm-YGt" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="1d0-wt-72a"/>
+                <constraint firstAttribute="trailing" secondItem="lCG-tm-YGt" secondAttribute="trailing" id="4wa-Lu-ueq"/>
+                <constraint firstItem="Ezj-vb-hrh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="PAp-iL-Aah"/>
+                <constraint firstItem="Ezj-vb-hrh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Qkc-Eu-WEl"/>
+                <constraint firstAttribute="trailing" secondItem="Ezj-vb-hrh" secondAttribute="trailing" id="ULW-pj-0Xg"/>
+                <constraint firstItem="fww-kx-oML" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Xej-3h-FHE"/>
+                <constraint firstAttribute="bottom" secondItem="lCG-tm-YGt" secondAttribute="bottom" id="YGb-z6-aPN"/>
+                <constraint firstItem="fww-kx-oML" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="bIQ-ge-hZp"/>
+                <constraint firstItem="fww-kx-oML" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="gdV-Ai-7d7"/>
+                <constraint firstAttribute="bottom" secondItem="Ezj-vb-hrh" secondAttribute="bottom" id="nCx-9e-9Zd"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <point key="canvasLocation" x="292.5" y="417.5"/>
+        </view>
+    </objects>
+</document>

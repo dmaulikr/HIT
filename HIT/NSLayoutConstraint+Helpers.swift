@@ -10,7 +10,10 @@ import Foundation
 import UIKit
 
 extension NSLayoutConstraint {
-    class func pinItem(firstItem: AnyObject, toItem secondItem: AnyObject, withAttribute attribute: NSLayoutAttribute)
+    class func pinItem(
+        firstItem: AnyObject,
+        toItem secondItem: AnyObject,
+        withAttribute attribute: NSLayoutAttribute)
         
         -> NSLayoutConstraint
     {
@@ -22,5 +25,26 @@ extension NSLayoutConstraint {
             attribute: attribute,
             multiplier: 1.0,
             constant: 0)
+    }
+    
+    class func updateConstraint(
+        oldConstraint: NSLayoutConstraint,
+        withNewConstant newConstant: CGFloat)
+        
+        -> NSLayoutConstraint
+    {
+        oldConstraint.active = false
+        
+        let newConstraint = NSLayoutConstraint(
+            item: oldConstraint.firstItem,
+            attribute: oldConstraint.firstAttribute,
+            relatedBy: oldConstraint.relation,
+            toItem: oldConstraint.secondItem,
+            attribute: oldConstraint.secondAttribute,
+            multiplier: oldConstraint.multiplier,
+            constant: newConstant)
+        newConstraint.active = true
+        
+        return newConstraint
     }
 }

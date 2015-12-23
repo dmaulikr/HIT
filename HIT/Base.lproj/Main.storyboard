@@ -194,21 +194,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J52-9p-QPM">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J52-9p-QPM" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="20" width="600" height="600"/>
-                                <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="0.068453663793103442" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
                                 <accessibility key="accessibilityConfiguration" identifier="End State View"/>
                                 <gestureRecognizers/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                        <color key="value" red="0.08103672581000021" green="1" blue="0.83016885500700999" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L5X-gg-fEP">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L5X-gg-fEP" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="525" width="600" height="600"/>
-                                <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="0.05274784482758621" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="0.0" colorSpace="calibratedRGB"/>
                                 <accessibility key="accessibilityConfiguration" identifier="Start State View"/>
                                 <gestureRecognizers/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WcD-xx-gcs" customClass="CardView" customModule="HIT" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="200" width="600" height="200"/>
-                                <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.0" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
                                 <accessibility key="accessibilityConfiguration" identifier="The View"/>
                                 <gestureRecognizers/>
                                 <connections>
@@ -259,6 +264,36 @@
                 </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1276" y="2112"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="swf-bV-Qkt">
+            <objects>
+                <viewController id="2Sb-9C-NkZ" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qGu-u0-aL4"/>
+                        <viewControllerLayoutGuide type="bottom" id="C1d-nR-jyV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xxX-cq-J2B">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RUh-Ws-QVi" customClass="CardTableView" customModule="HIT" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="RUh-Ws-QVi" secondAttribute="trailing" constant="-20" id="TKJ-u4-HK3"/>
+                            <constraint firstItem="RUh-Ws-QVi" firstAttribute="top" secondItem="xxX-cq-J2B" secondAttribute="topMargin" id="iJz-y0-dC6"/>
+                            <constraint firstItem="RUh-Ws-QVi" firstAttribute="leading" secondItem="xxX-cq-J2B" secondAttribute="leadingMargin" constant="-20" id="suv-wv-K7X"/>
+                            <constraint firstItem="C1d-nR-jyV" firstAttribute="top" secondItem="RUh-Ws-QVi" secondAttribute="bottom" id="tBs-yS-kHR"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fix-jk-fJ2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1225" y="2902"/>
         </scene>
     </scenes>
 </document>
