@@ -26,7 +26,9 @@ class XibDesignedView: UIView {
     }
     
     func xibSetup() {
-        NSBundle(forClass: self.dynamicType).loadNibNamed("CardView", owner: self, options: nil)
+        let nibName = NSStringFromClass(self.dynamicType)
+            .componentsSeparatedByString(".").last!
+        NSBundle(forClass: self.dynamicType).loadNibNamed(nibName, owner: self, options: nil)
         self.addSubview(self.xibView)
         
         // pin xibView to self
