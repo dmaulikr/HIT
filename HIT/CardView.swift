@@ -17,6 +17,8 @@ import UIKit
     //
     //
     // MARK: - Properties
+    
+    var annotation: CardAnnotation?
 
     var currentStateView: UIView?
     var currentPositionConstraintSet: [NSLayoutConstraint]?
@@ -43,7 +45,6 @@ import UIKit
     @IBOutlet var revealedVisibilityStateViewCenterXConstraint: NSLayoutConstraint!
     @IBOutlet var revealedVisibilityStateViewCenterYConstraint: NSLayoutConstraint!
     
-    // rename to "initial storyboard constraint"
     @IBOutlet var cardTitleViewInitialCenterXConstraint: NSLayoutConstraint!
     @IBOutlet var cardTitleViewInitialTopConstraint: NSLayoutConstraint!
   
@@ -55,14 +56,6 @@ import UIKit
     //
     // MARK: - Methods
     
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-        // Drawing code
-    }
-    */
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -73,11 +66,6 @@ import UIKit
         super.init(coder: aDecoder)
         
         setupAutolayoutStates()
-        
-        xibView.layer.shadowColor = UIColor.blackColor().CGColor
-        xibView.layer.shadowOffset = CGSizeZero;
-        xibView.layer.shadowRadius = 5.0;
-        xibView.layer.shadowOpacity = 0.5;
     }
     
     func setupAutolayoutStates() {
@@ -102,6 +90,10 @@ import UIKit
             tableVisibilityStatePositionConstraintSet!,
             ofView: tableVisibilityStateView,
             byReplacingConstraints: currentPositionConstraintSet!)
+    }
+    
+    func preferredGapVisibleWhenInTable() -> CGFloat {
+        return tableVisibilityStateView.frame.height
     }
 
 }

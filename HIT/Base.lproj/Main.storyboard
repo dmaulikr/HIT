@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A278b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="IEW-am-j3m">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A278b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="2Sb-9C-NkZ">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -265,10 +265,10 @@
             </objects>
             <point key="canvasLocation" x="1276" y="2112"/>
         </scene>
-        <!--View Controller-->
+        <!--Card Table View Controller-->
         <scene sceneID="swf-bV-Qkt">
             <objects>
-                <viewController id="2Sb-9C-NkZ" sceneMemberID="viewController">
+                <viewController id="2Sb-9C-NkZ" customClass="CardTableViewController" customModule="HIT" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qGu-u0-aL4"/>
                         <viewControllerLayoutGuide type="bottom" id="C1d-nR-jyV"/>
@@ -278,22 +278,25 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RUh-Ws-QVi" customClass="CardTableView" customModule="HIT" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="RUh-Ws-QVi" secondAttribute="trailing" constant="-20" id="TKJ-u4-HK3"/>
-                            <constraint firstItem="RUh-Ws-QVi" firstAttribute="top" secondItem="xxX-cq-J2B" secondAttribute="topMargin" id="iJz-y0-dC6"/>
-                            <constraint firstItem="RUh-Ws-QVi" firstAttribute="leading" secondItem="xxX-cq-J2B" secondAttribute="leadingMargin" constant="-20" id="suv-wv-K7X"/>
+                            <constraint firstItem="RUh-Ws-QVi" firstAttribute="centerX" secondItem="xxX-cq-J2B" secondAttribute="centerX" id="7Cj-0X-3UY"/>
+                            <constraint firstItem="RUh-Ws-QVi" firstAttribute="top" secondItem="qGu-u0-aL4" secondAttribute="bottom" id="Crc-Qo-1hm"/>
+                            <constraint firstItem="RUh-Ws-QVi" firstAttribute="width" secondItem="xxX-cq-J2B" secondAttribute="width" id="SFS-1f-BBg"/>
                             <constraint firstItem="C1d-nR-jyV" firstAttribute="top" secondItem="RUh-Ws-QVi" secondAttribute="bottom" id="tBs-yS-kHR"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="cardTableView" destination="RUh-Ws-QVi" id="vie-aj-zF5"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fix-jk-fJ2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1225" y="2902"/>
+            <point key="canvasLocation" x="1244" y="2910"/>
         </scene>
     </scenes>
 </document>

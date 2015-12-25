@@ -24,17 +24,17 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EeC-8S-KjH">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EeC-8S-KjH" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="67"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Table visible title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Qq-Na-eKn">
                             <rect key="frame" x="8" y="23" width="584" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" red="0.40000000600000002" green="1" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.40000000600000002" green="1" blue="0.80000001190000003" alpha="0.0" colorSpace="calibratedRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="Embedded In Table Visible State" label="Embedded In Table Visible State">
                         <bool key="isElement" value="NO"/>
                     </accessibility>
@@ -44,19 +44,24 @@
                         <constraint firstAttribute="trailing" secondItem="0Qq-Na-eKn" secondAttribute="trailing" constant="8" id="o1q-ag-s5U"/>
                         <constraint firstItem="0Qq-Na-eKn" firstAttribute="leading" secondItem="EeC-8S-KjH" secondAttribute="leading" constant="8" id="wtV-df-QGp"/>
                     </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                            <color key="value" red="1" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                 </view>
-                <view hidden="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kwZ-09-W8W">
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kwZ-09-W8W" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="230" width="600" height="106"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d9M-nm-7dz">
                             <rect key="frame" x="8" y="23" width="584" height="60"/>
                             <string key="text">Full visibility title: Lorem ipsum Lorem ipsumLorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum  </string>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" red="0.40000000600000002" green="1" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.40000000600000002" green="1" blue="0.80000001190000003" alpha="0.0" colorSpace="calibratedRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="Full Display Visible State" label="Full Display Visible State"/>
                     <constraints>
                         <constraint firstItem="d9M-nm-7dz" firstAttribute="top" secondItem="kwZ-09-W8W" secondAttribute="top" constant="23" id="Zht-gT-K9j"/>
@@ -71,7 +76,7 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Table visible title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IQg-Eo-VIH">
                             <rect key="frame" x="8" y="23" width="584" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
@@ -87,7 +92,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.78165833477473923" green="0.91601186069868856" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="Ob9-pW-fwV" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="100" id="2y0-3l-6ws"/>
                 <constraint firstItem="Ob9-pW-fwV" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="3Wl-yA-iRZ"/>

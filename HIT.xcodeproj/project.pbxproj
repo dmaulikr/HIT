@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3F3137721C1CDA1D008D021D /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3137711C1CDA1D008D021D /* PlaceholderView.swift */; };
+		3F16BB7D1C2BE3A1000D4B7D /* CardAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16BB7C1C2BE3A1000D4B7D /* CardAnnotation.swift */; };
+		3F16BB7F1C2BE459000D4B7D /* CardTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16BB7E1C2BE459000D4B7D /* CardTableViewController.swift */; };
+		3F16BB811C2CBB46000D4B7D /* Mantra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16BB801C2CBB46000D4B7D /* Mantra.swift */; };
 		3F3137741C1E472E008D021D /* UIView+Doppelganger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3137731C1E472E008D021D /* UIView+Doppelganger.swift */; };
 		3F62931A1C148C78005BD240 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293191C148C78005BD240 /* AppDelegate.swift */; };
 		3F62931F1C148C78005BD240 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F62931D1C148C78005BD240 /* Main.storyboard */; };
@@ -45,7 +47,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3F3137711C1CDA1D008D021D /* PlaceholderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
+		3F16BB7C1C2BE3A1000D4B7D /* CardAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardAnnotation.swift; sourceTree = "<group>"; };
+		3F16BB7E1C2BE459000D4B7D /* CardTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTableViewController.swift; sourceTree = "<group>"; };
+		3F16BB801C2CBB46000D4B7D /* Mantra.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mantra.swift; sourceTree = "<group>"; };
 		3F3137731C1E472E008D021D /* UIView+Doppelganger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Doppelganger.swift"; sourceTree = "<group>"; };
 		3F6293161C148C78005BD240 /* HIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HIT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F6293191C148C78005BD240 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -123,10 +127,11 @@
 				3F6293471C149830005BD240 /* MainViewController.swift */,
 				3F6293491C15DDCC005BD240 /* MantraCardView.swift */,
 				3F62931D1C148C78005BD240 /* Main.storyboard */,
+				3F16BB801C2CBB46000D4B7D /* Mantra.swift */,
 				3FF21E311C2203500079C67F /* Views */,
 				3FDAE60E1C293E9E000634CF /* Extensions and Helpers */,
-				3F3137711C1CDA1D008D021D /* PlaceholderView.swift */,
 				3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */,
+				3F16BB7E1C2BE459000D4B7D /* CardTableViewController.swift */,
 				3F6293201C148C78005BD240 /* Assets.xcassets */,
 				3F6293221C148C78005BD240 /* LaunchScreen.storyboard */,
 				3F6293251C148C78005BD240 /* Info.plist */,
@@ -157,6 +162,7 @@
 			children = (
 				3F3137731C1E472E008D021D /* UIView+Doppelganger.swift */,
 				3FF21E341C24EDCD0079C67F /* NSLayoutConstraint+Helpers.swift */,
+				3F16BB7C1C2BE3A1000D4B7D /* CardAnnotation.swift */,
 			);
 			name = "Extensions and Helpers";
 			sourceTree = "<group>";
@@ -314,12 +320,14 @@
 				3FF21E301C2202CB0079C67F /* CardView.swift in Sources */,
 				3F62934A1C15DDCC005BD240 /* MantraCardView.swift in Sources */,
 				3FF21E351C24EDCD0079C67F /* NSLayoutConstraint+Helpers.swift in Sources */,
+				3F16BB7F1C2BE459000D4B7D /* CardTableViewController.swift in Sources */,
+				3F16BB7D1C2BE3A1000D4B7D /* CardAnnotation.swift in Sources */,
+				3F16BB811C2CBB46000D4B7D /* Mantra.swift in Sources */,
 				3FDAE60D1C293BD0000634CF /* StatePlaceholderView.swift in Sources */,
 				3F3137741C1E472E008D021D /* UIView+Doppelganger.swift in Sources */,
 				3F6293481C149830005BD240 /* MainViewController.swift in Sources */,
 				3F62931A1C148C78005BD240 /* AppDelegate.swift in Sources */,
 				3F8397DF1C2522B70002002E /* CardTableView.swift in Sources */,
-				3F3137721C1CDA1D008D021D /* PlaceholderView.swift in Sources */,
 				3F62934C1C1BABA2005BD240 /* AutoLayoutTestViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
