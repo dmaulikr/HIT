@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A278b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="2Sb-9C-NkZ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A278b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="LTT-0b-U1K">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -280,6 +280,11 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RUh-Ws-QVi" customClass="CardTableView" customModule="HIT" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="tableExtensionDistanceFromTop">
+                                        <real key="value" value="40"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -297,6 +302,58 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fix-jk-fJ2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1244" y="2910"/>
+        </scene>
+        <!--Attachment Test View Controller-->
+        <scene sceneID="wgI-q4-GUD">
+            <objects>
+                <viewController id="LTT-0b-U1K" customClass="AttachmentTestViewController" customModule="HIT" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6U4-yG-EzU"/>
+                        <viewControllerLayoutGuide type="bottom" id="fYb-3z-jJm"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="WoI-l8-l6b">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="joy-uf-9y2">
+                                <rect key="frame" x="40" y="202" width="240" height="128"/>
+                                <color key="backgroundColor" red="1" green="0.22834649230000001" blue="0.16321661030000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="wq9-Ft-xLf" appends="YES" id="Sr0-GV-OxN"/>
+                                </connections>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q7C-be-xPJ">
+                                <rect key="frame" x="40" y="357" width="240" height="128"/>
+                                <color key="backgroundColor" red="1" green="0.22834649230000001" blue="0.16321661030000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <gestureRecognizers/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="y6f-De-0dx" appends="YES" id="Snm-FX-JFR"/>
+                        </connections>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="attachedView" destination="joy-uf-9y2" id="EjV-iJ-4wL"/>
+                        <outlet property="attachedView2" destination="Q7C-be-xPJ" id="6kV-3Y-Nya"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xLC-Cf-uMp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="wq9-Ft-xLf">
+                    <connections>
+                        <action selector="handlePanGestureRecognizer:" destination="LTT-0b-U1K" id="cMB-Ta-VgO"/>
+                    </connections>
+                </panGestureRecognizer>
+                <tapGestureRecognizer id="y6f-De-0dx">
+                    <connections>
+                        <action selector="handleTap:" destination="LTT-0b-U1K" id="RGB-M6-VKd"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="1239" y="3668"/>
         </scene>
     </scenes>
 </document>

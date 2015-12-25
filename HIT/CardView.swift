@@ -18,7 +18,11 @@ import UIKit
     //
     // MARK: - Properties
     
-    var annotation: CardAnnotation?
+    var annotation: CardAnnotation? {
+        didSet {
+            
+        }
+    }
 
     var currentStateView: UIView?
     var currentPositionConstraintSet: [NSLayoutConstraint]?
@@ -60,12 +64,21 @@ import UIKit
         super.init(frame: frame)
         
         setupAutolayoutStates()
+        setupShadow()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         setupAutolayoutStates()
+        setupShadow()
+    }
+    
+    func setupShadow() {
+        self.layer.shadowColor = UIColor.blackColor().CGColor
+        self.layer.shadowOffset = CGSizeZero
+        self.layer.shadowRadius = 5.0
+        self.layer.shadowOpacity = 0.5
     }
     
     func setupAutolayoutStates() {
