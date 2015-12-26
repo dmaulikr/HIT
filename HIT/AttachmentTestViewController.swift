@@ -61,7 +61,7 @@ class AttachmentTestViewController: UIViewController, UIDynamicAnimatorDelegate 
 //                attachmentAnchor: anchor,
 //                axisOfTranslation: CGVector(dx: 1, dy: 0))
             attachmentBehavior?.damping = 1
-            attachmentBehavior?.frequency = 1
+            attachmentBehavior?.frequency = 0.5
             attachmentBehavior?.length = 0
             animator?.addBehavior(attachmentBehavior!)
         }
@@ -123,22 +123,22 @@ class AttachmentTestViewController: UIViewController, UIDynamicAnimatorDelegate 
         animator?.debugEnabled = true
         
         let springBehavior = UIAttachmentBehavior(
-            item: attachedView,
-            attachedToAnchor: CGPoint(x: view.bounds.width/2, y: view.bounds.height/2))
+            item: attachedView2,
+            attachedToAnchor: CGPoint(x: view.bounds.width/2, y: view.bounds.height - attachedView2.bounds.size.height))
         animator?.addBehavior(springBehavior)
         springBehavior.length = 0
         springBehavior.damping = 1
-        springBehavior.frequency = 1.0
+        springBehavior.frequency = 2.0
         
-        let attachedViewOriginX = attachedView.frame.origin.x
-        springBehavior.action = {
-            if self.attachedView.frame.origin.x != attachedViewOriginX {
-                var newFrame = self.attachedView.frame
-                newFrame.origin.x = attachedViewOriginX
-                self.attachedView.frame = newFrame
-                self.animator?.updateItemUsingCurrentState(self.attachedView)
-            }
-        }
+//        let attachedViewOriginX = attachedView.frame.origin.x
+//        springBehavior.action = {
+//            if self.attachedView.frame.origin.x != attachedViewOriginX {
+//                var newFrame = self.attachedView.frame
+//                newFrame.origin.x = attachedViewOriginX
+//                self.attachedView.frame = newFrame
+//                self.animator?.updateItemUsingCurrentState(self.attachedView)
+//            }
+//        }
         
         let tetherBehavior = UIAttachmentBehavior(
             item: attachedView,
@@ -146,17 +146,17 @@ class AttachmentTestViewController: UIViewController, UIDynamicAnimatorDelegate 
         animator?.addBehavior(tetherBehavior)
         tetherBehavior.length = 150
         tetherBehavior.damping = 1.0
-        tetherBehavior.frequency = 1.0
+        tetherBehavior.frequency = 2.0
         
-        let attachedView2OriginX = attachedView2.frame.origin.x
-        tetherBehavior.action = {
-            if self.attachedView2.frame.origin.x != attachedView2OriginX {
-                var newFrame = self.attachedView2.frame
-                newFrame.origin.x = attachedView2OriginX
-                self.attachedView2.frame = newFrame
-                self.animator?.updateItemUsingCurrentState(self.attachedView2)
-            }
-        }
+//        let attachedView2OriginX = attachedView2.frame.origin.x
+//        tetherBehavior.action = {
+//            if self.attachedView2.frame.origin.x != attachedView2OriginX {
+//                var newFrame = self.attachedView2.frame
+//                newFrame.origin.x = attachedView2OriginX
+//                self.attachedView2.frame = newFrame
+//                self.animator?.updateItemUsingCurrentState(self.attachedView2)
+//            }
+//        }
     }
 
 }
