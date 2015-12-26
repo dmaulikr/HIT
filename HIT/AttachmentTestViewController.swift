@@ -29,9 +29,6 @@ class AttachmentTestViewController: UIViewController, UIDynamicAnimatorDelegate 
     //
     // MARK: - Outlets
     
-    @IBOutlet weak var attachedView: UIView!
-    @IBOutlet weak var attachedView2: UIView!
-    
     
     
     //
@@ -40,18 +37,13 @@ class AttachmentTestViewController: UIViewController, UIDynamicAnimatorDelegate 
     //
     // MARK: - Actions
     
-    @IBAction func handleTap(sender: UITapGestureRecognizer) {
-        let location = sender.locationInView(view)
-        attachedView.center = CGPoint(x: attachedView.center.x, y: location.y)
-        animator?.updateItemUsingCurrentState(attachedView)
-    }
-    
     @IBAction func handlePanGestureRecognizer(sender: UIPanGestureRecognizer) {
         // run animator
         // add attachment behavior
         // drop constraints
         
         let translation = sender.translationInView(self.view)
+        let attachedView = cells[0]
         if sender.state == .Began {
             let anchor = CGPoint(x: attachedView.center.x, y: attachedView.center.y + translation.y)
             attachmentBehavior = UIAttachmentBehavior(item: attachedView,
@@ -60,8 +52,8 @@ class AttachmentTestViewController: UIViewController, UIDynamicAnimatorDelegate 
 //                attachedView,
 //                attachmentAnchor: anchor,
 //                axisOfTranslation: CGVector(dx: 1, dy: 0))
-            attachmentBehavior?.damping = 1
-            attachmentBehavior?.frequency = 0.5
+            attachmentBehavior?.damping = 0
+            attachmentBehavior?.frequency = 0
             attachmentBehavior?.length = 0
             animator?.addBehavior(attachmentBehavior!)
         }
@@ -117,46 +109,70 @@ class AttachmentTestViewController: UIViewController, UIDynamicAnimatorDelegate 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        let springBehavior = UIAttachmentBehavior(
+//            item: attachedView2,
+//            attachedToAnchor: CGPoint(x: view.bounds.width/2, y: view.bounds.height - attachedView2.bounds.size.height))
+//        animator?.addBehavior(springBehavior)
+//        springBehavior.length = 0
+//        springBehavior.damping = 1
+//        springBehavior.frequency = 2.0
+//        
+//        let tetherBehavior = UIAttachmentBehavior(
+//            item: attachedView,
+//            attachedToItem: attachedView2)
+//        animator?.addBehavior(tetherBehavior)
+//        tetherBehavior.length = 150
+//        tetherBehavior.damping = 1.0
+//        tetherBehavior.frequency = 2.0
+    }
+    
+    var cells = [StatePlaceholderView]()
+    let cellHeight: CGFloat = 50
+    
+    func loadCells()
+    {
+        for i in 0..<7
+        {
+            let cellView = StatePlaceholderView()
+            cellView.frame = CGRect(
+                x: 0,
+                y: view.bounds.height - CGFloat(i+1) * (cellHeight),
+                width: view.bounds.width,
+                height: cellHeight)
+            cellView.backgroundColor = UIColor.randomColor()
+            cellView.placeholderColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
+            self.view.addSubview(cellView)
+            cells.append(cellView)
+        }
+        
+        for i in 1..<7 {
+            let cellBelow = cells[i-1]
+            let cellAbove = cells[i]
+            
+            let attachment = UIAttachmentBehavior(
+                item: cellBelow,
+                offsetFromCenter: UIOffset(horizontal: 0, vertical: -1*cellBelow.bounds.height/2),
+                attachedToItem: cellAbove,
+                offsetFromCenter: UIOffset(horizontal: 0, vertical: cellAbove.bounds.height/2))
+            attachment.length = 0
+            attachment.damping = 0
+            attachment.frequency = 0
+            animator?.addBehavior(attachment)
+        }
+        
+        let collision = UICollisionBehavior(items: cells)
+        collision.translatesReferenceBoundsIntoBoundary = true
+        animator?.addBehavior(collision)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
         animator = UIDynamicAnimator(referenceView: self.view)
         animator?.delegate = self
-        
         animator?.debugEnabled = true
         
-        let springBehavior = UIAttachmentBehavior(
-            item: attachedView2,
-            attachedToAnchor: CGPoint(x: view.bounds.width/2, y: view.bounds.height - attachedView2.bounds.size.height))
-        animator?.addBehavior(springBehavior)
-        springBehavior.length = 0
-        springBehavior.damping = 1
-        springBehavior.frequency = 2.0
-        
-//        let attachedViewOriginX = attachedView.frame.origin.x
-//        springBehavior.action = {
-//            if self.attachedView.frame.origin.x != attachedViewOriginX {
-//                var newFrame = self.attachedView.frame
-//                newFrame.origin.x = attachedViewOriginX
-//                self.attachedView.frame = newFrame
-//                self.animator?.updateItemUsingCurrentState(self.attachedView)
-//            }
-//        }
-        
-        let tetherBehavior = UIAttachmentBehavior(
-            item: attachedView,
-            attachedToItem: attachedView2)
-        animator?.addBehavior(tetherBehavior)
-        tetherBehavior.length = 150
-        tetherBehavior.damping = 1.0
-        tetherBehavior.frequency = 2.0
-        
-//        let attachedView2OriginX = attachedView2.frame.origin.x
-//        tetherBehavior.action = {
-//            if self.attachedView2.frame.origin.x != attachedView2OriginX {
-//                var newFrame = self.attachedView2.frame
-//                newFrame.origin.x = attachedView2OriginX
-//                self.attachedView2.frame = newFrame
-//                self.animator?.updateItemUsingCurrentState(self.attachedView2)
-//            }
-//        }
+        loadCells()
     }
 
 }

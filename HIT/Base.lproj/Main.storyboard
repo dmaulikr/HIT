@@ -314,44 +314,20 @@
                     <view key="view" contentMode="scaleToFill" id="WoI-l8-l6b">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="joy-uf-9y2">
-                                <rect key="frame" x="40" y="202" width="240" height="128"/>
-                                <color key="backgroundColor" red="1" green="0.22834649230000001" blue="0.16321661030000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="wq9-Ft-xLf" appends="YES" id="Sr0-GV-OxN"/>
-                                </connections>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q7C-be-xPJ">
-                                <rect key="frame" x="40" y="357" width="240" height="128"/>
-                                <color key="backgroundColor" red="1" green="0.22834649230000001" blue="0.16321661030000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <gestureRecognizers/>
-                            </view>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <connections>
-                            <outletCollection property="gestureRecognizers" destination="y6f-De-0dx" appends="YES" id="Snm-FX-JFR"/>
+                            <outletCollection property="gestureRecognizers" destination="Opo-l1-Hw2" appends="YES" id="oU6-3q-D6Y"/>
                         </connections>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-                    <connections>
-                        <outlet property="attachedView" destination="joy-uf-9y2" id="EjV-iJ-4wL"/>
-                        <outlet property="attachedView2" destination="Q7C-be-xPJ" id="6kV-3Y-Nya"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xLC-Cf-uMp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="wq9-Ft-xLf">
+                <panGestureRecognizer minimumNumberOfTouches="1" id="Opo-l1-Hw2">
                     <connections>
-                        <action selector="handlePanGestureRecognizer:" destination="LTT-0b-U1K" id="cMB-Ta-VgO"/>
+                        <action selector="handlePanGestureRecognizer:" destination="LTT-0b-U1K" id="aAx-j5-iNE"/>
                     </connections>
                 </panGestureRecognizer>
-                <tapGestureRecognizer id="y6f-De-0dx">
-                    <connections>
-                        <action selector="handleTap:" destination="LTT-0b-U1K" id="RGB-M6-VKd"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1239" y="3668"/>
         </scene>
