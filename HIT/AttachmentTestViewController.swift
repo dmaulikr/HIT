@@ -130,6 +130,16 @@ class AttachmentTestViewController: UIViewController, UIDynamicAnimatorDelegate 
         springBehavior.damping = 1
         springBehavior.frequency = 1.0
         
+        let attachedViewOriginX = attachedView.frame.origin.x
+        springBehavior.action = {
+            if self.attachedView.frame.origin.x != attachedViewOriginX {
+                var newFrame = self.attachedView.frame
+                newFrame.origin.x = attachedViewOriginX
+                self.attachedView.frame = newFrame
+                self.animator?.updateItemUsingCurrentState(self.attachedView)
+            }
+        }
+        
         let tetherBehavior = UIAttachmentBehavior(
             item: attachedView,
             attachedToItem: attachedView2)
@@ -137,6 +147,16 @@ class AttachmentTestViewController: UIViewController, UIDynamicAnimatorDelegate 
         tetherBehavior.length = 150
         tetherBehavior.damping = 1.0
         tetherBehavior.frequency = 1.0
+        
+        let attachedView2OriginX = attachedView2.frame.origin.x
+        tetherBehavior.action = {
+            if self.attachedView2.frame.origin.x != attachedView2OriginX {
+                var newFrame = self.attachedView2.frame
+                newFrame.origin.x = attachedView2OriginX
+                self.attachedView2.frame = newFrame
+                self.animator?.updateItemUsingCurrentState(self.attachedView2)
+            }
+        }
     }
 
 }
