@@ -135,9 +135,9 @@ class AttachmentTestViewController: UIViewController, UIDynamicAnimatorDelegate 
         {
             let cellView = StatePlaceholderView()
             cellView.frame = CGRect(
-                x: 0,
+                x: 50,
                 y: view.bounds.height - CGFloat(i+1) * (cellHeight),
-                width: view.bounds.width,
+                width: view.bounds.width-100,
                 height: cellHeight)
             cellView.backgroundColor = UIColor.randomColor()
             cellView.placeholderColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
@@ -149,15 +149,33 @@ class AttachmentTestViewController: UIViewController, UIDynamicAnimatorDelegate 
             let cellBelow = cells[i-1]
             let cellAbove = cells[i]
             
-            let attachment = UIAttachmentBehavior(
+            let attachmentLeft = UIAttachmentBehavior(
                 item: cellBelow,
-                offsetFromCenter: UIOffset(horizontal: 0, vertical: -1*cellBelow.bounds.height/2),
+                offsetFromCenter: UIOffset(
+                    horizontal: -1*cellBelow.bounds.width/2,
+                    vertical: -1*cellBelow.bounds.height/2),
                 attachedToItem: cellAbove,
-                offsetFromCenter: UIOffset(horizontal: 0, vertical: cellAbove.bounds.height/2))
-            attachment.length = 0
-            attachment.damping = 0
-            attachment.frequency = 0
-            animator?.addBehavior(attachment)
+                offsetFromCenter: UIOffset(
+                    horizontal: -1*cellAbove.bounds.width/2,
+                    vertical: cellAbove.bounds.height/2))
+            attachmentLeft.length = 0
+            attachmentLeft.damping = 1
+            attachmentLeft.frequency = 5
+            animator?.addBehavior(attachmentLeft)
+            
+            let attachmentRight = UIAttachmentBehavior(
+                item: cellBelow,
+                offsetFromCenter: UIOffset(
+                    horizontal: cellBelow.bounds.width/2,
+                    vertical: -1*cellBelow.bounds.height/2),
+                attachedToItem: cellAbove,
+                offsetFromCenter: UIOffset(
+                    horizontal: cellAbove.bounds.width/2,
+                    vertical: cellAbove.bounds.height/2))
+            attachmentRight.length = 0
+            attachmentRight.damping = 1
+            attachmentRight.frequency = 5
+            animator?.addBehavior(attachmentRight)
         }
         
         let collision = UICollisionBehavior(items: cells)
