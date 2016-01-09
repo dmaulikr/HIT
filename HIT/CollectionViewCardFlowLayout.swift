@@ -57,7 +57,7 @@ import UIKit
     
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
         let superAttributes = super.layoutAttributesForItemAtIndexPath(indexPath)
-        superAttributes?.zIndex = indexPath.item * 2
+        superAttributes?.zIndex = indexPath.item * 2 + 1
         
         return superAttributes
     }
@@ -86,7 +86,7 @@ import UIKit
                 width: cardSize.width,
                 height: cardHeight)
             cardAttributes.frame = cardFrame
-            cardAttributes.zIndex = indexPath.item * 2 + 1
+            cardAttributes.zIndex = indexPath.item * 2
             
             return cardAttributes
         }

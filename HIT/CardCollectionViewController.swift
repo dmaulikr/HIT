@@ -8,7 +8,8 @@
 
 import UIKit
 
-private let reuseIdentifier = "CardCollectionViewCell"
+private let cellReuseIdentifier = "PlaceholderCollectionViewCell"
+private let cardSupplementaryViewReuseIdentifier = "CardCollectionViewCell"
 
 class CardCollectionViewController: UICollectionViewController {
 
@@ -33,7 +34,7 @@ class CardCollectionViewController: UICollectionViewController {
         collectionView?.registerClass(
             CardCollectionViewCell.self,
             forSupplementaryViewOfKind: CollectionViewCardFlowLayout.SupplementaryViewKind.Card.rawValue,
-            withReuseIdentifier: reuseIdentifier)
+            withReuseIdentifier: cardSupplementaryViewReuseIdentifier)
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,18 +66,17 @@ class CardCollectionViewController: UICollectionViewController {
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
-    
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellReuseIdentifier, forIndexPath: indexPath) as! PlaceholderCollectionViewCell
+        cell.placeholderView.placeholderColor = UIColor.redColor()
         // Configure the cell
     
         return cell
     }
     
     override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-//        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
         let cell = collectionView.dequeueReusableSupplementaryViewOfKind(
             CollectionViewCardFlowLayout.SupplementaryViewKind.Card.rawValue,
-            withReuseIdentifier: reuseIdentifier,
+            withReuseIdentifier: cardSupplementaryViewReuseIdentifier,
             forIndexPath: indexPath)
         
         return cell
@@ -91,12 +91,12 @@ class CardCollectionViewController: UICollectionViewController {
     }
     */
 
-    /*
     // Uncomment this method to specify if the specified item should be selected
     override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+        print(indexPath)
+        
         return true
     }
-    */
 
     /*
     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
