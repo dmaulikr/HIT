@@ -62,14 +62,14 @@ class CardCollectionViewController: UICollectionViewController {
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 5
+        return 50
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellReuseIdentifier, forIndexPath: indexPath) as! PlaceholderCollectionViewCell
         cell.placeholderView.placeholderColor = UIColor.redColor()
         // Configure the cell
-    
+        
         return cell
     }
     
@@ -77,8 +77,8 @@ class CardCollectionViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableSupplementaryViewOfKind(
             CollectionViewCardFlowLayout.SupplementaryViewKind.Card.rawValue,
             withReuseIdentifier: cardSupplementaryViewReuseIdentifier,
-            forIndexPath: indexPath)
-        
+            forIndexPath: indexPath) as! CardCollectionViewCell
+        cell.cardView.cardTitleView.backgroundColor = UIColor.randomColor()
         return cell
     }
 
