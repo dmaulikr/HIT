@@ -24,6 +24,9 @@
 		3F8397DD1C251E720002002E /* XibDesignedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8397DC1C251E720002002E /* XibDesignedView.swift */; };
 		3F8397DF1C2522B70002002E /* CardTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8397DE1C2522B70002002E /* CardTableView.swift */; };
 		3FCA2D111C2E372D00E27F64 /* UIColor+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA2D101C2E372D00E27F64 /* UIColor+Helpers.swift */; };
+		3FCA2D161C322AD400E27F64 /* CardCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA2D151C322AD400E27F64 /* CardCollectionViewController.swift */; };
+		3FCA2D181C322EF500E27F64 /* CardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA2D171C322EF500E27F64 /* CardCollectionViewCell.swift */; };
+		3FCA2D1A1C32441D00E27F64 /* CollectionViewCardFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA2D191C32441D00E27F64 /* CollectionViewCardFlowLayout.swift */; };
 		3FDAE60D1C293BD0000634CF /* StatePlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDAE60C1C293BD0000634CF /* StatePlaceholderView.swift */; };
 		3FF21E2C1C21F90C0079C67F /* CardTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3FF21E2B1C21F90C0079C67F /* CardTableView.xib */; };
 		3FF21E301C2202CB0079C67F /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF21E2F1C2202CB0079C67F /* CardView.swift */; };
@@ -71,6 +74,9 @@
 		3F8397DC1C251E720002002E /* XibDesignedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XibDesignedView.swift; sourceTree = "<group>"; };
 		3F8397DE1C2522B70002002E /* CardTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTableView.swift; sourceTree = "<group>"; };
 		3FCA2D101C2E372D00E27F64 /* UIColor+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Helpers.swift"; sourceTree = "<group>"; };
+		3FCA2D151C322AD400E27F64 /* CardCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardCollectionViewController.swift; sourceTree = "<group>"; };
+		3FCA2D171C322EF500E27F64 /* CardCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardCollectionViewCell.swift; sourceTree = "<group>"; };
+		3FCA2D191C32441D00E27F64 /* CollectionViewCardFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCardFlowLayout.swift; sourceTree = "<group>"; };
 		3FDAE60C1C293BD0000634CF /* StatePlaceholderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatePlaceholderView.swift; sourceTree = "<group>"; };
 		3FE8B9061C2D21D600A80A83 /* HIT-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HIT-Bridging-Header.h"; sourceTree = "<group>"; };
 		3FF21E2B1C21F90C0079C67F /* CardTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardTableView.xib; sourceTree = "<group>"; };
@@ -127,18 +133,14 @@
 			isa = PBXGroup;
 			children = (
 				3F6293191C148C78005BD240 /* AppDelegate.swift */,
-				3FE8B9061C2D21D600A80A83 /* HIT-Bridging-Header.h */,
 				3F6293471C149830005BD240 /* MainViewController.swift */,
-				3F16BB861C2D1F5B000D4B7D /* AttachmentTestViewController.swift */,
 				3F62931D1C148C78005BD240 /* Main.storyboard */,
-				3F16BB7E1C2BE459000D4B7D /* CardTableViewController.swift */,
-				3F16BB801C2CBB46000D4B7D /* Mantra.swift */,
+				3FCA2D151C322AD400E27F64 /* CardCollectionViewController.swift */,
+				3FCA2D121C31A62000E27F64 /* UI Experiments */,
+				3FCA2D131C31A64400E27F64 /* Model */,
 				3FF21E311C2203500079C67F /* Views */,
 				3FDAE60E1C293E9E000634CF /* Extensions and Helpers */,
-				3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */,
-				3F6293201C148C78005BD240 /* Assets.xcassets */,
-				3F6293221C148C78005BD240 /* LaunchScreen.storyboard */,
-				3F6293251C148C78005BD240 /* Info.plist */,
+				3FCA2D141C31A6C100E27F64 /* Etc */,
 			);
 			path = HIT;
 			sourceTree = "<group>";
@@ -161,6 +163,35 @@
 			path = HITUITests;
 			sourceTree = "<group>";
 		};
+		3FCA2D121C31A62000E27F64 /* UI Experiments */ = {
+			isa = PBXGroup;
+			children = (
+				3F16BB861C2D1F5B000D4B7D /* AttachmentTestViewController.swift */,
+				3F16BB7E1C2BE459000D4B7D /* CardTableViewController.swift */,
+				3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */,
+			);
+			name = "UI Experiments";
+			sourceTree = "<group>";
+		};
+		3FCA2D131C31A64400E27F64 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3F16BB801C2CBB46000D4B7D /* Mantra.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		3FCA2D141C31A6C100E27F64 /* Etc */ = {
+			isa = PBXGroup;
+			children = (
+				3FE8B9061C2D21D600A80A83 /* HIT-Bridging-Header.h */,
+				3F6293201C148C78005BD240 /* Assets.xcassets */,
+				3F6293221C148C78005BD240 /* LaunchScreen.storyboard */,
+				3F6293251C148C78005BD240 /* Info.plist */,
+			);
+			name = Etc;
+			sourceTree = "<group>";
+		};
 		3FDAE60E1C293E9E000634CF /* Extensions and Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -175,6 +206,8 @@
 		3FF21E311C2203500079C67F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3FCA2D191C32441D00E27F64 /* CollectionViewCardFlowLayout.swift */,
+				3FCA2D171C322EF500E27F64 /* CardCollectionViewCell.swift */,
 				3FF21E2F1C2202CB0079C67F /* CardView.swift */,
 				3F8397D81C24F23C0002002E /* CardView.xib */,
 				3F8397DE1C2522B70002002E /* CardTableView.swift */,
@@ -324,10 +357,13 @@
 				3F8397DD1C251E720002002E /* XibDesignedView.swift in Sources */,
 				3FF21E301C2202CB0079C67F /* CardView.swift in Sources */,
 				3FF21E351C24EDCD0079C67F /* NSLayoutConstraint+Helpers.swift in Sources */,
+				3FCA2D161C322AD400E27F64 /* CardCollectionViewController.swift in Sources */,
+				3FCA2D1A1C32441D00E27F64 /* CollectionViewCardFlowLayout.swift in Sources */,
 				3F16BB7F1C2BE459000D4B7D /* CardTableViewController.swift in Sources */,
 				3F16BB7D1C2BE3A1000D4B7D /* CardAnnotation.swift in Sources */,
 				3F16BB811C2CBB46000D4B7D /* Mantra.swift in Sources */,
 				3FDAE60D1C293BD0000634CF /* StatePlaceholderView.swift in Sources */,
+				3FCA2D181C322EF500E27F64 /* CardCollectionViewCell.swift in Sources */,
 				3F3137741C1E472E008D021D /* UIView+Doppelganger.swift in Sources */,
 				3F16BB871C2D1F5B000D4B7D /* AttachmentTestViewController.swift in Sources */,
 				3FCA2D111C2E372D00E27F64 /* UIColor+Helpers.swift in Sources */,
