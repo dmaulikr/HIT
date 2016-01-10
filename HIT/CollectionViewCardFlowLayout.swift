@@ -64,6 +64,7 @@ import UIKit
         superAttributes.zIndex = indexPath.item * 2 + 1
         
         if indexPath == cardAtTopOfStack {
+//            superAttributes.frame.origin.y = self.collectionView!.bounds.origin.y
             superAttributes.frame.origin = self.collectionView!.bounds.origin
         }
         
@@ -119,10 +120,15 @@ import UIKit
                 where bounds.size == newBounds.size
                 else
         {
-                return context
+            print("width change")
+            return context
         }
         
         print("\n\n \(newBounds)")
+        
+        defer {
+            print("defer")
+        }
         
         
         var indexPathsToInvalidate = [NSIndexPath]()
