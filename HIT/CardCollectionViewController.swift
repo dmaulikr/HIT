@@ -78,7 +78,10 @@ class CardCollectionViewController: UICollectionViewController {
             CollectionViewCardFlowLayout.SupplementaryViewKind.Card.rawValue,
             withReuseIdentifier: cardSupplementaryViewReuseIdentifier,
             forIndexPath: indexPath) as! CardCollectionViewCell
-        cell.cardView.cardTitleView.backgroundColor = UIColor.randomColor()
+        
+        let cardColor = UIColor.randomColor()
+        cell.cardView.cardTitleView.backgroundColor = cardColor
+        cell.cardView.xibView.backgroundColor = cardColor
         return cell
     }
 

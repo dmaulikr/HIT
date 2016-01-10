@@ -123,8 +123,8 @@ import UIKit
         print("\n\n \(newBounds)")
 //        print(context)
         
-        let pointAtTop = CGRect(origin: newBounds.origin, size: CGSize(width: 1, height: 1))
-        guard   let attributes = super.layoutAttributesForElementsInRect(pointAtTop)?.first
+        let topOfStackDetectionRect = CGRect(origin: newBounds.origin, size: CGSize(width: newBounds.width, height: 1))
+        guard   let attributes = super.layoutAttributesForElementsInRect(topOfStackDetectionRect)?.first
                 else
         {
             return context
