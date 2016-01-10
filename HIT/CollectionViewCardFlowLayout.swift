@@ -64,8 +64,7 @@ import UIKit
         superAttributes.zIndex = indexPath.item * 2 + 1
         
         if indexPath == cardAtTopOfStack {
-//            superAttributes.frame.origin.y = self.collectionView!.bounds.origin.y
-            superAttributes.frame.origin = self.collectionView!.bounds.origin
+            superAttributes.frame.origin.y = self.collectionView!.bounds.origin.y
         }
         
 //        print("layout attributes for index path: \(indexPath)")
