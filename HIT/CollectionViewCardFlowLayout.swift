@@ -36,7 +36,7 @@ import UIKit
         }
     }
     
-    var cardAtTopOfStack = NSIndexPath(forItem: 0, inSection: 0)
+    var cardAtTopOfStack: NSIndexPath? = NSIndexPath(forItem: 0, inSection: 0)
     
     // MARK: - UICollectionViewFlowLayout override
     
@@ -113,6 +113,8 @@ import UIKit
     override func invalidationContextForBoundsChange(newBounds: CGRect) -> UICollectionViewLayoutInvalidationContext {
         let context = super.invalidationContextForBoundsChange(newBounds)
         
+        // if the bounds' width has changed (maybe due to device rotation),
+        // invalidate everything
         guard   let bounds = self.collectionView?.bounds
                 where bounds.size == newBounds.size
                 else
@@ -121,30 +123,34 @@ import UIKit
         }
         
         print("\n\n \(newBounds)")
-//        print(context)
         
-        let topOfStackDetectionRect = CGRect(origin: newBounds.origin, size: CGSize(width: newBounds.width, height: 1))
-        guard   let attributes = super.layoutAttributesForElementsInRect(topOfStackDetectionRect)?.first
-                else
-        {
-            return context
+        
+        var indexPathsToInvalidate = [NSIndexPath]()
+        if let cardAtTopOfStack = cardAtTopOfStack {
+            indexPathsToInvalidate.append(cardAtTopOfStack)
         }
         
-        let newCardAtTopOfStack = attributes.indexPath
-        
-//        guard   let newCardAtTopOfStack = self.collectionView?.indexPathForItemAtPoint(newBounds.origin)
-//                else
-//        {
-//            return context
-//        }
-        
-        
-        print(newCardAtTopOfStack)
-        
-        var indexPathsToInvalidate = [cardAtTopOfStack]
-        if newCardAtTopOfStack != cardAtTopOfStack {
-            indexPathsToInvalidate.append(newCardAtTopOfStack)
-            cardAtTopOfStack = newCardAtTopOfStack
+        if newBounds.origin.y < 0
+        {
+            cardAtTopOfStack = nil
+        }
+        else
+        {
+            let topOfStackDetectionRect = CGRect(origin: newBounds.origin, size: CGSize(width: newBounds.width, height: 1))
+            guard   let attributes = super.layoutAttributesForElementsInRect(topOfStackDetectionRect)?.first
+                    else
+            {
+                return context
+            }
+            
+            let newCardAtTopOfStack = attributes.indexPath
+            
+            print(newCardAtTopOfStack)
+            
+            if newCardAtTopOfStack != cardAtTopOfStack {
+                indexPathsToInvalidate.append(newCardAtTopOfStack)
+                cardAtTopOfStack = newCardAtTopOfStack
+            }
         }
         
         context.invalidateItemsAtIndexPaths(indexPathsToInvalidate)
