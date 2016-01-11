@@ -27,7 +27,7 @@ class CardCollectionViewController: UICollectionViewController {
         let flowLayout = collectionView!.collectionViewLayout as! CollectionViewCardFlowLayout
         flowLayout.itemSize = CGSize(width: collectionView!.bounds.width, height: 25)
         flowLayout.cardHeight = 300
-        flowLayout.cardMargin = 100
+        flowLayout.cardMargin = 200
         
         
         collectionView?.alwaysBounceVertical = true
@@ -62,7 +62,7 @@ class CardCollectionViewController: UICollectionViewController {
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 500
+        return 50
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

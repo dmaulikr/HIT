@@ -185,24 +185,27 @@ import UIKit
         {
             cardAtTopOfStack = nil
         }
+        else if cardAtTopOfStack == nil
+        {
+            cardAtTopOfStack = NSIndexPath(forItem: 0, inSection: 0)
+            indexPathsToInvalidate.append(cardAtTopOfStack!)
+            indexPathsToInvalidate.append(cardAtTopOfStack!.nextItem())
+        }
         else
         {
-            
             let topOfStackDetectionRect = CGRect(
                 origin: CGPoint(x: newBounds.origin.x, y: newBounds.origin.y - slowingLimit),
                 size: CGSize(width: newBounds.width, height: 1))
-            guard   let attributes = super.layoutAttributesForElementsInRect(topOfStackDetectionRect)?.first
-                    else
+            
+            if let attributes = super.layoutAttributesForElementsInRect(topOfStackDetectionRect)?.first
             {
-                return context
-            }
-            
-            let newCardAtTopOfStack = attributes.indexPath
-            
-            if newCardAtTopOfStack != cardAtTopOfStack {
-                indexPathsToInvalidate.append(newCardAtTopOfStack)
-                indexPathsToInvalidate.append(newCardAtTopOfStack.nextItem())
-                cardAtTopOfStack = newCardAtTopOfStack
+                let newCardAtTopOfStack = attributes.indexPath
+                
+                if newCardAtTopOfStack != cardAtTopOfStack {
+                    indexPathsToInvalidate.append(newCardAtTopOfStack)
+                    indexPathsToInvalidate.append(newCardAtTopOfStack.nextItem())
+                    cardAtTopOfStack = newCardAtTopOfStack
+                }
             }
         }
         
