@@ -67,6 +67,9 @@ import UIKit
             return layoutAttributesForSupplementaryViewOfKind(SupplementaryViewKind.Card.rawValue, atIndexPath: attributes.indexPath)!
         }
         
+        print("in rect: \(rect.origin) \(rect.size)")
+        print(cardMarginAttributes)
+        
         return superAttributes + cardAttributes
     }
     
@@ -78,6 +81,15 @@ import UIKit
                 else
         {
             return superAttributes
+        }
+        
+        print("layout attributes for index path: \(indexPath)")
+        print(self.collectionView?.bounds.origin.y)
+        if  let y = self.collectionView?.bounds.origin.y
+            where y < 0
+        {
+            print("y = \(y)")
+            superAttributes.frame.origin.y += -1*y
         }
         
         if indexPath == cardAtTopOfStack
@@ -116,8 +128,6 @@ import UIKit
                 superAttributes.frame.origin.y += progressPastLimitPercent * progressPastLimit/2
             }
         }
-        
-//        print("layout attributes for index path: \(indexPath)")
         
         return superAttributes
     }
@@ -173,8 +183,6 @@ import UIKit
             return context
         }
         
-//        print("\n\n \(newBounds)")
-        
         var indexPathsToInvalidate = [NSIndexPath]()
         if let cardAtTopOfStack = cardAtTopOfStack {
             indexPathsToInvalidate.append(cardAtTopOfStack)
@@ -183,7 +191,12 @@ import UIKit
         
         if newBounds.origin.y < 0
         {
+            print("\n\n\ny<0")
             cardAtTopOfStack = nil
+            for attributes in super.layoutAttributesForElementsInRect(newBounds)!
+            {
+                indexPathsToInvalidate.append(attributes.indexPath)
+            }
         }
         else if cardAtTopOfStack == nil
         {
@@ -213,6 +226,7 @@ import UIKit
         context.invalidateSupplementaryElementsOfKind(
             SupplementaryViewKind.Card.rawValue,
             atIndexPaths: indexPathsToInvalidate)
+//        print("context IPs: \(context.invalidatedItemIndexPaths)")
         
         return context
     }
