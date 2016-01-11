@@ -44,7 +44,7 @@ import UIKit
     //
     var slowingLimit: CGFloat {
         get {
-            return itemSize.height/2
+            return itemSize.height/3
         }
     }
     
@@ -189,7 +189,7 @@ import UIKit
         {
             
             let topOfStackDetectionRect = CGRect(
-                origin: CGPoint(x: newBounds.origin.x, y: newBounds.origin.y - slowingDistance),
+                origin: CGPoint(x: newBounds.origin.x, y: newBounds.origin.y - slowingLimit),
                 size: CGSize(width: newBounds.width, height: 1))
             guard   let attributes = super.layoutAttributesForElementsInRect(topOfStackDetectionRect)?.first
                     else
