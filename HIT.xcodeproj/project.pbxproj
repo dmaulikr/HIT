@@ -28,6 +28,7 @@
 		3FCA2D181C322EF500E27F64 /* CardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA2D171C322EF500E27F64 /* CardCollectionViewCell.swift */; };
 		3FCA2D1A1C32441D00E27F64 /* CollectionViewCardFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA2D191C32441D00E27F64 /* CollectionViewCardFlowLayout.swift */; };
 		3FCA2D1C1C40A87000E27F64 /* PlaceholderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA2D1B1C40A87000E27F64 /* PlaceholderCollectionViewCell.swift */; };
+		3FCA2D1E1C433F9500E27F64 /* NSIndexPath+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA2D1D1C433F9500E27F64 /* NSIndexPath+Helpers.swift */; };
 		3FDAE60D1C293BD0000634CF /* StatePlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDAE60C1C293BD0000634CF /* StatePlaceholderView.swift */; };
 		3FF21E2C1C21F90C0079C67F /* CardTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3FF21E2B1C21F90C0079C67F /* CardTableView.xib */; };
 		3FF21E301C2202CB0079C67F /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF21E2F1C2202CB0079C67F /* CardView.swift */; };
@@ -79,6 +80,7 @@
 		3FCA2D171C322EF500E27F64 /* CardCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardCollectionViewCell.swift; sourceTree = "<group>"; };
 		3FCA2D191C32441D00E27F64 /* CollectionViewCardFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCardFlowLayout.swift; sourceTree = "<group>"; };
 		3FCA2D1B1C40A87000E27F64 /* PlaceholderCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceholderCollectionViewCell.swift; sourceTree = "<group>"; };
+		3FCA2D1D1C433F9500E27F64 /* NSIndexPath+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSIndexPath+Helpers.swift"; sourceTree = "<group>"; };
 		3FDAE60C1C293BD0000634CF /* StatePlaceholderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatePlaceholderView.swift; sourceTree = "<group>"; };
 		3FE8B9061C2D21D600A80A83 /* HIT-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HIT-Bridging-Header.h"; sourceTree = "<group>"; };
 		3FF21E2B1C21F90C0079C67F /* CardTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardTableView.xib; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 				3FF21E341C24EDCD0079C67F /* NSLayoutConstraint+Helpers.swift */,
 				3F16BB7C1C2BE3A1000D4B7D /* CardAnnotation.swift */,
 				3FCA2D101C2E372D00E27F64 /* UIColor+Helpers.swift */,
+				3FCA2D1D1C433F9500E27F64 /* NSIndexPath+Helpers.swift */,
 			);
 			name = "Extensions and Helpers";
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				3FCA2D111C2E372D00E27F64 /* UIColor+Helpers.swift in Sources */,
 				3F6293481C149830005BD240 /* MainViewController.swift in Sources */,
 				3F62931A1C148C78005BD240 /* AppDelegate.swift in Sources */,
+				3FCA2D1E1C433F9500E27F64 /* NSIndexPath+Helpers.swift in Sources */,
 				3F8397DF1C2522B70002002E /* CardTableView.swift in Sources */,
 				3F62934C1C1BABA2005BD240 /* AutoLayoutTestViewController.swift in Sources */,
 			);

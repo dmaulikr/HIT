@@ -38,6 +38,9 @@ import UIKit
     
     var cardAtTopOfStack: NSIndexPath? = NSIndexPath(forItem: 0, inSection: 0)
     
+    var slowingDistance: CGFloat = 10
+    
+    
     // MARK: - UICollectionViewFlowLayout override
     
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
@@ -63,8 +66,22 @@ import UIKit
         let superAttributes = super.layoutAttributesForItemAtIndexPath(indexPath)!.copy() as! UICollectionViewLayoutAttributes
         superAttributes.zIndex = indexPath.item * 2 + 1
         
-        if indexPath == cardAtTopOfStack {
+        guard   let cardAtTopOfStack = cardAtTopOfStack
+                else
+        {
+            return superAttributes
+        }
+        
+        if indexPath == cardAtTopOfStack
+        {
             superAttributes.frame.origin.y = self.collectionView!.bounds.origin.y
+        }
+        else if indexPath == cardAtTopOfStack.nextItem()
+        {
+            let distanceFromTop = superAttributes.frame.origin.y - self.collectionView!.bounds.origin.y
+            if distanceFromTop < slowingDistance {
+                superAttributes.frame.origin.y += (slowingDistance - distanceFromTop)/2
+            }
         }
         
 //        print("layout attributes for index path: \(indexPath)")
@@ -129,10 +146,12 @@ import UIKit
             print("defer")
         }
         
+        print(slowingDistance)
         
         var indexPathsToInvalidate = [NSIndexPath]()
         if let cardAtTopOfStack = cardAtTopOfStack {
             indexPathsToInvalidate.append(cardAtTopOfStack)
+            indexPathsToInvalidate.append(cardAtTopOfStack.nextItem())
         }
         
         if newBounds.origin.y < 0
@@ -141,7 +160,10 @@ import UIKit
         }
         else
         {
-            let topOfStackDetectionRect = CGRect(origin: newBounds.origin, size: CGSize(width: newBounds.width, height: 1))
+            
+            let topOfStackDetectionRect = CGRect(
+                origin: CGPoint(x: newBounds.origin.x, y: newBounds.origin.y - slowingDistance),
+                size: CGSize(width: newBounds.width, height: 1))
             guard   let attributes = super.layoutAttributesForElementsInRect(topOfStackDetectionRect)?.first
                     else
             {
@@ -154,6 +176,7 @@ import UIKit
             
             if newCardAtTopOfStack != cardAtTopOfStack {
                 indexPathsToInvalidate.append(newCardAtTopOfStack)
+                indexPathsToInvalidate.append(newCardAtTopOfStack.nextItem())
                 cardAtTopOfStack = newCardAtTopOfStack
             }
         }
