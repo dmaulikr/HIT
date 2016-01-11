@@ -38,7 +38,15 @@ import UIKit
     
     var cardAtTopOfStack: NSIndexPath? = NSIndexPath(forItem: 0, inSection: 0)
     
-    var slowingDistance: CGFloat = 10
+    
+    // Represents the distance at which a card begins to slow
+    // when approaching the top of the collection view's bounds
+    //
+    var slowingLimit: CGFloat {
+        get {
+            return itemSize.height/2
+        }
+    }
     
     
     // MARK: - UICollectionViewFlowLayout override
@@ -79,8 +87,33 @@ import UIKit
         else if indexPath == cardAtTopOfStack.nextItem()
         {
             let distanceFromTop = superAttributes.frame.origin.y - self.collectionView!.bounds.origin.y
-            if distanceFromTop < slowingDistance {
-                superAttributes.frame.origin.y += (slowingDistance - distanceFromTop)/2
+            
+            // If the card of the super class has travelled past
+            // the "slowing distance" limit, we begin to impede its movement
+            // so that it slowly approaches the top of the collection view
+            
+            if distanceFromTop < slowingLimit {
+                
+                // We measure how far past the slowing distance
+                // that the card of the super class has travelled.
+                
+                // We then take that as a percentage of the total distance 
+                // it will travel in the super class layout before it rests
+                // at the top of our collection view
+                
+                // We multiply that percentage by half the progress past the
+                // slowing limit that has been achieved. We add that result
+                // to the y-coordinate of our card so that its movement is
+                // impeded as it approaches the top of the collection view bounds.
+                
+                // As well, by including the progress percentage into the calculation,
+                // the card is impeded less when it has just passed the limit,
+                // and by more (i.e. it travels more slowly) when it is very near
+                // its final resting place.
+                
+                let progressPastLimit = slowingLimit - distanceFromTop
+                let progressPastLimitPercent = progressPastLimit/(slowingLimit * 2)
+                superAttributes.frame.origin.y += progressPastLimitPercent * progressPastLimit/2
             }
         }
         
@@ -140,13 +173,7 @@ import UIKit
             return context
         }
         
-        print("\n\n \(newBounds)")
-        
-        defer {
-            print("defer")
-        }
-        
-        print(slowingDistance)
+//        print("\n\n \(newBounds)")
         
         var indexPathsToInvalidate = [NSIndexPath]()
         if let cardAtTopOfStack = cardAtTopOfStack {
@@ -171,8 +198,6 @@ import UIKit
             }
             
             let newCardAtTopOfStack = attributes.indexPath
-            
-            print(newCardAtTopOfStack)
             
             if newCardAtTopOfStack != cardAtTopOfStack {
                 indexPathsToInvalidate.append(newCardAtTopOfStack)
