@@ -44,7 +44,7 @@ import UIKit
     //
     var slowingLimit: CGFloat {
         get {
-            return itemSize.height/3
+            return itemSize.height
         }
     }
     
@@ -101,6 +101,7 @@ import UIKit
         // Slow the next card down.
             
         else if indexPath == cardAtTopOfStack.nextItem()
+            || indexPath == cardAtTopOfStack.nextItem().nextItem()
         {
             let distanceFromTop = superAttributes.frame.origin.y - self.collectionView!.bounds.origin.y
             
@@ -228,6 +229,7 @@ import UIKit
         {
             indexPathsToInvalidate.append(cardAtTopOfStack!)
             indexPathsToInvalidate.append(cardAtTopOfStack!.nextItem())
+            indexPathsToInvalidate.append(cardAtTopOfStack!.nextItem().nextItem())
             
             let topOfStackDetectionRect = CGRect(
                 origin: CGPoint(x: newBounds.origin.x, y: newBounds.origin.y - slowingLimit),
@@ -240,6 +242,7 @@ import UIKit
                 if newCardAtTopOfStack != cardAtTopOfStack {
                     indexPathsToInvalidate.append(newCardAtTopOfStack)
                     indexPathsToInvalidate.append(newCardAtTopOfStack.nextItem())
+                    indexPathsToInvalidate.append(newCardAtTopOfStack.nextItem().nextItem())
                     cardAtTopOfStack = newCardAtTopOfStack
                 }
             }

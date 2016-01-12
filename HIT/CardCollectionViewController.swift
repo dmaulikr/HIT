@@ -27,7 +27,7 @@ class CardCollectionViewController: UICollectionViewController {
         let flowLayout = collectionView!.collectionViewLayout as! CollectionViewCardFlowLayout
         flowLayout.itemSize = CGSize(width: collectionView!.bounds.width, height: 25)
         flowLayout.cardHeight = 300
-        flowLayout.cardMargin = 200
+        flowLayout.cardMargin = 75
         
         
         collectionView?.alwaysBounceVertical = true
