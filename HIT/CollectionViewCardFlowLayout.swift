@@ -225,9 +225,7 @@ import UIKit
     }
     
     func setSectionInsetForBounds(bounds: CGRect) {
-        print("set section inset")
         let leftRightInset = (bounds.width - itemSize.width)/2
-        
         sectionInset = UIEdgeInsets(top: 0, left: leftRightInset, bottom: 0, right: leftRightInset)
     }
     

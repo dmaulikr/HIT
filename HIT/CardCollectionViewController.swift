@@ -25,7 +25,7 @@ class CardCollectionViewController: UICollectionViewController {
         // Do any additional setup after loading the view.
         
         let flowLayout = collectionView!.collectionViewLayout as! CollectionViewCardFlowLayout
-        flowLayout.itemSize = CGSize(width: collectionView!.bounds.width/2, height: 25)
+        flowLayout.itemSize = CGSize(width: collectionView!.bounds.width, height: 25)
         flowLayout.cardHeight = 300
         flowLayout.cardMargin = 75
         
