@@ -48,8 +48,27 @@ import UIKit
         }
     }
     
-    
     // MARK: - UICollectionViewFlowLayout override
+    
+    func initSetup() {
+        minimumInteritemSpacing = 0
+    }
+    
+    override init() {
+        super.init()
+        
+        initSetup()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        initSetup()
+    }
+    
+    override func prepareLayout() {
+        setSectionInsetForBounds(self.collectionView!.bounds)
+    }
     
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]?
     {
@@ -163,70 +182,7 @@ import UIKit
         let superAttributes = super.layoutAttributesForItemAtIndexPath(indexPath)!.copy() as! UICollectionViewLayoutAttributes
         
         setZIndexForAttributes(superAttributes)
-        
         applyStackingTransformationToAttributes(superAttributes)
-        
-//        
-//        // If we've scrolled into the negative gutter, 
-//        // we stretch the cards out away from each other.
-//        
-//        if  let y = self.collectionView?.bounds.origin.y
-//            where y < 0
-//        {
-//            let stretchingResistance: CGFloat = 10
-//            superAttributes.frame.origin.y += -1*y*CGFloat(indexPath.item)/stretchingResistance
-//            return superAttributes
-//        }
-//        
-//        guard   let cardAtTopOfStack = cardAtTopOfStack
-//                else
-//        {
-//            return superAttributes
-//        }
-//        
-//        // Pin the card at the top of the stack
-//        // to the current bounds of the scroll view.
-//        
-//        if indexPath == cardAtTopOfStack
-//        {
-//            superAttributes.frame.origin.y = self.collectionView!.bounds.origin.y
-//        }
-//            
-//        // Slow the next card down.
-//            
-//        else if indexPath == cardAtTopOfStack.nextItem()
-//            || indexPath == cardAtTopOfStack.nextItem().nextItem()
-//        {
-//            let distanceFromTop = superAttributes.frame.origin.y - self.collectionView!.bounds.origin.y
-//            
-//            // If the card of the super class has travelled past
-//            // the "slowing distance" limit, we begin to impede its movement
-//            // so that it slowly approaches the top of the collection view
-//            
-//            if distanceFromTop < slowingLimit {
-//                
-//                // We measure how far past the slowing distance
-//                // that the card of the super class has travelled.
-//                
-//                // We then take that as a percentage of the total distance 
-//                // it will travel in the super class layout before it rests
-//                // at the top of our collection view
-//                
-//                // We multiply that percentage by half the progress past the
-//                // slowing limit that has been achieved. We add that result
-//                // to the y-coordinate of our card so that its movement is
-//                // impeded as it approaches the top of the collection view bounds.
-//                
-//                // As well, by including the progress percentage into the calculation,
-//                // the card is impeded less when it has just passed the limit,
-//                // and by more (i.e. it travels more slowly) when it is very near
-//                // its final resting place.
-//                
-//                let progressPastLimit = slowingLimit - distanceFromTop
-//                let progressPastLimitPercent = progressPastLimit/(slowingLimit * 2)
-//                superAttributes.frame.origin.y += progressPastLimitPercent * progressPastLimit/2
-//            }
-//        }
         
         return superAttributes
     }
@@ -243,22 +199,22 @@ import UIKit
         
         switch supplementaryViewKind {
         case .Card:
-//            guard let cardMarginAttributes = self.layoutAttributesForItemAtIndexPath(indexPath) else {
-//                return nil
-//            }
+            guard let cardMarginAttributes = self.layoutAttributesForItemAtIndexPath(indexPath) else {
+                return nil
+            }
             
             let cardAttributes = UICollectionViewLayoutAttributes(
                 forSupplementaryViewOfKind: elementKind,
                 withIndexPath: indexPath)
-//            let cardFrame = CGRect(
-//                x: cardMarginAttributes.frame.origin.x,
-//                y: cardMarginAttributes.frame.origin.y,
-//                width: cardSize.width,
-//                height: cardHeight)
-            let cardFrame = CGRect(x: 0, y: itemSize.height*CGFloat(indexPath.item), width: cardSize.width, height: cardHeight)
+            let cardFrame = CGRect(
+                x: cardMarginAttributes.frame.origin.x,
+                y: cardMarginAttributes.frame.origin.y,
+                width: cardSize.width,
+                height: cardHeight)
+//            let cardFrame = CGRect(x: 0, y: itemSize.height*CGFloat(indexPath.item), width: cardSize.width, height: cardHeight)
             cardAttributes.frame = cardFrame
             setZIndexForAttributes(cardAttributes)
-            applyStackingTransformationToAttributes(cardAttributes)
+//            applyStackingTransformationToAttributes(cardAttributes)
             
             return cardAttributes
         }
@@ -268,8 +224,17 @@ import UIKit
         return true
     }
     
+    func setSectionInsetForBounds(bounds: CGRect) {
+        print("set section inset")
+        let leftRightInset = (bounds.width - itemSize.width)/2
+        
+        sectionInset = UIEdgeInsets(top: 0, left: leftRightInset, bottom: 0, right: leftRightInset)
+    }
+    
     override func invalidationContextForBoundsChange(newBounds: CGRect) -> UICollectionViewLayoutInvalidationContext {
         let context = super.invalidationContextForBoundsChange(newBounds)
+        
+        setSectionInsetForBounds(newBounds)
         
         // if the bounds' width has changed (maybe due to device rotation),
         // invalidate everything.
