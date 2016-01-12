@@ -51,9 +51,8 @@ import UIKit
     
     // MARK: - UICollectionViewFlowLayout override
     
-    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-//        print("in rect")
-        
+    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]?
+    {
         guard let superAttributes = super.layoutAttributesForElementsInRect(rect) else {
             return nil
         }
@@ -67,9 +66,6 @@ import UIKit
             return layoutAttributesForSupplementaryViewOfKind(SupplementaryViewKind.Card.rawValue, atIndexPath: attributes.indexPath)!
         }
         
-        print("in rect: \(rect.origin) \(rect.size)")
-        print(cardMarginAttributes)
-        
         return superAttributes + cardAttributes
     }
     
@@ -77,25 +73,33 @@ import UIKit
         let superAttributes = super.layoutAttributesForItemAtIndexPath(indexPath)!.copy() as! UICollectionViewLayoutAttributes
         superAttributes.zIndex = indexPath.item * 2 + 1
         
+        // If we've scrolled into the negative gutter, 
+        // we stretch the cards out away from each other.
+        
+        if  let y = self.collectionView?.bounds.origin.y
+            where y < 0
+        {
+            let stretchingResistance: CGFloat = 10
+            superAttributes.frame.origin.y += -1*y*CGFloat(indexPath.item)/stretchingResistance
+            return superAttributes
+        }
+        
         guard   let cardAtTopOfStack = cardAtTopOfStack
                 else
         {
             return superAttributes
         }
         
-        print("layout attributes for index path: \(indexPath)")
-        print(self.collectionView?.bounds.origin.y)
-        if  let y = self.collectionView?.bounds.origin.y
-            where y < 0
-        {
-            print("y = \(y)")
-            superAttributes.frame.origin.y += -1*y
-        }
+        // Pin the card at the top of the stack
+        // to the current bounds of the scroll view.
         
         if indexPath == cardAtTopOfStack
         {
             superAttributes.frame.origin.y = self.collectionView!.bounds.origin.y
         }
+            
+        // Slow the next card down.
+            
         else if indexPath == cardAtTopOfStack.nextItem()
         {
             let distanceFromTop = superAttributes.frame.origin.y - self.collectionView!.bounds.origin.y
@@ -132,9 +136,8 @@ import UIKit
         return superAttributes
     }
 
-    override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-//        print("supplementary attributes for index path: \(indexPath)")
-        
+    override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
+    {
         if let superAttributes = super.layoutAttributesForSupplementaryViewOfKind(elementKind, atIndexPath: indexPath) {
             return superAttributes
         }
@@ -148,8 +151,6 @@ import UIKit
             guard let cardMarginAttributes = self.layoutAttributesForItemAtIndexPath(indexPath) else {
                 return nil
             }
-            
-//            print("still in supp")
             
             let cardAttributes = UICollectionViewLayoutAttributes(
                 forSupplementaryViewOfKind: elementKind,
@@ -174,7 +175,8 @@ import UIKit
         let context = super.invalidationContextForBoundsChange(newBounds)
         
         // if the bounds' width has changed (maybe due to device rotation),
-        // invalidate everything
+        // invalidate everything.
+        
         guard   let bounds = self.collectionView?.bounds
                 where bounds.size == newBounds.size
                 else
@@ -183,29 +185,50 @@ import UIKit
             return context
         }
         
+        
         var indexPathsToInvalidate = [NSIndexPath]()
-        if let cardAtTopOfStack = cardAtTopOfStack {
-            indexPathsToInvalidate.append(cardAtTopOfStack)
-            indexPathsToInvalidate.append(cardAtTopOfStack.nextItem())
-        }
+        
+        // If we're scrolled into the negative gutter,
+        // then we want to stretch the cards away from each other,
+        // so we invalidate all the cards that are visible.
         
         if newBounds.origin.y < 0
         {
-            print("\n\n\ny<0")
             cardAtTopOfStack = nil
             for attributes in super.layoutAttributesForElementsInRect(newBounds)!
             {
                 indexPathsToInvalidate.append(attributes.indexPath)
             }
         }
+            
+        // If we're in positive-scrolling coordinates but the
+        // the card at the top of the stack is nil,
+        // then we've just transitioned from scrolling out of 
+        // the negative gutter.
+        // We set the card at the top of the stack to be the first 
+        // card and invalidate all the visible cards.
+            
         else if cardAtTopOfStack == nil
         {
             cardAtTopOfStack = NSIndexPath(forItem: 0, inSection: 0)
-            indexPathsToInvalidate.append(cardAtTopOfStack!)
-            indexPathsToInvalidate.append(cardAtTopOfStack!.nextItem())
+            for attributes in super.layoutAttributesForElementsInRect(newBounds)!
+            {
+                indexPathsToInvalidate.append(attributes.indexPath)
+            }
         }
+            
+        // Otherwise, we're currently somewhere further down
+        // in the scroll view.
+        // We invalidate the most recent card at the top of the stack
+        // and update the top card if needed, and invalidate that one too.
+        // We also invalidate the following card so that we can slow its
+        // travel as it reaches the top.
+            
         else
         {
+            indexPathsToInvalidate.append(cardAtTopOfStack!)
+            indexPathsToInvalidate.append(cardAtTopOfStack!.nextItem())
+            
             let topOfStackDetectionRect = CGRect(
                 origin: CGPoint(x: newBounds.origin.x, y: newBounds.origin.y - slowingLimit),
                 size: CGSize(width: newBounds.width, height: 1))
@@ -226,7 +249,6 @@ import UIKit
         context.invalidateSupplementaryElementsOfKind(
             SupplementaryViewKind.Card.rawValue,
             atIndexPaths: indexPathsToInvalidate)
-//        print("context IPs: \(context.invalidatedItemIndexPaths)")
         
         return context
     }
