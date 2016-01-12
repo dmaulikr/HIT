@@ -93,25 +93,25 @@ import UIKit
         }
     }
     
-    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        let superAttributes = super.layoutAttributesForItemAtIndexPath(indexPath)!.copy() as! UICollectionViewLayoutAttributes
-        setZIndexForAttributes(superAttributes)
+    func applyStackingTransformationToAttributes(attributes: UICollectionViewLayoutAttributes)
+    {
+        let indexPath = attributes.indexPath
         
-        // If we've scrolled into the negative gutter, 
+        // If we've scrolled into the negative gutter,
         // we stretch the cards out away from each other.
         
         if  let y = self.collectionView?.bounds.origin.y
             where y < 0
         {
             let stretchingResistance: CGFloat = 10
-            superAttributes.frame.origin.y += -1*y*CGFloat(indexPath.item)/stretchingResistance
-            return superAttributes
+            attributes.frame.origin.y += -1*y*CGFloat(indexPath.item)/stretchingResistance
+            return
         }
         
         guard   let cardAtTopOfStack = cardAtTopOfStack
                 else
         {
-            return superAttributes
+            return
         }
         
         // Pin the card at the top of the stack
@@ -119,15 +119,15 @@ import UIKit
         
         if indexPath == cardAtTopOfStack
         {
-            superAttributes.frame.origin.y = self.collectionView!.bounds.origin.y
+            attributes.frame.origin.y = self.collectionView!.bounds.origin.y
         }
             
-        // Slow the next card down.
+            // Slow the next card down.
             
         else if indexPath == cardAtTopOfStack.nextItem()
             || indexPath == cardAtTopOfStack.nextItem().nextItem()
         {
-            let distanceFromTop = superAttributes.frame.origin.y - self.collectionView!.bounds.origin.y
+            let distanceFromTop = attributes.frame.origin.y - self.collectionView!.bounds.origin.y
             
             // If the card of the super class has travelled past
             // the "slowing distance" limit, we begin to impede its movement
@@ -138,7 +138,7 @@ import UIKit
                 // We measure how far past the slowing distance
                 // that the card of the super class has travelled.
                 
-                // We then take that as a percentage of the total distance 
+                // We then take that as a percentage of the total distance
                 // it will travel in the super class layout before it rests
                 // at the top of our collection view
                 
@@ -154,9 +154,79 @@ import UIKit
                 
                 let progressPastLimit = slowingLimit - distanceFromTop
                 let progressPastLimitPercent = progressPastLimit/(slowingLimit * 2)
-                superAttributes.frame.origin.y += progressPastLimitPercent * progressPastLimit/2
+                attributes.frame.origin.y += progressPastLimitPercent * progressPastLimit/2
             }
         }
+    }
+    
+    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+        let superAttributes = super.layoutAttributesForItemAtIndexPath(indexPath)!.copy() as! UICollectionViewLayoutAttributes
+        
+        setZIndexForAttributes(superAttributes)
+        
+        applyStackingTransformationToAttributes(superAttributes)
+        
+//        
+//        // If we've scrolled into the negative gutter, 
+//        // we stretch the cards out away from each other.
+//        
+//        if  let y = self.collectionView?.bounds.origin.y
+//            where y < 0
+//        {
+//            let stretchingResistance: CGFloat = 10
+//            superAttributes.frame.origin.y += -1*y*CGFloat(indexPath.item)/stretchingResistance
+//            return superAttributes
+//        }
+//        
+//        guard   let cardAtTopOfStack = cardAtTopOfStack
+//                else
+//        {
+//            return superAttributes
+//        }
+//        
+//        // Pin the card at the top of the stack
+//        // to the current bounds of the scroll view.
+//        
+//        if indexPath == cardAtTopOfStack
+//        {
+//            superAttributes.frame.origin.y = self.collectionView!.bounds.origin.y
+//        }
+//            
+//        // Slow the next card down.
+//            
+//        else if indexPath == cardAtTopOfStack.nextItem()
+//            || indexPath == cardAtTopOfStack.nextItem().nextItem()
+//        {
+//            let distanceFromTop = superAttributes.frame.origin.y - self.collectionView!.bounds.origin.y
+//            
+//            // If the card of the super class has travelled past
+//            // the "slowing distance" limit, we begin to impede its movement
+//            // so that it slowly approaches the top of the collection view
+//            
+//            if distanceFromTop < slowingLimit {
+//                
+//                // We measure how far past the slowing distance
+//                // that the card of the super class has travelled.
+//                
+//                // We then take that as a percentage of the total distance 
+//                // it will travel in the super class layout before it rests
+//                // at the top of our collection view
+//                
+//                // We multiply that percentage by half the progress past the
+//                // slowing limit that has been achieved. We add that result
+//                // to the y-coordinate of our card so that its movement is
+//                // impeded as it approaches the top of the collection view bounds.
+//                
+//                // As well, by including the progress percentage into the calculation,
+//                // the card is impeded less when it has just passed the limit,
+//                // and by more (i.e. it travels more slowly) when it is very near
+//                // its final resting place.
+//                
+//                let progressPastLimit = slowingLimit - distanceFromTop
+//                let progressPastLimitPercent = progressPastLimit/(slowingLimit * 2)
+//                superAttributes.frame.origin.y += progressPastLimitPercent * progressPastLimit/2
+//            }
+//        }
         
         return superAttributes
     }
@@ -173,20 +243,22 @@ import UIKit
         
         switch supplementaryViewKind {
         case .Card:
-            guard let cardMarginAttributes = self.layoutAttributesForItemAtIndexPath(indexPath) else {
-                return nil
-            }
+//            guard let cardMarginAttributes = self.layoutAttributesForItemAtIndexPath(indexPath) else {
+//                return nil
+//            }
             
             let cardAttributes = UICollectionViewLayoutAttributes(
                 forSupplementaryViewOfKind: elementKind,
                 withIndexPath: indexPath)
-            let cardFrame = CGRect(
-                x: cardMarginAttributes.frame.origin.x,
-                y: cardMarginAttributes.frame.origin.y,
-                width: cardSize.width,
-                height: cardHeight)
+//            let cardFrame = CGRect(
+//                x: cardMarginAttributes.frame.origin.x,
+//                y: cardMarginAttributes.frame.origin.y,
+//                width: cardSize.width,
+//                height: cardHeight)
+            let cardFrame = CGRect(x: 0, y: itemSize.height*CGFloat(indexPath.item), width: cardSize.width, height: cardHeight)
             cardAttributes.frame = cardFrame
             setZIndexForAttributes(cardAttributes)
+            applyStackingTransformationToAttributes(cardAttributes)
             
             return cardAttributes
         }
