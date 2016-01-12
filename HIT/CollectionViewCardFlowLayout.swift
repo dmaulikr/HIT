@@ -58,20 +58,44 @@ import UIKit
         }
         
         // filter for item attributes
-        let cardMarginAttributes = superAttributes.filter({ (attributes) -> Bool in
-            return attributes.representedElementCategory == .Cell
+        let itemSuperAttributes = superAttributes.filter({ (superAttributes) -> Bool in
+            return superAttributes.representedElementCategory == .Cell
         })
+        
+        let allOtherSuperAttributes = superAttributes.filter({ (superAttributes) -> Bool in
+            return superAttributes.representedElementCategory != .Cell
+        })
+        
+        let cardMarginAttributes = itemSuperAttributes.map { (superAttributes) -> UICollectionViewLayoutAttributes in
+            let attributes = superAttributes.copy() as! UICollectionViewLayoutAttributes
+            setZIndexForAttributes(attributes)
+            
+            return attributes
+        }
         
         let cardAttributes = cardMarginAttributes.map { (attributes) -> UICollectionViewLayoutAttributes in
             return layoutAttributesForSupplementaryViewOfKind(SupplementaryViewKind.Card.rawValue, atIndexPath: attributes.indexPath)!
         }
         
-        return superAttributes + cardAttributes
+        return cardMarginAttributes + cardAttributes + allOtherSuperAttributes
+    }
+    
+    func setZIndexForAttributes(attributes: UICollectionViewLayoutAttributes)
+    {
+        switch attributes.representedElementCategory
+        {
+        case .Cell:
+            attributes.zIndex = attributes.indexPath.item * 2 + 1
+        case .SupplementaryView:
+            attributes.zIndex = attributes.indexPath.item * 2
+        default:
+            break
+        }
     }
     
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
         let superAttributes = super.layoutAttributesForItemAtIndexPath(indexPath)!.copy() as! UICollectionViewLayoutAttributes
-        superAttributes.zIndex = indexPath.item * 2 + 1
+        setZIndexForAttributes(superAttributes)
         
         // If we've scrolled into the negative gutter, 
         // we stretch the cards out away from each other.
@@ -162,7 +186,7 @@ import UIKit
                 width: cardSize.width,
                 height: cardHeight)
             cardAttributes.frame = cardFrame
-            cardAttributes.zIndex = indexPath.item * 2
+            setZIndexForAttributes(cardAttributes)
             
             return cardAttributes
         }
