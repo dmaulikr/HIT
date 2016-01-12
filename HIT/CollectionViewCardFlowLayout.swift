@@ -286,9 +286,15 @@ import UIKit
             
         else
         {
+            let itemCount = self.collectionView!.dataSource!.collectionView(self.collectionView!, numberOfItemsInSection: 0)
+            
             indexPathsToInvalidate.append(cardAtTopOfStack!)
-            indexPathsToInvalidate.append(cardAtTopOfStack!.nextItem())
-            indexPathsToInvalidate.append(cardAtTopOfStack!.nextItem().nextItem())
+            if cardAtTopOfStack!.item + 1 < itemCount {
+                indexPathsToInvalidate.append(cardAtTopOfStack!.nextItem())
+                if cardAtTopOfStack!.item + 2 < itemCount {
+                    indexPathsToInvalidate.append(cardAtTopOfStack!.nextItem().nextItem())
+                }
+            }
             
             let topOfStackDetectionRect = CGRect(
                 origin: CGPoint(x: newBounds.origin.x, y: newBounds.origin.y - slowingLimit),
@@ -300,8 +306,12 @@ import UIKit
                 
                 if newCardAtTopOfStack != cardAtTopOfStack {
                     indexPathsToInvalidate.append(newCardAtTopOfStack)
-                    indexPathsToInvalidate.append(newCardAtTopOfStack.nextItem())
-                    indexPathsToInvalidate.append(newCardAtTopOfStack.nextItem().nextItem())
+                    if cardAtTopOfStack!.item + 1 < itemCount {
+                        indexPathsToInvalidate.append(cardAtTopOfStack!.nextItem())
+                        if cardAtTopOfStack!.item + 2 < itemCount {
+                            indexPathsToInvalidate.append(cardAtTopOfStack!.nextItem().nextItem())
+                        }
+                    }
                     cardAtTopOfStack = newCardAtTopOfStack
                 }
             }

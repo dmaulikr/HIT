@@ -11,7 +11,9 @@ import UIKit
 private let cellReuseIdentifier = "PlaceholderCollectionViewCell"
 private let cardSupplementaryViewReuseIdentifier = "CardCollectionViewCell"
 
-class CardCollectionViewController: UICollectionViewController {
+class CardCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+    
+    @IBOutlet weak var collectionView: UICollectionView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,18 +25,21 @@ class CardCollectionViewController: UICollectionViewController {
 //        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
         // Do any additional setup after loading the view.
-        
-        let flowLayout = collectionView!.collectionViewLayout as! CollectionViewCardFlowLayout
-        flowLayout.itemSize = CGSize(width: collectionView!.bounds.width, height: 25)
-        flowLayout.cardHeight = 300
-        flowLayout.cardMargin = 75
-        
-        
-        collectionView?.alwaysBounceVertical = true
-        collectionView?.registerClass(
+        collectionView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0)
+        collectionView.alwaysBounceVertical = true
+        collectionView.registerClass(
             CardCollectionViewCell.self,
             forSupplementaryViewOfKind: CollectionViewCardFlowLayout.SupplementaryViewKind.Card.rawValue,
             withReuseIdentifier: cardSupplementaryViewReuseIdentifier)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let flowLayout = collectionView!.collectionViewLayout as! CollectionViewCardFlowLayout
+        flowLayout.itemSize = CGSize(width: view.bounds.width, height: 25)
+        flowLayout.cardHeight = 300
+        flowLayout.cardMargin = 200
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,18 +59,18 @@ class CardCollectionViewController: UICollectionViewController {
 
     // MARK: UICollectionViewDataSource
 
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 50
+        return 10
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellReuseIdentifier, forIndexPath: indexPath) as! PlaceholderCollectionViewCell
         cell.placeholderView.placeholderColor = UIColor.redColor()
         // Configure the cell
@@ -73,7 +78,7 @@ class CardCollectionViewController: UICollectionViewController {
         return cell
     }
     
-    override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         let cell = collectionView.dequeueReusableSupplementaryViewOfKind(
             CollectionViewCardFlowLayout.SupplementaryViewKind.Card.rawValue,
             withReuseIdentifier: cardSupplementaryViewReuseIdentifier,
@@ -95,7 +100,7 @@ class CardCollectionViewController: UICollectionViewController {
     */
 
     // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
         print(indexPath)
         
         return true
