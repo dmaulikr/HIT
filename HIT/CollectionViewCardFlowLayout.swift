@@ -243,7 +243,18 @@ import UIKit
         sectionInset = UIEdgeInsets(top: 0, left: leftRightInset, bottom: 0, right: leftRightInset)
     }
     
-    func stackingAndSlowingCardAttributesForBounds(bounds: CGRect) -> [UICollectionViewLayoutAttributes]?
+    //
+    //
+    // Calculates which cards are either at the top of the stack
+    // or within the slowing limit. Returns the attributes for those cards
+    // in ascending order by their index paths.
+    // Therefore, the first item in the returned array is the card
+    // at the top of the stack.
+    
+    func stackingAndSlowingCardAttributesForBounds(bounds: CGRect)
+        
+        -> [UICollectionViewLayoutAttributes]?
+        
     {
         let topOfStackDetectionRectForBounds = CGRect(
             x: bounds.origin.x,
