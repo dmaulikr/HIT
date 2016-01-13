@@ -44,7 +44,7 @@ import UIKit
     //
     var slowingLimit: CGFloat {
         get {
-            return itemSize.height
+            return 300
         }
     }
     
@@ -143,8 +143,8 @@ import UIKit
             
             // Slow the next card down.
             
-        else if indexPath == cardAtTopOfStack.nextItem()
-            || indexPath == cardAtTopOfStack.nextItem().nextItem()
+        else if indexPath.item > cardAtTopOfStack.item // if indexPath == cardAtTopOfStack.nextItem()
+//            || indexPath == cardAtTopOfStack.nextItem().nextItem()
         {
             let distanceFromTop = attributes.frame.origin.y - self.collectionView!.bounds.origin.y
             
@@ -189,8 +189,6 @@ import UIKit
 
     override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
     {
-//        print(cardAtTopOfStack?.item)
-        
         if let superAttributes = super.layoutAttributesForSupplementaryViewOfKind(elementKind, atIndexPath: indexPath) {
             return superAttributes
         }
@@ -213,12 +211,8 @@ import UIKit
                 y: cardMarginAttributes.frame.origin.y,
                 width: cardSize.width,
                 height: cardHeight)
-//            let cardFrame = CGRect(x: 0, y: itemSize.height*CGFloat(indexPath.item), width: cardSize.width, height: cardHeight)
             cardAttributes.frame = cardFrame
             setZIndexForAttributes(cardAttributes)
-//            applyStackingTransformationToAttributes(cardAttributes)
-            
-            
             
             if  let cardAtTopOfStack = cardAtTopOfStack
                 where indexPath.item < cardAtTopOfStack.item
@@ -254,7 +248,6 @@ import UIKit
                 where bounds.size == newBounds.size
                 else
         {
-            print("width change")
             return context
         }
         
@@ -268,10 +261,10 @@ import UIKit
         if newBounds.origin.y < 0
         {
             cardAtTopOfStack = nil
-            for attributes in super.layoutAttributesForElementsInRect(newBounds)!
-            {
-                indexPathsToInvalidate.append(attributes.indexPath)
-            }
+            super.layoutAttributesForElementsInRect(newBounds)?
+                .forEach({ attributes in
+                    indexPathsToInvalidate.append(attributes.indexPath)
+                })
         }
             
         // If we're in positive-scrolling coordinates but the
@@ -284,10 +277,10 @@ import UIKit
         else if cardAtTopOfStack == nil
         {
             cardAtTopOfStack = NSIndexPath(forItem: 0, inSection: 0)
-            for attributes in super.layoutAttributesForElementsInRect(newBounds)!
-            {
-                indexPathsToInvalidate.append(attributes.indexPath)
-            }
+            super.layoutAttributesForElementsInRect(newBounds)?
+                .forEach({ attributes in
+                    indexPathsToInvalidate.append(attributes.indexPath)
+                })
         }
             
         // Otherwise, we're currently somewhere further down
@@ -299,57 +292,59 @@ import UIKit
             
         else
         {
-            let itemCount = self.collectionView!.dataSource!.collectionView(self.collectionView!, numberOfItemsInSection: 0)
+            let currentBounds = self.collectionView!.bounds
+            let topOfStackDetectionRectForCurrentBounds = CGRect(
+                x: currentBounds.origin.x,
+                y: currentBounds.origin.y,
+                width: currentBounds.width,
+                height: slowingLimit*2)
+            let currentStackingAndSlowingCardAttributes =
+                super.layoutAttributesForElementsInRect(topOfStackDetectionRectForCurrentBounds)?
+                    .filter({ (attributes) -> Bool in
+                        return attributes.representedElementCategory == .Cell
+                    })
+            currentStackingAndSlowingCardAttributes?.forEach({ attributes in
+                indexPathsToInvalidate.append(attributes.indexPath)
+            })
             
-            indexPathsToInvalidate.append(cardAtTopOfStack!)
-            if cardAtTopOfStack!.item + 1 < itemCount {
-                indexPathsToInvalidate.append(cardAtTopOfStack!.nextItem())
-                if cardAtTopOfStack!.item + 2 < itemCount {
-                    indexPathsToInvalidate.append(cardAtTopOfStack!.nextItem().nextItem())
-                }
-            }
             
-            let topOfStackDetectionRect = CGRect(
-                origin: CGPoint(x: newBounds.origin.x, y: newBounds.origin.y - slowingLimit),
-                size: CGSize(width: newBounds.width, height: 1))
+            let topOfStackDetectionRectForNewBounds = CGRect(
+                x: newBounds.origin.x,
+                y: newBounds.origin.y - slowingLimit,
+                width: newBounds.width,
+                height: slowingLimit*2)
+            var newStackingAndSlowingCardAttributes =
+                super.layoutAttributesForElementsInRect(topOfStackDetectionRectForNewBounds)?
+                    .filter({ (attributes) -> Bool in
+                        return attributes.representedElementCategory == .Cell
+                    })
+            newStackingAndSlowingCardAttributes = newStackingAndSlowingCardAttributes?
+                .sort({ (attribute1, attribute2) -> Bool in
+                    return attribute1.indexPath.item < attribute2.indexPath.item
+                })
+            newStackingAndSlowingCardAttributes?.forEach({ attributes in
+                indexPathsToInvalidate.append(attributes.indexPath)
+            })
             
-            if let attributes = super.layoutAttributesForElementsInRect(topOfStackDetectionRect)?.first
+            
+            if  let newStackingAndSlowingCardAttributes = newStackingAndSlowingCardAttributes
+                where newStackingAndSlowingCardAttributes.count > 0
             {
-                print("did detect: \(attributes.indexPath)")
-                let newCardAtTopOfStack = attributes.indexPath
+                let newCardAtTopOfStack = newStackingAndSlowingCardAttributes.first!.indexPath
                 
-                if newCardAtTopOfStack != cardAtTopOfStack {
-                    print("changing stack")
+                if newCardAtTopOfStack != cardAtTopOfStack
+                {
+                    let stackChangeEndPoints =
+                        [cardAtTopOfStack!.item, newCardAtTopOfStack.item].sort()
                     
-                    if cardAtTopOfStack!.item < newCardAtTopOfStack.item
+                    for item in stackChangeEndPoints[0]...stackChangeEndPoints[1]
                     {
-                        for item in cardAtTopOfStack!.item...newCardAtTopOfStack.item {
-                            indexPathsToInvalidate.append(NSIndexPath(forItem: item, inSection: 0))
-                        }
-                    }
-                    else
-                    {
-                        for item in newCardAtTopOfStack.item...cardAtTopOfStack!.item {
-                            indexPathsToInvalidate.append(NSIndexPath(forItem: item, inSection: 0))
-                        }
-                    }
-                    
-                    indexPathsToInvalidate.append(newCardAtTopOfStack)
-                    if newCardAtTopOfStack.item + 1 < itemCount {
-                        indexPathsToInvalidate.append(newCardAtTopOfStack.nextItem())
-                        if newCardAtTopOfStack.item + 2 < itemCount {
-                            indexPathsToInvalidate.append(newCardAtTopOfStack.nextItem().nextItem())
-                        }
+                        indexPathsToInvalidate.append(NSIndexPath(forItem: item, inSection: 0))
                     }
                     cardAtTopOfStack = newCardAtTopOfStack
                 }
             }
-            else {
-                print("did not detect")
-            }
         }
-        
-//        print("invalidating: \(indexPathsToInvalidate)")
         
         context.invalidateItemsAtIndexPaths(indexPathsToInvalidate)
         context.invalidateSupplementaryElementsOfKind(
