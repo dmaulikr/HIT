@@ -38,9 +38,9 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         
         let flowLayout = collectionView!.collectionViewLayout as! CollectionViewCardFlowLayout
         flowLayout.itemSize = CGSize(width: view.bounds.width, height: 25)
-        flowLayout.cardHeight = 300
-        flowLayout.cardMargin = 75
-        flowLayout.slowingLimit = 200
+        flowLayout.cardHeight = 400
+        flowLayout.cardMargin = 100
+        flowLayout.slowingLimit = 100
         
         
         flowLayout.minimumLineSpacing = 0

@@ -243,6 +243,25 @@ import UIKit
         sectionInset = UIEdgeInsets(top: 0, left: leftRightInset, bottom: 0, right: leftRightInset)
     }
     
+    func stackingAndSlowingCardAttributesForBounds(bounds: CGRect) -> [UICollectionViewLayoutAttributes]?
+    {
+        let topOfStackDetectionRectForBounds = CGRect(
+            x: bounds.origin.x,
+            y: bounds.origin.y - slowingLimit,
+            width: bounds.width,
+            height: slowingLimit*2)
+        let stackingAndSlowingCardAttributes =
+            super.layoutAttributesForElementsInRect(topOfStackDetectionRectForBounds)?
+                .filter({ attributes in
+                    return attributes.representedElementCategory == .Cell
+                })
+                .sort({ (attribute1, attribute2) in
+                    return attribute1.indexPath.item < attribute2.indexPath.item
+                })
+        
+        return stackingAndSlowingCardAttributes
+    }
+    
     override func invalidationContextForBoundsChange(newBounds: CGRect) -> UICollectionViewLayoutInvalidationContext {
         let context = super.invalidationContextForBoundsChange(newBounds)
         
@@ -264,10 +283,24 @@ import UIKit
         // If we're scrolled into the negative gutter,
         // then we want to stretch the cards away from each other,
         // so we invalidate all the cards that are visible.
+        // We also invalidate all cards between the first and 
+        // the most recent card at the top of the stack.
+        // We do this because the user may sometimes scroll to the top
+        // at high speeds, and the most recent card at the top of the stack
+        // may be below the ones that are at the top of the collection view.
         
         if newBounds.origin.y < 0
         {
+            if let cardAtTopOfStack = cardAtTopOfStack
+            {
+                indexPathsToInvalidate +=
+                    (0...cardAtTopOfStack.item)
+                        .map { NSIndexPath(forItem: $0, inSection: 0) }
+
+            }
+            
             cardAtTopOfStack = nil
+            
             super.layoutAttributesForElementsInRect(newBounds)?
                 .forEach({ attributes in
                     indexPathsToInvalidate.append(attributes.indexPath)
@@ -283,7 +316,22 @@ import UIKit
             
         else if cardAtTopOfStack == nil
         {
-            cardAtTopOfStack = NSIndexPath(forItem: 0, inSection: 0)
+            let newStackingAndSlowingCardAttributes = stackingAndSlowingCardAttributesForBounds(newBounds)
+            newStackingAndSlowingCardAttributes?.forEach({ attributes in
+                indexPathsToInvalidate.append(attributes.indexPath)
+            })
+            
+            if  let newStackingAndSlowingCardAttributes = newStackingAndSlowingCardAttributes
+                where newStackingAndSlowingCardAttributes.count > 0
+            {
+                let newCardAtTopOfStack = newStackingAndSlowingCardAttributes.first!.indexPath
+                
+                indexPathsToInvalidate +=
+                    (0...newCardAtTopOfStack.item).map { NSIndexPath(forItem: $0, inSection: 0) }
+                
+                cardAtTopOfStack = newCardAtTopOfStack
+            }
+            
             super.layoutAttributesForElementsInRect(newBounds)?
                 .forEach({ attributes in
                     indexPathsToInvalidate.append(attributes.indexPath)
@@ -294,41 +342,19 @@ import UIKit
         // in the scroll view.
         // We invalidate the most recent card at the top of the stack
         // and update the top card if needed, and invalidate that one too.
-        // We also invalidate the following card so that we can slow its
-        // travel as it reaches the top.
+        // We also invalidate the following cards so that we can slow their
+        // travel as they reach the top.
             
         else
         {
             let currentBounds = self.collectionView!.bounds
-            let topOfStackDetectionRectForCurrentBounds = CGRect(
-                x: currentBounds.origin.x,
-                y: currentBounds.origin.y,
-                width: currentBounds.width,
-                height: slowingLimit*2)
-            let currentStackingAndSlowingCardAttributes =
-                super.layoutAttributesForElementsInRect(topOfStackDetectionRectForCurrentBounds)?
-                    .filter({ (attributes) -> Bool in
-                        return attributes.representedElementCategory == .Cell
-                    })
-            currentStackingAndSlowingCardAttributes?.forEach({ attributes in
-                indexPathsToInvalidate.append(attributes.indexPath)
-            })
-            
-            
-            let topOfStackDetectionRectForNewBounds = CGRect(
-                x: newBounds.origin.x,
-                y: newBounds.origin.y - slowingLimit,
-                width: newBounds.width,
-                height: slowingLimit*2)
-            var newStackingAndSlowingCardAttributes =
-                super.layoutAttributesForElementsInRect(topOfStackDetectionRectForNewBounds)?
-                    .filter({ (attributes) -> Bool in
-                        return attributes.representedElementCategory == .Cell
-                    })
-            newStackingAndSlowingCardAttributes = newStackingAndSlowingCardAttributes?
-                .sort({ (attribute1, attribute2) -> Bool in
-                    return attribute1.indexPath.item < attribute2.indexPath.item
+            stackingAndSlowingCardAttributesForBounds(currentBounds)?
+                .forEach({ attributes in
+                    indexPathsToInvalidate.append(attributes.indexPath)
                 })
+            
+
+            let newStackingAndSlowingCardAttributes = stackingAndSlowingCardAttributesForBounds(newBounds)
             newStackingAndSlowingCardAttributes?.forEach({ attributes in
                 indexPathsToInvalidate.append(attributes.indexPath)
             })
@@ -344,10 +370,10 @@ import UIKit
                     let stackChangeEndPoints =
                         [cardAtTopOfStack!.item, newCardAtTopOfStack.item].sort()
                     
-                    for item in stackChangeEndPoints[0]...stackChangeEndPoints[1]
-                    {
-                        indexPathsToInvalidate.append(NSIndexPath(forItem: item, inSection: 0))
-                    }
+                    indexPathsToInvalidate +=
+                        (stackChangeEndPoints[0]...stackChangeEndPoints[1])
+                            .map { NSIndexPath(forItem: $0, inSection: 0) }
+                   
                     cardAtTopOfStack = newCardAtTopOfStack
                 }
             }
