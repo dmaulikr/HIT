@@ -39,7 +39,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         let flowLayout = collectionView!.collectionViewLayout as! CollectionViewCardFlowLayout
         flowLayout.itemSize = CGSize(width: view.bounds.width, height: 25)
         flowLayout.cardHeight = 300
-        flowLayout.cardMargin = 200
+        flowLayout.cardMargin = 75
     }
 
     override func didReceiveMemoryWarning() {
@@ -67,7 +67,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 10
+        return 100
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

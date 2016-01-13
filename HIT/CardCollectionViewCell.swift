@@ -25,6 +25,9 @@ import UIKit
     }
     
     func setupCardView() {
+        self.contentView.layer.cornerRadius = 10
+        self.contentView.clipsToBounds = true
+        
         cardView = CardView()
         self.contentView.addSubview(cardView)
         
