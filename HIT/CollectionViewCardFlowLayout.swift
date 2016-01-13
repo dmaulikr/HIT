@@ -315,20 +315,41 @@ import UIKit
             
             if let attributes = super.layoutAttributesForElementsInRect(topOfStackDetectionRect)?.first
             {
+                print("did detect: \(attributes.indexPath)")
                 let newCardAtTopOfStack = attributes.indexPath
                 
                 if newCardAtTopOfStack != cardAtTopOfStack {
+                    print("changing stack")
+                    
+                    if cardAtTopOfStack!.item < newCardAtTopOfStack.item
+                    {
+                        for item in cardAtTopOfStack!.item...newCardAtTopOfStack.item {
+                            indexPathsToInvalidate.append(NSIndexPath(forItem: item, inSection: 0))
+                        }
+                    }
+                    else
+                    {
+                        for item in newCardAtTopOfStack.item...cardAtTopOfStack!.item {
+                            indexPathsToInvalidate.append(NSIndexPath(forItem: item, inSection: 0))
+                        }
+                    }
+                    
                     indexPathsToInvalidate.append(newCardAtTopOfStack)
-                    if cardAtTopOfStack!.item + 1 < itemCount {
-                        indexPathsToInvalidate.append(cardAtTopOfStack!.nextItem())
-                        if cardAtTopOfStack!.item + 2 < itemCount {
-                            indexPathsToInvalidate.append(cardAtTopOfStack!.nextItem().nextItem())
+                    if newCardAtTopOfStack.item + 1 < itemCount {
+                        indexPathsToInvalidate.append(newCardAtTopOfStack.nextItem())
+                        if newCardAtTopOfStack.item + 2 < itemCount {
+                            indexPathsToInvalidate.append(newCardAtTopOfStack.nextItem().nextItem())
                         }
                     }
                     cardAtTopOfStack = newCardAtTopOfStack
                 }
             }
+            else {
+                print("did not detect")
+            }
         }
+        
+//        print("invalidating: \(indexPathsToInvalidate)")
         
         context.invalidateItemsAtIndexPaths(indexPathsToInvalidate)
         context.invalidateSupplementaryElementsOfKind(

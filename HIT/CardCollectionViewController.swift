@@ -40,6 +40,10 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         flowLayout.itemSize = CGSize(width: view.bounds.width, height: 25)
         flowLayout.cardHeight = 300
         flowLayout.cardMargin = 75
+        
+        
+        flowLayout.minimumLineSpacing = 0
+        print(flowLayout.minimumLineSpacing)
     }
 
     override func didReceiveMemoryWarning() {

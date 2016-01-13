@@ -379,7 +379,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="lRg-Zn-kEw">
-                                <rect key="frame" x="0.0" y="245" width="600" height="355"/>
+                                <rect key="frame" x="0.0" y="170" width="600" height="430"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="RlP-HN-bQ4" customClass="CollectionViewCardFlowLayout" customModule="HIT" customModuleProvider="target">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -405,7 +405,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="lRg-Zn-kEw" firstAttribute="top" secondItem="lpI-Cd-bjf" secondAttribute="bottom" constant="225" id="9Kf-Hr-Kfi"/>
+                            <constraint firstItem="lRg-Zn-kEw" firstAttribute="top" secondItem="lpI-Cd-bjf" secondAttribute="bottom" constant="150" id="9Kf-Hr-Kfi"/>
                             <constraint firstItem="lRg-Zn-kEw" firstAttribute="leading" secondItem="HCr-gu-ONy" secondAttribute="leading" id="Leu-2v-XFb"/>
                             <constraint firstAttribute="trailing" secondItem="lRg-Zn-kEw" secondAttribute="trailing" id="Zzs-OD-smp"/>
                             <constraint firstItem="n9G-ji-HQS" firstAttribute="top" secondItem="lRg-Zn-kEw" secondAttribute="bottom" id="od6-CT-ZQM"/>
