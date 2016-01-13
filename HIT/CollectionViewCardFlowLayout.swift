@@ -42,11 +42,7 @@ import UIKit
     // Represents the distance at which a card begins to slow
     // when approaching the top of the collection view's bounds
     //
-    var slowingLimit: CGFloat {
-        get {
-            return 300
-        }
-    }
+    var slowingLimit: CGFloat = 50
     
     // MARK: - UICollectionViewFlowLayout override
     
