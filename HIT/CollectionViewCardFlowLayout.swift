@@ -141,18 +141,29 @@ import UIKit
             attributes.frame.origin.y = self.collectionView!.bounds.origin.y
         }
             
-            // Slow the next card down.
+        // Slow the following cards down.
             
-        else if indexPath.item > cardAtTopOfStack.item // if indexPath == cardAtTopOfStack.nextItem()
-//            || indexPath == cardAtTopOfStack.nextItem().nextItem()
+        else if indexPath.item > cardAtTopOfStack.item
         {
+            let effectiveSlowingLimit = min(attributes.frame.origin.y, slowingLimit)
+            
             let distanceFromTop = attributes.frame.origin.y - self.collectionView!.bounds.origin.y
             
+            // This condition should only be met for the first few
+            // cards in the stack which are initially stacked inside
+            // the flow layout's slowing limit
+            
+            if distanceFromTop < -1 * effectiveSlowingLimit
+            {
+                attributes.frame.origin.y = self.collectionView!.bounds.origin.y
+            }
+                
             // If the card of the super class has travelled past
             // the "slowing distance" limit, we begin to impede its movement
             // so that it slowly approaches the top of the collection view
             
-            if distanceFromTop < slowingLimit {
+            else if distanceFromTop < effectiveSlowingLimit
+            {
                 
                 // We measure how far past the slowing distance
                 // that the card of the super class has travelled.
@@ -171,8 +182,8 @@ import UIKit
                 // and by more (i.e. it travels more slowly) when it is very near
                 // its final resting place.
                 
-                let progressPastLimit = slowingLimit - distanceFromTop
-                let progressPastLimitPercent = progressPastLimit/(slowingLimit * 2)
+                let progressPastLimit = effectiveSlowingLimit - distanceFromTop
+                let progressPastLimitPercent = progressPastLimit/(effectiveSlowingLimit * 2)
                 attributes.frame.origin.y += progressPastLimitPercent * progressPastLimit/2
             }
         }
