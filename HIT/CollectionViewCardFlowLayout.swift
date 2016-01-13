@@ -189,6 +189,8 @@ import UIKit
 
     override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
     {
+//        print(cardAtTopOfStack?.item)
+        
         if let superAttributes = super.layoutAttributesForSupplementaryViewOfKind(elementKind, atIndexPath: indexPath) {
             return superAttributes
         }
@@ -215,6 +217,17 @@ import UIKit
             cardAttributes.frame = cardFrame
             setZIndexForAttributes(cardAttributes)
 //            applyStackingTransformationToAttributes(cardAttributes)
+            
+            
+            
+            if  let cardAtTopOfStack = cardAtTopOfStack
+                where indexPath.item < cardAtTopOfStack.item
+            {
+                cardAttributes.alpha = 0
+            }
+            else {
+                cardAttributes.alpha = 1
+            }
             
             return cardAttributes
         }
