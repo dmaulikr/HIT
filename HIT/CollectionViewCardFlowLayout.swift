@@ -278,6 +278,14 @@ import UIKit
         
         setSectionInsetForBounds(newBounds)
         
+        guard   let cv = self.collectionView,
+                let count = cv.dataSource?.collectionView(cv, numberOfItemsInSection: 0)
+                where count > 0
+                else
+        {
+            return context
+        }
+        
         // if the bounds' width has changed (maybe due to device rotation),
         // invalidate everything.
         
