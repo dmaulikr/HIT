@@ -269,9 +269,10 @@ import UIKit
     {
         let topOfStackDetectionRectForBounds = CGRect(
             x: bounds.origin.x,
-            y: bounds.origin.y - slowingLimit,
+            y: bounds.origin.y - slowingLimit - minimumLineSpacing,
             width: bounds.width,
-            height: slowingLimit*2)
+            height: slowingLimit * 2 + minimumLineSpacing)
+        
         let stackingAndSlowingCardAttributes =
             super.layoutAttributesForElementsInRect(topOfStackDetectionRectForBounds)?
                 .filter({ attributes in
