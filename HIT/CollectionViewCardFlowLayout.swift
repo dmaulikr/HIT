@@ -36,7 +36,16 @@ import UIKit
         }
     }
     
-    var cardAtTopOfStack: NSIndexPath? = NSIndexPath(forItem: 0, inSection: 0)
+    var cardAtTopOfStack: NSIndexPath?
+    
+    var topInset: CGFloat {
+        set {
+            setSectionInsetForBounds(self.collectionView!.bounds, withTopInset: newValue)
+        }
+        get {
+            return sectionInset.top
+        }
+    }
     
     
     // Represents the distance at which a card begins to slow
@@ -64,18 +73,6 @@ import UIKit
     
     override func prepareLayout() {
         setSectionInsetForBounds(self.collectionView!.bounds)
-    }
-    
-    override func invalidateLayout() {
-        super.invalidateLayout()
-        
-        print("invalidate layout")
-    }
-    
-    override func invalidateLayoutWithContext(context: UICollectionViewLayoutInvalidationContext) {
-        super.invalidateLayoutWithContext(context)
-        
-        print("invalidate layout with context")
     }
     
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]?
@@ -131,12 +128,16 @@ import UIKit
             attributes.frame.origin.y = self.collectionView!.bounds.origin.y
         }
             
-            // If the card of the super class has travelled past
-            // the "slowing distance" limit, we begin to impede its movement
-            // so that it slowly approaches the top of the collection view
+        // If the card of the super class has travelled past
+        // the "slowing distance" limit, we begin to impede its movement
+        // so that it slowly approaches the top of the collection view
             
         else if distanceFromTop < effectiveSlowingLimit
         {
+            if attributes.indexPath.item == 0
+            {
+                print("past slowing limit")
+            }
             
             // We measure how far past the slowing distance
             // that the card of the super class has travelled.
@@ -187,11 +188,31 @@ import UIKit
         
         if indexPath == cardAtTopOfStack
         {
-            if self.collectionView!.bounds.origin.y > sectionInset.top * 2 {
-                attributes.frame.origin.y = self.collectionView!.bounds.origin.y
+            if indexPath.item == 0
+            {
+                // Compute y-coordinate of the collection view's bounds
+                // at which the first card of the collection starts to pin
+                // to the top of the view.
+                // This is an edge case raised by a positive top section inset.
+                
+                let y: CGFloat
+                if slowingLimit > sectionInset.top {
+                    y = sectionInset.top * 2
+                }
+                else {
+                    y = sectionInset.top + sectionInset.top
+                }
+                
+                if self.collectionView!.bounds.origin.y > y {
+                    attributes.frame.origin.y = self.collectionView!.bounds.origin.y
+                }
+                else {
+                    applySlowingTransformationToAttributes(attributes)
+                }
             }
-            else {
-                applySlowingTransformationToAttributes(attributes)
+            else
+            {
+                attributes.frame.origin.y = self.collectionView!.bounds.origin.y
             }
         }
             
@@ -254,14 +275,17 @@ import UIKit
     
     override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool
     {
-        print("should invalidate for bounds")
         invalidateLayoutWithContext(invalidationContextForBoundsChange(newBounds))
         return super.shouldInvalidateLayoutForBoundsChange(newBounds)
     }
     
-    func setSectionInsetForBounds(bounds: CGRect) {
+    func setSectionInsetForBounds(bounds: CGRect, withTopInset top: CGFloat) {
         let leftRightInset = (bounds.width - itemSize.width)/2
-        sectionInset = UIEdgeInsets(top: 50, left: leftRightInset, bottom: 0, right: leftRightInset)
+        sectionInset = UIEdgeInsets(top: top, left: leftRightInset, bottom: 0, right: leftRightInset)
+    }
+    
+    func setSectionInsetForBounds(bounds: CGRect) {
+        setSectionInsetForBounds(bounds, withTopInset: sectionInset.top)
     }
     
     //
@@ -320,6 +344,8 @@ import UIKit
         {
             return context
         }
+        
+        print("invalidating, card at top: \(cardAtTopOfStack)")
         
         
         var indexPathsToInvalidate = [NSIndexPath]()
