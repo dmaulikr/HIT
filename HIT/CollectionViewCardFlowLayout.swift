@@ -116,6 +116,51 @@ import UIKit
         }
     }
     
+    func applySlowingTransformationToAttributes(attributes: UICollectionViewLayoutAttributes)
+    {
+        let effectiveSlowingLimit = min(attributes.frame.origin.y, slowingLimit)
+        
+        let distanceFromTop = attributes.frame.origin.y - self.collectionView!.bounds.origin.y
+        
+        // This condition should only be met for the first few
+        // cards in the stack which are initially stacked inside
+        // the flow layout's slowing limit
+        
+        if distanceFromTop < -1 * effectiveSlowingLimit
+        {
+            attributes.frame.origin.y = self.collectionView!.bounds.origin.y
+        }
+            
+            // If the card of the super class has travelled past
+            // the "slowing distance" limit, we begin to impede its movement
+            // so that it slowly approaches the top of the collection view
+            
+        else if distanceFromTop < effectiveSlowingLimit
+        {
+            
+            // We measure how far past the slowing distance
+            // that the card of the super class has travelled.
+            
+            // We then take that as a percentage of the total distance
+            // it will travel in the super class layout before it rests
+            // at the top of our collection view
+            
+            // We multiply that percentage by half the progress past the
+            // slowing limit that has been achieved. We add that result
+            // to the y-coordinate of our card so that its movement is
+            // impeded as it approaches the top of the collection view bounds.
+            
+            // As well, by including the progress percentage into the calculation,
+            // the card is impeded less when it has just passed the limit,
+            // and by more (i.e. it travels more slowly) when it is very near
+            // its final resting place.
+            
+            let progressPastLimit = effectiveSlowingLimit - distanceFromTop
+            let progressPastLimitPercent = progressPastLimit/(effectiveSlowingLimit * 2)
+            attributes.frame.origin.y += progressPastLimitPercent * progressPastLimit/2
+        }
+    }
+    
     func applyStackingTransformationToAttributes(attributes: UICollectionViewLayoutAttributes)
     {
         let indexPath = attributes.indexPath
@@ -142,54 +187,19 @@ import UIKit
         
         if indexPath == cardAtTopOfStack
         {
-            attributes.frame.origin.y = self.collectionView!.bounds.origin.y
+            if self.collectionView!.bounds.origin.y > sectionInset.top * 2 {
+                attributes.frame.origin.y = self.collectionView!.bounds.origin.y
+            }
+            else {
+                applySlowingTransformationToAttributes(attributes)
+            }
         }
             
         // Slow the following cards down.
             
         else if indexPath.item > cardAtTopOfStack.item
         {
-            let effectiveSlowingLimit = min(attributes.frame.origin.y, slowingLimit)
-            
-            let distanceFromTop = attributes.frame.origin.y - self.collectionView!.bounds.origin.y
-            
-            // This condition should only be met for the first few
-            // cards in the stack which are initially stacked inside
-            // the flow layout's slowing limit
-            
-            if distanceFromTop < -1 * effectiveSlowingLimit
-            {
-                attributes.frame.origin.y = self.collectionView!.bounds.origin.y
-            }
-                
-            // If the card of the super class has travelled past
-            // the "slowing distance" limit, we begin to impede its movement
-            // so that it slowly approaches the top of the collection view
-            
-            else if distanceFromTop < effectiveSlowingLimit
-            {
-                
-                // We measure how far past the slowing distance
-                // that the card of the super class has travelled.
-                
-                // We then take that as a percentage of the total distance
-                // it will travel in the super class layout before it rests
-                // at the top of our collection view
-                
-                // We multiply that percentage by half the progress past the
-                // slowing limit that has been achieved. We add that result
-                // to the y-coordinate of our card so that its movement is
-                // impeded as it approaches the top of the collection view bounds.
-                
-                // As well, by including the progress percentage into the calculation,
-                // the card is impeded less when it has just passed the limit,
-                // and by more (i.e. it travels more slowly) when it is very near
-                // its final resting place.
-                
-                let progressPastLimit = effectiveSlowingLimit - distanceFromTop
-                let progressPastLimitPercent = progressPastLimit/(effectiveSlowingLimit * 2)
-                attributes.frame.origin.y += progressPastLimitPercent * progressPastLimit/2
-            }
+            applySlowingTransformationToAttributes(attributes)
         }
     }
     
@@ -251,7 +261,7 @@ import UIKit
     
     func setSectionInsetForBounds(bounds: CGRect) {
         let leftRightInset = (bounds.width - itemSize.width)/2
-        sectionInset = UIEdgeInsets(top: 0, left: leftRightInset, bottom: 0, right: leftRightInset)
+        sectionInset = UIEdgeInsets(top: 50, left: leftRightInset, bottom: 0, right: leftRightInset)
     }
     
     //
