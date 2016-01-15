@@ -134,11 +134,6 @@ import UIKit
             
         else if distanceFromTop < effectiveSlowingLimit
         {
-            if attributes.indexPath.item == 0
-            {
-                print("past slowing limit")
-            }
-            
             // We measure how far past the slowing distance
             // that the card of the super class has travelled.
             
@@ -357,9 +352,6 @@ import UIKit
         {
             return context
         }
-        
-        print("invalidating, card at top: \(cardAtTopOfStack)")
-        
         
         var indexPathsToInvalidate = [NSIndexPath]()
         

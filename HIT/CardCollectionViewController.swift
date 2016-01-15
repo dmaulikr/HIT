@@ -14,6 +14,11 @@ private let cardSupplementaryViewReuseIdentifier = "CardCollectionViewCell"
 class CardCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var testButton: UIButton!
+    
+    @IBAction func testButtonPressed(sender: AnyObject) {
+        print("pressed")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,12 +45,11 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         flowLayout.itemSize = CGSize(width: view.bounds.width, height: 25)
         flowLayout.cardHeight = 400
         flowLayout.cardMargin = 100
-        flowLayout.slowingLimit = 0
+        flowLayout.slowingLimit = 75
         flowLayout.topInset = 300
         
         
         flowLayout.minimumLineSpacing = 0
-        print(flowLayout.minimumLineSpacing)
     }
 
     override func didReceiveMemoryWarning() {
