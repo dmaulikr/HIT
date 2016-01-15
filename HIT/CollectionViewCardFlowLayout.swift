@@ -301,11 +301,24 @@ import UIKit
         -> [UICollectionViewLayoutAttributes]?
         
     {
-        let topOfStackDetectionRectForBounds = CGRect(
-            x: bounds.origin.x,
-            y: bounds.origin.y - slowingLimit - minimumLineSpacing,
-            width: bounds.width,
-            height: slowingLimit * 2 + minimumLineSpacing)
+        let topOfStackDetectionRectForBounds: CGRect
+        
+        if slowingLimit > 0
+        {
+            topOfStackDetectionRectForBounds = CGRect(
+                x: bounds.origin.x,
+                y: bounds.origin.y - slowingLimit - minimumLineSpacing,
+                width: bounds.width,
+                height: slowingLimit * 2 + minimumLineSpacing)
+        }
+        else
+        {
+            topOfStackDetectionRectForBounds = CGRect(
+                x: bounds.origin.x,
+                y: bounds.origin.y - minimumLineSpacing,
+                width: bounds.width,
+                height: itemSize.height + minimumLineSpacing)
+        }
         
         let stackingAndSlowingCardAttributes =
             super.layoutAttributesForElementsInRect(topOfStackDetectionRectForBounds)?
