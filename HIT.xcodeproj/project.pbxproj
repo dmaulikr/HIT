@@ -23,6 +23,7 @@
 		3F8397D91C24F23C0002002E /* CardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F8397D81C24F23C0002002E /* CardView.xib */; };
 		3F8397DD1C251E720002002E /* XibDesignedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8397DC1C251E720002002E /* XibDesignedView.swift */; };
 		3F8397DF1C2522B70002002E /* CardTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8397DE1C2522B70002002E /* CardTableView.swift */; };
+		3FA3900F1C48E1D30099FB17 /* CollectionViewPulledCardFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA3900E1C48E1D30099FB17 /* CollectionViewPulledCardFlowLayout.swift */; };
 		3FCA2D111C2E372D00E27F64 /* UIColor+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA2D101C2E372D00E27F64 /* UIColor+Helpers.swift */; };
 		3FCA2D161C322AD400E27F64 /* CardCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA2D151C322AD400E27F64 /* CardCollectionViewController.swift */; };
 		3FCA2D181C322EF500E27F64 /* CardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA2D171C322EF500E27F64 /* CardCollectionViewCell.swift */; };
@@ -75,6 +76,7 @@
 		3F8397D81C24F23C0002002E /* CardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardView.xib; sourceTree = "<group>"; };
 		3F8397DC1C251E720002002E /* XibDesignedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XibDesignedView.swift; sourceTree = "<group>"; };
 		3F8397DE1C2522B70002002E /* CardTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTableView.swift; sourceTree = "<group>"; };
+		3FA3900E1C48E1D30099FB17 /* CollectionViewPulledCardFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewPulledCardFlowLayout.swift; sourceTree = "<group>"; };
 		3FCA2D101C2E372D00E27F64 /* UIColor+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Helpers.swift"; sourceTree = "<group>"; };
 		3FCA2D151C322AD400E27F64 /* CardCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardCollectionViewController.swift; sourceTree = "<group>"; };
 		3FCA2D171C322EF500E27F64 /* CardCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 			isa = PBXGroup;
 			children = (
 				3FCA2D191C32441D00E27F64 /* CollectionViewCardFlowLayout.swift */,
+				3FA3900E1C48E1D30099FB17 /* CollectionViewPulledCardFlowLayout.swift */,
 				3FCA2D171C322EF500E27F64 /* CardCollectionViewCell.swift */,
 				3FCA2D1B1C40A87000E27F64 /* PlaceholderCollectionViewCell.swift */,
 				3FF21E2F1C2202CB0079C67F /* CardView.swift */,
@@ -364,6 +367,7 @@
 				3FF21E301C2202CB0079C67F /* CardView.swift in Sources */,
 				3FF21E351C24EDCD0079C67F /* NSLayoutConstraint+Helpers.swift in Sources */,
 				3FCA2D161C322AD400E27F64 /* CardCollectionViewController.swift in Sources */,
+				3FA3900F1C48E1D30099FB17 /* CollectionViewPulledCardFlowLayout.swift in Sources */,
 				3FCA2D1A1C32441D00E27F64 /* CollectionViewCardFlowLayout.swift in Sources */,
 				3F16BB7F1C2BE459000D4B7D /* CardTableViewController.swift in Sources */,
 				3F16BB7D1C2BE3A1000D4B7D /* CardAnnotation.swift in Sources */,
