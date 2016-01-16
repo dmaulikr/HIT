@@ -42,12 +42,20 @@ class CollectionViewPulledCardFlowLayout: CollectionViewCardFlowLayout
     
     func setYCoordinateForAttributes(attributes: UICollectionViewLayoutAttributes)
     {
-        let distanceFromTopToRetractedStack = self.collectionView!.bounds.height - retractedCardStackHeight
-        
-        let distanceFromTopToAttributes = attributes.frame.origin.y - self.collectionView!.bounds.origin.y
-        let percentageDistance = distanceFromTopToAttributes / self.collectionView!.bounds.height
-        
-        attributes.frame.origin.y = self.collectionView!.bounds.origin.y + percentageDistance * retractedCardStackHeight + distanceFromTopToRetractedStack
+        if attributes.indexPath == pulledCard
+        {
+            attributes.frame.origin.y = self.collectionView!.bounds.origin.y
+        }
+        else
+        {
+            let distanceFromTopToRetractedStack = self.collectionView!.bounds.height - retractedCardStackHeight
+            
+            let distanceFromTopToAttributes = attributes.frame.origin.y - self.collectionView!.bounds.origin.y
+            let percentageDistance = distanceFromTopToAttributes / self.collectionView!.bounds.height
+            
+            attributes.frame.origin.y = self.collectionView!.bounds.origin.y + percentageDistance * retractedCardStackHeight + distanceFromTopToRetractedStack
+    
+        }
     }
     
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {

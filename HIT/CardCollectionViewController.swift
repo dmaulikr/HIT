@@ -47,6 +47,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         flowLayout.cardMargin = 100
         flowLayout.slowingLimit = 75
         flowLayout.topInset = 0
+        flowLayout.pulledCard = NSIndexPath(forItem: 3, inSection: 0)
         
         
         flowLayout.minimumLineSpacing = 0
