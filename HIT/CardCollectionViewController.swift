@@ -127,6 +127,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         // block as a work around for content offset bug.
         if collectionView.collectionViewLayout.isKindOfClass(CollectionViewPulledCardFlowLayout.self)
         {
+            cardFlowLayout.invalidateLayout()
             let currentContentOffset = collectionView.contentOffset
             collectionView.scrollEnabled = true
             UIView.animateWithDuration(2.0) { () -> Void in
@@ -136,7 +137,9 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         }
         else
         {
+            pulledCardFlowLayout.cardAtTopOfStack = cardFlowLayout.cardAtTopOfStack
             pulledCardFlowLayout.pulledCard = indexPath
+            pulledCardFlowLayout.invalidateLayout()
             let currentContentOffset = collectionView.contentOffset
             collectionView.scrollEnabled = false
             UIView.animateWithDuration(2.0) { () -> Void in
