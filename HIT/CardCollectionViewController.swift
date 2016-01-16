@@ -16,6 +16,9 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var testButton: UIButton!
     
+    var cardFlowLayout = CollectionViewCardFlowLayout()
+    var pulledCardFlowLayout = CollectionViewPulledCardFlowLayout()
+    
     @IBAction func testButtonPressed(sender: AnyObject) {
         print("pressed")
     }
@@ -36,22 +39,26 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
             CardCollectionViewCell.self,
             forSupplementaryViewOfKind: CollectionViewCardFlowLayout.SupplementaryViewKind.Card.rawValue,
             withReuseIdentifier: cardSupplementaryViewReuseIdentifier)
+        
+        collectionView.setCollectionViewLayout(cardFlowLayout, animated: false)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        let flowLayout = collectionView!.collectionViewLayout as! CollectionViewPulledCardFlowLayout
-        flowLayout.itemSize = CGSize(width: view.bounds.width, height: 25)
-        flowLayout.cardHeight = 400
-        flowLayout.cardMargin = 100
-        flowLayout.slowingLimit = 75
-        flowLayout.topInset = 0
-        flowLayout.pulledCard = NSIndexPath(forItem: 3, inSection: 0)
-        collectionView.scrollEnabled = false
+        cardFlowLayout.itemSize = CGSize(width: view.bounds.width-4, height: 25)
+        cardFlowLayout.cardHeight = 475
+        cardFlowLayout.cardMargin = 100
+        cardFlowLayout.slowingLimit = 75
+        cardFlowLayout.topInset = 0
+        cardFlowLayout.minimumLineSpacing = 0
         
-        
-        flowLayout.minimumLineSpacing = 0
+        pulledCardFlowLayout.itemSize = CGSize(width: view.bounds.width-4, height: 25)
+        pulledCardFlowLayout.cardHeight = 475
+        pulledCardFlowLayout.cardMargin = 100
+        pulledCardFlowLayout.slowingLimit = 75
+        pulledCardFlowLayout.topInset = 0
+        pulledCardFlowLayout.minimumLineSpacing = 0
     }
 
     override func didReceiveMemoryWarning() {
@@ -115,7 +122,33 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
     func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
         print(indexPath)
         
-        return true
+        
+        // Have to embed setCollectionViewLayout:animated: in an animation
+        // block as a work around for content offset bug.
+        if collectionView.collectionViewLayout.isKindOfClass(CollectionViewPulledCardFlowLayout.self)
+        {
+            let currentContentOffset = collectionView.contentOffset
+            collectionView.scrollEnabled = true
+            UIView.animateWithDuration(2.0) { () -> Void in
+                collectionView.setCollectionViewLayout(self.cardFlowLayout, animated: false)
+                collectionView.contentOffset = currentContentOffset
+            }
+        }
+        else
+        {
+            pulledCardFlowLayout.pulledCard = indexPath
+            let currentContentOffset = collectionView.contentOffset
+            collectionView.scrollEnabled = false
+            UIView.animateWithDuration(2.0) { () -> Void in
+                collectionView.setCollectionViewLayout(self.pulledCardFlowLayout, animated: false)
+                collectionView.contentOffset = currentContentOffset
+            }
+        }
+        
+//        collectionView.setCollectionViewLayout(pulledCardFlowLayout, animated: false)
+//        collectionView.contentOffset
+        
+        return false
     }
 
     /*

@@ -40,7 +40,18 @@ import UIKit
     
     var topInset: CGFloat {
         set {
-            setSectionInsetForBounds(self.collectionView!.bounds, withTopInset: newValue)
+            if let bounds = self.collectionView?.bounds
+            {
+                setSectionInsetForBounds(bounds, withTopInset: newValue)
+            }
+            else
+            {
+                sectionInset = UIEdgeInsets(
+                    top: newValue,
+                    left: sectionInset.left,
+                    bottom: sectionInset.bottom,
+                    right: sectionInset.right)
+            }
         }
         get {
             return sectionInset.top
@@ -90,7 +101,6 @@ import UIKit
             return superAttributes.representedElementCategory != .Cell
         })
         
-        print("card flow elements in rect")
         let cardMarginAttributes = itemSuperAttributes
             .map { calculateLayoutAttributesForItemAtIndexPath($0.indexPath)! }
         
@@ -246,7 +256,8 @@ import UIKit
         
         switch supplementaryViewKind {
         case .Card:
-            guard let cardMarginAttributes = super.layoutAttributesForItemAtIndexPath(indexPath) else {
+            guard   let cardMarginAttributes = super.layoutAttributesForItemAtIndexPath(indexPath)?.copy() as? UICollectionViewLayoutAttributes
+                    else {
                 return nil
             }
             applyStackingTransformationToAttributes(cardMarginAttributes)
@@ -282,7 +293,6 @@ import UIKit
     
     override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool
     {
-        print("should invalidate")
         invalidateLayoutWithContext(invalidationContextForBoundsChange(newBounds))
         return super.shouldInvalidateLayoutForBoundsChange(newBounds)
     }
@@ -344,6 +354,8 @@ import UIKit
         
         -> UICollectionViewLayoutInvalidationContext
     {
+        print("invalidation context for bounds change: \(newBounds)")
+        
         let context = super.invalidationContextForBoundsChange(newBounds)
         
         setSectionInsetForBounds(newBounds)
