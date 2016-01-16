@@ -111,8 +111,18 @@ import UIKit
             return superAttributes.representedElementCategory != .Cell
         })
         
-        let cardMarginAttributes = itemSuperAttributes
+        var cardMarginAttributes = itemSuperAttributes
             .map { calculateLayoutAttributesForItemAtIndexPath($0.indexPath)! }
+            .sort { return $0.indexPath.item < $1.indexPath.item }
+        
+        if  let cardAtTopOfStack = cardAtTopOfStack,
+            let firstIndexPath = cardMarginAttributes.first?.indexPath
+            where cardAtTopOfStack.item < firstIndexPath.item
+        {
+            let extraAttributes = (cardAtTopOfStack.item...firstIndexPath.item)
+                .map { calculateLayoutAttributesForItemAtIndexPath(NSIndexPath(forItem: $0, inSection: 0))! }
+            cardMarginAttributes.insertContentsOf(extraAttributes, at: 0)
+        }
         
         let cardAttributes = cardMarginAttributes.map { (attributes) -> UICollectionViewLayoutAttributes in
             return calculatelayoutAttributesForSupplementaryViewOfKind(SupplementaryViewKind.Card.rawValue, atIndexPath: attributes.indexPath)!
@@ -303,9 +313,9 @@ import UIKit
     
     override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool
     {
-//        invalidateLayoutWithContext(invalidationContextForBoundsChange(newBounds))
-//        return super.shouldInvalidateLayoutForBoundsChange(newBounds)
-        return true
+        invalidateLayoutWithContext(invalidationContextForBoundsChange(newBounds))
+        return super.shouldInvalidateLayoutForBoundsChange(newBounds)
+//        return true
     }
     
     func setSectionInsetForBounds(bounds: CGRect, withTopInset top: CGFloat) {
