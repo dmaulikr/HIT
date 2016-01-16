@@ -83,11 +83,21 @@ import UIKit
     }
     
     override func prepareLayout() {
+        print("prepare layout")
         setSectionInsetForBounds(self.collectionView!.bounds)
+        
+        let newStackingAndSlowingCardAttributes = stackingAndSlowingCardAttributesForBounds(self.collectionView!.bounds)
+        if  let newStackingAndSlowingCardAttributes = newStackingAndSlowingCardAttributes
+            where newStackingAndSlowingCardAttributes.count > 0
+        {
+            cardAtTopOfStack = newStackingAndSlowingCardAttributes.first!.indexPath
+        }
     }
     
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]?
     {
+        print("in rect")
+        
         guard let superAttributes = super.layoutAttributesForElementsInRect(rect) else {
             return nil
         }
@@ -293,8 +303,9 @@ import UIKit
     
     override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool
     {
-        invalidateLayoutWithContext(invalidationContextForBoundsChange(newBounds))
-        return super.shouldInvalidateLayoutForBoundsChange(newBounds)
+//        invalidateLayoutWithContext(invalidationContextForBoundsChange(newBounds))
+//        return super.shouldInvalidateLayoutForBoundsChange(newBounds)
+        return true
     }
     
     func setSectionInsetForBounds(bounds: CGRect, withTopInset top: CGFloat) {
@@ -348,6 +359,16 @@ import UIKit
                 })
         
         return stackingAndSlowingCardAttributes
+    }
+    
+    override func invalidateLayout() {
+        super.invalidateLayout()
+        print("invalidate layout")
+    }
+    
+    override func invalidateLayoutWithContext(context: UICollectionViewLayoutInvalidationContext) {
+        super.invalidateLayoutWithContext(context)
+        print("invalidate with context")
     }
     
     override func invalidationContextForBoundsChange(newBounds: CGRect)
