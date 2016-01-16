@@ -111,28 +111,33 @@
                 }
             }
             
+            pose.zIndex = toPose.zIndex;
+            
             [poses setObject:pose forKey:key];
         }
         // supplementary views
         for (NSString *kind in self.supplementaryKinds) {
-
-            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
-            NSString *key = [self keyForIndexPath:indexPath kind:kind];
-            
-            UICollectionViewLayoutAttributes *fromPose = self.poses
-                    ? [self.poses objectForKey:key]
-                    : [self.currentLayout layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:indexPath];
-            UICollectionViewLayoutAttributes *toPose = reverse
-                    ? [self.currentLayout layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:indexPath]
-                    : [self.nextLayout layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:indexPath];
-            UICollectionViewLayoutAttributes *pose = [[[self class] layoutAttributesClass]
-                                                      layoutAttributesForSupplementaryViewOfKind:kind withIndexPath:indexPath];
-            
-            [self interpolatePose:pose fromPose:fromPose toPose:toPose fromProgress:f toProgress:t];
-            
-            // TODO need to incorporate the `updateLayoutAttributes` callback
-            
-            [poses setObject:pose forKey:key];
+            for (NSInteger item = 0; item < [self.collectionView numberOfItemsInSection:section]; item++) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
+                NSString *key = [self keyForIndexPath:indexPath kind:kind];
+                
+                UICollectionViewLayoutAttributes *fromPose = self.poses
+                        ? [self.poses objectForKey:key]
+                        : [self.currentLayout layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:indexPath];
+                UICollectionViewLayoutAttributes *toPose = reverse
+                        ? [self.currentLayout layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:indexPath]
+                        : [self.nextLayout layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:indexPath];
+                UICollectionViewLayoutAttributes *pose = [[[self class] layoutAttributesClass]
+                                                          layoutAttributesForSupplementaryViewOfKind:kind withIndexPath:indexPath];
+                
+                [self interpolatePose:pose fromPose:fromPose toPose:toPose fromProgress:f toProgress:t];
+                
+                // TODO need to incorporate the `updateLayoutAttributes` callback
+                
+                pose.zIndex = toPose.zIndex;
+                
+                [poses setObject:pose forKey:key];
+            }
         }
     }
     self.poses = poses;
@@ -196,12 +201,14 @@
         }
         // supplementary views
         for (NSString *kind in self.supplementaryKinds) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
-            id key = [self keyForIndexPath:indexPath kind:kind];
-            UICollectionViewLayoutAttributes *pose = [self.poses objectForKey:key];
-            CGRect intersection = CGRectIntersection(rect, pose.frame);
-            if (!CGRectIsEmpty(intersection)) {
-                [poses addObject:pose];
+            for (NSInteger item = 0; item < [self.collectionView numberOfItemsInSection:section]; item++) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
+                id key = [self keyForIndexPath:indexPath kind:kind];
+                UICollectionViewLayoutAttributes *pose = [self.poses objectForKey:key];
+                CGRect intersection = CGRectIntersection(rect, pose.frame);
+                if (!CGRectIsEmpty(intersection)) {
+                    [poses addObject:pose];
+                }
             }
         }
     }
