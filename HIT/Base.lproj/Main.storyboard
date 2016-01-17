@@ -386,7 +386,7 @@
                                 </connections>
                             </button>
                             <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="lRg-Zn-kEw">
-                                <rect key="frame" x="5" y="170" width="590" height="430"/>
+                                <rect key="frame" x="5" y="70" width="590" height="530"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="RlP-HN-bQ4" customClass="CollectionViewPulledCardFlowLayout" customModule="HIT" customModuleProvider="target">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -412,7 +412,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="lRg-Zn-kEw" firstAttribute="top" secondItem="lpI-Cd-bjf" secondAttribute="bottom" constant="150" id="9Kf-Hr-Kfi"/>
+                            <constraint firstItem="lRg-Zn-kEw" firstAttribute="top" secondItem="lpI-Cd-bjf" secondAttribute="bottom" constant="50" id="9Kf-Hr-Kfi"/>
                             <constraint firstItem="lRg-Zn-kEw" firstAttribute="leading" secondItem="HCr-gu-ONy" secondAttribute="leading" constant="5" id="Leu-2v-XFb"/>
                             <constraint firstItem="Kfc-EK-3g9" firstAttribute="top" secondItem="lpI-Cd-bjf" secondAttribute="bottom" constant="50" id="Pfb-n2-uM2"/>
                             <constraint firstItem="Kfc-EK-3g9" firstAttribute="centerX" secondItem="HCr-gu-ONy" secondAttribute="centerX" id="YnU-En-alM"/>

@@ -310,8 +310,7 @@ import UIKit
     }
     
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        print("layout attributes for item at index path: \(indexPath), card at top is: \(cardAtTopOfStack)")
-
+//        print("layout attributes for item at index path: \(indexPath), card at top is: \(cardAtTopOfStack)")
         
         return cardCache[indexPath.item]
     }
@@ -321,7 +320,6 @@ import UIKit
         print("\n\nshould invalidate")
         invalidateLayoutWithContext(invalidationContextForBoundsChange(newBounds))
         return super.shouldInvalidateLayoutForBoundsChange(newBounds)
-//        return true
     }
     
     func setSectionInsetForBounds(bounds: CGRect, withTopInset top: CGFloat) {

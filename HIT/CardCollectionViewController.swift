@@ -47,14 +47,14 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         super.viewWillAppear(animated)
         
         cardFlowLayout.itemSize = CGSize(width: view.bounds.width-4, height: 25)
-        cardFlowLayout.cardHeight = 475
+        cardFlowLayout.cardHeight = 400
         cardFlowLayout.cardMargin = 100
         cardFlowLayout.slowingLimit = 75
         cardFlowLayout.topInset = 0
         cardFlowLayout.minimumLineSpacing = 0
         
         pulledCardFlowLayout.itemSize = CGSize(width: view.bounds.width-4, height: 25)
-        pulledCardFlowLayout.cardHeight = 475
+        pulledCardFlowLayout.cardHeight = 400
         pulledCardFlowLayout.cardMargin = 100
         pulledCardFlowLayout.slowingLimit = 75
         pulledCardFlowLayout.topInset = 0
@@ -86,7 +86,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 1000
+        return 50
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
