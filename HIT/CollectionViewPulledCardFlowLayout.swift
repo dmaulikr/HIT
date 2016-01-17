@@ -16,6 +16,14 @@ class CollectionViewPulledCardFlowLayout: CollectionViewCardFlowLayout
     var retractedCardStackHeight: CGFloat = 50
     var retractedCardGap: CGFloat = 5
     
+    var cardCache = [Int : UICollectionViewLayoutAttributes]()
+    
+    override func prepareLayout() {
+        super.prepareLayout()
+        
+        print(cardCache)
+    }
+    
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         guard let superAttributes = super.layoutAttributesForElementsInRect(rect) else {
             return nil
@@ -25,7 +33,7 @@ class CollectionViewPulledCardFlowLayout: CollectionViewCardFlowLayout
         
         // filter for item attributes
         
-        let attributes = superAttributes.map { (superAttributes) -> UICollectionViewLayoutAttributes in
+        var attributes = superAttributes.map { (superAttributes) -> UICollectionViewLayoutAttributes in
             switch superAttributes.representedElementCategory
             {
             case .Cell:
@@ -33,6 +41,10 @@ class CollectionViewPulledCardFlowLayout: CollectionViewCardFlowLayout
             default:
                 return superAttributes
             }
+        }
+        
+        if let pulledCard = pulledCard {
+            attributes.append(layoutAttributesForItemAtIndexPath(pulledCard)!)
         }
         
         return attributes
@@ -60,9 +72,12 @@ class CollectionViewPulledCardFlowLayout: CollectionViewCardFlowLayout
     }
     
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        let superAttributes = super.layoutAttributesForItemAtIndexPath(indexPath)!.copy() as! UICollectionViewLayoutAttributes
+        let superAttributes = super.calculateLayoutAttributesForItemAtIndexPath(indexPath)!.copy() as! UICollectionViewLayoutAttributes
         
         setYCoordinateForAttributes(superAttributes)
+        if indexPath == pulledCard {
+            superAttributes.alpha = 1
+        }
         
         return superAttributes
     }
@@ -100,6 +115,7 @@ class CollectionViewPulledCardFlowLayout: CollectionViewCardFlowLayout
         
         context.invalidateItemsAtIndexPaths(indexPathsToInvalidate)
         if let pulledCard = pulledCard {
+            print("invalidating pulled card")
             context.invalidateItemsAtIndexPaths([pulledCard])
         }
         

@@ -75,8 +75,7 @@ import UIKit
     }
     
     
-    var cardCache = [Int : UICollectionViewLayoutAttributes]()
-    var cardsToRecalculate = [Int]()
+    private var cardCache = [Int : UICollectionViewLayoutAttributes]()
     
     
     // MARK: - UICollectionViewFlowLayout override

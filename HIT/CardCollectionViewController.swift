@@ -86,7 +86,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 50
+        return 10000
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -125,7 +125,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
             
             collectionView.transitionToCollectionViewLayout(
                 cardFlowLayout,
-                duration: 5.0,
+                duration: 0.5,
                 easing: QuadraticEaseInOut,
                 completion: nil)
 //            collectionView.transitionToCollectionViewLayout(cardFlowLayout, duration: 2.0, completion: nil)
@@ -142,7 +142,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
             
             collectionView.transitionToCollectionViewLayout(
                 pulledCardFlowLayout,
-                duration: 5.0,
+                duration: 0.5,
                 easing: QuadraticEaseInOut,
                 completion: nil)
 //            collectionView.transitionToCollectionViewLayout(pulledCardFlowLayout, duration: 2.0, completion: nil)
