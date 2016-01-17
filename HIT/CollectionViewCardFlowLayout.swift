@@ -115,24 +115,20 @@ import UIKit
             return superAttributes.representedElementCategory != .Cell
         })
         
-        var cardMarginAttributes = itemSuperAttributes
+        var cardAttributes = itemSuperAttributes
             .map { calculateLayoutAttributesForItemAtIndexPath($0.indexPath)! }
             .sort { return $0.indexPath.item < $1.indexPath.item }
         
         if  let cardAtTopOfStack = cardAtTopOfStack,
-            let firstIndexPath = cardMarginAttributes.first?.indexPath
+            let firstIndexPath = cardAttributes.first?.indexPath
             where cardAtTopOfStack.item < firstIndexPath.item
         {
             let extraAttributes = (cardAtTopOfStack.item...firstIndexPath.item)
                 .map { calculateLayoutAttributesForItemAtIndexPath(NSIndexPath(forItem: $0, inSection: 0))! }
-            cardMarginAttributes.insertContentsOf(extraAttributes, at: 0)
+            cardAttributes.insertContentsOf(extraAttributes, at: 0)
         }
         
-        let cardAttributes = cardMarginAttributes.map { (attributes) -> UICollectionViewLayoutAttributes in
-            return calculatelayoutAttributesForSupplementaryViewOfKind(SupplementaryViewKind.Card.rawValue, atIndexPath: attributes.indexPath)!
-        }
-        
-        return cardMarginAttributes + cardAttributes + allOtherSuperAttributes
+        return cardAttributes + allOtherSuperAttributes
     }
     
     func setZIndexForAttributes(attributes: UICollectionViewLayoutAttributes)
@@ -261,6 +257,22 @@ import UIKit
         setZIndexForAttributes(superAttributes)
         applyStackingTransformationToAttributes(superAttributes)
         
+        let cardFrame = CGRect(
+            x: superAttributes.frame.origin.x,
+            y: superAttributes.frame.origin.y,
+            width: cardSize.width,
+            height: cardHeight)
+        superAttributes.frame = cardFrame
+        
+        if  let cardAtTopOfStack = cardAtTopOfStack
+            where indexPath.item < cardAtTopOfStack.item
+        {
+            superAttributes.alpha = 0
+        }
+        else {
+            superAttributes.alpha = 1
+        }
+        
         return superAttributes
     }
     
@@ -269,55 +281,6 @@ import UIKit
 
         
         return calculateLayoutAttributesForItemAtIndexPath(indexPath)
-    }
-    
-    func calculatelayoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
-    {
-        if let superAttributes = super.layoutAttributesForSupplementaryViewOfKind(elementKind, atIndexPath: indexPath) {
-            return superAttributes
-        }
-        
-        guard let supplementaryViewKind = SupplementaryViewKind(rawValue: elementKind) else {
-            return nil
-        }
-        
-        switch supplementaryViewKind {
-        case .Card:
-            guard   let cardMarginAttributes = super.layoutAttributesForItemAtIndexPath(indexPath)?.copy() as? UICollectionViewLayoutAttributes
-                    else {
-                return nil
-            }
-            applyStackingTransformationToAttributes(cardMarginAttributes)
-            
-            let cardAttributes = UICollectionViewLayoutAttributes(
-                forSupplementaryViewOfKind: elementKind,
-                withIndexPath: indexPath)
-            let cardFrame = CGRect(
-                x: cardMarginAttributes.frame.origin.x,
-                y: cardMarginAttributes.frame.origin.y,
-                width: cardSize.width,
-                height: cardHeight)
-            cardAttributes.frame = cardFrame
-            setZIndexForAttributes(cardAttributes)
-            
-            if  let cardAtTopOfStack = cardAtTopOfStack
-                where indexPath.item < cardAtTopOfStack.item
-            {
-                cardAttributes.alpha = 0
-            }
-            else {
-                cardAttributes.alpha = 1
-            }
-            
-            return cardAttributes
-        }
-    }
-
-    override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
-    {
-        print("layout attributes for supp at index path: \(indexPath), card at top is: \(cardAtTopOfStack)")
-
-        return calculatelayoutAttributesForSupplementaryViewOfKind(elementKind, atIndexPath: indexPath)
     }
     
     override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool
@@ -526,9 +489,6 @@ import UIKit
         print(items)
         
         context.invalidateItemsAtIndexPaths(indexPathsToInvalidate)
-        context.invalidateSupplementaryElementsOfKind(
-            SupplementaryViewKind.Card.rawValue,
-            atIndexPaths: indexPathsToInvalidate)
         
         return context
     }
