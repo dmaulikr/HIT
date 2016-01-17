@@ -136,9 +136,7 @@ import UIKit
         switch attributes.representedElementCategory
         {
         case .Cell:
-            attributes.zIndex = attributes.indexPath.item * 2 + 1
-        case .SupplementaryView:
-            attributes.zIndex = attributes.indexPath.item * 2
+            attributes.zIndex = attributes.indexPath.item
         default:
             break
         }
@@ -264,14 +262,14 @@ import UIKit
             height: cardHeight)
         superAttributes.frame = cardFrame
         
-        if  let cardAtTopOfStack = cardAtTopOfStack
-            where indexPath.item < cardAtTopOfStack.item
-        {
-            superAttributes.alpha = 0
-        }
-        else {
-            superAttributes.alpha = 1
-        }
+//        if  let cardAtTopOfStack = cardAtTopOfStack
+//            where indexPath.item < cardAtTopOfStack.item
+//        {
+//            superAttributes.alpha = 0
+//        }
+//        else {
+//            superAttributes.alpha = 1
+//        }
         
         return superAttributes
     }

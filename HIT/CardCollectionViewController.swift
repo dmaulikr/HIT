@@ -47,9 +47,9 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         super.viewWillAppear(animated)
         
         cardFlowLayout.itemSize = CGSize(width: view.bounds.width-4, height: 25)
-        cardFlowLayout.cardHeight = 475
-        cardFlowLayout.cardMargin = 100
-        cardFlowLayout.slowingLimit = 75
+        cardFlowLayout.cardHeight = 200
+        cardFlowLayout.cardMargin = 50
+        cardFlowLayout.slowingLimit = 25
         cardFlowLayout.topInset = 0
         cardFlowLayout.minimumLineSpacing = 0
         
@@ -93,16 +93,6 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
             cellReuseIdentifier,
             forIndexPath: indexPath) as! CardCollectionViewCell
-//        cell.placeholderView.placeholderColor = UIColor.redColor()
-        // Configure the cell
-        
-//        return cell
-        
-        
-//        let cell = collectionView.dequeueReusableSupplementaryViewOfKind(
-//            CollectionViewCardFlowLayout.SupplementaryViewKind.Card.rawValue,
-//            withReuseIdentifier: cardSupplementaryViewReuseIdentifier,
-//            forIndexPath: indexPath) as! CardCollectionViewCell
         
         let cardColor = UIColor.randomColor()
         cell.cardView.cardTitleView.backgroundColor = cardColor

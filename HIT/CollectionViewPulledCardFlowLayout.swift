@@ -14,6 +14,8 @@ class CollectionViewPulledCardFlowLayout: CollectionViewCardFlowLayout
     
     var retractedCardStackHeight: CGFloat = 50
     
+    var retractedCardGap: CGFloat = 5
+    
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         guard let superAttributes = super.layoutAttributesForElementsInRect(rect) else {
             return nil
@@ -42,14 +44,19 @@ class CollectionViewPulledCardFlowLayout: CollectionViewCardFlowLayout
         {
             attributes.frame.origin.y = self.collectionView!.bounds.origin.y
         }
-        else
+        else if let cardAtTopOfStack = cardAtTopOfStack
+                where attributes.indexPath.item >= cardAtTopOfStack.item
         {
+            let n = CGFloat(attributes.indexPath.item - cardAtTopOfStack.item)
+            print(n)
             let distanceFromTopToRetractedStack = self.collectionView!.bounds.height - retractedCardStackHeight
+            attributes.frame.origin.y = distanceFromTopToRetractedStack + n * retractedCardGap
+
             
-            let distanceFromTopToAttributes = attributes.frame.origin.y - self.collectionView!.bounds.origin.y
-            let percentageDistance = distanceFromTopToAttributes / self.collectionView!.bounds.height
-            
-            attributes.frame.origin.y = self.collectionView!.bounds.origin.y + percentageDistance * retractedCardStackHeight + distanceFromTopToRetractedStack
+//            let distanceFromTopToAttributes = attributes.frame.origin.y - self.collectionView!.bounds.origin.y
+//            let percentageDistance = distanceFromTopToAttributes / self.collectionView!.bounds.height
+//            
+//            attributes.frame.origin.y = self.collectionView!.bounds.origin.y + percentageDistance * retractedCardStackHeight + distanceFromTopToRetractedStack
     
         }
     }
