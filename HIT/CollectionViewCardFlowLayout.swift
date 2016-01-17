@@ -10,10 +10,6 @@ import UIKit
 
 @IBDesignable class CollectionViewCardFlowLayout: UICollectionViewFlowLayout {
     
-    enum SupplementaryViewKind: String {
-        case Card = "card"
-    }
-    
     @IBInspectable var cardHeight: CGFloat = 100
     var cardSize: CGSize {
         get {
@@ -22,6 +18,8 @@ import UIKit
         set {
             cardHeight = newValue.height
             itemSize = CGSize(width: newValue.width, height: itemSize.height)
+            
+            invalidateLayout()
         }
     }
     
@@ -33,6 +31,8 @@ import UIKit
         }
         set {
             itemSize = CGSize(width: itemSize.width, height: newValue)
+            
+            invalidateLayout()
         }
     }
     
@@ -56,6 +56,8 @@ import UIKit
                     bottom: sectionInset.bottom,
                     right: sectionInset.right)
             }
+            
+            invalidateLayout()
         }
         get {
             return sectionInset.top
@@ -66,7 +68,16 @@ import UIKit
     // Represents the distance at which a card begins to slow
     // when approaching the top of the collection view's bounds
     //
-    var slowingLimit: CGFloat = 50
+    var slowingLimit: CGFloat = 50 {
+        didSet {
+            invalidateLayout()
+        }
+    }
+    
+    
+    var cardCache = [Int : UICollectionViewLayoutAttributes]()
+    var cardsToRecalculate = [Int]()
+    
     
     // MARK: - UICollectionViewFlowLayout override
     
@@ -87,6 +98,7 @@ import UIKit
     }
     
     override func prepareLayout() {
+        super.prepareLayout()
         print("prepare layout")
         setSectionInsetForBounds(self.collectionView!.bounds)
         
@@ -96,6 +108,29 @@ import UIKit
         {
             cardAtTopOfStack = newStackingAndSlowingCardAttributes.first!.indexPath
         }
+        
+        if  let numberOfItems = self.collectionView?.numberOfItemsInSection(0)
+            where numberOfItems > 0
+        {
+            for item in 0...numberOfItems
+            {
+                if cardCache[item] == nil
+                {
+                    cardCache[item] = calculateLayoutAttributesForItemAtIndexPath(NSIndexPath(forItem: item, inSection: 0))
+                }
+            }
+        }
+    }
+    
+    func fetchCardAtIndex(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes
+    {
+        if let card = cardCache[indexPath.item] {
+            return card
+        }
+        
+        let card = calculateLayoutAttributesForItemAtIndexPath(indexPath)!
+        cardCache[indexPath.item] = card
+        return card
     }
     
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]?
@@ -116,7 +151,7 @@ import UIKit
         })
         
         var cardAttributes = itemSuperAttributes
-            .map { calculateLayoutAttributesForItemAtIndexPath($0.indexPath)! }
+            .map { fetchCardAtIndex($0.indexPath) }
             .sort { return $0.indexPath.item < $1.indexPath.item }
         
         if  let cardAtTopOfStack = cardAtTopOfStack,
@@ -124,7 +159,7 @@ import UIKit
             where cardAtTopOfStack.item < firstIndexPath.item
         {
             let extraAttributes = (cardAtTopOfStack.item...firstIndexPath.item)
-                .map { calculateLayoutAttributesForItemAtIndexPath(NSIndexPath(forItem: $0, inSection: 0))! }
+                .map { fetchCardAtIndex(NSIndexPath(forItem: $0, inSection: 0)) }
             cardAttributes.insertContentsOf(extraAttributes, at: 0)
         }
         
@@ -262,14 +297,14 @@ import UIKit
             height: cardHeight)
         superAttributes.frame = cardFrame
         
-//        if  let cardAtTopOfStack = cardAtTopOfStack
-//            where indexPath.item < cardAtTopOfStack.item
-//        {
-//            superAttributes.alpha = 0
-//        }
-//        else {
-//            superAttributes.alpha = 1
-//        }
+        if  let cardAtTopOfStack = cardAtTopOfStack
+            where indexPath.item < cardAtTopOfStack.item
+        {
+            superAttributes.alpha = 0
+        }
+        else {
+            superAttributes.alpha = 1
+        }
         
         return superAttributes
     }
@@ -278,7 +313,7 @@ import UIKit
         print("layout attributes for item at index path: \(indexPath), card at top is: \(cardAtTopOfStack)")
 
         
-        return calculateLayoutAttributesForItemAtIndexPath(indexPath)
+        return cardCache[indexPath.item]
     }
     
     override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool
@@ -286,6 +321,7 @@ import UIKit
         print("\n\nshould invalidate")
         invalidateLayoutWithContext(invalidationContextForBoundsChange(newBounds))
         return super.shouldInvalidateLayoutForBoundsChange(newBounds)
+//        return true
     }
     
     func setSectionInsetForBounds(bounds: CGRect, withTopInset top: CGFloat) {
@@ -344,11 +380,18 @@ import UIKit
     override func invalidateLayout() {
         super.invalidateLayout()
         print("invalidate layout")
+        
+        cardCache.removeAll()
     }
     
     override func invalidateLayoutWithContext(context: UICollectionViewLayoutInvalidationContext) {
         super.invalidateLayoutWithContext(context)
         print("invalidate with context")
+        
+        for indexPath in context.invalidatedItemIndexPaths ?? []
+        {
+            cardCache.removeValueForKey(indexPath.item)
+        }
     }
     
     override func invalidationContextForBoundsChange(newBounds: CGRect)
