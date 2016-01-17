@@ -49,8 +49,8 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         cardFlowLayout.itemSize = CGSize(width: view.bounds.width-4, height: 25)
         cardFlowLayout.cardHeight = 475
         cardFlowLayout.cardMargin = 100
-        cardFlowLayout.slowingLimit = 200
-        cardFlowLayout.topInset = 0
+        cardFlowLayout.slowingLimit = 20
+        cardFlowLayout.topInset = 200
         cardFlowLayout.minimumLineSpacing = 0
         
         pulledCardFlowLayout.itemSize = CGSize(width: view.bounds.width-4, height: 25)

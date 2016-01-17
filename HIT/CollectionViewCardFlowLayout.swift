@@ -230,7 +230,7 @@ import UIKit
                     y = sectionInset.top * 2
                 }
                 else {
-                    y = sectionInset.top + sectionInset.top
+                    y = slowingLimit + sectionInset.top
                 }
                 
                 if self.collectionView!.bounds.origin.y > y {
@@ -506,7 +506,7 @@ import UIKit
                 if newCardAtTopOfStack != cardAtTopOfStack
                 {
                     let stackChangeEndPoints =
-                        [cardAtTopOfStack!.item, newCardAtTopOfStack.item].sort()
+                        [cardAtTopOfStack?.item ?? 0, newCardAtTopOfStack.item].sort()
                     
                     indexPathsToInvalidate +=
                         (stackChangeEndPoints[0]...stackChangeEndPoints[1])
