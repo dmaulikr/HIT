@@ -53,12 +53,12 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         cardFlowLayout.topInset = 0
         cardFlowLayout.minimumLineSpacing = 0
         
-//        pulledCardFlowLayout.itemSize = CGSize(width: view.bounds.width-4, height: 25)
-//        pulledCardFlowLayout.cardHeight = 475
-//        pulledCardFlowLayout.cardMargin = 100
-//        pulledCardFlowLayout.slowingLimit = 75
-//        pulledCardFlowLayout.topInset = 0
-//        pulledCardFlowLayout.minimumLineSpacing = 0
+        pulledCardFlowLayout.itemSize = CGSize(width: view.bounds.width-4, height: 25)
+        pulledCardFlowLayout.cardHeight = 475
+        pulledCardFlowLayout.cardMargin = 100
+        pulledCardFlowLayout.slowingLimit = 75
+        pulledCardFlowLayout.topInset = 0
+        pulledCardFlowLayout.minimumLineSpacing = 0
     }
 
     override func didReceiveMemoryWarning() {
@@ -110,19 +110,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         cell.cardView.title.text = "\(indexPath.item)"
         return cell
     }
-    
-//    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-//        let cell = collectionView.dequeueReusableSupplementaryViewOfKind(
-//            CollectionViewCardFlowLayout.SupplementaryViewKind.Card.rawValue,
-//            withReuseIdentifier: cardSupplementaryViewReuseIdentifier,
-//            forIndexPath: indexPath) as! CardCollectionViewCell
-//        
-//        let cardColor = UIColor.randomColor()
-//        cell.cardView.cardTitleView.backgroundColor = cardColor
-//        cell.cardView.xibView.backgroundColor = cardColor
-//        cell.cardView.title.text = "\(indexPath.item)"
-//        return cell
-//    }
+
 
     // MARK: UICollectionViewDelegate
 
@@ -135,52 +123,52 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
 
     // Uncomment this method to specify if the specified item should be selected
     func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-//        print(indexPath)
-//        
-//        // Have to embed setCollectionViewLayout:animated: in an animation
-//        // block as a work around for content offset bug.
-//        if collectionView.collectionViewLayout.isKindOfClass(CollectionViewPulledCardFlowLayout.self)
-//        {
-//            cardFlowLayout.invalidateLayout()
-////            let currentContentOffset = collectionView.contentOffset
-//            collectionView.scrollEnabled = true
-//            
-//            collectionView.transitionToCollectionViewLayout(
-//                cardFlowLayout,
-//                duration: 0.5,
-//                easing: QuadraticEaseInOut,
-//                completion: nil)
-////            collectionView.transitionToCollectionViewLayout(cardFlowLayout, duration: 2.0, completion: nil)
-//
-////            UIView.animateWithDuration(2.0) { () -> Void in
-////                collectionView.setCollectionViewLayout(self.cardFlowLayout, animated: false)
-////                collectionView.contentOffset = currentContentOffset
-////            }
-//        }
-//        else
-//        {
-//            pulledCardFlowLayout.cardAtTopOfStack = cardFlowLayout.cardAtTopOfStack
-//            pulledCardFlowLayout.pulledCard = indexPath
-//            
-//            collectionView.transitionToCollectionViewLayout(
-//                pulledCardFlowLayout,
-//                duration: 0.5,
-//                easing: QuadraticEaseInOut,
-//                completion: nil)
-////            collectionView.transitionToCollectionViewLayout(pulledCardFlowLayout, duration: 2.0, completion: nil)
-//
-//            
-////            pulledCardFlowLayout.invalidateLayout()
-////            let currentContentOffset = collectionView.contentOffset
-////            collectionView.scrollEnabled = false
-////            UIView.animateWithDuration(2.0) { () -> Void in
-////                collectionView.setCollectionViewLayout(self.pulledCardFlowLayout, animated: false)
-////                collectionView.contentOffset = currentContentOffset
-////            }
-//        }
-//        
-////        collectionView.setCollectionViewLayout(pulledCardFlowLayout, animated: false)
-////        collectionView.contentOffset
+        print(indexPath)
+        
+        // Have to embed setCollectionViewLayout:animated: in an animation
+        // block as a work around for content offset bug.
+        if collectionView.collectionViewLayout.isKindOfClass(CollectionViewPulledCardFlowLayout.self)
+        {
+            cardFlowLayout.invalidateLayout()
+//            let currentContentOffset = collectionView.contentOffset
+            collectionView.scrollEnabled = true
+            
+            collectionView.transitionToCollectionViewLayout(
+                cardFlowLayout,
+                duration: 0.5,
+                easing: QuadraticEaseInOut,
+                completion: nil)
+//            collectionView.transitionToCollectionViewLayout(cardFlowLayout, duration: 2.0, completion: nil)
+
+//            UIView.animateWithDuration(2.0) { () -> Void in
+//                collectionView.setCollectionViewLayout(self.cardFlowLayout, animated: false)
+//                collectionView.contentOffset = currentContentOffset
+//            }
+        }
+        else
+        {
+            pulledCardFlowLayout.cardAtTopOfStack = cardFlowLayout.cardAtTopOfStack
+            pulledCardFlowLayout.pulledCard = indexPath
+            
+            collectionView.transitionToCollectionViewLayout(
+                pulledCardFlowLayout,
+                duration: 0.5,
+                easing: QuadraticEaseInOut,
+                completion: nil)
+//            collectionView.transitionToCollectionViewLayout(pulledCardFlowLayout, duration: 2.0, completion: nil)
+
+            
+//            pulledCardFlowLayout.invalidateLayout()
+//            let currentContentOffset = collectionView.contentOffset
+//            collectionView.scrollEnabled = false
+//            UIView.animateWithDuration(2.0) { () -> Void in
+//                collectionView.setCollectionViewLayout(self.pulledCardFlowLayout, animated: false)
+//                collectionView.contentOffset = currentContentOffset
+//            }
+        }
+        
+//        collectionView.setCollectionViewLayout(pulledCardFlowLayout, animated: false)
+//        collectionView.contentOffset
         
         return false
     }
@@ -190,7 +178,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         let transitionLayout = TLTransitionLayout(
             currentLayout: fromLayout,
             nextLayout: toLayout,
-            supplementaryKinds: [CollectionViewCardFlowLayout.SupplementaryViewKind.Card.rawValue])
+            supplementaryKinds: [])
         
         print("getting transition layout")
         

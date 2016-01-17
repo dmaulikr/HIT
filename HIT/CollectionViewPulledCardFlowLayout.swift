@@ -28,10 +28,6 @@ class CollectionViewPulledCardFlowLayout: CollectionViewCardFlowLayout
             {
             case .Cell:
                 return layoutAttributesForItemAtIndexPath(superAttributes.indexPath)!
-            case .SupplementaryView:
-                return layoutAttributesForSupplementaryViewOfKind(
-                    superAttributes.representedElementKind!,
-                    atIndexPath: superAttributes.indexPath)!
             default:
                 return superAttributes
             }
@@ -65,59 +61,40 @@ class CollectionViewPulledCardFlowLayout: CollectionViewCardFlowLayout
         
         return superAttributes
     }
+
     
-    override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
-    {
-        guard   let superAttributes = super.layoutAttributesForSupplementaryViewOfKind(elementKind, atIndexPath: indexPath)?.copy() as? UICollectionViewLayoutAttributes
-                else
-        {
-            return nil
-        }
-            
-        if  let supplementaryViewKind = SupplementaryViewKind(rawValue: elementKind)
-            where supplementaryViewKind == .Card
-        {
-            setYCoordinateForAttributes(superAttributes)
-        }
+    override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
+        super.shouldInvalidateLayoutForBoundsChange(newBounds)
         
-        return superAttributes
+        return true
     }
     
-//    override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
-//        super.shouldInvalidateLayoutForBoundsChange(newBounds)
-//        
-//        return true
-//    }
-//    
-//    
-//    override func invalidationContextForBoundsChange(newBounds: CGRect)
-//        
-//        -> UICollectionViewLayoutInvalidationContext
-//    {
-//        let context = super.invalidationContextForBoundsChange(newBounds)
-//        
-//        var indexPathsToInvalidate = [NSIndexPath]()
-//        
-//        let bounds = self.collectionView!.bounds
-//        let attributesInOldBounds = super.layoutAttributesForElementsInRect(bounds)
-//        indexPathsToInvalidate += attributesInOldBounds?
-//            .map { (attributes) -> NSIndexPath in return attributes.indexPath }
-//            ?? []
-//        
-//        let attributesInNewBounds = super.layoutAttributesForElementsInRect(newBounds)
-//        indexPathsToInvalidate += attributesInNewBounds?
-//            .map { (attributes) -> NSIndexPath in return attributes.indexPath }
-//            ?? []
-//        
-////        let items = indexPathsToInvalidate
-////            .map { (path) -> Int in return path.item }
-////            .sort()
-//        
-//        context.invalidateItemsAtIndexPaths(indexPathsToInvalidate)
-//        context.invalidateSupplementaryElementsOfKind(
-//            SupplementaryViewKind.Card.rawValue,
-//            atIndexPaths: indexPathsToInvalidate)
-//        
-//        return context
-//    }
+    
+    override func invalidationContextForBoundsChange(newBounds: CGRect)
+        
+        -> UICollectionViewLayoutInvalidationContext
+    {
+        let context = super.invalidationContextForBoundsChange(newBounds)
+        
+        var indexPathsToInvalidate = [NSIndexPath]()
+        
+        let bounds = self.collectionView!.bounds
+        let attributesInOldBounds = super.layoutAttributesForElementsInRect(bounds)
+        indexPathsToInvalidate += attributesInOldBounds?
+            .map { (attributes) -> NSIndexPath in return attributes.indexPath }
+            ?? []
+        
+        let attributesInNewBounds = super.layoutAttributesForElementsInRect(newBounds)
+        indexPathsToInvalidate += attributesInNewBounds?
+            .map { (attributes) -> NSIndexPath in return attributes.indexPath }
+            ?? []
+        
+//        let items = indexPathsToInvalidate
+//            .map { (path) -> Int in return path.item }
+//            .sort()
+        
+        context.invalidateItemsAtIndexPaths(indexPathsToInvalidate)
+        
+        return context
+    }
 }
