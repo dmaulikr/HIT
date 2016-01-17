@@ -125,7 +125,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
             
             collectionView.transitionToCollectionViewLayout(
                 cardFlowLayout,
-                duration: 0.5,
+                duration: 5.0,
                 easing: QuadraticEaseInOut,
                 completion: nil)
 //            collectionView.transitionToCollectionViewLayout(cardFlowLayout, duration: 2.0, completion: nil)
@@ -142,7 +142,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
             
             collectionView.transitionToCollectionViewLayout(
                 pulledCardFlowLayout,
-                duration: 0.5,
+                duration: 5.0,
                 easing: QuadraticEaseInOut,
                 completion: nil)
 //            collectionView.transitionToCollectionViewLayout(pulledCardFlowLayout, duration: 2.0, completion: nil)
