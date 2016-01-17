@@ -49,7 +49,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         cardFlowLayout.itemSize = CGSize(width: view.bounds.width-4, height: 25)
         cardFlowLayout.cardHeight = 475
         cardFlowLayout.cardMargin = 100
-        cardFlowLayout.slowingLimit = 300
+        cardFlowLayout.slowingLimit = 200
         cardFlowLayout.topInset = 0
         cardFlowLayout.minimumLineSpacing = 0
         
@@ -129,7 +129,13 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
             cardFlowLayout.invalidateLayout()
 //            let currentContentOffset = collectionView.contentOffset
             collectionView.scrollEnabled = true
-            collectionView.transitionToCollectionViewLayout(cardFlowLayout, duration: 2.0, completion: nil)
+            
+            collectionView.transitionToCollectionViewLayout(
+                cardFlowLayout,
+                duration: 0.5,
+                easing: QuadraticEaseInOut,
+                completion: nil)
+//            collectionView.transitionToCollectionViewLayout(cardFlowLayout, duration: 2.0, completion: nil)
 
 //            UIView.animateWithDuration(2.0) { () -> Void in
 //                collectionView.setCollectionViewLayout(self.cardFlowLayout, animated: false)
@@ -141,7 +147,12 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
             pulledCardFlowLayout.cardAtTopOfStack = cardFlowLayout.cardAtTopOfStack
             pulledCardFlowLayout.pulledCard = indexPath
             
-            collectionView.transitionToCollectionViewLayout(pulledCardFlowLayout, duration: 2.0, completion: nil)
+            collectionView.transitionToCollectionViewLayout(
+                pulledCardFlowLayout,
+                duration: 0.5,
+                easing: QuadraticEaseInOut,
+                completion: nil)
+//            collectionView.transitionToCollectionViewLayout(pulledCardFlowLayout, duration: 2.0, completion: nil)
 
             
 //            pulledCardFlowLayout.invalidateLayout()

@@ -36,7 +36,11 @@ import UIKit
         }
     }
     
-    var cardAtTopOfStack: NSIndexPath?
+    var cardAtTopOfStack: NSIndexPath? {
+        didSet {
+            print("new card set: \(cardAtTopOfStack)")
+        }
+    }
     
     var topInset: CGFloat {
         set {
@@ -313,9 +317,9 @@ import UIKit
     
     override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool
     {
+        print("\n\nshould invalidate")
         invalidateLayoutWithContext(invalidationContextForBoundsChange(newBounds))
         return super.shouldInvalidateLayoutForBoundsChange(newBounds)
-//        return true
     }
     
     func setSectionInsetForBounds(bounds: CGRect, withTopInset top: CGFloat) {
@@ -422,6 +426,7 @@ import UIKit
         
         if newBounds.origin.y < 0
         {
+            print("negative bounds")
             if let cardAtTopOfStack = cardAtTopOfStack
             {
                 indexPathsToInvalidate +=
@@ -445,8 +450,9 @@ import UIKit
         // We set the card at the top of the stack to be the first 
         // card and invalidate all the visible cards.
             
-        else if cardAtTopOfStack == nil
+        else if bounds.origin.y < 0 && newBounds.origin.y >= 0
         {
+            print("y transition")
             let newStackingAndSlowingCardAttributes = stackingAndSlowingCardAttributesForBounds(newBounds)
             newStackingAndSlowingCardAttributes?.forEach({ attributes in
                 indexPathsToInvalidate.append(attributes.indexPath)
@@ -478,6 +484,7 @@ import UIKit
             
         else
         {
+            print("has card: \(cardAtTopOfStack)")
             let currentBounds = self.collectionView!.bounds
             stackingAndSlowingCardAttributesForBounds(currentBounds)?
                 .forEach({ attributes in
