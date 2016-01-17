@@ -100,7 +100,7 @@ import UIKit
     
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]?
     {
-        print("in rect")
+        print("in rect: \(rect)")
         
         guard let superAttributes = super.layoutAttributesForElementsInRect(rect) else {
             return nil
@@ -265,6 +265,9 @@ import UIKit
     }
     
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+        print("layout attributes for item at index path: \(indexPath), card at top is: \(cardAtTopOfStack)")
+
+        
         return calculateLayoutAttributesForItemAtIndexPath(indexPath)
     }
     
@@ -312,6 +315,8 @@ import UIKit
 
     override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
     {
+        print("layout attributes for supp at index path: \(indexPath), card at top is: \(cardAtTopOfStack)")
+
         return calculatelayoutAttributesForSupplementaryViewOfKind(elementKind, atIndexPath: indexPath)
     }
     
@@ -516,6 +521,9 @@ import UIKit
                 }
             }
         }
+        
+        let items = indexPathsToInvalidate.map { $0.item }.sort()
+        print(items)
         
         context.invalidateItemsAtIndexPaths(indexPathsToInvalidate)
         context.invalidateSupplementaryElementsOfKind(

@@ -52,6 +52,7 @@ import UIKit
     @IBOutlet var cardTitleViewInitialCenterXConstraint: NSLayoutConstraint!
     @IBOutlet var cardTitleViewInitialTopConstraint: NSLayoutConstraint!
   
+    @IBOutlet weak var title: UILabel!
     
     
     //

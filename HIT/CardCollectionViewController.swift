@@ -49,8 +49,8 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         cardFlowLayout.itemSize = CGSize(width: view.bounds.width-4, height: 25)
         cardFlowLayout.cardHeight = 475
         cardFlowLayout.cardMargin = 100
-        cardFlowLayout.slowingLimit = 20
-        cardFlowLayout.topInset = 200
+        cardFlowLayout.slowingLimit = 75
+        cardFlowLayout.topInset = 0
         cardFlowLayout.minimumLineSpacing = 0
         
         pulledCardFlowLayout.itemSize = CGSize(width: view.bounds.width-4, height: 25)
@@ -59,6 +59,12 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         pulledCardFlowLayout.slowingLimit = 75
         pulledCardFlowLayout.topInset = 0
         pulledCardFlowLayout.minimumLineSpacing = 0
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        collectionView.scrollToItemAtIndexPath(
+            NSIndexPath(forItem: 10, inSection: 0),
+            atScrollPosition: .Top, animated: false)
     }
 
     override func didReceiveMemoryWarning() {
@@ -106,6 +112,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         let cardColor = UIColor.randomColor()
         cell.cardView.cardTitleView.backgroundColor = cardColor
         cell.cardView.xibView.backgroundColor = cardColor
+        cell.cardView.title.text = "\(indexPath.item)"
         return cell
     }
 
