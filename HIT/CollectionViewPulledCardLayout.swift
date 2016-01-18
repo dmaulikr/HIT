@@ -8,25 +8,30 @@
 
 import UIKit
 
-class CollectionViewPulledCardLayout: UICollectionViewLayout {
+class CollectionViewPulledCardLayout: UICollectionViewLayout
+{
+    
+    // State information
     
     var pulledCard: NSIndexPath?
-    var pulledCardYOrigin: CGFloat = -50
-    var centerX: CGFloat = 50
-    
-    var retractedCardStackHeight: CGFloat = 50
-    var retractedCardGap: CGFloat = 5
-    
-    var contentSize = CGSizeZero
-    
-    var cardSize = CGSize(width: 50, height: 50)
-    
     var itemsInStack = [Int]()
-    {
+        {
         didSet {
             itemsInStack = itemsInStack.sort()
         }
     }
+    
+    // Metrics
+    
+    var contentSize = CGSizeZero
+    var cardSize = CGSize(width: 50, height: 50)
+    var pulledCardYOrigin: CGFloat = -50
+    var centerX: CGFloat = 50
+    var retractedCardStackHeight: CGFloat = 50
+    var retractedCardGap: CGFloat = 5
+    
+    
+    // UICollectionViewLayout subclassing
     
     override func collectionViewContentSize() -> CGSize
     {
@@ -58,7 +63,14 @@ class CollectionViewPulledCardLayout: UICollectionViewLayout {
         }
         else if itemsInStack.contains(attributes.indexPath.item)
         {
-            let stackCardIndex = CGFloat(attributes.indexPath.item - itemsInStack.first!)
+            var stackCardIndex = CGFloat(attributes.indexPath.item - itemsInStack.first!)
+            
+            if  let pulledCard = pulledCard
+                where itemsInStack.contains(pulledCard.item)
+                && attributes.indexPath.item > pulledCard.item
+            {
+                stackCardIndex -= 1
+            }
             
             let distanceFromTopToRetractedStack
                 = self.collectionView!.bounds.height
