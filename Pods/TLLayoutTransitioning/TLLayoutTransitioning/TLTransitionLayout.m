@@ -28,20 +28,15 @@
 @property (strong, nonatomic) NSDictionary *poses;
 @property (nonatomic) CGFloat previousProgress;
 @property (strong, nonatomic) NSArray *supplementaryKinds;
-
-@property (strong, nonatomic) NSMutableArray *indexPaths;
 @end
 
 @implementation TLTransitionLayout
-
-@synthesize indexPaths;
 
 - (id)initWithCurrentLayout:(UICollectionViewLayout *)currentLayout nextLayout:(UICollectionViewLayout *)newLayout
 {
     if (self = [super initWithCurrentLayout:currentLayout nextLayout:newLayout]) {
         _fromContentOffset = currentLayout.collectionView.contentOffset;
     }
-    
     return self;
 }
 
@@ -88,25 +83,12 @@
     CGFloat t = remaining == 0 ? self.transitionProgress : fabs(self.transitionProgress - self.previousProgress) / remaining;
     CGFloat f = 1 - t;
     
-    if (self.poses == nil) {
-        // create array of index paths
-        indexPaths = [NSMutableArray array];
-        
-        NSArray *currentAttributes = [self.currentLayout layoutAttributesForElementsInRect:self.collectionView.bounds];
-        for (UICollectionViewLayoutAttributes *attributes in currentAttributes)
-        {
-            [indexPaths addObject:attributes.indexPath];
-        }
-    };
-    
     NSMutableDictionary *poses = [NSMutableDictionary dictionary];
-//    for (NSInteger section = 0; section < [self.collectionView numberOfSections]; section++) {
-//        // cells
-//        for (NSInteger item = 0; item < [self.collectionView numberOfItemsInSection:section]; item++) {
-    
-    for (NSIndexPath *indexPath in indexPaths) {
-    
-//            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
+    for (NSInteger section = 0; section < [self.collectionView numberOfSections]; section++) {
+        // cells
+        for (NSInteger item = 0; item < [self.collectionView numberOfItemsInSection:section]; item++) {
+            
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
             NSIndexPath *key = [self keyForIndexPath:indexPath];
             
             UICollectionViewLayoutAttributes *fromPose = self.poses
@@ -129,35 +111,30 @@
                 }
             }
             
-            pose.zIndex = toPose.zIndex;
-            
             [poses setObject:pose forKey:key];
-    
+        }
         // supplementary views
         for (NSString *kind in self.supplementaryKinds) {
-//            for (NSInteger item = 0; item < [self.collectionView numberOfItemsInSection:section]; item++) {
-//                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
-                NSString *key = [self keyForIndexPath:indexPath kind:kind];
-                
-                UICollectionViewLayoutAttributes *fromPose = self.poses
-                        ? [self.poses objectForKey:key]
-                        : [self.currentLayout layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:indexPath];
-                UICollectionViewLayoutAttributes *toPose = reverse
-                        ? [self.currentLayout layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:indexPath]
-                        : [self.nextLayout layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:indexPath];
-                UICollectionViewLayoutAttributes *pose = [[[self class] layoutAttributesClass]
-                                                          layoutAttributesForSupplementaryViewOfKind:kind withIndexPath:indexPath];
-                
-                [self interpolatePose:pose fromPose:fromPose toPose:toPose fromProgress:f toProgress:t];
-                
-                // TODO need to incorporate the `updateLayoutAttributes` callback
-                
-                pose.zIndex = toPose.zIndex;
-                
-                [poses setObject:pose forKey:key];
-            }
+
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
+            NSString *key = [self keyForIndexPath:indexPath kind:kind];
+            
+            UICollectionViewLayoutAttributes *fromPose = self.poses
+                    ? [self.poses objectForKey:key]
+                    : [self.currentLayout layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:indexPath];
+            UICollectionViewLayoutAttributes *toPose = reverse
+                    ? [self.currentLayout layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:indexPath]
+                    : [self.nextLayout layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:indexPath];
+            UICollectionViewLayoutAttributes *pose = [[[self class] layoutAttributesClass]
+                                                      layoutAttributesForSupplementaryViewOfKind:kind withIndexPath:indexPath];
+            
+            [self interpolatePose:pose fromPose:fromPose toPose:toPose fromProgress:f toProgress:t];
+            
+            // TODO need to incorporate the `updateLayoutAttributes` callback
+            
+            [poses setObject:pose forKey:key];
+        }
     }
-//    }
     self.poses = poses;
 }
 
@@ -207,28 +184,25 @@
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
     NSMutableArray *poses = [NSMutableArray array];
-//    for (NSInteger section = 0; section < [self.collectionView numberOfSections]; section++) {
-    for (NSIndexPath *indexPath in indexPaths) {
+    for (NSInteger section = 0; section < [self.collectionView numberOfSections]; section++) {
         // cells
-//        for (NSInteger item = 0; item < [self.collectionView numberOfItemsInSection:section]; item++) {
-//            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
+        for (NSInteger item = 0; item < [self.collectionView numberOfItemsInSection:section]; item++) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
             UICollectionViewLayoutAttributes *pose = [self.poses objectForKey:indexPath];
             CGRect intersection = CGRectIntersection(rect, pose.frame);
             if (!CGRectIsEmpty(intersection)) {
                 [poses addObject:pose];
             }
-    
+        }
         // supplementary views
         for (NSString *kind in self.supplementaryKinds) {
-//            for (NSInteger item = 0; item < [self.collectionView numberOfItemsInSection:section]; item++) {
-//                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
-                id key = [self keyForIndexPath:indexPath kind:kind];
-                UICollectionViewLayoutAttributes *pose = [self.poses objectForKey:key];
-                CGRect intersection = CGRectIntersection(rect, pose.frame);
-                if (!CGRectIsEmpty(intersection)) {
-                    [poses addObject:pose];
-                }
-            
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
+            id key = [self keyForIndexPath:indexPath kind:kind];
+            UICollectionViewLayoutAttributes *pose = [self.poses objectForKey:key];
+            CGRect intersection = CGRectIntersection(rect, pose.frame);
+            if (!CGRectIsEmpty(intersection)) {
+                [poses addObject:pose];
+            }
         }
     }
     return poses;
