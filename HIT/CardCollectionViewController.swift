@@ -86,7 +86,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 1000
+        return 10000
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -112,9 +112,8 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
     */
 
     // Uncomment this method to specify if the specified item should be selected
-    func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        print(indexPath)
-        
+    func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool
+    {
         // Have to embed setCollectionViewLayout:animated: in an animation
         // block as a work around for content offset bug.
         if collectionView.collectionViewLayout.isKindOfClass(CollectionViewPulledCardFlowLayout.self)
