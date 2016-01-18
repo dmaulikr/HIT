@@ -52,7 +52,6 @@ class CollectionViewPulledCardLayout: UICollectionViewLayout {
     
     func setYCoordinateForAttributes(attributes: UICollectionViewLayoutAttributes)
     {
-        print("set y")
         if attributes.indexPath == pulledCard
         {
             attributes.frame.origin.y = self.collectionView!.bounds.origin.y + pulledCardYOrigin
@@ -70,6 +69,12 @@ class CollectionViewPulledCardLayout: UICollectionViewLayout {
                 + distanceFromTopToRetractedStack
                 + stackCardIndex * retractedCardGap
         }
+        else
+        {
+            attributes.frame.origin.y
+                = self.collectionView!.bounds.origin.y
+                + self.collectionView!.bounds.height
+        }
     }
     
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath)
@@ -80,13 +85,8 @@ class CollectionViewPulledCardLayout: UICollectionViewLayout {
             origin: CGPoint(x: centerX - cardSize.width/2, y: 0),
             size: cardSize)
         attributes.zIndex = indexPath.item
-        
-        if !itemsInStack.contains(indexPath.item) && indexPath != pulledCard {
-            attributes.frame.origin.y = self.collectionView!.bounds.origin.y + self.collectionView!.bounds.height
-        }
-        else {
-            setYCoordinateForAttributes(attributes)
-        }
+
+        setYCoordinateForAttributes(attributes)
         
         return attributes
     }

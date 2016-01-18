@@ -18,11 +18,7 @@ import UIKit
     
     private var cardCache = [Int : UICollectionViewLayoutAttributes]()
     
-    var cardAtTopOfStack: NSIndexPath? {
-        didSet {
-//            print("new card set: \(cardAtTopOfStack)")
-        }
-    }
+    var cardAtTopOfStack: NSIndexPath?
     
     private var previousBounds: CGRect?
     private var attributesToRecalculate = [Int]()
@@ -65,7 +61,7 @@ import UIKit
         set {
             if let bounds = self.collectionView?.bounds
             {
-                setSectionInsetForBounds(bounds, withTopInset: newValue)
+                setSectionInsetForBounds(bounds, topInset: newValue)
             }
             else
             {
@@ -89,6 +85,16 @@ import UIKit
     var slowingLimit: CGFloat = 50 {
         didSet {
             invalidateLayout()
+        }
+    }
+    
+    override var itemSize: CGSize {
+        willSet {
+            print("did set item size")
+            if let bounds = self.collectionView?.bounds
+            {
+                setSectionInsetForBounds(bounds, topInset: topInset, itemSize: newValue)
+            }
         }
     }
     
@@ -145,7 +151,6 @@ import UIKit
     
     override func prepareLayout() {
         super.prepareLayout()
-//        print("prepare layout")
         
         observePossibleBoundsChange()
         
@@ -373,13 +378,20 @@ import UIKit
         return super.shouldInvalidateLayoutForBoundsChange(newBounds)
     }
     
-    func setSectionInsetForBounds(bounds: CGRect, withTopInset top: CGFloat) {
+    func setSectionInsetForBounds(bounds: CGRect, topInset: CGFloat, itemSize: CGSize)
+    {
+        print("will set section inset, itemSize: \(itemSize), bounds: \(bounds)")
         let leftRightInset = (bounds.width - itemSize.width)/2
-        sectionInset = UIEdgeInsets(top: top, left: leftRightInset, bottom: 0, right: leftRightInset)
+        sectionInset = UIEdgeInsets(top: topInset, left: leftRightInset, bottom: 0, right: leftRightInset)
+        print("did set section inset: \(sectionInset)")
+    }
+    
+    func setSectionInsetForBounds(bounds: CGRect, topInset: CGFloat) {
+        setSectionInsetForBounds(bounds, topInset: topInset, itemSize: itemSize)
     }
     
     func setSectionInsetForBounds(bounds: CGRect) {
-        setSectionInsetForBounds(bounds, withTopInset: sectionInset.top)
+        setSectionInsetForBounds(bounds, topInset: sectionInset.top)
     }
     
     //
@@ -448,13 +460,11 @@ import UIKit
         
         -> UICollectionViewLayoutInvalidationContext
     {
-//        print("invalidation context for bounds change: \(newBounds)")
+        print("invalidation context for bounds change: \(newBounds)")
         
         let context = super.invalidationContextForBoundsChange(newBounds) as! CollectionViewCardFlowLayoutInvalidationContext
         
         context.previousBounds = self.collectionView?.bounds
-        
-//        setSectionInsetForBounds(newBounds)
         
         guard   let cv = self.collectionView,
                 let count = cv.dataSource?.collectionView(cv, numberOfItemsInSection: 0)
@@ -489,7 +499,6 @@ import UIKit
         
         if newBounds.origin.y < 0
         {
-//            print("negative bounds")
             if let cardAtTopOfStack = cardAtTopOfStack
             {
                 indexPathsToInvalidate +=
@@ -519,7 +528,6 @@ import UIKit
             
         else if bounds.origin.y < 0 && newBounds.origin.y >= 0
         {
-//            print("y transition")
             let newStackingAndSlowingCardAttributes = stackingAndSlowingCardAttributesForBounds(newBounds)
             newStackingAndSlowingCardAttributes?.forEach({ attributes in
                 indexPathsToInvalidate.append(attributes.indexPath)
@@ -556,8 +564,6 @@ import UIKit
         
         else
         {
-//            print("positive y")
-            
             let currentBounds = self.collectionView!.bounds
             stackingAndSlowingCardAttributesForBounds(currentBounds)?
                 .forEach({ attributes in
@@ -587,9 +593,6 @@ import UIKit
                 }
             }
         }
-        
-//        let items = indexPathsToInvalidate.map { $0.item }.sort()
-//        print(items)
         
         context.invalidateItemsAtIndexPaths(indexPathsToInvalidate)
         

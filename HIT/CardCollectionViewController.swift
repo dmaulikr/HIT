@@ -47,19 +47,13 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        print(cardFlowLayout.sectionInset)
         cardFlowLayout.itemSize = CGSize(width: view.bounds.width-4, height: 25)
         cardFlowLayout.cardHeight = 400
         cardFlowLayout.cardMargin = 100
         cardFlowLayout.slowingLimit = 75
         cardFlowLayout.topInset = 150
         cardFlowLayout.minimumLineSpacing = 0
-        
-//        pulledCardFlowLayout.itemSize = CGSize(width: view.bounds.width-4, height: 25)
-//        pulledCardFlowLayout.cardHeight = 400
-//        pulledCardFlowLayout.cardMargin = 100
-//        pulledCardFlowLayout.slowingLimit = 75
-//        pulledCardFlowLayout.topInset = 0
-//        pulledCardFlowLayout.minimumLineSpacing = 0
         
         pulledCardLayout.cardSize = cardFlowLayout.cardSize
     }
