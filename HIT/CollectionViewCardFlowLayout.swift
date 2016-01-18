@@ -170,12 +170,8 @@ import UIKit
         attributesToRecalculate.removeAll()
     }
     
-    private func fetchCardFromCacheAtIndex(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
+    private func fetchCardFromCacheAtIndex(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes
     {
-        if indexPath.item % 2 == 0 {
-            return nil
-        }
-        
         if  let card = cardCache[indexPath.item]
             where !attributesToRecalculate.contains(indexPath.item)
         {
@@ -206,8 +202,7 @@ import UIKit
             .filter { $0.representedElementCategory != .Cell }
         
         var cardAttributes = itemSuperAttributes
-            .filter { $0.indexPath.item % 2 != 0 }
-            .map { fetchCardFromCacheAtIndex($0.indexPath)! }
+            .map { fetchCardFromCacheAtIndex($0.indexPath) }
             .sort { return $0.indexPath.item < $1.indexPath.item }
         
         if  let cardAtTopOfStack = cardAtTopOfStack,
@@ -215,8 +210,7 @@ import UIKit
             where cardAtTopOfStack.item < firstIndexPath.item
         {
             let extraAttributes = (cardAtTopOfStack.item...firstIndexPath.item)
-                .filter { $0 % 2 != 0 }
-                .map { fetchCardFromCacheAtIndex(NSIndexPath(forItem: $0, inSection: 0))! }
+                .map { fetchCardFromCacheAtIndex(NSIndexPath(forItem: $0, inSection: 0)) }
             cardAttributes.insertContentsOf(extraAttributes, at: 0)
         }
         
@@ -368,9 +362,7 @@ import UIKit
     
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
 //        print("layout attributes for item at index path: \(indexPath), card at top is: \(cardAtTopOfStack)")
-        if indexPath.item % 2 == 0 {
-            return nil
-        }
+
         return cardCache[indexPath.item]
     }
     

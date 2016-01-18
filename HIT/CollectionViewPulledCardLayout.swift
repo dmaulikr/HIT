@@ -12,6 +12,7 @@ class CollectionViewPulledCardLayout: UICollectionViewLayout {
     
     var pulledCard: NSIndexPath?
     var pulledCardYOrigin: CGFloat = -50
+    var centerX: CGFloat = 50
     
     var retractedCardStackHeight: CGFloat = 50
     var retractedCardGap: CGFloat = 5
@@ -23,7 +24,7 @@ class CollectionViewPulledCardLayout: UICollectionViewLayout {
     var itemsInStack = [Int]()
     {
         didSet {
-            itemsInStack = oldValue.sort()
+            itemsInStack = itemsInStack.sort()
         }
     }
     
@@ -51,6 +52,7 @@ class CollectionViewPulledCardLayout: UICollectionViewLayout {
     
     func setYCoordinateForAttributes(attributes: UICollectionViewLayoutAttributes)
     {
+        print("set y")
         if attributes.indexPath == pulledCard
         {
             attributes.frame.origin.y = self.collectionView!.bounds.origin.y + pulledCardYOrigin
@@ -71,14 +73,21 @@ class CollectionViewPulledCardLayout: UICollectionViewLayout {
     }
     
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        if !itemsInStack.contains(indexPath.item) || indexPath != pulledCard { return nil }
+        
+        if !itemsInStack.contains(indexPath.item) && indexPath != pulledCard { return nil }
         
         let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
-        attributes.frame = CGRect(origin: CGPointZero, size: cardSize)
+        attributes.frame = CGRect(
+            origin: CGPoint(x: centerX - cardSize.width/2, y: 0),
+            size: cardSize)
         attributes.zIndex = indexPath.item
         
         setYCoordinateForAttributes(attributes)
         
         return attributes
+    }
+    
+    override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
+        return true
     }
 }

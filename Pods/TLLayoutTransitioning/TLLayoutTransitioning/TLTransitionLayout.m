@@ -97,6 +97,7 @@
         {
             [indexPaths addObject:attributes.indexPath];
         }
+        
     };
     
     NSMutableDictionary *poses = [NSMutableDictionary dictionary];

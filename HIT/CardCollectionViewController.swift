@@ -17,7 +17,8 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
     @IBOutlet weak var testButton: UIButton!
     
     var cardFlowLayout = CollectionViewCardFlowLayout()
-    var pulledCardFlowLayout = CollectionViewPulledCardFlowLayout()
+//    var pulledCardFlowLayout = CollectionViewPulledCardFlowLayout()
+    var pulledCardLayout = CollectionViewPulledCardLayout()
     
     @IBAction func testButtonPressed(sender: AnyObject) {
         print("pressed")
@@ -53,12 +54,14 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         cardFlowLayout.topInset = 150
         cardFlowLayout.minimumLineSpacing = 0
         
-        pulledCardFlowLayout.itemSize = CGSize(width: view.bounds.width-4, height: 25)
-        pulledCardFlowLayout.cardHeight = 400
-        pulledCardFlowLayout.cardMargin = 100
-        pulledCardFlowLayout.slowingLimit = 75
-        pulledCardFlowLayout.topInset = 0
-        pulledCardFlowLayout.minimumLineSpacing = 0
+//        pulledCardFlowLayout.itemSize = CGSize(width: view.bounds.width-4, height: 25)
+//        pulledCardFlowLayout.cardHeight = 400
+//        pulledCardFlowLayout.cardMargin = 100
+//        pulledCardFlowLayout.slowingLimit = 75
+//        pulledCardFlowLayout.topInset = 0
+//        pulledCardFlowLayout.minimumLineSpacing = 0
+        
+        pulledCardLayout.cardSize = cardFlowLayout.cardSize
     }
     
 //    override func viewDidAppear(animated: Bool) {
@@ -121,7 +124,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
     {
         // Have to embed setCollectionViewLayout:animated: in an animation
         // block as a work around for content offset bug.
-        if collectionView.collectionViewLayout.isKindOfClass(CollectionViewPulledCardFlowLayout.self)
+        if collectionView.collectionViewLayout.isKindOfClass(CollectionViewPulledCardLayout.self)
         {
             cardFlowLayout.invalidateLayout()
 //            let currentContentOffset = collectionView.contentOffset
@@ -129,9 +132,11 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
             
             collectionView.transitionToCollectionViewLayout(
                 cardFlowLayout,
-                duration: 0.5,
+                duration: 5.0,
                 easing: QuadraticEaseInOut,
-                completion: nil)
+                completion: { (completed, finish) in
+                    self.cardFlowLayout.invalidateLayout()
+                })
 //            collectionView.transitionToCollectionViewLayout(cardFlowLayout, duration: 2.0, completion: nil)
 
 //            UIView.animateWithDuration(2.0) { () -> Void in
@@ -141,11 +146,24 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         }
         else
         {
-            pulledCardFlowLayout.cardAtTopOfStack = cardFlowLayout.cardAtTopOfStack
-            pulledCardFlowLayout.pulledCard = indexPath
+//            pulledCardFlowLayout.cardAtTopOfStack = cardFlowLayout.cardAtTopOfStack
+//            pulledCardFlowLayout.pulledCard = indexPath
+            
+            pulledCardLayout.pulledCard = indexPath
+            pulledCardLayout.contentSize = cardFlowLayout.collectionViewContentSize()
+            
+            pulledCardLayout.centerX = self.collectionView.bounds.width / 2
+            
+            let itemsInStack
+                = cardFlowLayout.layoutAttributesForElementsInRect(collectionView.bounds)?
+                    .map { $0.indexPath.item }.reverse() ?? []
+            
+            print(itemsInStack)
+            pulledCardLayout.itemsInStack = itemsInStack
+            print(pulledCardLayout.itemsInStack)
             
             collectionView.transitionToCollectionViewLayout(
-                pulledCardFlowLayout,
+                pulledCardLayout,
                 duration: 0.5,
                 easing: QuadraticEaseInOut,
                 completion: nil)
