@@ -72,17 +72,21 @@ class CollectionViewPulledCardLayout: UICollectionViewLayout {
         }
     }
     
-    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        
-        if !itemsInStack.contains(indexPath.item) && indexPath != pulledCard { return nil }
-        
+    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath)
+        -> UICollectionViewLayoutAttributes?
+    {
         let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
         attributes.frame = CGRect(
             origin: CGPoint(x: centerX - cardSize.width/2, y: 0),
             size: cardSize)
         attributes.zIndex = indexPath.item
         
-        setYCoordinateForAttributes(attributes)
+        if !itemsInStack.contains(indexPath.item) && indexPath != pulledCard {
+            attributes.frame.origin.y = self.collectionView!.bounds.origin.y + self.collectionView!.bounds.height
+        }
+        else {
+            setYCoordinateForAttributes(attributes)
+        }
         
         return attributes
     }
