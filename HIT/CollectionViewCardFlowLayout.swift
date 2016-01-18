@@ -128,11 +128,19 @@ import UIKit
         {
             setSectionInsetForBounds(bounds)
             
+            print("observing bounds change")
+            
             let newStackingAndSlowingCardAttributes = stackingAndSlowingCardAttributesForBounds(self.collectionView!.bounds)
             if  let newStackingAndSlowingCardAttributes = newStackingAndSlowingCardAttributes
                 where newStackingAndSlowingCardAttributes.count > 0
             {
                 cardAtTopOfStack = newStackingAndSlowingCardAttributes.first!.indexPath
+                print("set card to \(cardAtTopOfStack)")
+            }
+            else
+            {
+                print("set card to nil")
+                cardAtTopOfStack = nil
             }
         }
     }
@@ -465,8 +473,10 @@ import UIKit
         // If we're scrolled into the negative gutter,
         // then we want to stretch the cards away from each other,
         // so we invalidate all the cards that are visible.
+        
         // We also invalidate all cards between the first and 
         // the most recent card at the top of the stack.
+        
         // We do this because the user may sometimes scroll to the top
         // at high speeds, and the most recent card at the top of the stack
         // may be below the ones that are at the top of the collection view.
@@ -482,8 +492,6 @@ import UIKit
 
             }
             
-//            cardAtTopOfStack = nil
-            
             super.layoutAttributesForElementsInRect(newBounds)?
                 .forEach({ attributes in
                     indexPathsToInvalidate.append(attributes.indexPath)
@@ -494,8 +502,14 @@ import UIKit
         // the card at the top of the stack is nil,
         // then we've just transitioned from scrolling out of 
         // the negative gutter.
-        // We set the card at the top of the stack to be the first 
-        // card and invalidate all the visible cards.
+            
+        // We invalidate all visible cards so that we can remove the
+        // stretching effect that we enforced when we were in negative bounds.
+            
+        // We detect what the next card at the top of the stack will be,
+        // and we invalidate all cards between that one and the first card.
+        // This invalidation is helpful when scrolling at high speeds
+        // away from the top.
             
         else if bounds.origin.y < 0 && newBounds.origin.y >= 0
         {
@@ -512,8 +526,6 @@ import UIKit
                 
                 indexPathsToInvalidate +=
                     (0...newCardAtTopOfStack.item).map { NSIndexPath(forItem: $0, inSection: 0) }
-                
-//                cardAtTopOfStack = newCardAtTopOfStack
             }
             
             super.layoutAttributesForElementsInRect(newBounds)?
@@ -524,21 +536,29 @@ import UIKit
             
         // Otherwise, we're currently somewhere further down
         // in the scroll view.
-        // We invalidate the most recent card at the top of the stack
-        // and update the top card if needed, and invalidate that one too.
-        // We also invalidate the following cards so that we can slow their
-        // travel as they reach the top.
             
+        // We invalidate the most recent card at the top of the stack along
+        // with all the cards within the slowing limit that follow it.
+            
+        // We detect what the next card at the top of the stack will be,
+        // and we invalidate all cards between that one and the 
+        // previous top card.
+        // This invalidation is helpful when scrolling at high speeds,
+        // because we may have skipped several cards.
+        // We also invalidate the cards that follow the next top card 
+        // that are within the slowing limit.
+        
         else
         {
-            print("has card: \(cardAtTopOfStack)")
+            print("positive y")
+            
             let currentBounds = self.collectionView!.bounds
             stackingAndSlowingCardAttributesForBounds(currentBounds)?
                 .forEach({ attributes in
                     indexPathsToInvalidate.append(attributes.indexPath)
                 })
             
-
+            
             let newStackingAndSlowingCardAttributes = stackingAndSlowingCardAttributesForBounds(newBounds)
             newStackingAndSlowingCardAttributes?.forEach({ attributes in
                 indexPathsToInvalidate.append(attributes.indexPath)
@@ -558,8 +578,6 @@ import UIKit
                     indexPathsToInvalidate +=
                         (stackChangeEndPoints[0]...stackChangeEndPoints[1])
                             .map { NSIndexPath(forItem: $0, inSection: 0) }
-                   
-//                    cardAtTopOfStack = newCardAtTopOfStack
                 }
             }
         }
