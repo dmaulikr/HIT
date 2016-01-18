@@ -164,7 +164,7 @@ import UIKit
         }
     }
     
-    func fetchCardFromCacheAtIndex(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes
+    private func fetchCardFromCacheAtIndex(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes
     {
         if let card = cardCache[indexPath.item] {
             return card
@@ -186,13 +186,11 @@ import UIKit
         }
         
         // filter for item attributes
-        let itemSuperAttributes = superAttributes.filter({ (superAttributes) -> Bool in
-            return superAttributes.representedElementCategory == .Cell
-        })
+        let itemSuperAttributes = superAttributes
+            .filter { $0.representedElementCategory == .Cell }
         
-        let allOtherSuperAttributes = superAttributes.filter({ (superAttributes) -> Bool in
-            return superAttributes.representedElementCategory != .Cell
-        })
+        let allOtherSuperAttributes = superAttributes
+            .filter { $0.representedElementCategory != .Cell }
         
         var cardAttributes = itemSuperAttributes
             .map { fetchCardFromCacheAtIndex($0.indexPath) }
@@ -409,12 +407,8 @@ import UIKit
         
         let stackingAndSlowingCardAttributes =
             super.layoutAttributesForElementsInRect(topOfStackDetectionRectForBounds)?
-                .filter({ attributes in
-                    return attributes.representedElementCategory == .Cell
-                })
-                .sort({ (attribute1, attribute2) in
-                    return attribute1.indexPath.item < attribute2.indexPath.item
-                })
+                .filter { $0.representedElementCategory == .Cell }
+                .sort { $0.indexPath.item < $1.indexPath.item }
         
         return stackingAndSlowingCardAttributes
     }
