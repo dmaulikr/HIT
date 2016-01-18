@@ -60,6 +60,11 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         pulledCardFlowLayout.topInset = 0
         pulledCardFlowLayout.minimumLineSpacing = 0
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        collectionView.scrollToItemAtIndexPath(
+            NSIndexPath(forItem: 50, inSection: 0), atScrollPosition: .Top, animated: true)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
