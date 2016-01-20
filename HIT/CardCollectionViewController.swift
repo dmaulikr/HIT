@@ -9,45 +9,53 @@
 import UIKit
 
 private let cellReuseIdentifier = "CardCollectionViewCell"
-//private let cardSupplementaryViewReuseIdentifier = "CardCollectionViewCell"
 
 class CardCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
+    
+    
+    //
+    //
+    //
+    //
+    // MARK: - Outlets
+    
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var testButton: UIButton!
+    
+    
+    
+    //
+    //
+    //
+    //
+    // MARK: - Properties
     
     var cardFlowLayout = CollectionViewCardFlowLayout()
-//    var pulledCardFlowLayout = CollectionViewPulledCardFlowLayout()
     var pulledCardLayout = CollectionViewPulledCardLayout()
     
-    @IBAction func testButtonPressed(sender: AnyObject) {
-        print("pressed")
-    }
+    var cardTransitionLayout: CardTransitionLayout?
+    
+    
+    
+    //
+    //
+    //
+    //
+    // MARK: - View lifecycle
 
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-//        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
         collectionView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0)
         collectionView.alwaysBounceVertical = true
-//        collectionView.registerClass(
-//            CardCollectionViewCell.self,
-//            forSupplementaryViewOfKind: CollectionViewCardFlowLayout.SupplementaryViewKind.Card.rawValue,
-//            withReuseIdentifier: cardSupplementaryViewReuseIdentifier)
-        
         collectionView.setCollectionViewLayout(cardFlowLayout, animated: false)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(animated: Bool)
+    {
         super.viewWillAppear(animated)
         
-        print(cardFlowLayout.sectionInset)
         cardFlowLayout.itemSize = CGSize(width: view.bounds.width-4, height: 25)
         cardFlowLayout.cardHeight = 400
         cardFlowLayout.cardMargin = 100
@@ -58,26 +66,24 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         pulledCardLayout.cardSize = cardFlowLayout.cardSize
     }
     
-//    override func viewDidAppear(animated: Bool) {
-//        collectionView.scrollToItemAtIndexPath(
-//            NSIndexPath(forItem: 50, inSection: 0), atScrollPosition: .Top, animated: true)
-//    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    //
+    //
+    //
+    //
+    // MARK: - IBActions
+    
+    
+    @IBAction func finishTransition() {
+        self.collectionView.finishInteractiveTransition()
     }
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
+    //
+    //
+    //
+    //
     // MARK: UICollectionViewDataSource
 
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -103,18 +109,18 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         return cell
     }
 
+    
+    
+    //
+    //
+    //
+    //
+    // MARK: - UICollectionViewDelegate
 
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    */
-
-    // Uncomment this method to specify if the specified item should be selected
-    func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool
+    func collectionView(collectionView: UICollectionView,
+        shouldSelectItemAtIndexPath indexPath: NSIndexPath)
+        
+        -> Bool
     {
         // Have to embed setCollectionViewLayout:animated: in an animation
         // block as a work around for content offset bug.
@@ -126,10 +132,11 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
             
             collectionView.transitionToCollectionViewLayout(
                 cardFlowLayout,
-                duration: 5.0,
+                duration: 0.4,
                 easing: QuadraticEaseInOut,
                 completion: { (completed, finish) in
                     self.cardFlowLayout.invalidateLayout()
+                    print("content offset after transition back: \(collectionView.contentOffset)")
                 })
 //            collectionView.transitionToCollectionViewLayout(cardFlowLayout, duration: 2.0, completion: nil)
 
@@ -150,17 +157,17 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
             
             let itemsInStack
                 = cardFlowLayout.layoutAttributesForElementsInRect(collectionView.bounds)?
-                    .map { $0.indexPath.item }.reverse() ?? []
+                    .map { $0.indexPath.item } ?? []
             
             print(itemsInStack)
             pulledCardLayout.itemsInStack = itemsInStack
             print(pulledCardLayout.itemsInStack)
             
-            collectionView.transitionToCollectionViewLayout(
-                pulledCardLayout,
-                duration: 0.5,
-                easing: QuadraticEaseInOut,
-                completion: nil)
+//            collectionView.transitionToCollectionViewLayout(
+//                pulledCardLayout,
+//                duration: 0.5,
+//                easing: QuadraticEaseInOut,
+//                completion: nil)
 //            collectionView.transitionToCollectionViewLayout(pulledCardFlowLayout, duration: 2.0, completion: nil)
 
             
@@ -171,6 +178,17 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
 //                collectionView.setCollectionViewLayout(self.pulledCardFlowLayout, animated: false)
 //                collectionView.contentOffset = currentContentOffset
 //            }
+            
+            collectionView.startInteractiveTransitionToCollectionViewLayout(pulledCardLayout,
+                completion: { (completed, finish) in
+                    print("interactive transition completion handler called,\n   completed: \(completed), finish: \(finish)")
+                    print("content offset after transition: \(collectionView.contentOffset)")
+                    collectionView.contentOffset = self.cardTransitionLayout!.toContentOffset
+                    print("content offset after transition, after setting: \(collectionView.contentOffset)")
+                    print("collection view layout type: \(collectionView.collectionViewLayout.dynamicType)")
+                    self.cardTransitionLayout = nil
+                    print("\n\n\n\n\n")
+            })
         }
         
 //        collectionView.setCollectionViewLayout(pulledCardFlowLayout, animated: false)
@@ -179,33 +197,33 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         return false
     }
     
-    func collectionView(collectionView: UICollectionView, transitionLayoutForOldLayout fromLayout: UICollectionViewLayout, newLayout toLayout: UICollectionViewLayout) -> UICollectionViewTransitionLayout {
+    func collectionView(collectionView: UICollectionView,
+        transitionLayoutForOldLayout fromLayout: UICollectionViewLayout,
+        newLayout toLayout: UICollectionViewLayout)
         
-        let transitionLayout = TLTransitionLayout(
-            currentLayout: fromLayout,
-            nextLayout: toLayout,
-            supplementaryKinds: [])
-        
-        print("getting transition layout")
-        
-        transitionLayout.toContentOffset = fromLayout.collectionView!.contentOffset
-        
-        return transitionLayout
-    }
+        -> UICollectionViewTransitionLayout
+    {
+        if fromLayout.isKindOfClass(CollectionViewCardFlowLayout.self)
+            && toLayout.isKindOfClass(CollectionViewPulledCardLayout.self)
+        {
+            print("providing CardTransitionLayout")
+            
+            cardTransitionLayout = CardTransitionLayout(currentLayout: fromLayout, nextLayout: toLayout)
+            return cardTransitionLayout!
+        }
+        else
+        {
+            print("providing TLTransitionLayout")
 
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
+            let transitionLayout = TLTransitionLayout(
+                currentLayout: fromLayout,
+                nextLayout: toLayout,
+                supplementaryKinds: [])
+            
+            transitionLayout.toContentOffset
+                = fromLayout.collectionView!.contentOffset
+            
+            return transitionLayout
+        }
     }
-
-    override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
-    
-    }
-    */
-
 }

@@ -90,7 +90,6 @@ import UIKit
     
     override var itemSize: CGSize {
         willSet {
-            print("did set item size")
             if let bounds = self.collectionView?.bounds
             {
                 setSectionInsetForBounds(bounds, topInset: topInset, itemSize: newValue)
@@ -380,10 +379,8 @@ import UIKit
     
     func setSectionInsetForBounds(bounds: CGRect, topInset: CGFloat, itemSize: CGSize)
     {
-        print("will set section inset, itemSize: \(itemSize), bounds: \(bounds)")
         let leftRightInset = (bounds.width - itemSize.width)/2
         sectionInset = UIEdgeInsets(top: topInset, left: leftRightInset, bottom: 0, right: leftRightInset)
-        print("did set section inset: \(sectionInset)")
     }
     
     func setSectionInsetForBounds(bounds: CGRect, topInset: CGFloat) {

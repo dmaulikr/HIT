@@ -42,6 +42,8 @@
         _fromContentOffset = currentLayout.collectionView.contentOffset;
     }
     
+    
+    
     return self;
 }
 
