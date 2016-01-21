@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3E9860209EE0B99121A6F0EE /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1857E2202B0672F8B5E3D30D /* libPods.a */; };
+		3F0135B81C4F8177001DA4B7 /* PullableCardFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0135B71C4F8177001DA4B7 /* PullableCardFlowLayout.swift */; };
 		3F16BB7D1C2BE3A1000D4B7D /* CardAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16BB7C1C2BE3A1000D4B7D /* CardAnnotation.swift */; };
 		3F16BB7F1C2BE459000D4B7D /* CardTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16BB7E1C2BE459000D4B7D /* CardTableViewController.swift */; };
 		3F16BB811C2CBB46000D4B7D /* Mantra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16BB801C2CBB46000D4B7D /* Mantra.swift */; };
@@ -58,6 +59,7 @@
 
 /* Begin PBXFileReference section */
 		1857E2202B0672F8B5E3D30D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F0135B71C4F8177001DA4B7 /* PullableCardFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullableCardFlowLayout.swift; sourceTree = "<group>"; };
 		3F16BB7C1C2BE3A1000D4B7D /* CardAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardAnnotation.swift; sourceTree = "<group>"; };
 		3F16BB7E1C2BE459000D4B7D /* CardTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTableViewController.swift; sourceTree = "<group>"; };
 		3F16BB801C2CBB46000D4B7D /* Mantra.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mantra.swift; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 			children = (
 				3F8E8E351C4CE13B00FBAD96 /* CardTransitionLayout.swift */,
 				3FCA2D191C32441D00E27F64 /* CollectionViewCardFlowLayout.swift */,
+				3F0135B71C4F8177001DA4B7 /* PullableCardFlowLayout.swift */,
 				3FB53DBE1C4CB1E60003D94A /* CollectionViewPulledCardLayout.swift */,
 				3FA3900E1C48E1D30099FB17 /* CollectionViewPulledCardFlowLayout.swift */,
 				3FCA2D171C322EF500E27F64 /* CardCollectionViewCell.swift */,
@@ -454,6 +457,7 @@
 				3F16BB7F1C2BE459000D4B7D /* CardTableViewController.swift in Sources */,
 				3F16BB7D1C2BE3A1000D4B7D /* CardAnnotation.swift in Sources */,
 				3F16BB811C2CBB46000D4B7D /* Mantra.swift in Sources */,
+				3F0135B81C4F8177001DA4B7 /* PullableCardFlowLayout.swift in Sources */,
 				3FCA2D1C1C40A87000E27F64 /* PlaceholderCollectionViewCell.swift in Sources */,
 				3FDAE60D1C293BD0000634CF /* StatePlaceholderView.swift in Sources */,
 				3FCA2D181C322EF500E27F64 /* CardCollectionViewCell.swift in Sources */,

@@ -14,6 +14,8 @@ import UIKit
     //
     //
     //
+    // Properties
+    
     // State information
     
     private var cardCache = [Int : UICollectionViewLayoutAttributes]()
@@ -24,10 +26,6 @@ import UIKit
     private var attributesToRecalculate = [Int]()
     private var recalculateEverything = true
     
-    //
-    //
-    //
-    //
     // Metrics
     
     @IBInspectable var cardHeight: CGFloat = 100
@@ -103,7 +101,7 @@ import UIKit
     //
     //
     //
-    // MARK: - UICollectionViewFlowLayout override
+    // MARK: - UICollectionViewFlowLayout subclassing
     
     func initSetup() {
         minimumInteritemSpacing = 0

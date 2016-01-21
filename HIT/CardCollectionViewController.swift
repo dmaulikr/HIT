@@ -30,7 +30,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
     //
     // MARK: - Properties
     
-    var cardFlowLayout = CollectionViewCardFlowLayout()
+    var cardFlowLayout = PullableCardFlowLayout()
     var pulledCardLayout = CollectionViewPulledCardLayout()
     
     var cardTransitionLayout: CardTransitionLayout?
@@ -122,77 +122,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         
         -> Bool
     {
-        // Have to embed setCollectionViewLayout:animated: in an animation
-        // block as a work around for content offset bug.
-        if collectionView.collectionViewLayout.isKindOfClass(CollectionViewPulledCardLayout.self)
-        {
-            cardFlowLayout.invalidateLayout()
-//            let currentContentOffset = collectionView.contentOffset
-            collectionView.scrollEnabled = true
-            
-            collectionView.transitionToCollectionViewLayout(
-                cardFlowLayout,
-                duration: 0.4,
-                easing: QuadraticEaseInOut,
-                completion: { (completed, finish) in
-                    self.cardFlowLayout.invalidateLayout()
-                    print("content offset after transition back: \(collectionView.contentOffset)")
-                })
-//            collectionView.transitionToCollectionViewLayout(cardFlowLayout, duration: 2.0, completion: nil)
-
-//            UIView.animateWithDuration(2.0) { () -> Void in
-//                collectionView.setCollectionViewLayout(self.cardFlowLayout, animated: false)
-//                collectionView.contentOffset = currentContentOffset
-//            }
-        }
-        else
-        {
-//            pulledCardFlowLayout.cardAtTopOfStack = cardFlowLayout.cardAtTopOfStack
-//            pulledCardFlowLayout.pulledCard = indexPath
-            
-            pulledCardLayout.pulledCard = indexPath
-            pulledCardLayout.contentSize = cardFlowLayout.collectionViewContentSize()
-            
-            pulledCardLayout.centerX = self.collectionView.bounds.width / 2
-            
-            let itemsInStack
-                = cardFlowLayout.layoutAttributesForElementsInRect(collectionView.bounds)?
-                    .map { $0.indexPath.item } ?? []
-            
-            print(itemsInStack)
-            pulledCardLayout.itemsInStack = itemsInStack
-            print(pulledCardLayout.itemsInStack)
-            
-//            collectionView.transitionToCollectionViewLayout(
-//                pulledCardLayout,
-//                duration: 0.5,
-//                easing: QuadraticEaseInOut,
-//                completion: nil)
-//            collectionView.transitionToCollectionViewLayout(pulledCardFlowLayout, duration: 2.0, completion: nil)
-
-            
-//            pulledCardFlowLayout.invalidateLayout()
-//            let currentContentOffset = collectionView.contentOffset
-//            collectionView.scrollEnabled = false
-//            UIView.animateWithDuration(2.0) { () -> Void in
-//                collectionView.setCollectionViewLayout(self.pulledCardFlowLayout, animated: false)
-//                collectionView.contentOffset = currentContentOffset
-//            }
-            
-            collectionView.startInteractiveTransitionToCollectionViewLayout(pulledCardLayout,
-                completion: { (completed, finish) in
-                    print("interactive transition completion handler called,\n   completed: \(completed), finish: \(finish)")
-                    print("content offset after transition: \(collectionView.contentOffset)")
-                    collectionView.contentOffset = self.cardTransitionLayout!.toContentOffset
-                    print("content offset after transition, after setting: \(collectionView.contentOffset)")
-                    print("collection view layout type: \(collectionView.collectionViewLayout.dynamicType)")
-                    self.cardTransitionLayout = nil
-                    print("\n\n\n\n\n")
-            })
-        }
-        
-//        collectionView.setCollectionViewLayout(pulledCardFlowLayout, animated: false)
-//        collectionView.contentOffset
+        cardFlowLayout.pullCardAtIndexPath(indexPath)
         
         return false
     }
