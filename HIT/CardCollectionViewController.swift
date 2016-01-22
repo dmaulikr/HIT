@@ -10,7 +10,12 @@ import UIKit
 
 private let cellReuseIdentifier = "CardCollectionViewCell"
 
-class CardCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class CardCollectionViewController:
+    UIViewController,
+    UICollectionViewDataSource,
+    UICollectionViewDelegate,
+    PullableCardFlowLayoutDelegate
+{
     
     
     
@@ -31,9 +36,6 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
     // MARK: - Properties
     
     var cardFlowLayout = PullableCardFlowLayout()
-    var pulledCardLayout = CollectionViewPulledCardLayout()
-    
-    var cardTransitionLayout: CardTransitionLayout?
     
     
     
@@ -62,20 +64,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         cardFlowLayout.slowingLimit = 75
         cardFlowLayout.topInset = 150
         cardFlowLayout.minimumLineSpacing = 0
-        
-        pulledCardLayout.cardSize = cardFlowLayout.cardSize
-    }
-    
-    
-    //
-    //
-    //
-    //
-    // MARK: - IBActions
-    
-    
-    @IBAction func finishTransition() {
-        self.collectionView.finishInteractiveTransition()
+        cardFlowLayout.pullableCardFlowLayoutDelegate = self
     }
 
 
@@ -108,7 +97,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         cell.cardView.title.text = "\(indexPath.item)"
         return cell
     }
-
+    
     
     
     //
@@ -116,7 +105,7 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
     //
     //
     // MARK: - UICollectionViewDelegate
-
+    
     func collectionView(collectionView: UICollectionView,
         shouldSelectItemAtIndexPath indexPath: NSIndexPath)
         
@@ -128,8 +117,37 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         }
         else {
             cardFlowLayout.pullCardAtIndexPath(indexPath)
+            collectionView.scrollEnabled = false
         }
         
         return false
+    }
+
+    
+    
+    //
+    //
+    //
+    //
+    // MARK: - PullableCardFlowLayoutDelegate
+    
+    func layout(layout: PullableCardFlowLayout, didPullCardAtIndexPath indexPath: NSIndexPath)
+    {
+        
+    }
+    
+    func layout(layout: PullableCardFlowLayout, willPullCardAtIndexPath indexPath: NSIndexPath)
+    {
+        
+    }
+    
+    func layoutWillReturnToCardFlow(layout: PullableCardFlowLayout)
+    {
+        
+    }
+    
+    func layoutDidReturnToCardFlow(layout: PullableCardFlowLayout)
+    {
+        collectionView.scrollEnabled = true
     }
 }

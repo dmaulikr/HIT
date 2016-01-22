@@ -24,6 +24,8 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout, UIDynamicAnimatorDel
         return animator
     }()
     
+    var pullableCardFlowLayoutDelegate: PullableCardFlowLayoutDelegate?
+    
     //
     // State information
     
@@ -203,6 +205,8 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout, UIDynamicAnimatorDel
         
         if !stackIsRetracted {
             cardCache.removeAll()
+            
+            pullableCardFlowLayoutDelegate?.layoutDidReturnToCardFlow(self)
         }
         
         print("animator did pause")
@@ -263,4 +267,13 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout, UIDynamicAnimatorDel
             return super.shouldInvalidateLayoutForBoundsChange(newBounds)
         }
     }
+}
+
+
+protocol PullableCardFlowLayoutDelegate
+{
+    func layout(layout: PullableCardFlowLayout, willPullCardAtIndexPath indexPath: NSIndexPath)
+    func layout(layout: PullableCardFlowLayout, didPullCardAtIndexPath indexPath: NSIndexPath)
+    func layoutWillReturnToCardFlow(layout: PullableCardFlowLayout)
+    func layoutDidReturnToCardFlow(layout: PullableCardFlowLayout)
 }
