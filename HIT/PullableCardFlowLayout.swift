@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PullableCardFlowLayout: CollectionViewCardFlowLayout
+class PullableCardFlowLayout: CollectionViewCardFlowLayout, UIDynamicAnimatorDelegate
 {
     
     
@@ -18,13 +18,18 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout
     //
     // Properties
     
-    lazy private var animator: UIDynamicAnimator = UIDynamicAnimator(collectionViewLayout: self)
+    lazy private var animator: UIDynamicAnimator = {
+        let animator = UIDynamicAnimator(collectionViewLayout: self)
+        animator.delegate = self
+        return animator
+    }()
     
     //
     // State information
     
     private var cardCache = [Int : UICollectionViewLayoutAttributes]()
-    private var stackIsRetracted = false
+    private var attachmentBehaviors = [Int : UIAttachmentBehavior]()
+    var stackIsRetracted = false
     var pulledCard: NSIndexPath?
     var itemsInRetractedStack = [Int]() {
         didSet {
@@ -86,9 +91,8 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout
     
     func setupAttachmentBehaviorForIndexPath(indexPath: NSIndexPath)
     {
-        if cardCache[indexPath.item] == nil
+        if attachmentBehaviors[indexPath.item] == nil
         {
-            
             let superAttributes = super.layoutAttributesForItemAtIndexPath(indexPath)!
                 .copy() as! UICollectionViewLayoutAttributes
             
@@ -100,8 +104,8 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout
             print(behavior)
             
             behavior.length = 0.0
-            behavior.damping = 1.0
-            behavior.frequency = 2.0
+            behavior.damping = 0.75
+            behavior.frequency = 3.0
             
             //            let pushBehavior = UIPushBehavior(items: [startingAttributes], mode: .Instantaneous)
             //            pushBehavior.angle = CGFloat(M_PI/4)
@@ -109,7 +113,47 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout
             //            animator?.addBehavior(pushBehavior)
             
             animator.addBehavior(behavior)
+            attachmentBehaviors[indexPath.item] = behavior
             cardCache[indexPath.item] = superAttributes
+        }
+    }
+    
+    func returnToCardFlow()
+    {
+        guard stackIsRetracted else { return }
+        
+        stackIsRetracted = false
+        animator.removeAllBehaviors()
+        attachmentBehaviors.removeAll()
+        
+        for item in itemsInRetractedStack
+        {
+            let indexPath = NSIndexPath(forItem: item, inSection: 0)
+            
+            if attachmentBehaviors[indexPath.item] == nil
+            {
+                let superAttributes = super.layoutAttributesForItemAtIndexPath(indexPath)!
+                    .copy() as! UICollectionViewLayoutAttributes
+                
+                let behavior = UIAttachmentBehavior(
+                    item: cardCache[indexPath.item]!,
+                    attachedToAnchor: superAttributes.center)
+                
+                print(behavior)
+                
+                behavior.length = 0.0
+                behavior.damping = 0.75
+                behavior.frequency = 3.0
+                
+                //            let pushBehavior = UIPushBehavior(items: [startingAttributes], mode: .Instantaneous)
+                //            pushBehavior.angle = CGFloat(M_PI/4)
+                //            pushBehavior.magnitude = 1.0
+                //            animator?.addBehavior(pushBehavior)
+                
+                animator.addBehavior(behavior)
+                attachmentBehaviors[indexPath.item] = behavior
+//                cardCache[indexPath.item] = superAttributes
+            }
         }
     }
     
@@ -123,8 +167,11 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout
                     .map { $0.indexPath.item }
             
             stackIsRetracted = true
-            
             pulledCard = indexPath
+            
+            animator.removeAllBehaviors()
+            attachmentBehaviors.removeAll()
+            
             for item in itemsInRetractedStack
             {
                 let indexPath = NSIndexPath(forItem: item, inSection: 0)
@@ -143,6 +190,13 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout
     
     func dynamicAnimatorDidPause(animator: UIDynamicAnimator) {
         animator.removeAllBehaviors()
+        attachmentBehaviors.removeAll()
+        
+        if !stackIsRetracted {
+            cardCache.removeAll()
+        }
+        
+        print("animator did pause")
     }
     
     
@@ -159,12 +213,12 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout
     
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]?
     {
-        //        print("in rect: \(rect)")
+                print("in rect: \(rect)")
         guard let superAttributes = super.layoutAttributesForElementsInRect(rect) else {
             return nil
         }
         
-        if !stackIsRetracted
+        if cardCache.count == 0
         {
             return superAttributes
         }

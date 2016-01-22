@@ -122,38 +122,14 @@ class CardCollectionViewController: UIViewController, UICollectionViewDataSource
         
         -> Bool
     {
-        cardFlowLayout.pullCardAtIndexPath(indexPath)
+        if cardFlowLayout.stackIsRetracted
+        {
+            cardFlowLayout.returnToCardFlow()
+        }
+        else {
+            cardFlowLayout.pullCardAtIndexPath(indexPath)
+        }
         
         return false
-    }
-    
-    func collectionView(collectionView: UICollectionView,
-        transitionLayoutForOldLayout fromLayout: UICollectionViewLayout,
-        newLayout toLayout: UICollectionViewLayout)
-        
-        -> UICollectionViewTransitionLayout
-    {
-        if fromLayout.isKindOfClass(CollectionViewCardFlowLayout.self)
-            && toLayout.isKindOfClass(CollectionViewPulledCardLayout.self)
-        {
-            print("providing CardTransitionLayout")
-            
-            cardTransitionLayout = CardTransitionLayout(currentLayout: fromLayout, nextLayout: toLayout)
-            return cardTransitionLayout!
-        }
-        else
-        {
-            print("providing TLTransitionLayout")
-
-            let transitionLayout = TLTransitionLayout(
-                currentLayout: fromLayout,
-                nextLayout: toLayout,
-                supplementaryKinds: [])
-            
-            transitionLayout.toContentOffset
-                = fromLayout.collectionView!.contentOffset
-            
-            return transitionLayout
-        }
     }
 }
