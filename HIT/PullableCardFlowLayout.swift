@@ -105,12 +105,16 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout, UIDynamicAnimatorDel
             
             behavior.length = 0.0
             behavior.damping = 0.75
-            behavior.frequency = 3.0
+            behavior.frequency = 5.0
             
             //            let pushBehavior = UIPushBehavior(items: [startingAttributes], mode: .Instantaneous)
             //            pushBehavior.angle = CGFloat(M_PI/4)
             //            pushBehavior.magnitude = 1.0
             //            animator?.addBehavior(pushBehavior)
+            
+            let resistanceBehavior = UIDynamicItemBehavior(items: [superAttributes])
+            resistanceBehavior.resistance = 10.0
+            animator.addBehavior(resistanceBehavior)
             
             animator.addBehavior(behavior)
             attachmentBehaviors[indexPath.item] = behavior
@@ -143,12 +147,17 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout, UIDynamicAnimatorDel
                 
                 behavior.length = 0.0
                 behavior.damping = 0.75
-                behavior.frequency = 3.0
+                behavior.frequency = 5.0
                 
                 //            let pushBehavior = UIPushBehavior(items: [startingAttributes], mode: .Instantaneous)
                 //            pushBehavior.angle = CGFloat(M_PI/4)
                 //            pushBehavior.magnitude = 1.0
                 //            animator?.addBehavior(pushBehavior)
+                
+                let resistanceBehavior = UIDynamicItemBehavior(
+                    items: [cardCache[indexPath.item]!])
+                resistanceBehavior.resistance = 40.0
+                animator.addBehavior(resistanceBehavior)
                 
                 animator.addBehavior(behavior)
                 attachmentBehaviors[indexPath.item] = behavior
