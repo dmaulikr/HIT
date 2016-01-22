@@ -23,7 +23,12 @@ class CardCollectionViewController:
     //
     //
     //
-    // MARK: - Outlets
+    // MARK: - Properties
+    
+    var cardFlowLayout = PullableCardFlowLayout()
+    
+    //
+    // IBOutlets
     
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -33,10 +38,31 @@ class CardCollectionViewController:
     //
     //
     //
-    // MARK: - Properties
+    // MARK: - IBActions
     
-    var cardFlowLayout = PullableCardFlowLayout()
+    @IBAction func tappedOnCollectionView(sender: UITapGestureRecognizer) {
+        let location = sender.locationInView(collectionView)
+        let indexPath = collectionView.indexPathForItemAtPoint(location)
+        
+        if cardFlowLayout.stackIsRetracted
+        {
+            cardFlowLayout.returnToCardFlow()
+        }
+        else if indexPath != nil {
+            cardFlowLayout.pullCardAtIndexPath(indexPath!)
+            collectionView.scrollEnabled = false
+        }
+    }
     
+    @IBAction func pannedInCollectionView(sender: UIPanGestureRecognizer) {
+        if sender.state == .Began || sender.state == .Changed
+        {
+            cardFlowLayout.trackPulledCardToPoint(sender.locationInView(collectionView))
+        }
+        else {
+            cardFlowLayout.stopTrackingPulledCard()
+        }
+    }
     
     
     //
@@ -106,22 +132,22 @@ class CardCollectionViewController:
     //
     // MARK: - UICollectionViewDelegate
     
-    func collectionView(collectionView: UICollectionView,
-        shouldSelectItemAtIndexPath indexPath: NSIndexPath)
-        
-        -> Bool
-    {
-        if cardFlowLayout.stackIsRetracted
-        {
-            cardFlowLayout.returnToCardFlow()
-        }
-        else {
-            cardFlowLayout.pullCardAtIndexPath(indexPath)
-            collectionView.scrollEnabled = false
-        }
-        
-        return false
-    }
+//    func collectionView(collectionView: UICollectionView,
+//        shouldSelectItemAtIndexPath indexPath: NSIndexPath)
+//        
+//        -> Bool
+//    {
+//        if cardFlowLayout.stackIsRetracted
+//        {
+//            cardFlowLayout.returnToCardFlow()
+//        }
+//        else {
+//            cardFlowLayout.pullCardAtIndexPath(indexPath)
+//            collectionView.scrollEnabled = false
+//        }
+//        
+//        return false
+//    }
 
     
     

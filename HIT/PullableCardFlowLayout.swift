@@ -151,11 +151,6 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout, UIDynamicAnimatorDel
                 behavior.damping = 0.75
                 behavior.frequency = 5.0
                 
-                //            let pushBehavior = UIPushBehavior(items: [startingAttributes], mode: .Instantaneous)
-                //            pushBehavior.angle = CGFloat(M_PI/4)
-                //            pushBehavior.magnitude = 1.0
-                //            animator?.addBehavior(pushBehavior)
-                
                 let resistanceBehavior = UIDynamicItemBehavior(
                     items: [cardCache[indexPath.item]!])
                 resistanceBehavior.resistance = 40.0
@@ -163,7 +158,6 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout, UIDynamicAnimatorDel
                 
                 animator.addBehavior(behavior)
                 attachmentBehaviors[indexPath.item] = behavior
-//                cardCache[indexPath.item] = superAttributes
             }
         }
     }
@@ -189,6 +183,72 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout, UIDynamicAnimatorDel
                 setupAttachmentBehaviorForIndexPath(indexPath)
             }
         }
+    }
+    
+    
+    
+    //
+    //
+    //
+    //
+    // MARK: - Pulled card tracking/moving mechanism
+    
+    var isTrackingPulledCard = false
+    
+    func trackPulledCardToPoint(point: CGPoint)
+    {
+        guard let pulledCard = pulledCard else { return }
+        
+        isTrackingPulledCard = true
+        
+        let item = pulledCard.item
+        
+        if attachmentBehaviors[item] != nil {
+            animator.removeBehavior(attachmentBehaviors[item]!)
+            attachmentBehaviors[item] = nil
+        }
+        
+        let behavior = UIAttachmentBehavior(item: cardCache[item]!, attachedToAnchor: point)
+        behavior.length = 0.0
+        behavior.damping = 0.0
+        behavior.frequency = 0.0
+        
+        animator.addBehavior(behavior)
+        attachmentBehaviors[item] = behavior
+    }
+    
+    func stopTrackingPulledCard()
+    {
+        guard isTrackingPulledCard else { return }
+        
+        isTrackingPulledCard = false
+        
+        let finalFrame = frameForIndexPath(pulledCard!)
+        let finalCenter = CGPoint(x: CGRectGetMidX(finalFrame), y: CGRectGetMidY(finalFrame))
+        
+        animator.removeBehavior(attachmentBehaviors[pulledCard!.item]!)
+        attachmentBehaviors[pulledCard!.item] = nil
+        
+        let behavior = UIAttachmentBehavior(item: cardCache[pulledCard!.item]!,
+            attachedToAnchor: finalCenter)
+        
+        print(behavior)
+        
+        behavior.length = 0.0
+        behavior.damping = 0.75
+        behavior.frequency = 5.0
+        
+        //            let pushBehavior = UIPushBehavior(items: [startingAttributes], mode: .Instantaneous)
+        //            pushBehavior.angle = CGFloat(M_PI/4)
+        //            pushBehavior.magnitude = 1.0
+        //            animator?.addBehavior(pushBehavior)
+        
+//        let resistanceBehavior = UIDynamicItemBehavior(items: [cardCache[pulledCard!.item]!])
+//        resistanceBehavior.resistance = 10.0
+//        animator.addBehavior(resistanceBehavior)
+        
+        animator.addBehavior(behavior)
+        attachmentBehaviors[pulledCard!.item] = behavior
     }
     
     

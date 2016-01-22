@@ -380,6 +380,7 @@
                         <subviews>
                             <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="lRg-Zn-kEw">
                                 <rect key="frame" x="0.0" y="120" width="600" height="480"/>
+                                <gestureRecognizers/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="RlP-HN-bQ4" customClass="CollectionViewPulledCardFlowLayout" customModule="HIT" customModuleProvider="target">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -395,15 +396,19 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
+                                        <gestureRecognizers/>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
                                     <outlet property="dataSource" destination="irC-qD-KET" id="ykl-PC-Vsa"/>
                                     <outlet property="delegate" destination="irC-qD-KET" id="qvg-4W-o4A"/>
+                                    <outletCollection property="gestureRecognizers" destination="Zzr-BH-abV" appends="YES" id="bvm-Y0-6Lr"/>
+                                    <outletCollection property="gestureRecognizers" destination="P9U-x3-isK" appends="YES" id="Aox-3k-phy"/>
                                 </connections>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="lRg-Zn-kEw" firstAttribute="top" secondItem="lpI-Cd-bjf" secondAttribute="bottom" constant="100" id="9Kf-Hr-Kfi"/>
                             <constraint firstItem="lRg-Zn-kEw" firstAttribute="leading" secondItem="HCr-gu-ONy" secondAttribute="leading" id="Leu-2v-XFb"/>
@@ -416,6 +421,16 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KOS-xp-XGh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Zzr-BH-abV">
+                    <connections>
+                        <action selector="tappedOnCollectionView:" destination="irC-qD-KET" id="A76-TZ-MeZ"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="P9U-x3-isK">
+                    <connections>
+                        <action selector="pannedInCollectionView:" destination="irC-qD-KET" id="ezP-nj-DS0"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1008" y="5120"/>
         </scene>
