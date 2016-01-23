@@ -13,6 +13,8 @@
 		3F16BB7F1C2BE459000D4B7D /* CardTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16BB7E1C2BE459000D4B7D /* CardTableViewController.swift */; };
 		3F16BB811C2CBB46000D4B7D /* Mantra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16BB801C2CBB46000D4B7D /* Mantra.swift */; };
 		3F16BB871C2D1F5B000D4B7D /* AttachmentTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16BB861C2D1F5B000D4B7D /* AttachmentTestViewController.swift */; };
+		3F25F4571C53A78B0093DDA5 /* PulledCardDragTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F25F4561C53A78B0093DDA5 /* PulledCardDragTestViewController.swift */; };
+		3F25F4591C53B6DB0093DDA5 /* CustomBoundsPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F25F4581C53B6DB0093DDA5 /* CustomBoundsPlaceholderView.swift */; };
 		3F3137741C1E472E008D021D /* UIView+Doppelganger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3137731C1E472E008D021D /* UIView+Doppelganger.swift */; };
 		3F62931A1C148C78005BD240 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293191C148C78005BD240 /* AppDelegate.swift */; };
 		3F62931F1C148C78005BD240 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F62931D1C148C78005BD240 /* Main.storyboard */; };
@@ -64,6 +66,8 @@
 		3F16BB7E1C2BE459000D4B7D /* CardTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTableViewController.swift; sourceTree = "<group>"; };
 		3F16BB801C2CBB46000D4B7D /* Mantra.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mantra.swift; sourceTree = "<group>"; };
 		3F16BB861C2D1F5B000D4B7D /* AttachmentTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentTestViewController.swift; sourceTree = "<group>"; };
+		3F25F4561C53A78B0093DDA5 /* PulledCardDragTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulledCardDragTestViewController.swift; sourceTree = "<group>"; };
+		3F25F4581C53B6DB0093DDA5 /* CustomBoundsPlaceholderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomBoundsPlaceholderView.swift; sourceTree = "<group>"; };
 		3F3137731C1E472E008D021D /* UIView+Doppelganger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Doppelganger.swift"; sourceTree = "<group>"; };
 		3F6293161C148C78005BD240 /* HIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HIT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F6293191C148C78005BD240 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -152,9 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				3F6293191C148C78005BD240 /* AppDelegate.swift */,
-				3F6293471C149830005BD240 /* MainViewController.swift */,
 				3F62931D1C148C78005BD240 /* Main.storyboard */,
-				3FCA2D151C322AD400E27F64 /* CardCollectionViewController.swift */,
 				3FCA2D121C31A62000E27F64 /* UI Experiments */,
 				3FCA2D131C31A64400E27F64 /* Model */,
 				3FF21E311C2203500079C67F /* Views */,
@@ -186,9 +188,12 @@
 		3FCA2D121C31A62000E27F64 /* UI Experiments */ = {
 			isa = PBXGroup;
 			children = (
+				3F25F4561C53A78B0093DDA5 /* PulledCardDragTestViewController.swift */,
 				3F16BB861C2D1F5B000D4B7D /* AttachmentTestViewController.swift */,
 				3F16BB7E1C2BE459000D4B7D /* CardTableViewController.swift */,
 				3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */,
+				3F6293471C149830005BD240 /* MainViewController.swift */,
+				3FCA2D151C322AD400E27F64 /* CardCollectionViewController.swift */,
 			);
 			name = "UI Experiments";
 			sourceTree = "<group>";
@@ -247,6 +252,7 @@
 				3FF21E2B1C21F90C0079C67F /* CardTableView.xib */,
 				3F8397DC1C251E720002002E /* XibDesignedView.swift */,
 				3FDAE60C1C293BD0000634CF /* StatePlaceholderView.swift */,
+				3F25F4581C53B6DB0093DDA5 /* CustomBoundsPlaceholderView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -473,10 +479,12 @@
 				3F16BB871C2D1F5B000D4B7D /* AttachmentTestViewController.swift in Sources */,
 				3FCA2D111C2E372D00E27F64 /* UIColor+Helpers.swift in Sources */,
 				3F6293481C149830005BD240 /* MainViewController.swift in Sources */,
+				3F25F4591C53B6DB0093DDA5 /* CustomBoundsPlaceholderView.swift in Sources */,
 				3F62931A1C148C78005BD240 /* AppDelegate.swift in Sources */,
 				3FCA2D1E1C433F9500E27F64 /* NSIndexPath+Helpers.swift in Sources */,
 				3FB53DBF1C4CB1E60003D94A /* CollectionViewPulledCardLayout.swift in Sources */,
 				3F8397DF1C2522B70002002E /* CardTableView.swift in Sources */,
+				3F25F4571C53A78B0093DDA5 /* PulledCardDragTestViewController.swift in Sources */,
 				3F62934C1C1BABA2005BD240 /* AutoLayoutTestViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
