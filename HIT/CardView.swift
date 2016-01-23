@@ -52,6 +52,7 @@ import UIKit
     @IBOutlet var cardTitleViewInitialCenterXConstraint: NSLayoutConstraint!
     @IBOutlet var cardTitleViewInitialTopConstraint: NSLayoutConstraint!
   
+    @IBOutlet weak var title: UILabel!
     
     
     //
@@ -64,14 +65,14 @@ import UIKit
         super.init(frame: frame)
         
         setupAutolayoutStates()
-        setupShadow()
+//        setupShadow()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         setupAutolayoutStates()
-        setupShadow()
+//        setupShadow()
     }
     
     func setupShadow() {

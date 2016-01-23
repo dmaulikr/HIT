@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E9860209EE0B99121A6F0EE /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1857E2202B0672F8B5E3D30D /* libPods.a */; };
+		3F0135B81C4F8177001DA4B7 /* PullableCardFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0135B71C4F8177001DA4B7 /* PullableCardFlowLayout.swift */; };
 		3F16BB7D1C2BE3A1000D4B7D /* CardAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16BB7C1C2BE3A1000D4B7D /* CardAnnotation.swift */; };
 		3F16BB7F1C2BE459000D4B7D /* CardTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16BB7E1C2BE459000D4B7D /* CardTableViewController.swift */; };
 		3F16BB811C2CBB46000D4B7D /* Mantra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16BB801C2CBB46000D4B7D /* Mantra.swift */; };
@@ -23,7 +25,15 @@
 		3F8397D91C24F23C0002002E /* CardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F8397D81C24F23C0002002E /* CardView.xib */; };
 		3F8397DD1C251E720002002E /* XibDesignedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8397DC1C251E720002002E /* XibDesignedView.swift */; };
 		3F8397DF1C2522B70002002E /* CardTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8397DE1C2522B70002002E /* CardTableView.swift */; };
+		3F8E8E361C4CE13B00FBAD96 /* CardTransitionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8E8E351C4CE13B00FBAD96 /* CardTransitionLayout.swift */; };
+		3FA3900F1C48E1D30099FB17 /* CollectionViewPulledCardFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA3900E1C48E1D30099FB17 /* CollectionViewPulledCardFlowLayout.swift */; };
+		3FB53DBF1C4CB1E60003D94A /* CollectionViewPulledCardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB53DBE1C4CB1E60003D94A /* CollectionViewPulledCardLayout.swift */; };
 		3FCA2D111C2E372D00E27F64 /* UIColor+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA2D101C2E372D00E27F64 /* UIColor+Helpers.swift */; };
+		3FCA2D161C322AD400E27F64 /* CardCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA2D151C322AD400E27F64 /* CardCollectionViewController.swift */; };
+		3FCA2D181C322EF500E27F64 /* CardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA2D171C322EF500E27F64 /* CardCollectionViewCell.swift */; };
+		3FCA2D1A1C32441D00E27F64 /* CardFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA2D191C32441D00E27F64 /* CardFlowLayout.swift */; };
+		3FCA2D1C1C40A87000E27F64 /* PlaceholderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA2D1B1C40A87000E27F64 /* PlaceholderCollectionViewCell.swift */; };
+		3FCA2D1E1C433F9500E27F64 /* NSIndexPath+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA2D1D1C433F9500E27F64 /* NSIndexPath+Helpers.swift */; };
 		3FDAE60D1C293BD0000634CF /* StatePlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDAE60C1C293BD0000634CF /* StatePlaceholderView.swift */; };
 		3FF21E2C1C21F90C0079C67F /* CardTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3FF21E2B1C21F90C0079C67F /* CardTableView.xib */; };
 		3FF21E301C2202CB0079C67F /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF21E2F1C2202CB0079C67F /* CardView.swift */; };
@@ -48,6 +58,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1857E2202B0672F8B5E3D30D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F0135B71C4F8177001DA4B7 /* PullableCardFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullableCardFlowLayout.swift; sourceTree = "<group>"; };
 		3F16BB7C1C2BE3A1000D4B7D /* CardAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardAnnotation.swift; sourceTree = "<group>"; };
 		3F16BB7E1C2BE459000D4B7D /* CardTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTableViewController.swift; sourceTree = "<group>"; };
 		3F16BB801C2CBB46000D4B7D /* Mantra.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mantra.swift; sourceTree = "<group>"; };
@@ -70,12 +82,22 @@
 		3F8397D81C24F23C0002002E /* CardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardView.xib; sourceTree = "<group>"; };
 		3F8397DC1C251E720002002E /* XibDesignedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XibDesignedView.swift; sourceTree = "<group>"; };
 		3F8397DE1C2522B70002002E /* CardTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTableView.swift; sourceTree = "<group>"; };
+		3F8E8E351C4CE13B00FBAD96 /* CardTransitionLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTransitionLayout.swift; sourceTree = "<group>"; };
+		3FA3900E1C48E1D30099FB17 /* CollectionViewPulledCardFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewPulledCardFlowLayout.swift; sourceTree = "<group>"; };
+		3FB53DBE1C4CB1E60003D94A /* CollectionViewPulledCardLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewPulledCardLayout.swift; sourceTree = "<group>"; };
 		3FCA2D101C2E372D00E27F64 /* UIColor+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Helpers.swift"; sourceTree = "<group>"; };
+		3FCA2D151C322AD400E27F64 /* CardCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardCollectionViewController.swift; sourceTree = "<group>"; };
+		3FCA2D171C322EF500E27F64 /* CardCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardCollectionViewCell.swift; sourceTree = "<group>"; };
+		3FCA2D191C32441D00E27F64 /* CardFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardFlowLayout.swift; sourceTree = "<group>"; };
+		3FCA2D1B1C40A87000E27F64 /* PlaceholderCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceholderCollectionViewCell.swift; sourceTree = "<group>"; };
+		3FCA2D1D1C433F9500E27F64 /* NSIndexPath+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSIndexPath+Helpers.swift"; sourceTree = "<group>"; };
 		3FDAE60C1C293BD0000634CF /* StatePlaceholderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatePlaceholderView.swift; sourceTree = "<group>"; };
 		3FE8B9061C2D21D600A80A83 /* HIT-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HIT-Bridging-Header.h"; sourceTree = "<group>"; };
 		3FF21E2B1C21F90C0079C67F /* CardTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardTableView.xib; sourceTree = "<group>"; };
 		3FF21E2F1C2202CB0079C67F /* CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		3FF21E341C24EDCD0079C67F /* NSLayoutConstraint+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+Helpers.swift"; sourceTree = "<group>"; };
+		8F89244481D2B2486F2C3D3E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		9719E12C61FE8AF78CD3D0B0 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E9860209EE0B99121A6F0EE /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,6 +133,8 @@
 				3F62932D1C148C78005BD240 /* HITTests */,
 				3F6293381C148C78005BD240 /* HITUITests */,
 				3F6293171C148C78005BD240 /* Products */,
+				5AC35806E40E118C2F778367 /* Pods */,
+				6F7435F5664582C188886B26 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -127,18 +152,15 @@
 			isa = PBXGroup;
 			children = (
 				3F6293191C148C78005BD240 /* AppDelegate.swift */,
-				3FE8B9061C2D21D600A80A83 /* HIT-Bridging-Header.h */,
 				3F6293471C149830005BD240 /* MainViewController.swift */,
-				3F16BB861C2D1F5B000D4B7D /* AttachmentTestViewController.swift */,
 				3F62931D1C148C78005BD240 /* Main.storyboard */,
-				3F16BB7E1C2BE459000D4B7D /* CardTableViewController.swift */,
-				3F16BB801C2CBB46000D4B7D /* Mantra.swift */,
+				3FCA2D151C322AD400E27F64 /* CardCollectionViewController.swift */,
+				3FCA2D121C31A62000E27F64 /* UI Experiments */,
+				3FCA2D131C31A64400E27F64 /* Model */,
 				3FF21E311C2203500079C67F /* Views */,
 				3FDAE60E1C293E9E000634CF /* Extensions and Helpers */,
-				3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */,
-				3F6293201C148C78005BD240 /* Assets.xcassets */,
-				3F6293221C148C78005BD240 /* LaunchScreen.storyboard */,
-				3F6293251C148C78005BD240 /* Info.plist */,
+				3FCA2D141C31A6C100E27F64 /* Etc */,
+				3FD7205F1C537E2900645463 /* Graveyard */,
 			);
 			path = HIT;
 			sourceTree = "<group>";
@@ -161,6 +183,45 @@
 			path = HITUITests;
 			sourceTree = "<group>";
 		};
+		3FCA2D121C31A62000E27F64 /* UI Experiments */ = {
+			isa = PBXGroup;
+			children = (
+				3F16BB861C2D1F5B000D4B7D /* AttachmentTestViewController.swift */,
+				3F16BB7E1C2BE459000D4B7D /* CardTableViewController.swift */,
+				3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */,
+			);
+			name = "UI Experiments";
+			sourceTree = "<group>";
+		};
+		3FCA2D131C31A64400E27F64 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3F16BB801C2CBB46000D4B7D /* Mantra.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		3FCA2D141C31A6C100E27F64 /* Etc */ = {
+			isa = PBXGroup;
+			children = (
+				3FE8B9061C2D21D600A80A83 /* HIT-Bridging-Header.h */,
+				3F6293201C148C78005BD240 /* Assets.xcassets */,
+				3F6293221C148C78005BD240 /* LaunchScreen.storyboard */,
+				3F6293251C148C78005BD240 /* Info.plist */,
+			);
+			name = Etc;
+			sourceTree = "<group>";
+		};
+		3FD7205F1C537E2900645463 /* Graveyard */ = {
+			isa = PBXGroup;
+			children = (
+				3F8E8E351C4CE13B00FBAD96 /* CardTransitionLayout.swift */,
+				3FB53DBE1C4CB1E60003D94A /* CollectionViewPulledCardLayout.swift */,
+				3FA3900E1C48E1D30099FB17 /* CollectionViewPulledCardFlowLayout.swift */,
+			);
+			name = Graveyard;
+			sourceTree = "<group>";
+		};
 		3FDAE60E1C293E9E000634CF /* Extensions and Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -168,6 +229,7 @@
 				3FF21E341C24EDCD0079C67F /* NSLayoutConstraint+Helpers.swift */,
 				3F16BB7C1C2BE3A1000D4B7D /* CardAnnotation.swift */,
 				3FCA2D101C2E372D00E27F64 /* UIColor+Helpers.swift */,
+				3FCA2D1D1C433F9500E27F64 /* NSIndexPath+Helpers.swift */,
 			);
 			name = "Extensions and Helpers";
 			sourceTree = "<group>";
@@ -175,6 +237,10 @@
 		3FF21E311C2203500079C67F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3FCA2D191C32441D00E27F64 /* CardFlowLayout.swift */,
+				3F0135B71C4F8177001DA4B7 /* PullableCardFlowLayout.swift */,
+				3FCA2D171C322EF500E27F64 /* CardCollectionViewCell.swift */,
+				3FCA2D1B1C40A87000E27F64 /* PlaceholderCollectionViewCell.swift */,
 				3FF21E2F1C2202CB0079C67F /* CardView.swift */,
 				3F8397D81C24F23C0002002E /* CardView.xib */,
 				3F8397DE1C2522B70002002E /* CardTableView.swift */,
@@ -185,6 +251,23 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		5AC35806E40E118C2F778367 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9719E12C61FE8AF78CD3D0B0 /* Pods.debug.xcconfig */,
+				8F89244481D2B2486F2C3D3E /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		6F7435F5664582C188886B26 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1857E2202B0672F8B5E3D30D /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -192,9 +275,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3F62933E1C148C78005BD240 /* Build configuration list for PBXNativeTarget "HIT" */;
 			buildPhases = (
+				7B180451D81C560351B35D8C /* Check Pods Manifest.lock */,
 				3F6293121C148C78005BD240 /* Sources */,
 				3F6293131C148C78005BD240 /* Frameworks */,
 				3F6293141C148C78005BD240 /* Resources */,
+				EC16830707AA9D07DA036DC0 /* Embed Pods Frameworks */,
+				10B78E7750270080965BC762 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -316,6 +402,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		10B78E7750270080965BC762 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7B180451D81C560351B35D8C /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		EC16830707AA9D07DA036DC0 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		3F6293121C148C78005BD240 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -324,15 +458,24 @@
 				3F8397DD1C251E720002002E /* XibDesignedView.swift in Sources */,
 				3FF21E301C2202CB0079C67F /* CardView.swift in Sources */,
 				3FF21E351C24EDCD0079C67F /* NSLayoutConstraint+Helpers.swift in Sources */,
+				3FCA2D161C322AD400E27F64 /* CardCollectionViewController.swift in Sources */,
+				3F8E8E361C4CE13B00FBAD96 /* CardTransitionLayout.swift in Sources */,
+				3FA3900F1C48E1D30099FB17 /* CollectionViewPulledCardFlowLayout.swift in Sources */,
+				3FCA2D1A1C32441D00E27F64 /* CardFlowLayout.swift in Sources */,
 				3F16BB7F1C2BE459000D4B7D /* CardTableViewController.swift in Sources */,
 				3F16BB7D1C2BE3A1000D4B7D /* CardAnnotation.swift in Sources */,
 				3F16BB811C2CBB46000D4B7D /* Mantra.swift in Sources */,
+				3F0135B81C4F8177001DA4B7 /* PullableCardFlowLayout.swift in Sources */,
+				3FCA2D1C1C40A87000E27F64 /* PlaceholderCollectionViewCell.swift in Sources */,
 				3FDAE60D1C293BD0000634CF /* StatePlaceholderView.swift in Sources */,
+				3FCA2D181C322EF500E27F64 /* CardCollectionViewCell.swift in Sources */,
 				3F3137741C1E472E008D021D /* UIView+Doppelganger.swift in Sources */,
 				3F16BB871C2D1F5B000D4B7D /* AttachmentTestViewController.swift in Sources */,
 				3FCA2D111C2E372D00E27F64 /* UIColor+Helpers.swift in Sources */,
 				3F6293481C149830005BD240 /* MainViewController.swift in Sources */,
 				3F62931A1C148C78005BD240 /* AppDelegate.swift in Sources */,
+				3FCA2D1E1C433F9500E27F64 /* NSIndexPath+Helpers.swift in Sources */,
+				3FB53DBF1C4CB1E60003D94A /* CollectionViewPulledCardLayout.swift in Sources */,
 				3F8397DF1C2522B70002002E /* CardTableView.swift in Sources */,
 				3F62934C1C1BABA2005BD240 /* AutoLayoutTestViewController.swift in Sources */,
 			);
@@ -474,6 +617,7 @@
 		};
 		3F62933F1C148C78005BD240 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9719E12C61FE8AF78CD3D0B0 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = HIT/Info.plist;
@@ -486,6 +630,7 @@
 		};
 		3F6293401C148C78005BD240 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8F89244481D2B2486F2C3D3E /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = HIT/Info.plist;

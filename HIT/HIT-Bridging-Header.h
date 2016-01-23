@@ -11,6 +11,8 @@
 
 @import UIKit;
 
+#import "TLLayoutTransitioning.h"
+
 #if DEBUG
 
 @interface UIDynamicAnimator (AAPLDebugInterfaceOnly)
