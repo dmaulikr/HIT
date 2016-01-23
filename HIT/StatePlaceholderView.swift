@@ -12,7 +12,7 @@ import UIKit
 
     @IBInspectable var placeholderColor: UIColor = UIColor.blackColor()
     
-//    #if TARGET_INTERFACE_BUILDER
+    #if TARGET_INTERFACE_BUILDER
     override func drawRect(rect: CGRect) {
         let rectPath = UIBezierPath(rect: bounds)
         rectPath.lineWidth = 5
@@ -27,7 +27,7 @@ import UIKit
         crossPath.addLineToPoint(CGPoint(x: 0, y: bounds.height))
         crossPath.stroke()
     }
-//    #endif
+    #endif
 
     override func layoutSubviews() {
         setNeedsDisplay()

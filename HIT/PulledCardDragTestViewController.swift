@@ -30,6 +30,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     lazy var animator: UIDynamicAnimator = {
         let animator = UIDynamicAnimator(referenceView: self.view)
         animator.delegate = self
+//        animator.debugEnabled = true
         return animator
     }()
     
@@ -40,17 +41,21 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     // Actions
     
     @IBAction func pannedInView(sender: UIPanGestureRecognizer) {
-        let location = sender.locationInView(self.view)
+        let translation = sender.translationInView(self.view)
         if sender.state == .Began || sender.state == .Changed
         {
-//            let anchor = attachmentBehavior!.anchorPoint
-//            let newAnchor = CGPoint(x: locatio,
-//                y: anchor.y + translation.y)
-            attachmentBehavior?.anchorPoint = location
+            let anchor = attachmentBehavior!.anchorPoint
+            let newAnchor = CGPoint(x: anchor.x + translation.x,
+                y: anchor.y + translation.y)
+            attachmentBehavior?.anchorPoint = newAnchor
+            attachmentBehavior?.damping = 1.0
+            attachmentBehavior?.frequency = 3.0
         }
         else {
             attachmentBehavior?.anchorPoint = CGPoint(
                 x: view.bounds.width/2, y: view.bounds.height/2)
+            attachmentBehavior?.damping = 1.0
+            attachmentBehavior?.frequency = 2.0
         }
         
         sender.setTranslation(CGPointZero, inView: self.view)
@@ -70,6 +75,9 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        cardView.layer.cornerRadius = 3
+        cardView.clipsToBounds = true
     }
     
     override func viewDidLayoutSubviews()
@@ -83,7 +91,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
                     cardViewXConstraint, cardViewYConstraint])
             cardView.translatesAutoresizingMaskIntoConstraints = true
             
-            let pathDiameter = 16
+            let pathDiameter = 18
             let rectContainingBoundaryPath = CGRect(
                 x: -1*pathDiameter/2,
                 y: -1*pathDiameter/2,
@@ -105,16 +113,25 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
                 size: rectContainingBoundaryPath.size)
             cardView.layer.addSublayer(boundaryShapeLayer)
             
+            let laneCornerRadius: CGFloat = 10
             let boundaryCollisionBehavior = UICollisionBehavior(items: [cardView])
             boundaryCollisionBehavior.translatesReferenceBoundsIntoBoundary = true
             boundaryCollisionBehavior.addBoundaryWithIdentifier("topleft",
-                forPath: UIBezierPath(rect: tlBoundary.frame))
+                forPath: UIBezierPath(
+                    roundedRect: tlBoundary.frame,
+                    cornerRadius: laneCornerRadius))
             boundaryCollisionBehavior.addBoundaryWithIdentifier("bottomleft",
-                forPath: UIBezierPath(rect: blBoundary.frame))
+                forPath: UIBezierPath(
+                    roundedRect: blBoundary.frame,
+                    cornerRadius: laneCornerRadius))
             boundaryCollisionBehavior.addBoundaryWithIdentifier("bottomright",
-                forPath: UIBezierPath(rect: brBoundary.frame))
+                forPath: UIBezierPath(
+                    roundedRect: brBoundary.frame,
+                    cornerRadius: laneCornerRadius))
             boundaryCollisionBehavior.addBoundaryWithIdentifier("topright",
-                forPath: UIBezierPath(rect: trBoundary.frame))
+                forPath: UIBezierPath(
+                    roundedRect: trBoundary.frame,
+                    cornerRadius: laneCornerRadius))
             animator.addBehavior(boundaryCollisionBehavior)
             
             let itemBehavior = UIDynamicItemBehavior(items: [cardView])
@@ -127,11 +144,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
                 item: cardView,
                 attachedToAnchor: cardView.center)
             attachmentBehavior?.length = 0
-            attachmentBehavior?.damping = 1.0
-            attachmentBehavior?.frequency = 2.0
             animator.addBehavior(attachmentBehavior!)
-            
-            animator.debugEnabled = true
         }
     }
 
