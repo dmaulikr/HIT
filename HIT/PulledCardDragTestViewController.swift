@@ -40,13 +40,34 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     
     // Actions
     
+    enum Axis {
+        case Horizontal, Vertical
+    }
+    
+    var initialTranslation = CGPointZero
+    var attachmentAxis: Axis?
+    
+    func axisForTranslation(translation: CGPoint) -> Axis?
+    {
+        if abs(translation.x) == abs(translation.y) { return nil }
+        
+        return abs(translation.y) > abs(translation.x) ? Axis.Vertical : Axis.Horizontal
+    }
+    
     @IBAction func pannedInView(sender: UIPanGestureRecognizer) {
         let translation = sender.translationInView(self.view)
         if sender.state == .Began || sender.state == .Changed
         {
+            if sender.state == .Began || initialTranslation == CGPointZero {
+                initialTranslation = translation
+                attachmentAxis = axisForTranslation(translation)
+                print(attachmentAxis)
+                print(translation)
+            }
             let anchor = attachmentBehavior!.anchorPoint
-            let newAnchor = CGPoint(x: anchor.x + translation.x,
-                y: anchor.y + translation.y)
+            let newAnchor = CGPoint(
+                x: anchor.x + (attachmentAxis == .Horizontal ? translation.x : 0),
+                y: anchor.y + (attachmentAxis == .Vertical ? translation.y : 0))
             attachmentBehavior?.anchorPoint = newAnchor
             attachmentBehavior?.damping = 1.0
             attachmentBehavior?.frequency = 3.0
@@ -56,6 +77,10 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
                 x: view.bounds.width/2, y: view.bounds.height/2)
             attachmentBehavior?.damping = 1.0
             attachmentBehavior?.frequency = 2.0
+            
+            initialTranslation = CGPointZero
+            attachmentAxis = nil
+            print("\n")
         }
         
         sender.setTranslation(CGPointZero, inView: self.view)
@@ -113,9 +138,9 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
                 size: rectContainingBoundaryPath.size)
             cardView.layer.addSublayer(boundaryShapeLayer)
             
-            let laneCornerRadius: CGFloat = 10
+            let laneCornerRadius: CGFloat = 30
             let boundaryCollisionBehavior = UICollisionBehavior(items: [cardView])
-            boundaryCollisionBehavior.translatesReferenceBoundsIntoBoundary = true
+//            boundaryCollisionBehavior.translatesReferenceBoundsIntoBoundary = true
             boundaryCollisionBehavior.addBoundaryWithIdentifier("topleft",
                 forPath: UIBezierPath(
                     roundedRect: tlBoundary.frame,
