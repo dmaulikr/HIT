@@ -8,11 +8,21 @@
 
 import Foundation
 
-class CollectionViewPulledCardFlowLayout: CollectionViewCardFlowLayout
+class CollectionViewPulledCardFlowLayout: CardFlowLayout
 {
     var pulledCard: NSIndexPath?
+    var pulledCardYOrigin: CGFloat = -50
     
     var retractedCardStackHeight: CGFloat = 50
+    var retractedCardGap: CGFloat = 5
+    
+    var cardCache = [Int : UICollectionViewLayoutAttributes]()
+    
+    override func prepareLayout() {
+        super.prepareLayout()
+        
+        print(cardCache)
+    }
     
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         guard let superAttributes = super.layoutAttributesForElementsInRect(rect) else {
@@ -23,18 +33,18 @@ class CollectionViewPulledCardFlowLayout: CollectionViewCardFlowLayout
         
         // filter for item attributes
         
-        let attributes = superAttributes.map { (superAttributes) -> UICollectionViewLayoutAttributes in
+        var attributes = superAttributes.map { (superAttributes) -> UICollectionViewLayoutAttributes in
             switch superAttributes.representedElementCategory
             {
             case .Cell:
                 return layoutAttributesForItemAtIndexPath(superAttributes.indexPath)!
-            case .SupplementaryView:
-                return layoutAttributesForSupplementaryViewOfKind(
-                    superAttributes.representedElementKind!,
-                    atIndexPath: superAttributes.indexPath)!
             default:
                 return superAttributes
             }
+        }
+        
+        if let pulledCard = pulledCard {
+            attributes.append(layoutAttributesForItemAtIndexPath(pulledCard)!)
         }
         
         return attributes
@@ -44,80 +54,71 @@ class CollectionViewPulledCardFlowLayout: CollectionViewCardFlowLayout
     {
         if attributes.indexPath == pulledCard
         {
-            attributes.frame.origin.y = self.collectionView!.bounds.origin.y
+            attributes.frame.origin.y = self.collectionView!.bounds.origin.y + pulledCardYOrigin
         }
-        else
+        else if let cardAtTopOfStack = cardAtTopOfStack
+                where attributes.indexPath.item >= cardAtTopOfStack.item
         {
+            var n = CGFloat(attributes.indexPath.item - cardAtTopOfStack.item)
+            if  let pulledCard = pulledCard
+                where attributes.indexPath.item > pulledCard.item
+            {
+                n -= 1
+            }
+            
             let distanceFromTopToRetractedStack = self.collectionView!.bounds.height - retractedCardStackHeight
-            
-            let distanceFromTopToAttributes = attributes.frame.origin.y - self.collectionView!.bounds.origin.y
-            let percentageDistance = distanceFromTopToAttributes / self.collectionView!.bounds.height
-            
-            attributes.frame.origin.y = self.collectionView!.bounds.origin.y + percentageDistance * retractedCardStackHeight + distanceFromTopToRetractedStack
-    
+            attributes.frame.origin.y = self.collectionView!.bounds.origin.y + distanceFromTopToRetractedStack + n * retractedCardGap
         }
     }
     
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        let superAttributes = super.layoutAttributesForItemAtIndexPath(indexPath)!.copy() as! UICollectionViewLayoutAttributes
+        let superAttributes = super.calculateLayoutAttributesForItemAtIndexPath(indexPath)!.copy() as! UICollectionViewLayoutAttributes
         
         setYCoordinateForAttributes(superAttributes)
+        if indexPath == pulledCard {
+            superAttributes.alpha = 1
+        }
         
         return superAttributes
     }
+
     
-    override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
+    override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
+        super.shouldInvalidateLayoutForBoundsChange(newBounds)
+        
+        return true
+    }
+    
+    
+    override func invalidationContextForBoundsChange(newBounds: CGRect)
+        
+        -> UICollectionViewLayoutInvalidationContext
     {
-        guard   let superAttributes = super.layoutAttributesForSupplementaryViewOfKind(elementKind, atIndexPath: indexPath)?.copy() as? UICollectionViewLayoutAttributes
-                else
-        {
-            return nil
-        }
-            
-        if  let supplementaryViewKind = SupplementaryViewKind(rawValue: elementKind)
-            where supplementaryViewKind == .Card
-        {
-            setYCoordinateForAttributes(superAttributes)
+        let context = super.invalidationContextForBoundsChange(newBounds)
+        
+        var indexPathsToInvalidate = [NSIndexPath]()
+        
+        let bounds = self.collectionView!.bounds
+        let attributesInOldBounds = super.layoutAttributesForElementsInRect(bounds)
+        indexPathsToInvalidate += attributesInOldBounds?
+            .map { (attributes) -> NSIndexPath in return attributes.indexPath }
+            ?? []
+        
+        let attributesInNewBounds = super.layoutAttributesForElementsInRect(newBounds)
+        indexPathsToInvalidate += attributesInNewBounds?
+            .map { (attributes) -> NSIndexPath in return attributes.indexPath }
+            ?? []
+        
+//        let items = indexPathsToInvalidate
+//            .map { (path) -> Int in return path.item }
+//            .sort()
+        
+        context.invalidateItemsAtIndexPaths(indexPathsToInvalidate)
+        if let pulledCard = pulledCard {
+            print("invalidating pulled card")
+            context.invalidateItemsAtIndexPaths([pulledCard])
         }
         
-        return superAttributes
+        return context
     }
-    
-//    override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
-//        super.shouldInvalidateLayoutForBoundsChange(newBounds)
-//        
-//        return true
-//    }
-//    
-//    
-//    override func invalidationContextForBoundsChange(newBounds: CGRect)
-//        
-//        -> UICollectionViewLayoutInvalidationContext
-//    {
-//        let context = super.invalidationContextForBoundsChange(newBounds)
-//        
-//        var indexPathsToInvalidate = [NSIndexPath]()
-//        
-//        let bounds = self.collectionView!.bounds
-//        let attributesInOldBounds = super.layoutAttributesForElementsInRect(bounds)
-//        indexPathsToInvalidate += attributesInOldBounds?
-//            .map { (attributes) -> NSIndexPath in return attributes.indexPath }
-//            ?? []
-//        
-//        let attributesInNewBounds = super.layoutAttributesForElementsInRect(newBounds)
-//        indexPathsToInvalidate += attributesInNewBounds?
-//            .map { (attributes) -> NSIndexPath in return attributes.indexPath }
-//            ?? []
-//        
-////        let items = indexPathsToInvalidate
-////            .map { (path) -> Int in return path.item }
-////            .sort()
-//        
-//        context.invalidateItemsAtIndexPaths(indexPathsToInvalidate)
-//        context.invalidateSupplementaryElementsOfKind(
-//            SupplementaryViewKind.Card.rawValue,
-//            atIndexPaths: indexPathsToInvalidate)
-//        
-//        return context
-//    }
 }
