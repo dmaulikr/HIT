@@ -31,6 +31,7 @@ class CardCollectionViewController:
     // IBOutlets
     
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var panGestureRecognizer: UIPanGestureRecognizer!
     
     
     
@@ -51,6 +52,7 @@ class CardCollectionViewController:
         else if indexPath != nil {
             cardFlowLayout.pullCardAtIndexPath(indexPath!)
             collectionView.scrollEnabled = false
+            panGestureRecognizer.enabled = true
         }
     }
     
@@ -91,6 +93,8 @@ class CardCollectionViewController:
         cardFlowLayout.topInset = 150
         cardFlowLayout.minimumLineSpacing = 0
         cardFlowLayout.pullableCardFlowLayoutDelegate = self
+        
+        panGestureRecognizer.enabled = false
     }
 
 
@@ -175,5 +179,6 @@ class CardCollectionViewController:
     func layoutDidReturnToCardFlow(layout: PullableCardFlowLayout)
     {
         collectionView.scrollEnabled = true
+        panGestureRecognizer.enabled = false
     }
 }

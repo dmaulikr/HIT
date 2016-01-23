@@ -107,7 +107,7 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout, UIDynamicAnimatorDel
             
             behavior.length = 0.0
             behavior.damping = 0.75
-            behavior.frequency = 5.0
+            behavior.frequency = 2.0
             
             //            let pushBehavior = UIPushBehavior(items: [startingAttributes], mode: .Instantaneous)
             //            pushBehavior.angle = CGFloat(M_PI/4)
@@ -150,7 +150,7 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout, UIDynamicAnimatorDel
                 
                 behavior.length = 0.0
                 behavior.damping = 0.75
-                behavior.frequency = 5.0
+                behavior.frequency = 2.0
                 
                 let resistanceBehavior = UIDynamicItemBehavior(
                     items: [cardCache[indexPath.item]!])

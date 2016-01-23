@@ -418,6 +418,7 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="lRg-Zn-kEw" id="6A4-GE-MZM"/>
+                        <outlet property="panGestureRecognizer" destination="P9U-x3-isK" id="TPD-dp-VU2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KOS-xp-XGh" userLabel="First Responder" sceneMemberID="firstResponder"/>
