@@ -129,6 +129,7 @@ class PullableCardFlowLayout: CollectionViewCardFlowLayout, UIDynamicAnimatorDel
         guard stackIsRetracted else { return }
         
         stackIsRetracted = false
+        pulledCard = nil
         animator.removeAllBehaviors()
         attachmentBehaviors.removeAll()
         
