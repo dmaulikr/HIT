@@ -8,7 +8,7 @@
 
 import Foundation
 
-class CollectionViewPulledCardFlowLayout: CollectionViewCardFlowLayout
+class CollectionViewPulledCardFlowLayout: CardFlowLayout
 {
     var pulledCard: NSIndexPath?
     var pulledCardYOrigin: CGFloat = -50

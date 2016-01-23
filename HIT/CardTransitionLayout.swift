@@ -50,9 +50,9 @@ class CardTransitionLayout: UICollectionViewTransitionLayout, UIDynamicAnimatorD
     
     var animator: UIDynamicAnimator?
     
-    var cardFlowLayout: CollectionViewCardFlowLayout? {
+    var cardFlowLayout: CardFlowLayout? {
         get {
-            return currentLayout as? CollectionViewCardFlowLayout
+            return currentLayout as? CardFlowLayout
         }
     }
     

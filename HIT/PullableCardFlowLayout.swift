@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PullableCardFlowLayout: CollectionViewCardFlowLayout, UIDynamicAnimatorDelegate
+class PullableCardFlowLayout: CardFlowLayout, UIDynamicAnimatorDelegate
 {
     
     
