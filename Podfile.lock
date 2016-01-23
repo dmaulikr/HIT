@@ -1,0 +1,13 @@
+PODS:
+  - AHEasing (1.2)
+  - TLLayoutTransitioning (1.0.9):
+    - AHEasing
+
+DEPENDENCIES:
+  - TLLayoutTransitioning
+
+SPEC CHECKSUMS:
+  AHEasing: 847f583bcd83a2bb850e38ccdb26d22e2593f34d
+  TLLayoutTransitioning: 286f546cc309ea9693dce2e3b1c4cab77f3308cf
+
+COCOAPODS: 0.39.0
