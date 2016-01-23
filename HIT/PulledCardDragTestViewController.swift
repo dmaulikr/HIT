@@ -7,11 +7,93 @@
 //
 
 import UIKit
-import CoreMotion
 
-class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDelegate {
+enum CardState: StateMachineDataSource
+{
+    case TrackingPan(UIPanGestureRecognizer)
+    case ReturnToAnchor
     
-    // Outlets
+    case HintingEdit
+    case ConfirmEdit
+    case ExecuteEdit
+    
+    case HintingDelete
+    case ConfirmDelete
+    case ExecuteDelete
+    
+    case HintingSettings
+    case ConfirmSettings
+    case ExecuteSettings
+    
+    case HintingShuffle
+    case ConfirmShuffle
+    case ExecuteShuffle
+    
+    func shouldTransitionFrom(from: CardState, to: CardState) -> Should<CardState>
+    {
+        switch (from, to)
+        {
+        case (.TrackingPan, .TrackingPan):
+            return .Continue
+        case (.TrackingPan, .ReturnToAnchor):
+            return .Continue
+        case (.ReturnToAnchor, .TrackingPan):
+            return .Continue
+            
+        case (.TrackingPan, .HintingEdit):
+            return .Continue
+        case (.TrackingPan, .ConfirmEdit):
+            return .Continue
+        case (.HintingEdit, .ConfirmEdit):
+            return .Continue
+        case (.ConfirmEdit, .HintingEdit):
+            return .Continue
+        case (.HintingEdit, .TrackingPan):
+            return .Continue
+        case (.ConfirmEdit, .TrackingPan):
+            return .Continue
+        case (.HintingEdit, .ReturnToAnchor):
+            return .Continue
+            
+        case (.TrackingPan, .HintingDelete):
+            return .Continue
+        case (.TrackingPan, .ConfirmDelete):
+            return .Continue
+        case (.HintingDelete, .ConfirmDelete):
+            return .Continue
+        case (.ConfirmDelete, .HintingDelete):
+            return .Continue
+        case (.HintingDelete, .TrackingPan):
+            return .Continue
+        case (.ConfirmDelete, .TrackingPan):
+            return .Continue
+            
+        case (.TrackingPan, .HintingSettings):
+            return .Continue
+        case (.TrackingPan, .ConfirmSettings):
+            return .Continue
+        case (.HintingSettings, .ConfirmSettings):
+            return .Continue
+        case (.ConfirmSettings, .HintingSettings):
+            return .Continue
+        case (.HintingSettings, .TrackingPan):
+            return .Continue
+        case (.ConfirmSettings, .TrackingPan):
+            return .Continue
+            
+        default:
+            return .Abort
+        }
+    }
+}
+
+class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDelegate, StateMachineDelegate
+{
+    
+    
+    
+    //
+    // MARK: - IBOutlets
     
     @IBOutlet weak var tlBoundary: StatePlaceholderView!
     @IBOutlet weak var blBoundary: StatePlaceholderView!
@@ -25,41 +107,43 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     @IBOutlet weak var cardViewYConstraint: NSLayoutConstraint!
     
     
-    // Properties
+    
+    //
+    // MARK: - Properties
     
     lazy var animator: UIDynamicAnimator = {
         let animator = UIDynamicAnimator(referenceView: self.view)
         animator.delegate = self
-//        animator.debugEnabled = true
+        animator.debugEnabled = true
         return animator
     }()
     
-    var motionManager: CMMotionManager?
-    
     var attachmentBehavior: UIAttachmentBehavior?
     
-    // Actions
     
-    enum Axis {
-        case Horizontal, Vertical
-    }
     
-    var initialTranslation = CGPointZero
-    var attachmentAxis: Axis?
+    //
+    // MARK: - State
     
-    func axisForTranslation(translation: CGPoint) -> Axis?
+    typealias StateType = CardState
+    lazy var machine: StateMachine<PulledCardDragTestViewController> = {
+        return StateMachine(initialState: .ReturnToAnchor, delegate: self)
+    }()
+    
+    
+    
+    //
+    // MARK: - StateMachineDelegate
+    
+    func didTransitionFrom(from: StateType, to: StateType)
     {
-        if abs(translation.x) == abs(translation.y) { return nil }
-        
-        return abs(translation.y) > abs(translation.x) ? Axis.Vertical : Axis.Horizontal
-    }
-    
-    @IBAction func pannedInView(sender: UIPanGestureRecognizer) {
-        let translation = sender.translationInView(self.view)
-        if sender.state == .Began || sender.state == .Changed
+        switch to
         {
-            if sender.state == .Began || initialTranslation == CGPointZero {
-                initialTranslation = translation
+            
+        case .TrackingPan(let panGR):
+            let translation = panGR.translationInView(self.view)
+            if attachmentAxis == nil
+            {
                 attachmentAxis = axisForTranslation(translation)
                 print(attachmentAxis)
                 print(translation)
@@ -70,16 +154,47 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
                 y: anchor.y + (attachmentAxis == .Vertical ? translation.y : 0))
             attachmentBehavior?.anchorPoint = newAnchor
             attachmentBehavior?.damping = 1.0
-            attachmentBehavior?.frequency = 3.0
-        }
-        else {
+            attachmentBehavior?.frequency = 7.0
+            
+        case .ReturnToAnchor:
             attachmentBehavior?.anchorPoint = CGPoint(
                 x: view.bounds.width/2, y: view.bounds.height/2)
             attachmentBehavior?.damping = 1.0
             attachmentBehavior?.frequency = 2.0
-            
-            initialTranslation = CGPointZero
             attachmentAxis = nil
+            
+        default:
+            break
+            
+        }
+    }
+    
+    
+    
+    //
+    // MARK: - IBActions
+    
+    enum Axis {
+        case Horizontal, Vertical
+    }
+    
+    var attachmentAxis: Axis?
+    
+    func axisForTranslation(translation: CGPoint) -> Axis?
+    {
+        if abs(translation.x) == abs(translation.y) { return nil }
+        
+        return abs(translation.y) > abs(translation.x) ? Axis.Vertical : Axis.Horizontal
+    }
+    
+    @IBAction func pannedInView(sender: UIPanGestureRecognizer)
+    {
+        if sender.state == .Began || sender.state == .Changed
+        {
+            machine.state = .TrackingPan(sender)
+        }
+        else {
+            machine.state = .ReturnToAnchor
             print("\n")
         }
         
@@ -88,7 +203,8 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     
     
     
-    // UIViewController
+    //
+    // MARK: - UIViewController
     
     override func prefersStatusBarHidden() -> Bool {
         return true
@@ -138,7 +254,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
                 size: rectContainingBoundaryPath.size)
             cardView.layer.addSublayer(boundaryShapeLayer)
             
-            let laneCornerRadius: CGFloat = 30
+            let laneCornerRadius: CGFloat = 20
             let boundaryCollisionBehavior = UICollisionBehavior(items: [cardView])
 //            boundaryCollisionBehavior.translatesReferenceBoundsIntoBoundary = true
             boundaryCollisionBehavior.addBoundaryWithIdentifier("topleft",
@@ -163,6 +279,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             itemBehavior.allowsRotation = false
             itemBehavior.friction = 0
             itemBehavior.resistance = 10.0
+            itemBehavior.elasticity = 0
             animator.addBehavior(itemBehavior)
             
             attachmentBehavior = UIAttachmentBehavior(
@@ -172,21 +289,4 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             animator.addBehavior(attachmentBehavior!)
         }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
