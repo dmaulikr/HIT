@@ -35,6 +35,27 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     
     var motionManager: CMMotionManager?
     
+    var attachmentBehavior: UIAttachmentBehavior?
+    
+    // Actions
+    
+    @IBAction func pannedInView(sender: UIPanGestureRecognizer) {
+        let location = sender.locationInView(self.view)
+        if sender.state == .Began || sender.state == .Changed
+        {
+//            let anchor = attachmentBehavior!.anchorPoint
+//            let newAnchor = CGPoint(x: locatio,
+//                y: anchor.y + translation.y)
+            attachmentBehavior?.anchorPoint = location
+        }
+        else {
+            attachmentBehavior?.anchorPoint = CGPoint(
+                x: view.bounds.width/2, y: view.bounds.height/2)
+        }
+        
+        sender.setTranslation(CGPointZero, inView: self.view)
+    }
+    
     
     
     // UIViewController
@@ -98,21 +119,19 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             
             let itemBehavior = UIDynamicItemBehavior(items: [cardView])
             itemBehavior.allowsRotation = false
-//            itemBehavior.elasticity = 0.5
+            itemBehavior.friction = 0
+            itemBehavior.resistance = 10.0
             animator.addBehavior(itemBehavior)
             
-            let gravityBehavior = UIGravityBehavior(items: [cardView])
-            animator.addBehavior(gravityBehavior)
+            attachmentBehavior = UIAttachmentBehavior(
+                item: cardView,
+                attachedToAnchor: cardView.center)
+            attachmentBehavior?.length = 0
+            attachmentBehavior?.damping = 1.0
+            attachmentBehavior?.frequency = 2.0
+            animator.addBehavior(attachmentBehavior!)
             
-            self.motionManager = CMMotionManager()
-            self.motionManager!.startDeviceMotionUpdatesToQueue(
-                NSOperationQueue.mainQueue(),
-                withHandler: { (data, error) -> Void in
-                    if let gravity = data?.gravity
-                    {
-                        gravityBehavior.gravityDirection = CGVector(dx: gravity.x, dy: -1*gravity.y)
-                    }
-            })
+            animator.debugEnabled = true
         }
     }
 
