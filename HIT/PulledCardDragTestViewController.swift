@@ -10,23 +10,24 @@ import UIKit
 
 enum CardState: StateMachineDataSource
 {
+    case AnchoredAtRest
     case TrackingPan(UIPanGestureRecognizer)
     case ReturnToAnchor
     
-    case HintingEdit
-    case ConfirmEdit
+    case HintingEdit(UIPanGestureRecognizer)
+    case ConfirmEdit(UIPanGestureRecognizer)
     case ExecuteEdit
     
-    case HintingDelete
-    case ConfirmDelete
+    case HintingDelete(UIPanGestureRecognizer)
+    case ConfirmDelete(UIPanGestureRecognizer)
     case ExecuteDelete
     
-    case HintingSettings
-    case ConfirmSettings
+    case HintingSettings(UIPanGestureRecognizer)
+    case ConfirmSettings(UIPanGestureRecognizer)
     case ExecuteSettings
     
-    case HintingShuffle
-    case ConfirmShuffle
+    case HintingShuffle(UIPanGestureRecognizer)
+    case ConfirmShuffle(UIPanGestureRecognizer)
     case ExecuteShuffle
     
     func shouldTransitionFrom(from: CardState, to: CardState) -> Should<CardState>
@@ -120,6 +121,8 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     
     var attachmentBehavior: UIAttachmentBehavior?
     
+    var itemBehavior: UIDynamicItemBehavior!
+    
     
     
     //
@@ -130,6 +133,21 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         return StateMachine(initialState: .ReturnToAnchor, delegate: self)
     }()
     
+    enum Axis {
+        case Horizontal, Vertical
+        
+        init?(translation: CGPoint)
+        {
+            if abs(translation.x) == abs(translation.y) { return nil }
+            
+            self = abs(translation.y) > abs(translation.x)
+                ? Axis.Vertical
+                : Axis.Horizontal
+        }
+    }
+    
+    var attachmentAxis: Axis?
+    
     
     
     //
@@ -137,14 +155,33 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     
     func didTransitionFrom(from: StateType, to: StateType)
     {
+        
+        
+        switch (from, to)
+        {
+            
+        case (.ReturnToAnchor, .TrackingPan):
+            let v = itemBehavior.linearVelocityForItem(cardView)
+            print(v)
+            itemBehavior.addLinearVelocity(CGPoint(x: -1*v.x, y: -1*v.y), forItem: cardView)
+            print(v)
+            
+        default:
+            break
+            
+        }
+        
+        
         switch to
         {
             
+            
         case .TrackingPan(let panGR):
+            
             let translation = panGR.translationInView(self.view)
             if attachmentAxis == nil
             {
-                attachmentAxis = axisForTranslation(translation)
+                attachmentAxis = Axis(translation: translation)
                 print(attachmentAxis)
                 print(translation)
             }
@@ -156,12 +193,15 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             attachmentBehavior?.damping = 1.0
             attachmentBehavior?.frequency = 7.0
             
+            
         case .ReturnToAnchor:
+            
             attachmentBehavior?.anchorPoint = CGPoint(
                 x: view.bounds.width/2, y: view.bounds.height/2)
             attachmentBehavior?.damping = 1.0
             attachmentBehavior?.frequency = 2.0
             attachmentAxis = nil
+            
             
         default:
             break
@@ -173,19 +213,6 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     
     //
     // MARK: - IBActions
-    
-    enum Axis {
-        case Horizontal, Vertical
-    }
-    
-    var attachmentAxis: Axis?
-    
-    func axisForTranslation(translation: CGPoint) -> Axis?
-    {
-        if abs(translation.x) == abs(translation.y) { return nil }
-        
-        return abs(translation.y) > abs(translation.x) ? Axis.Vertical : Axis.Horizontal
-    }
     
     @IBAction func pannedInView(sender: UIPanGestureRecognizer)
     {
@@ -275,7 +302,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
                     cornerRadius: laneCornerRadius))
             animator.addBehavior(boundaryCollisionBehavior)
             
-            let itemBehavior = UIDynamicItemBehavior(items: [cardView])
+            itemBehavior = UIDynamicItemBehavior(items: [cardView])
             itemBehavior.allowsRotation = false
             itemBehavior.friction = 0
             itemBehavior.resistance = 10.0
