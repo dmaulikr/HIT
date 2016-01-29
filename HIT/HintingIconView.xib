@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10089" systemVersion="15A278b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10072.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HintingIconView" customModule="HIT" customModuleProvider="target">
+            <connections>
+                <outlet property="dialView" destination="S46-bt-fWv" id="cW2-4S-7hi"/>
+                <outlet property="iconView" destination="il5-On-aL3" id="fjx-MB-6o1"/>
+                <outlet property="iconViewHeightConstraint" destination="QkQ-yp-QeO" id="jna-3k-65R"/>
+                <outlet property="iconViewWidthConstraint" destination="a1E-u4-8IG" id="W6G-2d-4p8"/>
+                <outlet property="xibView" destination="iN0-l3-epB" id="zRw-7t-6Lf"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S46-bt-fWv" customClass="DialView" customModule="HIT" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TrashIcon" translatesAutoresizingMaskIntoConstraints="NO" id="il5-On-aL3">
+                    <rect key="frame" x="284" y="284" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="QkQ-yp-QeO"/>
+                        <constraint firstAttribute="width" constant="32" id="a1E-u4-8IG"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="S46-bt-fWv" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="8Sv-g5-jlA"/>
+                <constraint firstItem="S46-bt-fWv" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="BHe-SM-yUq"/>
+                <constraint firstItem="il5-On-aL3" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Bl8-Ns-F1R"/>
+                <constraint firstItem="S46-bt-fWv" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="HRO-rq-4fb"/>
+                <constraint firstItem="il5-On-aL3" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ipL-FO-2lK"/>
+                <constraint firstItem="S46-bt-fWv" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" id="uak-xV-5Mx"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <point key="canvasLocation" x="196" y="384"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="TrashIcon" width="32" height="32"/>
+    </resources>
+</document>

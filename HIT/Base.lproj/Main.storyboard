@@ -225,9 +225,17 @@
                                 <rect key="frame" x="310" y="310" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sTe-AH-2cJ" customClass="HintingIconView" customModule="HIT" customModuleProvider="target">
+                                <rect key="frame" x="10" y="269" width="64" height="64"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="Fyv-dD-a4c"/>
+                                    <constraint firstAttribute="width" constant="64" id="IoZ-Xg-tuv"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8qm-NL-L0v" customClass="CustomBoundsPlaceholderView" customModule="HIT" customModuleProvider="target">
                                 <rect key="frame" x="2" y="75" width="596" height="450"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.60794440810403449" green="0.80362067910646939" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
                                         <color key="value" red="1" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -238,11 +246,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="sTe-AH-2cJ" firstAttribute="leading" secondItem="uvc-of-DHR" secondAttribute="leading" constant="10" id="1So-7o-3Ue"/>
                             <constraint firstItem="L9s-Y9-WAh" firstAttribute="centerX" secondItem="uvc-of-DHR" secondAttribute="leading" constant="-10" id="7Zu-MG-eDr"/>
                             <constraint firstItem="8qm-NL-L0v" firstAttribute="height" secondItem="uvc-of-DHR" secondAttribute="height" multiplier="0.75" id="8yZ-fH-uHA"/>
                             <constraint firstItem="aOq-Cv-MvB" firstAttribute="centerY" secondItem="m8q-QC-Ijn" secondAttribute="bottom" constant="-10" id="9fx-pI-r8H"/>
                             <constraint firstItem="aOq-Cv-MvB" firstAttribute="height" secondItem="uvc-of-DHR" secondAttribute="height" id="AU6-RB-3Rg"/>
                             <constraint firstItem="8qm-NL-L0v" firstAttribute="centerX" secondItem="uvc-of-DHR" secondAttribute="centerX" id="CtL-Jo-iPs"/>
+                            <constraint firstItem="sTe-AH-2cJ" firstAttribute="centerY" secondItem="uvc-of-DHR" secondAttribute="centerY" id="Ky1-1w-xoZ"/>
                             <constraint firstItem="8qm-NL-L0v" firstAttribute="width" secondItem="uvc-of-DHR" secondAttribute="width" constant="-4" id="OWf-Z4-iBv"/>
                             <constraint firstItem="Zkl-hg-6t7" firstAttribute="width" secondItem="uvc-of-DHR" secondAttribute="width" id="Q0O-0P-z4K"/>
                             <constraint firstItem="Zkl-hg-6t7" firstAttribute="centerY" secondItem="m8q-QC-Ijn" secondAttribute="bottom" constant="-10" id="biT-kd-BeS"/>
@@ -272,6 +282,11 @@
                         <outlet property="cardViewWidthConstraint" destination="OWf-Z4-iBv" id="HNL-5i-Qfk"/>
                         <outlet property="cardViewXConstraint" destination="CtL-Jo-iPs" id="rGb-AO-JeX"/>
                         <outlet property="cardViewYConstraint" destination="cnV-zV-7o4" id="1QS-pB-dRR"/>
+                        <outlet property="hintingEditIconCenterYConstraint" destination="Ky1-1w-xoZ" id="Ant-lh-ViV"/>
+                        <outlet property="hintingEditIconHeightConstraint" destination="Fyv-dD-a4c" id="azR-yB-MLC"/>
+                        <outlet property="hintingEditIconView" destination="sTe-AH-2cJ" id="aut-J8-NRr"/>
+                        <outlet property="hintingEditIconViewLeadingConstraint" destination="1So-7o-3Ue" id="r4u-HH-5A0"/>
+                        <outlet property="hintingEditIconWidthConstraint" destination="IoZ-Xg-tuv" id="Dvc-hc-GHr"/>
                         <outlet property="tlBoundary" destination="aOq-Cv-MvB" id="5nA-8o-VnO"/>
                         <outlet property="trBoundary" destination="Zkl-hg-6t7" id="pYj-cf-HtR"/>
                     </connections>

@@ -30,6 +30,10 @@ enum CardState: StateMachineDataSource
     case ConfirmShuffle(UIPanGestureRecognizer)
     case ExecuteShuffle
     
+    case HintingCreate(UIPanGestureRecognizer)
+    case InteractiveCreate
+    case ExecuteCreate
+    
     func shouldTransitionFrom(from: CardState, to: CardState) -> Should<CardState>
     {
         switch (from, to)
@@ -43,7 +47,7 @@ enum CardState: StateMachineDataSource
             
         case (.TrackingPan, .HintingEdit):
             return .Continue
-        case (.TrackingPan, .ConfirmEdit):
+        case (.HintingEdit, .HintingEdit):
             return .Continue
         case (.HintingEdit, .ConfirmEdit):
             return .Continue
@@ -82,6 +86,15 @@ enum CardState: StateMachineDataSource
         case (.ConfirmSettings, .TrackingPan):
             return .Continue
             
+        case (.ReturnToAnchor, .HintingCreate):
+            return .Continue
+        case (.HintingCreate, .InteractiveCreate):
+            return .Continue
+        case (.InteractiveCreate, .ExecuteCreate):
+            return .Redirect(.ReturnToAnchor)
+        case (.InteractiveCreate, .ReturnToAnchor):
+            return .Continue
+            
         default:
             return .Abort
         }
@@ -107,6 +120,13 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     @IBOutlet weak var cardViewXConstraint: NSLayoutConstraint!
     @IBOutlet weak var cardViewYConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var hintingEditIconView: HintingIconView!
+    @IBOutlet var hintingEditIconWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingEditIconHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingEditIconViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingEditIconCenterYConstraint: NSLayoutConstraint!
+    private var hintingEditIconViewAnchorLocation: CGPoint!
+    var hintingEditIconViewTrackingAttachmentBehavior: UIAttachmentBehavior?
     
     
     //
@@ -119,6 +139,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         return animator
     }()
     
+    var attachmentAnchorLocation: CGPoint!
     var attachmentBehavior: UIAttachmentBehavior?
     
     var itemBehavior: UIDynamicItemBehavior!
@@ -133,7 +154,8 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         return StateMachine(initialState: .ReturnToAnchor, delegate: self)
     }()
     
-    enum Axis {
+    enum Axis
+    {
         case Horizontal, Vertical
         
         init?(translation: CGPoint)
@@ -153,55 +175,97 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     //
     // MARK: - StateMachineDelegate
     
+    func updateCardRestingAttachmentBehaviorWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
+    {
+        let translation = panGR.translationInView(self.view)
+        let newAnchor = CGPoint(
+            x: attachmentAnchorLocation.x + (attachmentAxis == .Horizontal ? translation.x : 0),
+            y: attachmentAnchorLocation.y + (attachmentAxis == .Vertical ? translation.y : 0))
+        attachmentBehavior?.anchorPoint = newAnchor
+        attachmentBehavior?.damping = 1.0
+        attachmentBehavior?.frequency = 14.0
+    }
+    
+    func returnCardAttachmentBehaviorToRestingLocation() {
+        attachmentBehavior?.anchorPoint = attachmentAnchorLocation
+        attachmentBehavior?.damping = 1.0
+        attachmentBehavior?.frequency = 7.0
+        attachmentAxis = nil
+    }
+    
+    func updateHintingEditIconViewPresentationWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
+    {
+        if hintingEditIconViewTrackingAttachmentBehavior == nil
+        {
+            hintingEditIconViewTrackingAttachmentBehavior
+                = UIAttachmentBehavior(item: hintingEditIconView,
+                    attachedToAnchor: hintingEditIconViewAnchorLocation)
+            hintingEditIconViewTrackingAttachmentBehavior!.length = 0
+            hintingEditIconViewTrackingAttachmentBehavior!.damping = 1.0
+            hintingEditIconViewTrackingAttachmentBehavior!.frequency = 1.0
+            animator.addBehavior(hintingEditIconViewTrackingAttachmentBehavior!)
+        }
+        
+        let translation = panGR.translationInView(self.view)
+        let newAnchor = CGPoint(
+            x: hintingEditIconViewAnchorLocation.x + translation.x,
+            y: hintingEditIconViewAnchorLocation.y)
+        hintingEditIconViewTrackingAttachmentBehavior?.anchorPoint = newAnchor
+    }
+    
+    func stopHintingEditIconViewTrackingAttachmentBehavior()
+    {
+        animator.removeBehavior(hintingEditIconViewTrackingAttachmentBehavior!)
+        hintingEditIconViewTrackingAttachmentBehavior = nil
+    }
+    
     func didTransitionFrom(from: StateType, to: StateType)
     {
-        
         
         switch (from, to)
         {
             
-        case (.ReturnToAnchor, .TrackingPan):
-            let v = itemBehavior.linearVelocityForItem(cardView)
-            print(v)
-            itemBehavior.addLinearVelocity(CGPoint(x: -1*v.x, y: -1*v.y), forItem: cardView)
-            print(v)
-            
-        default:
-            break
-            
-        }
-        
-        
-        switch to
-        {
-            
-            
-        case .TrackingPan(let panGR):
-            
-            let translation = panGR.translationInView(self.view)
+        case (.TrackingPan, .TrackingPan(let panGR)):
             if attachmentAxis == nil
             {
+                let translation = panGR.translationInView(self.view)
                 attachmentAxis = Axis(translation: translation)
                 print(attachmentAxis)
                 print(translation)
             }
-            let anchor = attachmentBehavior!.anchorPoint
-            let newAnchor = CGPoint(
-                x: anchor.x + (attachmentAxis == .Horizontal ? translation.x : 0),
-                y: anchor.y + (attachmentAxis == .Vertical ? translation.y : 0))
-            attachmentBehavior?.anchorPoint = newAnchor
-            attachmentBehavior?.damping = 1.0
-            attachmentBehavior?.frequency = 7.0
+            updateCardRestingAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
+        case (.TrackingPan, .ReturnToAnchor):
+            returnCardAttachmentBehaviorToRestingLocation()
             
-        case .ReturnToAnchor:
+        case (.ReturnToAnchor, .TrackingPan(let panGR)):
+            if attachmentAxis == nil
+            {
+                let translation = panGR.translationInView(self.view)
+                attachmentAxis = Axis(translation: translation)
+                print(attachmentAxis)
+                print(translation)
+            }
+            updateCardRestingAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
-            attachmentBehavior?.anchorPoint = CGPoint(
-                x: view.bounds.width/2, y: view.bounds.height/2)
-            attachmentBehavior?.damping = 1.0
-            attachmentBehavior?.frequency = 2.0
-            attachmentAxis = nil
+        case (.TrackingPan, .HintingEdit(let panGR)):
+            print(".TrackingPan -> .HintingEdit")
+            updateHintingEditIconViewPresentationWithPanGestureRecognizer(panGR)
+            updateCardRestingAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
+        case (.HintingEdit, .HintingEdit(let panGR)):
+            print(".HintingEdit -> .HintingEdit")
+            updateHintingEditIconViewPresentationWithPanGestureRecognizer(panGR)
+            updateCardRestingAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            
+        case (.HintingEdit, .TrackingPan):
+            print(".HintingEdit -> .TrackingPan")
+            stopHintingEditIconViewTrackingAttachmentBehavior()
+            
+        case (.HintingEdit, .ReturnToAnchor):
+            print(".HintingEdit -> .ReturnToAnchor")
+            stopHintingEditIconViewTrackingAttachmentBehavior()
+            returnCardAttachmentBehaviorToRestingLocation()
             
         default:
             break
@@ -218,14 +282,21 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     {
         if sender.state == .Began || sender.state == .Changed
         {
-            machine.state = .TrackingPan(sender)
+            if attachmentAxis == .Horizontal
+                && sender.translationInView(view).x > 0
+            {
+                machine.state = .HintingEdit(sender)
+            }
+            else {
+                print("set to tracking pan")
+                machine.state = .TrackingPan(sender)
+            }
         }
-        else {
+        else
+        {
             machine.state = .ReturnToAnchor
             print("\n")
         }
-        
-        sender.setTranslation(CGPointZero, inView: self.view)
     }
     
     
@@ -248,72 +319,94 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         cardView.clipsToBounds = true
     }
     
+    func setupCardBehaviors() {
+        NSLayoutConstraint.deactivateConstraints(
+            [cardViewHeightConstraint, cardViewWidthConstraint,
+                cardViewXConstraint, cardViewYConstraint])
+        cardView.translatesAutoresizingMaskIntoConstraints = true
+        
+        let pathDiameter = 18
+        let rectContainingBoundaryPath = CGRect(
+            x: -1*pathDiameter/2,
+            y: -1*pathDiameter/2,
+            width: pathDiameter,
+            height: pathDiameter)
+        let customBoundaryPath = UIBezierPath(
+            ovalInRect: rectContainingBoundaryPath)
+        cardView.collisionBoundsType = .Path
+        cardView.collisionBoundingPath = customBoundaryPath
+        
+        let boundaryShapeLayer = CAShapeLayer()
+        boundaryShapeLayer.path = customBoundaryPath.CGPath
+        boundaryShapeLayer.fillColor = UIColor.blueColor().CGColor
+        boundaryShapeLayer.strokeColor = UIColor.orangeColor().CGColor
+        boundaryShapeLayer.frame = CGRect(
+            origin: CGPoint(
+                x: cardView.bounds.width/2,
+                y: cardView.bounds.height/2),
+            size: rectContainingBoundaryPath.size)
+        cardView.layer.addSublayer(boundaryShapeLayer)
+        
+        let laneCornerRadius: CGFloat = 5
+        let boundaryCollisionBehavior = UICollisionBehavior(items: [cardView])
+        //            boundaryCollisionBehavior.translatesReferenceBoundsIntoBoundary = true
+        boundaryCollisionBehavior.addBoundaryWithIdentifier("topleft",
+            forPath: UIBezierPath(
+                roundedRect: tlBoundary.frame,
+                cornerRadius: laneCornerRadius))
+        boundaryCollisionBehavior.addBoundaryWithIdentifier("bottomleft",
+            forPath: UIBezierPath(
+                roundedRect: blBoundary.frame,
+                cornerRadius: laneCornerRadius))
+        boundaryCollisionBehavior.addBoundaryWithIdentifier("bottomright",
+            forPath: UIBezierPath(
+                roundedRect: brBoundary.frame,
+                cornerRadius: laneCornerRadius))
+        boundaryCollisionBehavior.addBoundaryWithIdentifier("topright",
+            forPath: UIBezierPath(
+                roundedRect: trBoundary.frame,
+                cornerRadius: laneCornerRadius))
+        animator.addBehavior(boundaryCollisionBehavior)
+        
+        itemBehavior = UIDynamicItemBehavior(items: [cardView])
+        itemBehavior.allowsRotation = false
+        itemBehavior.friction = 0
+        itemBehavior.resistance = 10.0
+        itemBehavior.elasticity = 0
+        animator.addBehavior(itemBehavior)
+        
+        attachmentAnchorLocation = cardView.center
+        
+        attachmentBehavior = UIAttachmentBehavior(
+            item: cardView,
+            attachedToAnchor: attachmentAnchorLocation)
+        attachmentBehavior?.length = 0
+        animator.addBehavior(attachmentBehavior!)
+    }
+    
+    func setupHintingEditIconBehaviors() {
+        NSLayoutConstraint.deactivateConstraints(
+            [hintingEditIconWidthConstraint, hintingEditIconHeightConstraint,
+            hintingEditIconViewLeadingConstraint, hintingEditIconCenterYConstraint])
+        hintingEditIconView.translatesAutoresizingMaskIntoConstraints = true
+        
+        let hintingEditIconViewAnchorAttachmentBehavior =
+            UIAttachmentBehavior(item: hintingEditIconView,
+                attachedToAnchor: hintingEditIconView.center)
+        hintingEditIconViewAnchorAttachmentBehavior.length = 0
+        hintingEditIconViewAnchorAttachmentBehavior.damping = 1.0
+        hintingEditIconViewAnchorAttachmentBehavior.frequency = 2.0
+        animator.addBehavior(hintingEditIconViewAnchorAttachmentBehavior)
+        
+        hintingEditIconViewAnchorLocation = hintingEditIconView.center
+    }
+    
     override func viewDidLayoutSubviews()
     {
         if animator.behaviors.count == 0
         {
-            print("did layout subviews")
-            
-            NSLayoutConstraint.deactivateConstraints(
-                [cardViewHeightConstraint, cardViewWidthConstraint,
-                    cardViewXConstraint, cardViewYConstraint])
-            cardView.translatesAutoresizingMaskIntoConstraints = true
-            
-            let pathDiameter = 18
-            let rectContainingBoundaryPath = CGRect(
-                x: -1*pathDiameter/2,
-                y: -1*pathDiameter/2,
-                width: pathDiameter,
-                height: pathDiameter)
-            let customBoundaryPath = UIBezierPath(
-                ovalInRect: rectContainingBoundaryPath)
-            cardView.collisionBoundsType = .Path
-            cardView.collisionBoundingPath = customBoundaryPath
-            
-            let boundaryShapeLayer = CAShapeLayer()
-            boundaryShapeLayer.path = customBoundaryPath.CGPath
-            boundaryShapeLayer.fillColor = UIColor.blueColor().CGColor
-            boundaryShapeLayer.strokeColor = UIColor.orangeColor().CGColor
-            boundaryShapeLayer.frame = CGRect(
-                origin: CGPoint(
-                    x: cardView.bounds.width/2,
-                    y: cardView.bounds.height/2),
-                size: rectContainingBoundaryPath.size)
-            cardView.layer.addSublayer(boundaryShapeLayer)
-            
-            let laneCornerRadius: CGFloat = 20
-            let boundaryCollisionBehavior = UICollisionBehavior(items: [cardView])
-//            boundaryCollisionBehavior.translatesReferenceBoundsIntoBoundary = true
-            boundaryCollisionBehavior.addBoundaryWithIdentifier("topleft",
-                forPath: UIBezierPath(
-                    roundedRect: tlBoundary.frame,
-                    cornerRadius: laneCornerRadius))
-            boundaryCollisionBehavior.addBoundaryWithIdentifier("bottomleft",
-                forPath: UIBezierPath(
-                    roundedRect: blBoundary.frame,
-                    cornerRadius: laneCornerRadius))
-            boundaryCollisionBehavior.addBoundaryWithIdentifier("bottomright",
-                forPath: UIBezierPath(
-                    roundedRect: brBoundary.frame,
-                    cornerRadius: laneCornerRadius))
-            boundaryCollisionBehavior.addBoundaryWithIdentifier("topright",
-                forPath: UIBezierPath(
-                    roundedRect: trBoundary.frame,
-                    cornerRadius: laneCornerRadius))
-            animator.addBehavior(boundaryCollisionBehavior)
-            
-            itemBehavior = UIDynamicItemBehavior(items: [cardView])
-            itemBehavior.allowsRotation = false
-            itemBehavior.friction = 0
-            itemBehavior.resistance = 10.0
-            itemBehavior.elasticity = 0
-            animator.addBehavior(itemBehavior)
-            
-            attachmentBehavior = UIAttachmentBehavior(
-                item: cardView,
-                attachedToAnchor: cardView.center)
-            attachmentBehavior?.length = 0
-            animator.addBehavior(attachmentBehavior!)
+            setupCardBehaviors()
+            setupHintingEditIconBehaviors()
         }
     }
 }
