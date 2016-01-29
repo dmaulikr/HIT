@@ -65,6 +65,9 @@ enum CardState: StateMachineDataSource
         case (.HintingEdit, .ReturningToRest):
             return .Continue
             
+            
+            
+            
         case (.TrackingPan,     .HintingDelete):    return .Continue
         case (.TrackingPan,     .ConfirmDelete):    return .Continue
         case (.HintingDelete,   .HintingDelete):    return .Continue

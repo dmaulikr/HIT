@@ -23,7 +23,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TrashIcon" translatesAutoresizingMaskIntoConstraints="NO" id="il5-On-aL3">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="il5-On-aL3">
                     <rect key="frame" x="284" y="284" width="32" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="QkQ-yp-QeO"/>
@@ -44,7 +44,4 @@
             <point key="canvasLocation" x="196" y="384"/>
         </view>
     </objects>
-    <resources>
-        <image name="TrashIcon" width="32" height="32"/>
-    </resources>
 </document>

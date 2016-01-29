@@ -34,6 +34,14 @@ import UIKit
         }
     }
     
+    @IBInspectable var imageName: String? {
+        didSet {
+            iconView.image = imageName != nil
+                ? UIImage(named: imageName!)
+                : nil
+        }
+    }
+    
     
     //
     // MARK: - Dial

@@ -232,6 +232,9 @@
                                     <constraint firstAttribute="height" constant="64" id="Fyv-dD-a4c"/>
                                     <constraint firstAttribute="width" constant="64" id="IoZ-Xg-tuv"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="imageName" value="TrashIcon"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8qm-NL-L0v" customClass="CustomBoundsPlaceholderView" customModule="HIT" customModuleProvider="target">
                                 <rect key="frame" x="2" y="75" width="596" height="450"/>
