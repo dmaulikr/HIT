@@ -208,22 +208,30 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     
     func updateHintingEditIconViewPresentationWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
     {
-        if hintingEditIconTrackingAttachmentBehavior == nil
-        {
-            hintingEditIconTrackingAttachmentBehavior
-                = UIAttachmentBehavior(item: hintingEditIconView,
-                    attachedToAnchor: hintingEditIconRestingAnchorLocation)
-            hintingEditIconTrackingAttachmentBehavior!.length = 0
-            hintingEditIconTrackingAttachmentBehavior!.damping = 1.0
-            hintingEditIconTrackingAttachmentBehavior!.frequency = 1.5
-            animator.addBehavior(hintingEditIconTrackingAttachmentBehavior!)
-        }
-        
         let translation = panGR.translationInView(self.view)
-        let newAnchor = CGPoint(
-            x: hintingEditIconRestingAnchorLocation.x + translation.x,
-            y: hintingEditIconRestingAnchorLocation.y)
-        hintingEditIconTrackingAttachmentBehavior?.anchorPoint = newAnchor
+        
+        let trackingDelay
+            = hintingEditIconWidthConstraint.constant
+            + hintingEditIconLeadingConstraint.constant * 2
+        
+        if translation.x > trackingDelay
+        {
+            if hintingEditIconTrackingAttachmentBehavior == nil
+            {
+                hintingEditIconTrackingAttachmentBehavior
+                    = UIAttachmentBehavior(item: hintingEditIconView,
+                        attachedToAnchor: hintingEditIconRestingAnchorLocation)
+                hintingEditIconTrackingAttachmentBehavior!.length = 0
+                hintingEditIconTrackingAttachmentBehavior!.damping = 1.0
+                hintingEditIconTrackingAttachmentBehavior!.frequency = 1.5
+                animator.addBehavior(hintingEditIconTrackingAttachmentBehavior!)
+            }
+            
+            let newAnchor = CGPoint(
+                x: hintingEditIconRestingAnchorLocation.x + translation.x - trackingDelay,
+                y: hintingEditIconRestingAnchorLocation.y)
+            hintingEditIconTrackingAttachmentBehavior?.anchorPoint = newAnchor
+        }
     }
     
     func stopHintingEditIconViewTrackingAttachmentBehavior()
