@@ -277,15 +277,15 @@
                     <connections>
                         <outlet property="blBoundary" destination="L9s-Y9-WAh" id="ix1-O6-owj"/>
                         <outlet property="brBoundary" destination="isQ-uL-E2B" id="0Z5-xQ-BsA"/>
+                        <outlet property="cardCenterXConstraint" destination="CtL-Jo-iPs" id="p2w-qy-e2q"/>
+                        <outlet property="cardCenterYConstraint" destination="cnV-zV-7o4" id="Mkx-xG-mMb"/>
+                        <outlet property="cardHeightConstraint" destination="8yZ-fH-uHA" id="mXc-NU-HVt"/>
                         <outlet property="cardView" destination="8qm-NL-L0v" id="UQb-JV-dLn"/>
-                        <outlet property="cardViewHeightConstraint" destination="8yZ-fH-uHA" id="YVj-ar-aqZ"/>
-                        <outlet property="cardViewWidthConstraint" destination="OWf-Z4-iBv" id="HNL-5i-Qfk"/>
-                        <outlet property="cardViewXConstraint" destination="CtL-Jo-iPs" id="rGb-AO-JeX"/>
-                        <outlet property="cardViewYConstraint" destination="cnV-zV-7o4" id="1QS-pB-dRR"/>
+                        <outlet property="cardWidthConstraint" destination="OWf-Z4-iBv" id="C2J-B8-VbI"/>
                         <outlet property="hintingEditIconCenterYConstraint" destination="Ky1-1w-xoZ" id="Ant-lh-ViV"/>
                         <outlet property="hintingEditIconHeightConstraint" destination="Fyv-dD-a4c" id="azR-yB-MLC"/>
+                        <outlet property="hintingEditIconLeadingConstraint" destination="1So-7o-3Ue" id="G9V-QG-opE"/>
                         <outlet property="hintingEditIconView" destination="sTe-AH-2cJ" id="aut-J8-NRr"/>
-                        <outlet property="hintingEditIconViewLeadingConstraint" destination="1So-7o-3Ue" id="r4u-HH-5A0"/>
                         <outlet property="hintingEditIconWidthConstraint" destination="IoZ-Xg-tuv" id="Dvc-hc-GHr"/>
                         <outlet property="tlBoundary" destination="aOq-Cv-MvB" id="5nA-8o-VnO"/>
                         <outlet property="trBoundary" destination="Zkl-hg-6t7" id="pYj-cf-HtR"/>

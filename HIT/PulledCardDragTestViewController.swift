@@ -10,9 +10,9 @@ import UIKit
 
 enum CardState: StateMachineDataSource
 {
-    case AnchoredAtRest
+    case AtRest
     case TrackingPan(UIPanGestureRecognizer)
-    case ReturnToAnchor
+    case ReturningToRest
     
     case HintingEdit(UIPanGestureRecognizer)
     case ConfirmEdit(UIPanGestureRecognizer)
@@ -38,11 +38,16 @@ enum CardState: StateMachineDataSource
     {
         switch (from, to)
         {
+        case (.AtRest, .TrackingPan):
+            return .Continue
+        case (.ReturningToRest, .AtRest):
+            return .Continue
+            
         case (.TrackingPan, .TrackingPan):
             return .Continue
-        case (.TrackingPan, .ReturnToAnchor):
+        case (.TrackingPan, .ReturningToRest):
             return .Continue
-        case (.ReturnToAnchor, .TrackingPan):
+        case (.ReturningToRest, .TrackingPan):
             return .Continue
             
         case (.TrackingPan, .HintingEdit):
@@ -57,7 +62,7 @@ enum CardState: StateMachineDataSource
             return .Continue
         case (.ConfirmEdit, .TrackingPan):
             return .Continue
-        case (.HintingEdit, .ReturnToAnchor):
+        case (.HintingEdit, .ReturningToRest):
             return .Continue
             
         case (.TrackingPan, .HintingDelete):
@@ -86,13 +91,13 @@ enum CardState: StateMachineDataSource
         case (.ConfirmSettings, .TrackingPan):
             return .Continue
             
-        case (.ReturnToAnchor, .HintingCreate):
+        case (.ReturningToRest, .HintingCreate):
             return .Continue
         case (.HintingCreate, .InteractiveCreate):
             return .Continue
         case (.InteractiveCreate, .ExecuteCreate):
-            return .Redirect(.ReturnToAnchor)
-        case (.InteractiveCreate, .ReturnToAnchor):
+            return .Redirect(.ReturningToRest)
+        case (.InteractiveCreate, .ReturningToRest):
             return .Continue
             
         default:
@@ -115,18 +120,18 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     @IBOutlet weak var trBoundary: StatePlaceholderView!
     
     @IBOutlet weak var cardView: CustomBoundsPlaceholderView!
-    @IBOutlet weak var cardViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var cardViewWidthConstraint: NSLayoutConstraint!
-    @IBOutlet weak var cardViewXConstraint: NSLayoutConstraint!
-    @IBOutlet weak var cardViewYConstraint: NSLayoutConstraint!
+    @IBOutlet weak var cardHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var cardWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var cardCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet weak var cardCenterYConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var hintingEditIconView: HintingIconView!
     @IBOutlet var hintingEditIconWidthConstraint: NSLayoutConstraint!
     @IBOutlet var hintingEditIconHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var hintingEditIconViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingEditIconLeadingConstraint: NSLayoutConstraint!
     @IBOutlet var hintingEditIconCenterYConstraint: NSLayoutConstraint!
-    private var hintingEditIconViewAnchorLocation: CGPoint!
-    var hintingEditIconViewTrackingAttachmentBehavior: UIAttachmentBehavior?
+    private var hintingEditIconRestingAnchorLocation: CGPoint!
+    var hintingEditIconTrackingAttachmentBehavior: UIAttachmentBehavior?
     
     
     //
@@ -135,14 +140,14 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     lazy var animator: UIDynamicAnimator = {
         let animator = UIDynamicAnimator(referenceView: self.view)
         animator.delegate = self
-        animator.debugEnabled = true
+//        animator.debugEnabled = true
         return animator
     }()
     
-    var attachmentAnchorLocation: CGPoint!
-    var attachmentBehavior: UIAttachmentBehavior?
+    var cardRestingAnchorLocation: CGPoint!
+    var cardAttachmentBehavior: UIAttachmentBehavior!
     
-    var itemBehavior: UIDynamicItemBehavior!
+    var cardDynamicItemBehavior: UIDynamicItemBehavior!
     
     
     
@@ -151,7 +156,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     
     typealias StateType = CardState
     lazy var machine: StateMachine<PulledCardDragTestViewController> = {
-        return StateMachine(initialState: .ReturnToAnchor, delegate: self)
+        return StateMachine(initialState: .ReturningToRest, delegate: self)
     }()
     
     enum Axis
@@ -175,48 +180,56 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     //
     // MARK: - StateMachineDelegate
     
-    func updateCardRestingAttachmentBehaviorWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
+    func updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
     {
+        if attachmentAxis == nil
+        {
+            let translation = panGR.translationInView(self.view)
+            attachmentAxis = Axis(translation: translation)
+            print(attachmentAxis)
+            print(translation)
+        }
+        
         let translation = panGR.translationInView(self.view)
         let newAnchor = CGPoint(
-            x: attachmentAnchorLocation.x + (attachmentAxis == .Horizontal ? translation.x : 0),
-            y: attachmentAnchorLocation.y + (attachmentAxis == .Vertical ? translation.y : 0))
-        attachmentBehavior?.anchorPoint = newAnchor
-        attachmentBehavior?.damping = 1.0
-        attachmentBehavior?.frequency = 14.0
+            x: cardRestingAnchorLocation.x + (attachmentAxis == .Horizontal ? translation.x : 0),
+            y: cardRestingAnchorLocation.y + (attachmentAxis == .Vertical ? translation.y : 0))
+        cardAttachmentBehavior?.anchorPoint = newAnchor
+        cardAttachmentBehavior?.damping = 1.0
+        cardAttachmentBehavior?.frequency = 14.0
     }
     
     func returnCardAttachmentBehaviorToRestingLocation() {
-        attachmentBehavior?.anchorPoint = attachmentAnchorLocation
-        attachmentBehavior?.damping = 1.0
-        attachmentBehavior?.frequency = 7.0
+        cardAttachmentBehavior?.anchorPoint = cardRestingAnchorLocation
+        cardAttachmentBehavior?.damping = 1.0
+        cardAttachmentBehavior?.frequency = 7.0
         attachmentAxis = nil
     }
     
     func updateHintingEditIconViewPresentationWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
     {
-        if hintingEditIconViewTrackingAttachmentBehavior == nil
+        if hintingEditIconTrackingAttachmentBehavior == nil
         {
-            hintingEditIconViewTrackingAttachmentBehavior
+            hintingEditIconTrackingAttachmentBehavior
                 = UIAttachmentBehavior(item: hintingEditIconView,
-                    attachedToAnchor: hintingEditIconViewAnchorLocation)
-            hintingEditIconViewTrackingAttachmentBehavior!.length = 0
-            hintingEditIconViewTrackingAttachmentBehavior!.damping = 1.0
-            hintingEditIconViewTrackingAttachmentBehavior!.frequency = 1.0
-            animator.addBehavior(hintingEditIconViewTrackingAttachmentBehavior!)
+                    attachedToAnchor: hintingEditIconRestingAnchorLocation)
+            hintingEditIconTrackingAttachmentBehavior!.length = 0
+            hintingEditIconTrackingAttachmentBehavior!.damping = 1.0
+            hintingEditIconTrackingAttachmentBehavior!.frequency = 1.5
+            animator.addBehavior(hintingEditIconTrackingAttachmentBehavior!)
         }
         
         let translation = panGR.translationInView(self.view)
         let newAnchor = CGPoint(
-            x: hintingEditIconViewAnchorLocation.x + translation.x,
-            y: hintingEditIconViewAnchorLocation.y)
-        hintingEditIconViewTrackingAttachmentBehavior?.anchorPoint = newAnchor
+            x: hintingEditIconRestingAnchorLocation.x + translation.x,
+            y: hintingEditIconRestingAnchorLocation.y)
+        hintingEditIconTrackingAttachmentBehavior?.anchorPoint = newAnchor
     }
     
     func stopHintingEditIconViewTrackingAttachmentBehavior()
     {
-        animator.removeBehavior(hintingEditIconViewTrackingAttachmentBehavior!)
-        hintingEditIconViewTrackingAttachmentBehavior = nil
+        animator.removeBehavior(hintingEditIconTrackingAttachmentBehavior!)
+        hintingEditIconTrackingAttachmentBehavior = nil
     }
     
     func didTransitionFrom(from: StateType, to: StateType)
@@ -226,44 +239,32 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         {
             
         case (.TrackingPan, .TrackingPan(let panGR)):
-            if attachmentAxis == nil
-            {
-                let translation = panGR.translationInView(self.view)
-                attachmentAxis = Axis(translation: translation)
-                print(attachmentAxis)
-                print(translation)
-            }
-            updateCardRestingAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            print(".TrackingPan -> .TrackingPan")
+            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
-        case (.TrackingPan, .ReturnToAnchor):
+        case (.TrackingPan, .ReturningToRest):
+            print(".TrackingPan -> .HintingEdit")
             returnCardAttachmentBehaviorToRestingLocation()
             
-        case (.ReturnToAnchor, .TrackingPan(let panGR)):
-            if attachmentAxis == nil
-            {
-                let translation = panGR.translationInView(self.view)
-                attachmentAxis = Axis(translation: translation)
-                print(attachmentAxis)
-                print(translation)
-            }
-            updateCardRestingAttachmentBehaviorWithPanGestureRecognizer(panGR)
+        case (.ReturningToRest, .TrackingPan(let panGR)):
+            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         case (.TrackingPan, .HintingEdit(let panGR)):
             print(".TrackingPan -> .HintingEdit")
             updateHintingEditIconViewPresentationWithPanGestureRecognizer(panGR)
-            updateCardRestingAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         case (.HintingEdit, .HintingEdit(let panGR)):
             print(".HintingEdit -> .HintingEdit")
             updateHintingEditIconViewPresentationWithPanGestureRecognizer(panGR)
-            updateCardRestingAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         case (.HintingEdit, .TrackingPan):
             print(".HintingEdit -> .TrackingPan")
             stopHintingEditIconViewTrackingAttachmentBehavior()
             
-        case (.HintingEdit, .ReturnToAnchor):
-            print(".HintingEdit -> .ReturnToAnchor")
+        case (.HintingEdit, .ReturningToRest):
+            print(".HintingEdit -> .ReturningToRest")
             stopHintingEditIconViewTrackingAttachmentBehavior()
             returnCardAttachmentBehaviorToRestingLocation()
             
@@ -294,7 +295,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         }
         else
         {
-            machine.state = .ReturnToAnchor
+            machine.state = .ReturningToRest
             print("\n")
         }
     }
@@ -321,8 +322,8 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     
     func setupCardBehaviors() {
         NSLayoutConstraint.deactivateConstraints(
-            [cardViewHeightConstraint, cardViewWidthConstraint,
-                cardViewXConstraint, cardViewYConstraint])
+            [cardHeightConstraint, cardWidthConstraint,
+                cardCenterXConstraint, cardCenterYConstraint])
         cardView.translatesAutoresizingMaskIntoConstraints = true
         
         let pathDiameter = 18
@@ -368,37 +369,37 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
                 cornerRadius: laneCornerRadius))
         animator.addBehavior(boundaryCollisionBehavior)
         
-        itemBehavior = UIDynamicItemBehavior(items: [cardView])
-        itemBehavior.allowsRotation = false
-        itemBehavior.friction = 0
-        itemBehavior.resistance = 10.0
-        itemBehavior.elasticity = 0
-        animator.addBehavior(itemBehavior)
+        cardDynamicItemBehavior = UIDynamicItemBehavior(items: [cardView])
+        cardDynamicItemBehavior.allowsRotation = false
+        cardDynamicItemBehavior.friction = 0
+        cardDynamicItemBehavior.resistance = 10.0
+        cardDynamicItemBehavior.elasticity = 0
+        animator.addBehavior(cardDynamicItemBehavior)
         
-        attachmentAnchorLocation = cardView.center
+        cardRestingAnchorLocation = cardView.center
         
-        attachmentBehavior = UIAttachmentBehavior(
+        cardAttachmentBehavior = UIAttachmentBehavior(
             item: cardView,
-            attachedToAnchor: attachmentAnchorLocation)
-        attachmentBehavior?.length = 0
-        animator.addBehavior(attachmentBehavior!)
+            attachedToAnchor: cardRestingAnchorLocation)
+        cardAttachmentBehavior?.length = 0
+        animator.addBehavior(cardAttachmentBehavior!)
     }
     
     func setupHintingEditIconBehaviors() {
         NSLayoutConstraint.deactivateConstraints(
             [hintingEditIconWidthConstraint, hintingEditIconHeightConstraint,
-            hintingEditIconViewLeadingConstraint, hintingEditIconCenterYConstraint])
+            hintingEditIconLeadingConstraint, hintingEditIconCenterYConstraint])
         hintingEditIconView.translatesAutoresizingMaskIntoConstraints = true
         
-        let hintingEditIconViewAnchorAttachmentBehavior =
+        let hintingEditIconViewRestingAttachmentBehavior =
             UIAttachmentBehavior(item: hintingEditIconView,
                 attachedToAnchor: hintingEditIconView.center)
-        hintingEditIconViewAnchorAttachmentBehavior.length = 0
-        hintingEditIconViewAnchorAttachmentBehavior.damping = 1.0
-        hintingEditIconViewAnchorAttachmentBehavior.frequency = 2.0
-        animator.addBehavior(hintingEditIconViewAnchorAttachmentBehavior)
+        hintingEditIconViewRestingAttachmentBehavior.length = 0
+        hintingEditIconViewRestingAttachmentBehavior.damping = 1.0
+        hintingEditIconViewRestingAttachmentBehavior.frequency = 2.0
+        animator.addBehavior(hintingEditIconViewRestingAttachmentBehavior)
         
-        hintingEditIconViewAnchorLocation = hintingEditIconView.center
+        hintingEditIconRestingAnchorLocation = hintingEditIconView.center
     }
     
     override func viewDidLayoutSubviews()
