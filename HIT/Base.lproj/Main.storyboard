@@ -225,8 +225,8 @@
                                 <rect key="frame" x="310" y="310" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sTe-AH-2cJ" customClass="HintingIconView" customModule="HIT" customModuleProvider="target">
-                                <rect key="frame" x="10" y="269" width="64" height="64"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sTe-AH-2cJ" customClass="HintingIconView" customModule="HIT" customModuleProvider="target">
+                                <rect key="frame" x="526" y="268" width="64" height="64"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="Fyv-dD-a4c"/>
@@ -246,12 +246,12 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="sTe-AH-2cJ" firstAttribute="leading" secondItem="uvc-of-DHR" secondAttribute="leading" constant="10" id="1So-7o-3Ue"/>
                             <constraint firstItem="L9s-Y9-WAh" firstAttribute="centerX" secondItem="uvc-of-DHR" secondAttribute="leading" constant="-10" id="7Zu-MG-eDr"/>
                             <constraint firstItem="8qm-NL-L0v" firstAttribute="height" secondItem="uvc-of-DHR" secondAttribute="height" multiplier="0.75" id="8yZ-fH-uHA"/>
                             <constraint firstItem="aOq-Cv-MvB" firstAttribute="centerY" secondItem="m8q-QC-Ijn" secondAttribute="bottom" constant="-10" id="9fx-pI-r8H"/>
                             <constraint firstItem="aOq-Cv-MvB" firstAttribute="height" secondItem="uvc-of-DHR" secondAttribute="height" id="AU6-RB-3Rg"/>
                             <constraint firstItem="8qm-NL-L0v" firstAttribute="centerX" secondItem="uvc-of-DHR" secondAttribute="centerX" id="CtL-Jo-iPs"/>
+                            <constraint firstAttribute="trailing" secondItem="sTe-AH-2cJ" secondAttribute="trailing" constant="10" id="Epr-LB-vvJ"/>
                             <constraint firstItem="sTe-AH-2cJ" firstAttribute="centerY" secondItem="uvc-of-DHR" secondAttribute="centerY" id="Ky1-1w-xoZ"/>
                             <constraint firstItem="8qm-NL-L0v" firstAttribute="width" secondItem="uvc-of-DHR" secondAttribute="width" constant="-4" id="OWf-Z4-iBv"/>
                             <constraint firstItem="Zkl-hg-6t7" firstAttribute="width" secondItem="uvc-of-DHR" secondAttribute="width" id="Q0O-0P-z4K"/>
@@ -282,11 +282,11 @@
                         <outlet property="cardHeightConstraint" destination="8yZ-fH-uHA" id="mXc-NU-HVt"/>
                         <outlet property="cardView" destination="8qm-NL-L0v" id="UQb-JV-dLn"/>
                         <outlet property="cardWidthConstraint" destination="OWf-Z4-iBv" id="C2J-B8-VbI"/>
-                        <outlet property="hintingEditIconCenterYConstraint" destination="Ky1-1w-xoZ" id="Ant-lh-ViV"/>
-                        <outlet property="hintingEditIconHeightConstraint" destination="Fyv-dD-a4c" id="azR-yB-MLC"/>
-                        <outlet property="hintingEditIconLeadingConstraint" destination="1So-7o-3Ue" id="G9V-QG-opE"/>
-                        <outlet property="hintingEditIconView" destination="sTe-AH-2cJ" id="aut-J8-NRr"/>
-                        <outlet property="hintingEditIconWidthConstraint" destination="IoZ-Xg-tuv" id="Dvc-hc-GHr"/>
+                        <outlet property="hintingDeleteIconCenterYConstraint" destination="Ky1-1w-xoZ" id="eos-2c-Zpl"/>
+                        <outlet property="hintingDeleteIconHeightConstraint" destination="Fyv-dD-a4c" id="cyd-T0-4gp"/>
+                        <outlet property="hintingDeleteIconTrailingConstraint" destination="Epr-LB-vvJ" id="3YQ-8o-c8H"/>
+                        <outlet property="hintingDeleteIconView" destination="sTe-AH-2cJ" id="Rsh-1R-r4N"/>
+                        <outlet property="hintingDeleteIconWidthConstraint" destination="IoZ-Xg-tuv" id="ASg-bm-icQ"/>
                         <outlet property="tlBoundary" destination="aOq-Cv-MvB" id="5nA-8o-VnO"/>
                         <outlet property="trBoundary" destination="Zkl-hg-6t7" id="pYj-cf-HtR"/>
                     </connections>
