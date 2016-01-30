@@ -38,32 +38,12 @@ enum CardState: StateMachineDataSource
     {
         switch (from, to)
         {
-        case (.AtRest, .TrackingPan):
-            return .Continue
-        case (.ReturningToRest, .AtRest):
-            return .Continue
+        case (.AtRest, .TrackingPan):           return .Continue
+        case (.ReturningToRest, .AtRest):       return .Continue
             
-        case (.TrackingPan, .TrackingPan):
-            return .Continue
-        case (.TrackingPan, .ReturningToRest):
-            return .Continue
-        case (.ReturningToRest, .TrackingPan):
-            return .Continue
-            
-        case (.TrackingPan, .HintingEdit):
-            return .Continue
-        case (.HintingEdit, .HintingEdit):
-            return .Continue
-        case (.HintingEdit, .ConfirmEdit):
-            return .Continue
-        case (.ConfirmEdit, .HintingEdit):
-            return .Continue
-        case (.HintingEdit, .TrackingPan):
-            return .Continue
-        case (.ConfirmEdit, .TrackingPan):
-            return .Continue
-        case (.HintingEdit, .ReturningToRest):
-            return .Continue
+        case (.TrackingPan, .TrackingPan):      return .Continue
+        case (.TrackingPan, .ReturningToRest):  return .Continue
+        case (.ReturningToRest, .TrackingPan):  return .Continue
             
             
         
@@ -84,6 +64,29 @@ enum CardState: StateMachineDataSource
         case (.ConfirmDelete,   .HintingDelete):    return .Continue
         case (.HintingDelete,   .ReturningToRest):  return .Continue
         case (.HintingDelete,   .HintingSettings):  return .Continue
+            
+        case (.TrackingPan,     .HintingShuffle):    return .Continue
+        case (.TrackingPan,     .ConfirmShuffle):    return .Continue
+        case (.HintingShuffle,  .HintingShuffle):    return .Continue
+        case (.HintingShuffle,  .ConfirmShuffle):    return .Continue
+        case (.ConfirmShuffle,  .ConfirmShuffle):    return .Continue
+        case (.ConfirmShuffle,  .HintingShuffle):    return .Continue
+        case (.HintingShuffle,  .ReturningToRest):  return .Continue
+        case (.HintingShuffle,  .HintingEdit):      return .Continue
+            
+        case (.TrackingPan,     .HintingEdit):      return .Continue
+        case (.TrackingPan,     .ConfirmEdit):      return .Continue
+        case (.HintingEdit,     .HintingEdit):      return .Continue
+        case (.HintingEdit,     .ConfirmEdit):      return .Continue
+        case (.ConfirmEdit,     .ConfirmEdit):      return .Continue
+        case (.ConfirmEdit,     .HintingEdit):      return .Continue
+        case (.HintingEdit,     .ReturningToRest):  return .Continue
+        case (.HintingEdit,     .HintingShuffle):   return .Continue
+            
+            
+            
+            
+            
 
         case (.ReturningToRest, .HintingCreate):    return .Continue
         case (.HintingCreate,   .InteractiveCreate): return .Continue
@@ -169,6 +172,46 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     var hintingDeleteSpanWidth: CGFloat {
         get {
             return hintingDeleteTrackingSpanView.frame.width
+        }
+    }
+    
+    
+    // Hinting Shuffle Icon
+    @IBOutlet weak var hintingShuffleIconView: HintingIconView!
+    @IBOutlet var hintingShuffleIconWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingShuffleIconHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingShuffleIconCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingShuffleIconTopConstraint: NSLayoutConstraint!
+    
+    private var hintingShuffleIconRestingAnchorLocation: CGPoint!
+    var hintingShuffleIconTrackingAttachmentBehavior: UIAttachmentBehavior?
+    
+    // Represents the width or range of the tracking gesture
+    // across which the UI state is set to .HintingShuffle
+    @IBOutlet weak var hintingShuffleTrackingSpanView: StatePlaceholderView!
+    var hintingShuffleSpanHeight: CGFloat {
+        get {
+            return hintingShuffleTrackingSpanView.frame.height
+        }
+    }
+    
+    
+    // Hinting Edit Icon
+    @IBOutlet weak var hintingEditIconView: HintingIconView!
+    @IBOutlet var hintingEditIconWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingEditIconHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingEditIconCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingEditIconBottomConstraint: NSLayoutConstraint!
+    
+    private var hintingEditIconRestingAnchorLocation: CGPoint!
+    var hintingEditIconTrackingAttachmentBehavior: UIAttachmentBehavior?
+    
+    // Represents the width or range of the tracking gesture
+    // across which the UI state is set to .HintingEdit
+    @IBOutlet weak var hintingEditTrackingSpanView: StatePlaceholderView!
+    var hintingEditSpanHeight: CGFloat {
+        get {
+            return hintingEditTrackingSpanView.frame.height
         }
     }
     
@@ -320,6 +363,98 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         }
     }
     
+    func updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
+    {
+        let translation = panGR.translationInView(self.view)
+        
+        let trackingDelay
+            = hintingShuffleIconHeightConstraint.constant
+            + hintingShuffleIconTopConstraint.constant * 2
+        
+        if translation.y > trackingDelay
+        {
+            hintingShuffleIconView.dialProgress
+                = (translation.y - trackingDelay)
+                / (hintingShuffleSpanHeight - trackingDelay)
+            
+            if hintingShuffleIconTrackingAttachmentBehavior == nil
+            {
+                hintingShuffleIconTrackingAttachmentBehavior
+                    = UIAttachmentBehavior(item: hintingShuffleIconView,
+                        attachedToAnchor: hintingShuffleIconRestingAnchorLocation)
+                hintingShuffleIconTrackingAttachmentBehavior!.length = 0
+                hintingShuffleIconTrackingAttachmentBehavior!.damping = 1.0
+                hintingShuffleIconTrackingAttachmentBehavior!.frequency = 1.5
+                animator.addBehavior(hintingShuffleIconTrackingAttachmentBehavior!)
+            }
+            
+            let newAnchor = CGPoint(
+                x: hintingShuffleIconRestingAnchorLocation.x,
+                y: hintingShuffleIconRestingAnchorLocation.y + translation.y - trackingDelay)
+            hintingShuffleIconTrackingAttachmentBehavior?.anchorPoint = newAnchor
+        }
+        else
+        {
+            hintingShuffleIconView.dialProgress = 0
+        }
+    }
+    
+    func returnHintingShuffleIconToRestingLocation()
+    {
+        hintingShuffleIconView.dialProgress = 0
+        if hintingShuffleIconTrackingAttachmentBehavior != nil
+        {
+            animator.removeBehavior(hintingShuffleIconTrackingAttachmentBehavior!)
+            hintingShuffleIconTrackingAttachmentBehavior = nil
+        }
+    }
+    
+    func updateHintingEditIconPresentationWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
+    {
+        let translation = panGR.translationInView(self.view)
+        
+        let trackingDelay
+            = hintingEditIconHeightConstraint.constant
+            - hintingEditIconBottomConstraint.constant * 2
+        
+        if translation.y < -1*trackingDelay
+        {
+            hintingEditIconView.dialProgress
+                = abs(translation.y + trackingDelay)
+                / (hintingEditSpanHeight - trackingDelay)
+            
+            if hintingEditIconTrackingAttachmentBehavior == nil
+            {
+                hintingEditIconTrackingAttachmentBehavior
+                    = UIAttachmentBehavior(item: hintingEditIconView,
+                        attachedToAnchor: hintingEditIconRestingAnchorLocation)
+                hintingEditIconTrackingAttachmentBehavior!.length = 0
+                hintingEditIconTrackingAttachmentBehavior!.damping = 1.0
+                hintingEditIconTrackingAttachmentBehavior!.frequency = 1.5
+                animator.addBehavior(hintingEditIconTrackingAttachmentBehavior!)
+            }
+            
+            let newAnchor = CGPoint(
+                x: hintingEditIconRestingAnchorLocation.x,
+                y: hintingEditIconRestingAnchorLocation.y + translation.y + trackingDelay)
+            hintingEditIconTrackingAttachmentBehavior?.anchorPoint = newAnchor
+        }
+        else
+        {
+            hintingEditIconView.dialProgress = 0
+        }
+    }
+    
+    func returnHintingEditIconToRestingLocation()
+    {
+        hintingEditIconView.dialProgress = 0
+        if hintingEditIconTrackingAttachmentBehavior != nil
+        {
+            animator.removeBehavior(hintingEditIconTrackingAttachmentBehavior!)
+            hintingEditIconTrackingAttachmentBehavior = nil
+        }
+    }
+    
     func didTransitionFrom(from: StateType, to: StateType)
     {
         
@@ -331,7 +466,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         case (.TrackingPan, .ReturningToRest):
-            print(".TrackingPan -> .HintingDelete")
+            print(".TrackingPan -> .ReturningToRest")
             returnCardAttachmentBehaviorToRestingLocation()
             
         case (.ReturningToRest, .TrackingPan(let panGR)):
@@ -351,9 +486,9 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
-        case (.HintingSettings, .TrackingPan):
-            print(".HintingSettings -> .TrackingPan")
-            returnHintingSettingsIconToRestingLocation()
+//        case (.HintingSettings, .TrackingPan):
+//            print(".HintingSettings -> .TrackingPan")
+//            returnHintingSettingsIconToRestingLocation()
             
         case (.HintingSettings, .ReturningToRest):
             print(".HintingSettings -> .ReturningToRest")
@@ -365,6 +500,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             returnHintingSettingsIconToRestingLocation()
             updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            
             
         // .HintingDelete cases
             
@@ -378,14 +514,77 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
-        case (.HintingDelete, .TrackingPan):
-            print(".HintingDelete -> .TrackingPan")
-            returnHintingDeleteIconToRestingLocation()
+//        case (.HintingDelete, .TrackingPan):
+//            print(".HintingDelete -> .TrackingPan")
+//            returnHintingDeleteIconToRestingLocation()
             
         case (.HintingDelete, .ReturningToRest):
             print(".HintingDelete -> .ReturningToRest")
             returnHintingDeleteIconToRestingLocation()
             returnCardAttachmentBehaviorToRestingLocation()
+            
+        case (.HintingDelete, .HintingSettings(let panGR)):
+            print(".HintingSettings -> .HintingDelete")
+            returnHintingDeleteIconToRestingLocation()
+            updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
+            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            
+            
+            // .HintingShuffle cases
+            
+        case (.TrackingPan, .HintingShuffle(let panGR)):
+            print(".TrackingPan -> .HintingShuffle")
+            updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
+            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            
+        case (.HintingShuffle, .HintingShuffle(let panGR)):
+            print(".HintingShuffle -> .HintingShuffle")
+            updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
+            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            
+//        case (.HintingShuffle, .TrackingPan):
+//            print(".HintingShuffle -> .TrackingPan")
+//            returnHintingShuffleIconToRestingLocation()
+            
+        case (.HintingShuffle, .ReturningToRest):
+            print(".HintingShuffle -> .ReturningToRest")
+            returnHintingShuffleIconToRestingLocation()
+            returnCardAttachmentBehaviorToRestingLocation()
+            
+        case (.HintingShuffle, .HintingEdit(let panGR)):
+            print(".HintingSettings -> .HintingShuffle")
+            returnHintingShuffleIconToRestingLocation()
+            updateHintingEditIconPresentationWithPanGestureRecognizer(panGR)
+            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            
+            
+        // .HintingEdit cases
+            
+        case (.TrackingPan, .HintingEdit(let panGR)):
+            print(".TrackingPan -> .HintingEdit")
+            updateHintingEditIconPresentationWithPanGestureRecognizer(panGR)
+            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            
+        case (.HintingEdit, .HintingEdit(let panGR)):
+            print(".HintingEdit -> .HintingEdit")
+            updateHintingEditIconPresentationWithPanGestureRecognizer(panGR)
+            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            
+            //        case (.HintingEdit, .TrackingPan):
+            //            print(".HintingEdit -> .TrackingPan")
+            //            returnHintingEditIconToRestingLocation()
+            
+        case (.HintingEdit, .ReturningToRest):
+            print(".HintingEdit -> .ReturningToRest")
+            returnHintingEditIconToRestingLocation()
+            returnCardAttachmentBehaviorToRestingLocation()
+            
+        case (.HintingEdit, .HintingShuffle(let panGR)):
+            print(".HintingSettings -> .HintingEdit")
+            returnHintingEditIconToRestingLocation()
+            updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
+            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            
             
         default:
             break
@@ -411,8 +610,15 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
                     machine.state = .HintingDelete(sender)
                 }
             }
+            else if attachmentAxis == .Vertical {
+                if sender.translationInView(view).y >= 0 {
+                    machine.state = .HintingShuffle(sender)
+                }
+                else if sender.translationInView(view).y < 0 {
+                    machine.state = .HintingEdit(sender)
+                }
+            }
             else {
-                print("set to tracking pan")
                 machine.state = .TrackingPan(sender)
             }
         }
@@ -545,6 +751,42 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         hintingDeleteIconRestingAnchorLocation = hintingDeleteIconView.center
     }
     
+    func setupHintingShuffleIconBehaviors()
+    {
+        NSLayoutConstraint.deactivateConstraints(
+            [hintingShuffleIconWidthConstraint, hintingShuffleIconHeightConstraint,
+                hintingShuffleIconCenterXConstraint, hintingShuffleIconTopConstraint])
+        hintingShuffleIconView.translatesAutoresizingMaskIntoConstraints = true
+        
+        let hintingShuffleIconRestingAttachmentBehavior =
+        UIAttachmentBehavior(item: hintingShuffleIconView,
+            attachedToAnchor: hintingShuffleIconView.center)
+        hintingShuffleIconRestingAttachmentBehavior.length = 0
+        hintingShuffleIconRestingAttachmentBehavior.damping = 1.0
+        hintingShuffleIconRestingAttachmentBehavior.frequency = 2.0
+        animator.addBehavior(hintingShuffleIconRestingAttachmentBehavior)
+        
+        hintingShuffleIconRestingAnchorLocation = hintingShuffleIconView.center
+    }
+    
+    func setupHintingEditIconBehaviors()
+    {
+        NSLayoutConstraint.deactivateConstraints(
+            [hintingEditIconWidthConstraint, hintingEditIconHeightConstraint,
+                hintingEditIconCenterXConstraint, hintingEditIconBottomConstraint])
+        hintingEditIconView.translatesAutoresizingMaskIntoConstraints = true
+        
+        let hintingEditIconRestingAttachmentBehavior =
+        UIAttachmentBehavior(item: hintingEditIconView,
+            attachedToAnchor: hintingEditIconView.center)
+        hintingEditIconRestingAttachmentBehavior.length = 0
+        hintingEditIconRestingAttachmentBehavior.damping = 1.0
+        hintingEditIconRestingAttachmentBehavior.frequency = 2.0
+        animator.addBehavior(hintingEditIconRestingAttachmentBehavior)
+        
+        hintingEditIconRestingAnchorLocation = hintingEditIconView.center
+    }
+    
     override func viewDidLayoutSubviews()
     {
         if animator.behaviors.count == 0
@@ -552,6 +794,8 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             setupCardBehaviors()
             setupHintingSettingsIconBehaviors()
             setupHintingDeleteIconBehaviors()
+            setupHintingShuffleIconBehaviors()
+            setupHintingEditIconBehaviors()
         }
     }
 }

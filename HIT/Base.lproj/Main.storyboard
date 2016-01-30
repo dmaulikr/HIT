@@ -273,6 +273,34 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dc4-P7-El7" customClass="HintingIconView" customModule="HIT" customModuleProvider="target">
+                                <rect key="frame" x="268" y="85" width="64" height="64"/>
+                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="1di-D8-KF8"/>
+                                    <constraint firstAttribute="width" constant="64" id="VAS-Ir-sbF"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="imageName" value="ShuffleIcon"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="dialProgress">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s9T-hh-I30" customClass="HintingIconView" customModule="HIT" customModuleProvider="target">
+                                <rect key="frame" x="268" y="451" width="64" height="64"/>
+                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="64" id="JaH-HW-Sgo"/>
+                                    <constraint firstAttribute="height" constant="64" id="Nhd-iA-uoH"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="imageName" value="EditIcon"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="dialProgress">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8qm-NL-L0v" customClass="CustomBoundsPlaceholderView" customModule="HIT" customModuleProvider="target">
                                 <rect key="frame" x="2" y="75" width="596" height="450"/>
                                 <subviews>
@@ -300,14 +328,44 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JDd-6Q-H9v" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                                        <rect key="frame" x="299" y="0.0" width="2" height="113"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="2" id="beu-gS-Jg6"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                                <color key="value" red="1" green="0.5842826642624418" blue="0.2511654730328382" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nVQ-7L-lRC" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                                        <rect key="frame" x="295" y="225" width="2" height="225"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="2" id="9yp-Al-OH5"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                                <color key="value" red="0.91129202727073855" green="1" blue="0.14267571846933824" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.60794440810403449" green="0.80362067910646939" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="JDd-6Q-H9v" firstAttribute="centerX" secondItem="8qm-NL-L0v" secondAttribute="centerX" constant="2" id="2C5-DF-5tx"/>
+                                    <constraint firstItem="nVQ-7L-lRC" firstAttribute="centerX" secondItem="8qm-NL-L0v" secondAttribute="centerX" constant="-2" id="3oO-9L-4uc"/>
                                     <constraint firstItem="qgL-jm-ojr" firstAttribute="width" secondItem="8qm-NL-L0v" secondAttribute="width" multiplier="0.5" id="8ud-0G-oqR"/>
                                     <constraint firstAttribute="trailing" secondItem="pwF-yg-LiT" secondAttribute="trailing" id="DRA-kx-eJo"/>
+                                    <constraint firstItem="JDd-6Q-H9v" firstAttribute="top" secondItem="8qm-NL-L0v" secondAttribute="top" id="Nao-Kv-qze"/>
                                     <constraint firstItem="qgL-jm-ojr" firstAttribute="centerY" secondItem="8qm-NL-L0v" secondAttribute="centerY" constant="-2" id="PKe-7e-8J4"/>
+                                    <constraint firstItem="nVQ-7L-lRC" firstAttribute="height" secondItem="8qm-NL-L0v" secondAttribute="height" multiplier="0.5" id="R6W-TD-Etk"/>
                                     <constraint firstItem="pwF-yg-LiT" firstAttribute="width" secondItem="8qm-NL-L0v" secondAttribute="width" multiplier="0.5" id="cci-Yp-DTj"/>
                                     <constraint firstItem="qgL-jm-ojr" firstAttribute="leading" secondItem="8qm-NL-L0v" secondAttribute="leading" id="eEO-QA-cpg"/>
+                                    <constraint firstAttribute="bottom" secondItem="nVQ-7L-lRC" secondAttribute="bottom" id="pzu-D0-oeK"/>
+                                    <constraint firstItem="JDd-6Q-H9v" firstAttribute="height" secondItem="8qm-NL-L0v" secondAttribute="height" multiplier="0.25" id="ufg-2N-LMX"/>
                                     <constraint firstItem="pwF-yg-LiT" firstAttribute="centerY" secondItem="8qm-NL-L0v" secondAttribute="centerY" constant="2" id="uzV-NG-E6K"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -323,6 +381,7 @@
                             <constraint firstItem="L9s-Y9-WAh" firstAttribute="centerX" secondItem="uvc-of-DHR" secondAttribute="leading" constant="-10" id="7Zu-MG-eDr"/>
                             <constraint firstItem="8qm-NL-L0v" firstAttribute="height" secondItem="uvc-of-DHR" secondAttribute="height" multiplier="0.75" id="8yZ-fH-uHA"/>
                             <constraint firstItem="aOq-Cv-MvB" firstAttribute="centerY" secondItem="m8q-QC-Ijn" secondAttribute="bottom" constant="-10" id="9fx-pI-r8H"/>
+                            <constraint firstItem="dc4-P7-El7" firstAttribute="top" secondItem="8qm-NL-L0v" secondAttribute="top" constant="10" id="9gR-wa-nf2"/>
                             <constraint firstItem="aOq-Cv-MvB" firstAttribute="height" secondItem="uvc-of-DHR" secondAttribute="height" id="AU6-RB-3Rg"/>
                             <constraint firstItem="8qm-NL-L0v" firstAttribute="centerX" secondItem="uvc-of-DHR" secondAttribute="centerX" id="CtL-Jo-iPs"/>
                             <constraint firstAttribute="trailing" secondItem="sTe-AH-2cJ" secondAttribute="trailing" constant="10" id="Epr-LB-vvJ"/>
@@ -339,10 +398,13 @@
                             <constraint firstItem="Zkl-hg-6t7" firstAttribute="height" secondItem="uvc-of-DHR" secondAttribute="height" id="gXJ-rS-kGX"/>
                             <constraint firstItem="HtV-hz-bH1" firstAttribute="top" secondItem="isQ-uL-E2B" secondAttribute="centerY" constant="-10" id="kxg-5T-Wfo"/>
                             <constraint firstAttribute="trailing" secondItem="Zkl-hg-6t7" secondAttribute="centerX" constant="-10" id="mqi-YW-pYB"/>
+                            <constraint firstItem="s9T-hh-I30" firstAttribute="bottom" secondItem="8qm-NL-L0v" secondAttribute="bottom" constant="-10" id="pY4-fx-fdi"/>
                             <constraint firstItem="aOq-Cv-MvB" firstAttribute="centerX" secondItem="uvc-of-DHR" secondAttribute="leading" constant="-10" id="rKP-xD-Tbs"/>
                             <constraint firstItem="isQ-uL-E2B" firstAttribute="height" secondItem="uvc-of-DHR" secondAttribute="height" id="sus-sF-aok"/>
+                            <constraint firstItem="dc4-P7-El7" firstAttribute="centerX" secondItem="uvc-of-DHR" secondAttribute="centerX" id="uvU-jC-vsn"/>
                             <constraint firstItem="HtV-hz-bH1" firstAttribute="top" secondItem="L9s-Y9-WAh" secondAttribute="centerY" constant="-10" id="v3K-WO-d4Q"/>
                             <constraint firstItem="eMH-W5-ZiP" firstAttribute="centerY" secondItem="uvc-of-DHR" secondAttribute="centerY" id="x5q-oy-eZb"/>
+                            <constraint firstItem="s9T-hh-I30" firstAttribute="centerX" secondItem="8qm-NL-L0v" secondAttribute="centerX" id="xMh-AZ-VC1"/>
                             <constraint firstItem="aOq-Cv-MvB" firstAttribute="width" secondItem="uvc-of-DHR" secondAttribute="width" id="zzR-6p-NCM"/>
                         </constraints>
                         <connections>
@@ -364,12 +426,24 @@
                         <outlet property="hintingDeleteIconView" destination="sTe-AH-2cJ" id="Rsh-1R-r4N"/>
                         <outlet property="hintingDeleteIconWidthConstraint" destination="IoZ-Xg-tuv" id="ASg-bm-icQ"/>
                         <outlet property="hintingDeleteTrackingSpanView" destination="pwF-yg-LiT" id="6kn-fD-kdO"/>
+                        <outlet property="hintingEditIconBottomConstraint" destination="pY4-fx-fdi" id="87e-86-6aZ"/>
+                        <outlet property="hintingEditIconCenterXConstraint" destination="xMh-AZ-VC1" id="JNg-7N-LI3"/>
+                        <outlet property="hintingEditIconHeightConstraint" destination="Nhd-iA-uoH" id="znx-T7-bvd"/>
+                        <outlet property="hintingEditIconView" destination="s9T-hh-I30" id="TUJ-0q-rvg"/>
+                        <outlet property="hintingEditIconWidthConstraint" destination="JaH-HW-Sgo" id="qPh-Us-guo"/>
+                        <outlet property="hintingEditTrackingSpanView" destination="nVQ-7L-lRC" id="2It-PG-6po"/>
                         <outlet property="hintingSettingsIconCenterYConstraint" destination="x5q-oy-eZb" id="9sv-5M-7mG"/>
                         <outlet property="hintingSettingsIconHeightConstraint" destination="6qR-Tk-n9G" id="Ue4-vS-vTP"/>
                         <outlet property="hintingSettingsIconLeadingConstraint" destination="Ozp-WD-poj" id="u14-HG-qLy"/>
                         <outlet property="hintingSettingsIconView" destination="eMH-W5-ZiP" id="rfJ-of-YeX"/>
                         <outlet property="hintingSettingsIconWidthConstraint" destination="c8b-I6-Jmc" id="OXJ-F1-ome"/>
                         <outlet property="hintingSettingsTrackingSpanView" destination="qgL-jm-ojr" id="U4t-8L-xjc"/>
+                        <outlet property="hintingShuffleIconCenterXConstraint" destination="uvU-jC-vsn" id="ICE-gV-EJe"/>
+                        <outlet property="hintingShuffleIconHeightConstraint" destination="1di-D8-KF8" id="Xcd-EU-Qqw"/>
+                        <outlet property="hintingShuffleIconTopConstraint" destination="9gR-wa-nf2" id="Ziq-HP-Y23"/>
+                        <outlet property="hintingShuffleIconView" destination="dc4-P7-El7" id="fLD-dU-zgf"/>
+                        <outlet property="hintingShuffleIconWidthConstraint" destination="VAS-Ir-sbF" id="WrU-vF-Yfj"/>
+                        <outlet property="hintingShuffleTrackingSpanView" destination="JDd-6Q-H9v" id="Vfg-Gg-SOk"/>
                         <outlet property="tlBoundary" destination="aOq-Cv-MvB" id="5nA-8o-VnO"/>
                         <outlet property="trBoundary" destination="Zkl-hg-6t7" id="pYj-cf-HtR"/>
                     </connections>

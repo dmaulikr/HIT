@@ -20,6 +20,10 @@ import UIKit
     
     var shapeLayer = CAShapeLayer()
     
+//    #if TARGET_INTERFACE_BUILDER
+//    var placeholderShapeLayer = CAShapeLayer()
+//    #endif
+    
     @IBInspectable var dialLineWidth: CGFloat = 10 {
         didSet {
             setupDialPath()
@@ -33,6 +37,20 @@ import UIKit
     }
     
     func setupDialPath() {
+//        #if TARGET_INTERFACE_BUILDER
+//        placeholderShapeLayer.frame = self.bounds
+//        placeholderShapeLayer.strokeColor = UIColor.grayColor()
+//        placeholderShapeLayer.fillColor = nil
+//        placeholderShapeLayer.lineWidth = dialLineWidth
+//        
+//        let containingRect = CGRect(
+//            x: dialLineWidth/2,
+//            y: dialLineWidth/2,
+//            width: placeholderShapeLayer.bounds.width - dialLineWidth,
+//            height: placeholderShapeLayer.bounds.height - dialLineWidth)
+//        placeholderShapeLayer.path = UIBezierPath(ovalInRect: containingRect).CGPath
+//        #endif
+        
         shapeLayer.frame = self.bounds
         shapeLayer.strokeColor = dialColor
         shapeLayer.fillColor = nil
@@ -49,6 +67,9 @@ import UIKit
     func setupDialLayer() {
         setupDialPath()
         
+//        #if TARGET_INTERFACE_BUILDER
+//        self.layer.addSublayer(placeholderShapeLayer)
+//        #endif
         self.layer.addSublayer(shapeLayer)
     }
     
