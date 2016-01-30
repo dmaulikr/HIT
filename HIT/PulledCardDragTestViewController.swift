@@ -81,10 +81,14 @@ enum CardState: StateMachineDataSource
             
         case (.TrackingPan,     .HintingSettings):  return .Continue
         case (.TrackingPan,     .ConfirmSettings):  return .Continue
+        case (.HintingSettings, .HintingSettings):  return .Continue
         case (.HintingSettings, .ConfirmSettings):  return .Continue
+        case (.ConfirmSettings, .ConfirmSettings):  return .Continue
         case (.ConfirmSettings, .HintingSettings):  return .Continue
-        case (.HintingSettings, .TrackingPan):      return .Continue
-        case (.ConfirmSettings, .TrackingPan):      return .Continue
+        case (.HintingSettings, .ReturningToRest):  return .Continue
+            
+            
+            
             
         case (.ReturningToRest, .HintingCreate):    return .Continue
         case (.HintingCreate,   .InteractiveCreate): return .Continue
@@ -134,6 +138,26 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     var cardDynamicItemBehavior: UIDynamicItemBehavior!
     
     
+    // Hinting Settings Icon
+    @IBOutlet weak var hintingSettingsIconView: HintingIconView!
+    @IBOutlet var hintingSettingsIconWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingSettingsIconHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingSettingsIconLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingSettingsIconCenterYConstraint: NSLayoutConstraint!
+    
+    private var hintingSettingsIconRestingAnchorLocation: CGPoint!
+    var hintingSettingsIconTrackingAttachmentBehavior: UIAttachmentBehavior?
+    
+    // Represents the width or range of the tracking gesture
+    // across which the UI state is set to .HintingSettings
+    @IBOutlet weak var hintingSettingsTrackingSpanView: StatePlaceholderView!
+    var hintingSettingsSpanWidth: CGFloat {
+        get {
+            return hintingSettingsTrackingSpanView.frame.width
+        }
+    }
+    
+    
     // Hinting Delete Icon
     @IBOutlet weak var hintingDeleteIconView: HintingIconView!
     @IBOutlet var hintingDeleteIconWidthConstraint: NSLayoutConstraint!
@@ -152,6 +176,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             return hintingDeleteTrackingSpanView.frame.width
         }
     }
+    
     
     //
     // MARK: - State
@@ -209,7 +234,53 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         attachmentAxis = nil
     }
     
-    func updateHintingDeleteIconPresentationWithTranslation(panGR: UIPanGestureRecognizer)
+    func updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
+    {
+        let translation = panGR.translationInView(self.view)
+        
+        let trackingDelay
+            = hintingSettingsIconWidthConstraint.constant
+            + hintingSettingsIconLeadingConstraint.constant * 2
+        
+        if translation.x > trackingDelay
+        {
+            hintingSettingsIconView.dialProgress
+                = (translation.x - trackingDelay)
+                / (hintingSettingsSpanWidth - trackingDelay)
+            
+            if hintingSettingsIconTrackingAttachmentBehavior == nil
+            {
+                hintingSettingsIconTrackingAttachmentBehavior
+                    = UIAttachmentBehavior(item: hintingSettingsIconView,
+                        attachedToAnchor: hintingSettingsIconRestingAnchorLocation)
+                hintingSettingsIconTrackingAttachmentBehavior!.length = 0
+                hintingSettingsIconTrackingAttachmentBehavior!.damping = 1.0
+                hintingSettingsIconTrackingAttachmentBehavior!.frequency = 1.5
+                animator.addBehavior(hintingSettingsIconTrackingAttachmentBehavior!)
+            }
+            
+            let newAnchor = CGPoint(
+                x: hintingSettingsIconRestingAnchorLocation.x + translation.x - trackingDelay,
+                y: hintingSettingsIconRestingAnchorLocation.y)
+            hintingSettingsIconTrackingAttachmentBehavior?.anchorPoint = newAnchor
+        }
+        else
+        {
+            hintingSettingsIconView.dialProgress = 0
+        }
+    }
+    
+    func returnHintingSettingsIconToRestingLocation()
+    {
+        hintingSettingsIconView.dialProgress = 0
+        if hintingSettingsIconTrackingAttachmentBehavior != nil
+        {
+            animator.removeBehavior(hintingSettingsIconTrackingAttachmentBehavior!)
+            hintingSettingsIconTrackingAttachmentBehavior = nil
+        }
+    }
+    
+    func updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
     {
         let translation = panGR.translationInView(self.view)
         
@@ -272,6 +343,31 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             print(".ReturningToRest -> .TrackingPan")
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
+            
+        // .HintingSettings cases
+            
+        case (.TrackingPan, .HintingSettings(let panGR)):
+            print(".TrackingPan -> .HintingSettings")
+            updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
+            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            
+        case (.HintingSettings, .HintingSettings(let panGR)):
+            print(".HintingSettings -> .HintingSettings")
+            updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
+            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            
+        case (.HintingSettings, .TrackingPan):
+            print(".HintingSettings -> .TrackingPan")
+            returnHintingSettingsIconToRestingLocation()
+            
+        case (.HintingSettings, .ReturningToRest):
+            print(".HintingSettings -> .ReturningToRest")
+            returnHintingSettingsIconToRestingLocation()
+            returnCardAttachmentBehaviorToRestingLocation()
+            
+            
+        // .HintingDelete cases
+            
         case (.TrackingPan, .HintingDelete(let panGR)):
             print(".TrackingPan -> .HintingDelete")
             updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
@@ -307,9 +403,13 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         if sender.state == .Began || sender.state == .Changed
         {
             if attachmentAxis == .Horizontal
-                && sender.translationInView(view).x < 0
             {
-                machine.state = .HintingDelete(sender)
+                if sender.translationInView(view).x >= 0 {
+                    machine.state = .HintingSettings(sender)
+                }
+                else if sender.translationInView(view).x < 0 {
+                    machine.state = .HintingDelete(sender)
+                }
             }
             else {
                 print("set to tracking pan")
@@ -409,6 +509,24 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         animator.addBehavior(cardAttachmentBehavior!)
     }
     
+    func setupHintingSettingsIconBehaviors()
+    {
+        NSLayoutConstraint.deactivateConstraints(
+            [hintingSettingsIconWidthConstraint, hintingSettingsIconHeightConstraint,
+                hintingSettingsIconLeadingConstraint, hintingSettingsIconCenterYConstraint])
+        hintingSettingsIconView.translatesAutoresizingMaskIntoConstraints = true
+        
+        let hintingSettingsIconRestingAttachmentBehavior =
+        UIAttachmentBehavior(item: hintingSettingsIconView,
+            attachedToAnchor: hintingSettingsIconView.center)
+        hintingSettingsIconRestingAttachmentBehavior.length = 0
+        hintingSettingsIconRestingAttachmentBehavior.damping = 1.0
+        hintingSettingsIconRestingAttachmentBehavior.frequency = 2.0
+        animator.addBehavior(hintingSettingsIconRestingAttachmentBehavior)
+        
+        hintingSettingsIconRestingAnchorLocation = hintingSettingsIconView.center
+    }
+    
     func setupHintingDeleteIconBehaviors()
     {
         NSLayoutConstraint.deactivateConstraints(
@@ -432,6 +550,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         if animator.behaviors.count == 0
         {
             setupCardBehaviors()
+            setupHintingSettingsIconBehaviors()
             setupHintingDeleteIconBehaviors()
         }
     }
