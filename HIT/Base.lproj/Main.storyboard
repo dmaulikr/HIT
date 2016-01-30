@@ -212,18 +212,38 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L9s-Y9-WAh" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
                                 <rect key="frame" x="-310" y="310" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                        <color key="value" red="0.72998798076923077" green="0.72998798076923077" blue="0.72998798076923077" alpha="0.37020474137931036" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aOq-Cv-MvB" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
                                 <rect key="frame" x="-310" y="-310" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                        <color key="value" red="0.72998798080000005" green="0.72998798080000005" blue="0.72998798080000005" alpha="0.37020474139999998" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zkl-hg-6t7" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
                                 <rect key="frame" x="310" y="-310" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                        <color key="value" red="0.72998798080000005" green="0.72998798080000005" blue="0.72998798080000005" alpha="0.37020474139999998" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="isQ-uL-E2B" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
                                 <rect key="frame" x="310" y="310" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                        <color key="value" red="0.72998798080000005" green="0.72998798080000005" blue="0.72998798080000005" alpha="0.37020474139999998" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sTe-AH-2cJ" customClass="HintingIconView" customModule="HIT" customModuleProvider="target">
                                 <rect key="frame" x="526" y="268" width="64" height="64"/>
@@ -241,10 +261,44 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8qm-NL-L0v" customClass="CustomBoundsPlaceholderView" customModule="HIT" customModuleProvider="target">
                                 <rect key="frame" x="2" y="75" width="596" height="450"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qgL-jm-ojr" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="222" width="298" height="2"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="2" id="W2k-qS-kSm"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                                <color key="value" red="0.61500566874127616" green="0.16892347387769835" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pwF-yg-LiT" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                                        <rect key="frame" x="298" y="226" width="298" height="2"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="2" id="cVG-Ae-doS"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                                <color key="value" red="1" green="0.0" blue="0.15002925204268891" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" red="0.60794440810403449" green="0.80362067910646939" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="qgL-jm-ojr" firstAttribute="width" secondItem="8qm-NL-L0v" secondAttribute="width" multiplier="0.5" id="8ud-0G-oqR"/>
+                                    <constraint firstAttribute="trailing" secondItem="pwF-yg-LiT" secondAttribute="trailing" id="DRA-kx-eJo"/>
+                                    <constraint firstItem="qgL-jm-ojr" firstAttribute="centerY" secondItem="8qm-NL-L0v" secondAttribute="centerY" constant="-2" id="PKe-7e-8J4"/>
+                                    <constraint firstItem="pwF-yg-LiT" firstAttribute="width" secondItem="8qm-NL-L0v" secondAttribute="width" multiplier="0.5" id="cci-Yp-DTj"/>
+                                    <constraint firstItem="qgL-jm-ojr" firstAttribute="leading" secondItem="8qm-NL-L0v" secondAttribute="leading" id="eEO-QA-cpg"/>
+                                    <constraint firstItem="pwF-yg-LiT" firstAttribute="centerY" secondItem="8qm-NL-L0v" secondAttribute="centerY" constant="2" id="uzV-NG-E6K"/>
+                                </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
-                                        <color key="value" red="1" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="value" red="1" green="0.0" blue="0.50196081400000003" alpha="0.0" colorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
@@ -293,6 +347,7 @@
                         <outlet property="hintingDeleteIconTrailingConstraint" destination="Epr-LB-vvJ" id="3YQ-8o-c8H"/>
                         <outlet property="hintingDeleteIconView" destination="sTe-AH-2cJ" id="Rsh-1R-r4N"/>
                         <outlet property="hintingDeleteIconWidthConstraint" destination="IoZ-Xg-tuv" id="ASg-bm-icQ"/>
+                        <outlet property="hintingDeleteTrackingSpanView" destination="pwF-yg-LiT" id="6kn-fD-kdO"/>
                         <outlet property="tlBoundary" destination="aOq-Cv-MvB" id="5nA-8o-VnO"/>
                         <outlet property="trBoundary" destination="Zkl-hg-6t7" id="pYj-cf-HtR"/>
                     </connections>

@@ -144,7 +144,14 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     private var hintingDeleteIconRestingAnchorLocation: CGPoint!
     var hintingDeleteIconTrackingAttachmentBehavior: UIAttachmentBehavior?
     
-    
+    // Represents the width or range of the tracking gesture
+    // across which the UI state is set to .HintingDelete
+    @IBOutlet weak var hintingDeleteTrackingSpanView: StatePlaceholderView!
+    var hintingDeleteSpanWidth: CGFloat {
+        get {
+            return hintingDeleteTrackingSpanView.frame.width
+        }
+    }
     
     //
     // MARK: - State
@@ -202,7 +209,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         attachmentAxis = nil
     }
     
-    func updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
+    func updateHintingDeleteIconPresentationWithTranslation(panGR: UIPanGestureRecognizer)
     {
         let translation = panGR.translationInView(self.view)
         
@@ -213,7 +220,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         if translation.x < -1*trackingDelay
         {
             hintingDeleteIconView.dialProgress
-                = abs(translation.x + trackingDelay) / trackingDelay
+                = abs(translation.x + trackingDelay) / (hintingDeleteSpanWidth - trackingDelay)
             
             if hintingDeleteIconTrackingAttachmentBehavior == nil
             {
