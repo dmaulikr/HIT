@@ -267,7 +267,7 @@
                                     <constraint firstAttribute="width" constant="64" id="c8b-I6-Jmc"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="imageName" value="ShuffleIcon"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="imageName" value="SettingsIcon"/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="dialProgress">
                                         <real key="value" value="0.0"/>
                                     </userDefinedRuntimeAttribute>
