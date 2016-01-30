@@ -105,42 +105,44 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     
     
     //
-    // MARK: - IBOutlets
+    // MARK: - Properties
     
+    lazy var animator: UIDynamicAnimator = {
+        let animator = UIDynamicAnimator(referenceView: self.view)
+        animator.delegate = self
+        //        animator.debugEnabled = true
+        return animator
+    }()
+    
+    
+    // Guides for the collision boundaries which constrain card movement
     @IBOutlet weak var tlBoundary: StatePlaceholderView!
     @IBOutlet weak var blBoundary: StatePlaceholderView!
     @IBOutlet weak var brBoundary: StatePlaceholderView!
     @IBOutlet weak var trBoundary: StatePlaceholderView!
     
+    
+    // Card
     @IBOutlet weak var cardView: CustomBoundsPlaceholderView!
     @IBOutlet weak var cardHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var cardWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var cardCenterXConstraint: NSLayoutConstraint!
     @IBOutlet weak var cardCenterYConstraint: NSLayoutConstraint!
     
+    var cardRestingAnchorLocation: CGPoint!
+    var cardAttachmentBehavior: UIAttachmentBehavior!
+    var cardDynamicItemBehavior: UIDynamicItemBehavior!
+    
+    
+    // Hinting Delete Icon
     @IBOutlet weak var hintingDeleteIconView: HintingIconView!
     @IBOutlet var hintingDeleteIconWidthConstraint: NSLayoutConstraint!
     @IBOutlet var hintingDeleteIconHeightConstraint: NSLayoutConstraint!
     @IBOutlet var hintingDeleteIconTrailingConstraint: NSLayoutConstraint!
     @IBOutlet var hintingDeleteIconCenterYConstraint: NSLayoutConstraint!
+    
     private var hintingDeleteIconRestingAnchorLocation: CGPoint!
     var hintingDeleteIconTrackingAttachmentBehavior: UIAttachmentBehavior?
-    
-    
-    //
-    // MARK: - Properties
-    
-    lazy var animator: UIDynamicAnimator = {
-        let animator = UIDynamicAnimator(referenceView: self.view)
-        animator.delegate = self
-//        animator.debugEnabled = true
-        return animator
-    }()
-    
-    var cardRestingAnchorLocation: CGPoint!
-    var cardAttachmentBehavior: UIAttachmentBehavior!
-    
-    var cardDynamicItemBehavior: UIDynamicItemBehavior!
     
     
     
@@ -192,7 +194,8 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         cardAttachmentBehavior?.frequency = 14.0
     }
     
-    func returnCardAttachmentBehaviorToRestingLocation() {
+    func returnCardAttachmentBehaviorToRestingLocation()
+    {
         cardAttachmentBehavior?.anchorPoint = cardRestingAnchorLocation
         cardAttachmentBehavior?.damping = 1.0
         cardAttachmentBehavior?.frequency = 7.0
@@ -209,6 +212,9 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         
         if translation.x < -1*trackingDelay
         {
+            hintingDeleteIconView.dialProgress
+                = abs(translation.x + trackingDelay) / trackingDelay
+            
             if hintingDeleteIconTrackingAttachmentBehavior == nil
             {
                 hintingDeleteIconTrackingAttachmentBehavior
@@ -225,12 +231,20 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
                 y: hintingDeleteIconRestingAnchorLocation.y)
             hintingDeleteIconTrackingAttachmentBehavior?.anchorPoint = newAnchor
         }
+        else
+        {
+            hintingDeleteIconView.dialProgress = 0
+        }
     }
     
-    func stopHintingDeleteIconTrackingAttachmentBehavior()
+    func returnHintingDeleteIconToRestingLocation()
     {
-        animator.removeBehavior(hintingDeleteIconTrackingAttachmentBehavior!)
-        hintingDeleteIconTrackingAttachmentBehavior = nil
+        hintingDeleteIconView.dialProgress = 0
+        if hintingDeleteIconTrackingAttachmentBehavior != nil
+        {
+            animator.removeBehavior(hintingDeleteIconTrackingAttachmentBehavior!)
+            hintingDeleteIconTrackingAttachmentBehavior = nil
+        }
     }
     
     func didTransitionFrom(from: StateType, to: StateType)
@@ -248,6 +262,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             returnCardAttachmentBehaviorToRestingLocation()
             
         case (.ReturningToRest, .TrackingPan(let panGR)):
+            print(".ReturningToRest -> .TrackingPan")
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         case (.TrackingPan, .HintingDelete(let panGR)):
@@ -262,11 +277,11 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             
         case (.HintingDelete, .TrackingPan):
             print(".HintingDelete -> .TrackingPan")
-            stopHintingDeleteIconTrackingAttachmentBehavior()
+            returnHintingDeleteIconToRestingLocation()
             
         case (.HintingDelete, .ReturningToRest):
             print(".HintingDelete -> .ReturningToRest")
-            stopHintingDeleteIconTrackingAttachmentBehavior()
+            returnHintingDeleteIconToRestingLocation()
             returnCardAttachmentBehaviorToRestingLocation()
             
         default:
@@ -321,7 +336,8 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         cardView.clipsToBounds = true
     }
     
-    func setupCardBehaviors() {
+    func setupCardBehaviors()
+    {
         NSLayoutConstraint.deactivateConstraints(
             [cardHeightConstraint, cardWidthConstraint,
                 cardCenterXConstraint, cardCenterYConstraint])
@@ -386,7 +402,8 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         animator.addBehavior(cardAttachmentBehavior!)
     }
     
-    func setupHintingDeleteIconBehaviors() {
+    func setupHintingDeleteIconBehaviors()
+    {
         NSLayoutConstraint.deactivateConstraints(
             [hintingDeleteIconWidthConstraint, hintingDeleteIconHeightConstraint,
             hintingDeleteIconTrailingConstraint, hintingDeleteIconCenterYConstraint])

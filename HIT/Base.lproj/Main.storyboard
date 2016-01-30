@@ -234,6 +234,9 @@
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="imageName" value="TrashIcon"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="dialProgress">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8qm-NL-L0v" customClass="CustomBoundsPlaceholderView" customModule="HIT" customModuleProvider="target">
