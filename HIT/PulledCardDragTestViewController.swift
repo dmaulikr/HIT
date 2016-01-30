@@ -66,7 +66,15 @@ enum CardState: StateMachineDataSource
             return .Continue
             
             
-            
+        
+        case (.TrackingPan,     .HintingSettings):  return .Continue
+        case (.TrackingPan,     .ConfirmSettings):  return .Continue
+        case (.HintingSettings, .HintingSettings):  return .Continue
+        case (.HintingSettings, .ConfirmSettings):  return .Continue
+        case (.ConfirmSettings, .ConfirmSettings):  return .Continue
+        case (.ConfirmSettings, .HintingSettings):  return .Continue
+        case (.HintingSettings, .ReturningToRest):  return .Continue
+        case (.HintingSettings, .HintingDelete):    return .Continue
             
         case (.TrackingPan,     .HintingDelete):    return .Continue
         case (.TrackingPan,     .ConfirmDelete):    return .Continue
@@ -75,21 +83,8 @@ enum CardState: StateMachineDataSource
         case (.ConfirmDelete,   .ConfirmDelete):    return .Continue
         case (.ConfirmDelete,   .HintingDelete):    return .Continue
         case (.HintingDelete,   .ReturningToRest):  return .Continue
-            
-            
-            
-            
-        case (.TrackingPan,     .HintingSettings):  return .Continue
-        case (.TrackingPan,     .ConfirmSettings):  return .Continue
-        case (.HintingSettings, .HintingSettings):  return .Continue
-        case (.HintingSettings, .ConfirmSettings):  return .Continue
-        case (.ConfirmSettings, .ConfirmSettings):  return .Continue
-        case (.ConfirmSettings, .HintingSettings):  return .Continue
-        case (.HintingSettings, .ReturningToRest):  return .Continue
-            
-            
-            
-            
+        case (.HintingDelete,   .HintingSettings):  return .Continue
+
         case (.ReturningToRest, .HintingCreate):    return .Continue
         case (.HintingCreate,   .InteractiveCreate): return .Continue
         case (.InteractiveCreate, .ExecuteCreate):
@@ -365,6 +360,11 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             returnHintingSettingsIconToRestingLocation()
             returnCardAttachmentBehaviorToRestingLocation()
             
+        case (.HintingSettings, .HintingDelete(let panGR)):
+            print(".HintingSettings -> .HintingDelete")
+            returnHintingSettingsIconToRestingLocation()
+            updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
+            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         // .HintingDelete cases
             
