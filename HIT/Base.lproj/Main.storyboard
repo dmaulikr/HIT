@@ -306,7 +306,6 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qgL-jm-ojr" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="222" width="298" height="2"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="2" id="W2k-qS-kSm"/>
                                         </constraints>
@@ -318,7 +317,6 @@
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pwF-yg-LiT" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
                                         <rect key="frame" x="298" y="226" width="298" height="2"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="2" id="cVG-Ae-doS"/>
                                         </constraints>
@@ -330,7 +328,6 @@
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JDd-6Q-H9v" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
                                         <rect key="frame" x="299" y="0.0" width="2" height="113"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="2" id="beu-gS-Jg6"/>
                                         </constraints>
@@ -342,7 +339,6 @@
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nVQ-7L-lRC" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
                                         <rect key="frame" x="295" y="225" width="2" height="225"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="2" id="9yp-Al-OH5"/>
                                         </constraints>
@@ -353,7 +349,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.60794440810403449" green="0.80362067910646939" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.84997074795731109" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="JDd-6Q-H9v" firstAttribute="centerX" secondItem="8qm-NL-L0v" secondAttribute="centerX" constant="2" id="2C5-DF-5tx"/>
                                     <constraint firstItem="nVQ-7L-lRC" firstAttribute="centerX" secondItem="8qm-NL-L0v" secondAttribute="centerX" constant="-2" id="3oO-9L-4uc"/>
