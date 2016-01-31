@@ -415,7 +415,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         
         let trackingDelay
             = hintingEditIconHeightConstraint.constant
-            - hintingEditIconBottomConstraint.constant * 2
+            + hintingEditIconBottomConstraint.constant * 2
         
         if translation.y < -1*trackingDelay
         {
