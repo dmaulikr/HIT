@@ -11,7 +11,7 @@ import Foundation
 protocol StateMachineDelegate: class
 {
     typealias StateType:StateMachineDataSource
-    func didTransitionFrom(from:StateType, to:StateType)
+    func didTransitionFrom(fromState: StateType, toState: StateType)
 }
 
 
@@ -30,7 +30,7 @@ class StateMachine<P:StateMachineDelegate>{
     private var _state:P.StateType{
         didSet
         {
-            delegate.didTransitionFrom(oldValue, to: _state)
+            delegate.didTransitionFrom(oldValue, toState: _state)
         }
     }
     
