@@ -455,6 +455,39 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         }
     }
     
+    func displayHintingIconViewForState(state: CardState)
+    {
+        switch state
+        {
+        case .HintingSettings:
+            hintingSettingsIconView.hidden = false
+            hintingDeleteIconView.hidden = true
+            hintingShuffleIconView.hidden = true
+            hintingEditIconView.hidden = true
+            
+        case .HintingDelete:
+            hintingSettingsIconView.hidden = true
+            hintingDeleteIconView.hidden = false
+            hintingShuffleIconView.hidden = true
+            hintingEditIconView.hidden = true
+            
+        case .HintingShuffle:
+            hintingSettingsIconView.hidden = true
+            hintingDeleteIconView.hidden = true
+            hintingShuffleIconView.hidden = false
+            hintingEditIconView.hidden = false
+            
+        case .HintingEdit:
+            hintingSettingsIconView.hidden = true
+            hintingDeleteIconView.hidden = true
+            hintingShuffleIconView.hidden = true
+            hintingEditIconView.hidden = false
+            
+        default:
+            break
+        }
+    }
+    
     func didTransitionFrom(from: StateType, to: StateType)
     {
         
@@ -478,6 +511,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             
         case (.TrackingPan, .HintingSettings(let panGR)):
             print(".TrackingPan -> .HintingSettings")
+            displayHintingIconViewForState(.HintingSettings(panGR))
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
@@ -485,10 +519,6 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             print(".HintingSettings -> .HintingSettings")
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
-            
-//        case (.HintingSettings, .TrackingPan):
-//            print(".HintingSettings -> .TrackingPan")
-//            returnHintingSettingsIconToRestingLocation()
             
         case (.HintingSettings, .ReturningToRest):
             print(".HintingSettings -> .ReturningToRest")
@@ -498,6 +528,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         case (.HintingSettings, .HintingDelete(let panGR)):
             print(".HintingSettings -> .HintingDelete")
             returnHintingSettingsIconToRestingLocation()
+            displayHintingIconViewForState(.HintingDelete(panGR))
             updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
@@ -506,6 +537,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             
         case (.TrackingPan, .HintingDelete(let panGR)):
             print(".TrackingPan -> .HintingDelete")
+            displayHintingIconViewForState(.HintingDelete(panGR))
             updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
@@ -513,10 +545,6 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             print(".HintingDelete -> .HintingDelete")
             updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
-            
-//        case (.HintingDelete, .TrackingPan):
-//            print(".HintingDelete -> .TrackingPan")
-//            returnHintingDeleteIconToRestingLocation()
             
         case (.HintingDelete, .ReturningToRest):
             print(".HintingDelete -> .ReturningToRest")
@@ -526,14 +554,16 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         case (.HintingDelete, .HintingSettings(let panGR)):
             print(".HintingSettings -> .HintingDelete")
             returnHintingDeleteIconToRestingLocation()
+            displayHintingIconViewForState(.HintingSettings(panGR))
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
             
-            // .HintingShuffle cases
+        // .HintingShuffle cases
             
         case (.TrackingPan, .HintingShuffle(let panGR)):
             print(".TrackingPan -> .HintingShuffle")
+            displayHintingIconViewForState(.HintingShuffle(panGR))
             updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
@@ -541,10 +571,6 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             print(".HintingShuffle -> .HintingShuffle")
             updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
-            
-//        case (.HintingShuffle, .TrackingPan):
-//            print(".HintingShuffle -> .TrackingPan")
-//            returnHintingShuffleIconToRestingLocation()
             
         case (.HintingShuffle, .ReturningToRest):
             print(".HintingShuffle -> .ReturningToRest")
@@ -554,6 +580,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         case (.HintingShuffle, .HintingEdit(let panGR)):
             print(".HintingSettings -> .HintingShuffle")
             returnHintingShuffleIconToRestingLocation()
+            displayHintingIconViewForState(.HintingEdit(panGR))
             updateHintingEditIconPresentationWithPanGestureRecognizer(panGR)
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
@@ -562,6 +589,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             
         case (.TrackingPan, .HintingEdit(let panGR)):
             print(".TrackingPan -> .HintingEdit")
+            displayHintingIconViewForState(.HintingEdit(panGR))
             updateHintingEditIconPresentationWithPanGestureRecognizer(panGR)
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
@@ -570,18 +598,15 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             updateHintingEditIconPresentationWithPanGestureRecognizer(panGR)
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
-            //        case (.HintingEdit, .TrackingPan):
-            //            print(".HintingEdit -> .TrackingPan")
-            //            returnHintingEditIconToRestingLocation()
-            
         case (.HintingEdit, .ReturningToRest):
             print(".HintingEdit -> .ReturningToRest")
             returnHintingEditIconToRestingLocation()
             returnCardAttachmentBehaviorToRestingLocation()
             
         case (.HintingEdit, .HintingShuffle(let panGR)):
-            print(".HintingSettings -> .HintingEdit")
+            print(".HintingSettings -> .HintingShuffle")
             returnHintingEditIconToRestingLocation()
+            displayHintingIconViewForState(.HintingShuffle(panGR))
             updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
