@@ -124,16 +124,16 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     @IBOutlet weak var trBoundary: StatePlaceholderView!
     
     
-    // Card
-    @IBOutlet weak var cardView: CustomBoundsPlaceholderView!
-    @IBOutlet weak var cardHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var cardWidthConstraint: NSLayoutConstraint!
-    @IBOutlet weak var cardCenterXConstraint: NSLayoutConstraint!
-    @IBOutlet weak var cardCenterYConstraint: NSLayoutConstraint!
+    // Pulled Card Placeholder
+    @IBOutlet weak var pulledCardPlaceholderView: CustomBoundsPlaceholderView!
+    @IBOutlet weak var pulledCardPlaceholderHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var pulledCardPlaceholderWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var pulledCardPlaceholderCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet weak var pulledCardPlaceholderCenterYConstraint: NSLayoutConstraint!
     
-    var cardRestingAnchorLocation: CGPoint!
-    var cardAttachmentBehavior: UIAttachmentBehavior!
-    var cardDynamicItemBehavior: UIDynamicItemBehavior!
+    var pulledCardRestingAnchorLocation: CGPoint!
+    var pulledCardAttachmentBehavior: UIAttachmentBehavior!
+    var pulledCardDynamicItemBehavior: UIDynamicItemBehavior!
     
     
     // Hinting Settings Icon
@@ -216,6 +216,8 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     }
     
     
+    
+    
     //
     // MARK: - State
     
@@ -242,6 +244,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     
     
     
+    
     //
     // MARK: - StateMachineDelegate
     
@@ -257,18 +260,18 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         
         let translation = panGR.translationInView(self.view)
         let newAnchor = CGPoint(
-            x: cardRestingAnchorLocation.x + (attachmentAxis == .Horizontal ? translation.x : 0),
-            y: cardRestingAnchorLocation.y + (attachmentAxis == .Vertical ? translation.y : 0))
-        cardAttachmentBehavior?.anchorPoint = newAnchor
-        cardAttachmentBehavior?.damping = 1.0
-        cardAttachmentBehavior?.frequency = 14.0
+            x: pulledCardRestingAnchorLocation.x + (attachmentAxis == .Horizontal ? translation.x : 0),
+            y: pulledCardRestingAnchorLocation.y + (attachmentAxis == .Vertical ? translation.y : 0))
+        pulledCardAttachmentBehavior?.anchorPoint = newAnchor
+        pulledCardAttachmentBehavior?.damping = 1.0
+        pulledCardAttachmentBehavior?.frequency = 14.0
     }
     
     func returnCardAttachmentBehaviorToRestingLocation()
     {
-        cardAttachmentBehavior?.anchorPoint = cardRestingAnchorLocation
-        cardAttachmentBehavior?.damping = 1.0
-        cardAttachmentBehavior?.frequency = 7.0
+        pulledCardAttachmentBehavior?.anchorPoint = pulledCardRestingAnchorLocation
+        pulledCardAttachmentBehavior?.damping = 1.0
+        pulledCardAttachmentBehavior?.frequency = 7.0
         attachmentAxis = nil
     }
     
@@ -670,16 +673,16 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        cardView.layer.cornerRadius = 3
-        cardView.clipsToBounds = true
+        pulledCardPlaceholderView.layer.cornerRadius = 3
+        pulledCardPlaceholderView.clipsToBounds = true
     }
     
     func setupCardBehaviors()
     {
         NSLayoutConstraint.deactivateConstraints(
-            [cardHeightConstraint, cardWidthConstraint,
-                cardCenterXConstraint, cardCenterYConstraint])
-        cardView.translatesAutoresizingMaskIntoConstraints = true
+            [pulledCardPlaceholderHeightConstraint, pulledCardPlaceholderWidthConstraint,
+                pulledCardPlaceholderCenterXConstraint, pulledCardPlaceholderCenterYConstraint])
+        pulledCardPlaceholderView.translatesAutoresizingMaskIntoConstraints = true
         
         let pathDiameter = 18
         let rectContainingBoundaryPath = CGRect(
@@ -689,8 +692,8 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             height: pathDiameter)
         let customBoundaryPath = UIBezierPath(
             ovalInRect: rectContainingBoundaryPath)
-        cardView.collisionBoundsType = .Path
-        cardView.collisionBoundingPath = customBoundaryPath
+        pulledCardPlaceholderView.collisionBoundsType = .Path
+        pulledCardPlaceholderView.collisionBoundingPath = customBoundaryPath
         
         let boundaryShapeLayer = CAShapeLayer()
         boundaryShapeLayer.path = customBoundaryPath.CGPath
@@ -698,13 +701,13 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         boundaryShapeLayer.strokeColor = UIColor.orangeColor().CGColor
         boundaryShapeLayer.frame = CGRect(
             origin: CGPoint(
-                x: cardView.bounds.width/2,
-                y: cardView.bounds.height/2),
+                x: pulledCardPlaceholderView.bounds.width/2,
+                y: pulledCardPlaceholderView.bounds.height/2),
             size: rectContainingBoundaryPath.size)
-        cardView.layer.addSublayer(boundaryShapeLayer)
+        pulledCardPlaceholderView.layer.addSublayer(boundaryShapeLayer)
         
         let laneCornerRadius: CGFloat = 5
-        let boundaryCollisionBehavior = UICollisionBehavior(items: [cardView])
+        let boundaryCollisionBehavior = UICollisionBehavior(items: [pulledCardPlaceholderView])
         //            boundaryCollisionBehavior.translatesReferenceBoundsIntoBoundary = true
         boundaryCollisionBehavior.addBoundaryWithIdentifier("topleft",
             forPath: UIBezierPath(
@@ -724,20 +727,20 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
                 cornerRadius: laneCornerRadius))
         animator.addBehavior(boundaryCollisionBehavior)
         
-        cardDynamicItemBehavior = UIDynamicItemBehavior(items: [cardView])
-        cardDynamicItemBehavior.allowsRotation = false
-        cardDynamicItemBehavior.friction = 0
-        cardDynamicItemBehavior.resistance = 10.0
-        cardDynamicItemBehavior.elasticity = 0
-        animator.addBehavior(cardDynamicItemBehavior)
+        pulledCardDynamicItemBehavior = UIDynamicItemBehavior(items: [pulledCardPlaceholderView])
+        pulledCardDynamicItemBehavior.allowsRotation = false
+        pulledCardDynamicItemBehavior.friction = 0
+        pulledCardDynamicItemBehavior.resistance = 10.0
+        pulledCardDynamicItemBehavior.elasticity = 0
+        animator.addBehavior(pulledCardDynamicItemBehavior)
         
-        cardRestingAnchorLocation = cardView.center
+        pulledCardRestingAnchorLocation = pulledCardPlaceholderView.center
         
-        cardAttachmentBehavior = UIAttachmentBehavior(
-            item: cardView,
-            attachedToAnchor: cardRestingAnchorLocation)
-        cardAttachmentBehavior?.length = 0
-        animator.addBehavior(cardAttachmentBehavior!)
+        pulledCardAttachmentBehavior = UIAttachmentBehavior(
+            item: pulledCardPlaceholderView,
+            attachedToAnchor: pulledCardRestingAnchorLocation)
+        pulledCardAttachmentBehavior?.length = 0
+        animator.addBehavior(pulledCardAttachmentBehavior!)
     }
     
     func setupHintingSettingsIconBehaviors()

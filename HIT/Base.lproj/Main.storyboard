@@ -301,7 +301,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8qm-NL-L0v" customClass="CustomBoundsPlaceholderView" customModule="HIT" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8qm-NL-L0v" userLabel="Pulled Card Placeholder View" customClass="CustomBoundsPlaceholderView" customModule="HIT" customModuleProvider="target">
                                 <rect key="frame" x="2" y="75" width="596" height="450"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qgL-jm-ojr" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
@@ -411,11 +411,6 @@
                     <connections>
                         <outlet property="blBoundary" destination="L9s-Y9-WAh" id="ix1-O6-owj"/>
                         <outlet property="brBoundary" destination="isQ-uL-E2B" id="0Z5-xQ-BsA"/>
-                        <outlet property="cardCenterXConstraint" destination="CtL-Jo-iPs" id="p2w-qy-e2q"/>
-                        <outlet property="cardCenterYConstraint" destination="cnV-zV-7o4" id="Mkx-xG-mMb"/>
-                        <outlet property="cardHeightConstraint" destination="8yZ-fH-uHA" id="mXc-NU-HVt"/>
-                        <outlet property="cardView" destination="8qm-NL-L0v" id="UQb-JV-dLn"/>
-                        <outlet property="cardWidthConstraint" destination="OWf-Z4-iBv" id="C2J-B8-VbI"/>
                         <outlet property="hintingDeleteIconCenterYConstraint" destination="wee-nh-zhD" id="QxL-w0-71q"/>
                         <outlet property="hintingDeleteIconHeightConstraint" destination="Fyv-dD-a4c" id="cyd-T0-4gp"/>
                         <outlet property="hintingDeleteIconTrailingConstraint" destination="jc9-IC-TaN" id="cca-U7-Y7T"/>
@@ -440,6 +435,11 @@
                         <outlet property="hintingShuffleIconView" destination="dc4-P7-El7" id="fLD-dU-zgf"/>
                         <outlet property="hintingShuffleIconWidthConstraint" destination="VAS-Ir-sbF" id="WrU-vF-Yfj"/>
                         <outlet property="hintingShuffleTrackingSpanView" destination="JDd-6Q-H9v" id="Vfg-Gg-SOk"/>
+                        <outlet property="pulledCardPlaceholderCenterXConstraint" destination="CtL-Jo-iPs" id="0B0-jI-xMy"/>
+                        <outlet property="pulledCardPlaceholderCenterYConstraint" destination="cnV-zV-7o4" id="sD1-AA-Ewv"/>
+                        <outlet property="pulledCardPlaceholderHeightConstraint" destination="8yZ-fH-uHA" id="sMf-58-3V9"/>
+                        <outlet property="pulledCardPlaceholderView" destination="8qm-NL-L0v" id="RuP-6v-SIf"/>
+                        <outlet property="pulledCardPlaceholderWidthConstraint" destination="OWf-Z4-iBv" id="f90-hy-6ii"/>
                         <outlet property="tlBoundary" destination="aOq-Cv-MvB" id="5nA-8o-VnO"/>
                         <outlet property="trBoundary" destination="Zkl-hg-6t7" id="pYj-cf-HtR"/>
                     </connections>
