@@ -50,6 +50,11 @@ class UserMantraDataManager: MantraDataSource
         }
     }
     
+    func mantraWithId(id: Int) -> Mantra?
+    {
+        return userMantras[id]
+    }
+    
     func addMantraWithName(name: String)
     {
         let newMantra = Mantra(id: idCounter, name: name)

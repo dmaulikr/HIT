@@ -120,7 +120,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     // Data controller
     
     let dataSource: MantraDataSource = UserMantraDataManager.sharedManager
-    let mantrasInRetractedStack = [Mantra]()
+    var mantrasInRetractedStack = [Mantra]()
     
     // Pulled Card View
     var pulledCardView: CardView?
@@ -223,6 +223,11 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             return hintingEditTrackingSpanView.frame.height
         }
     }
+    
+    
+    // Retracted Card Stack Placeholder View
+    @IBOutlet weak var retractedCardStackPlaceholderView: StatePlaceholderView!
+    
     
     
     
@@ -680,7 +685,10 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         
         pulledCardView = CardView()
         pulledCardView?.annotation = dataSource.currentMantra
+//        print(pulledCardView?.translatesAutoresizingMaskIntoConstraints)
         view.addSubview(pulledCardView!)
+        
+        mantrasInRetractedStack = (1..<5).map { dataSource.mantraWithId($0)! }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -759,6 +767,24 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             attachedToAnchor: pulledCardRestingAnchorLocation)
         pulledCardAttachmentBehavior?.length = 0
         animator.addBehavior(pulledCardAttachmentBehavior!)
+    }
+    
+    func setupRetractedCardStack()
+    {
+        let gap: CGFloat = 10
+        for (index, mantra) in mantrasInRetractedStack.enumerate()
+        {
+            let cardView = CardView()
+            cardView.annotation = mantra
+            cardView.frame = pulledCardPlaceholderView.frame
+            cardView.frame.origin.y
+                = retractedCardStackPlaceholderView.frame.origin.y
+                + gap*CGFloat(index)
+            let cardColor = UIColor.randomColor()
+            cardView.cardTitleView.backgroundColor = cardColor
+            cardView.xibView.backgroundColor = cardColor
+            view.addSubview(cardView)
+        }
     }
     
     func setupHintingSettingsIconBehaviors()
@@ -842,6 +868,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             setupHintingDeleteIconBehaviors()
             setupHintingShuffleIconBehaviors()
             setupHintingEditIconBehaviors()
+            setupRetractedCardStack()
         }
     }
 }

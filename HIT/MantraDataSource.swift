@@ -13,6 +13,7 @@ protocol MantraDataSource
     var currentMantra: Mantra? { get set }
     var mantras: [Mantra] { get }
     
+    func mantraWithId(id: Int) -> Mantra?
     func addMantraWithName(name: String)
     func removeMantra(mantra: Mantra)
     func updateMantra(newValue: Mantra)
