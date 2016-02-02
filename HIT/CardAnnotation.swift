@@ -10,5 +10,5 @@ import Foundation
 
 protocol CardAnnotation
 {
-    var cardTitle: String? { get set }
+    var cardTitle: String { get set }
 }

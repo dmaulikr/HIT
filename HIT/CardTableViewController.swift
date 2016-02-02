@@ -34,8 +34,7 @@ class CardTableViewController: UIViewController, CardTableViewDelegate
     }
     
     func cardTableView(cardTableView: CardTableView, annotationAtIndex index: Int) -> CardAnnotation {
-        let mantra = Mantra()
-        mantra.cardTitle = "test title"
+        let mantra = Mantra(id: index, name: "test title")
         
         return mantra
     }

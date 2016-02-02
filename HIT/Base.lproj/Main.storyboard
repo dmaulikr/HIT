@@ -206,11 +206,11 @@
                         <viewControllerLayoutGuide type="bottom" id="HtV-hz-bH1"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="uvc-of-DHR">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L9s-Y9-WAh" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
-                                <rect key="frame" x="-310" y="310" width="600" height="600"/>
+                                <rect key="frame" x="-170" y="294" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
@@ -219,7 +219,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aOq-Cv-MvB" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
-                                <rect key="frame" x="-310" y="-310" width="600" height="600"/>
+                                <rect key="frame" x="-170" y="-294" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
@@ -228,7 +228,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zkl-hg-6t7" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
-                                <rect key="frame" x="310" y="-310" width="600" height="600"/>
+                                <rect key="frame" x="170" y="-294" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
@@ -237,7 +237,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="isQ-uL-E2B" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
-                                <rect key="frame" x="310" y="310" width="600" height="600"/>
+                                <rect key="frame" x="170" y="294" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
@@ -246,7 +246,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sTe-AH-2cJ" customClass="HintingIconView" customModule="HIT" customModuleProvider="target">
-                                <rect key="frame" x="524" y="268" width="64" height="64"/>
+                                <rect key="frame" x="244" y="252" width="64" height="64"/>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="Fyv-dD-a4c"/>
@@ -260,7 +260,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eMH-W5-ZiP" customClass="HintingIconView" customModule="HIT" customModuleProvider="target">
-                                <rect key="frame" x="12" y="268" width="64" height="64"/>
+                                <rect key="frame" x="12" y="252" width="64" height="64"/>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="6qR-Tk-n9G"/>
@@ -274,7 +274,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dc4-P7-El7" customClass="HintingIconView" customModule="HIT" customModuleProvider="target">
-                                <rect key="frame" x="268" y="85" width="64" height="64"/>
+                                <rect key="frame" x="128" y="81" width="64" height="64"/>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="1di-D8-KF8"/>
@@ -288,7 +288,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s9T-hh-I30" customClass="HintingIconView" customModule="HIT" customModuleProvider="target">
-                                <rect key="frame" x="268" y="451" width="64" height="64"/>
+                                <rect key="frame" x="128" y="423" width="64" height="64"/>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="64" id="JaH-HW-Sgo"/>
@@ -302,10 +302,10 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8qm-NL-L0v" userLabel="Pulled Card Placeholder View" customClass="CustomBoundsPlaceholderView" customModule="HIT" customModuleProvider="target">
-                                <rect key="frame" x="2" y="75" width="596" height="450"/>
+                                <rect key="frame" x="2" y="71" width="316" height="426"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qgL-jm-ojr" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="222" width="298" height="2"/>
+                                        <rect key="frame" x="0.0" y="210" width="158" height="2"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="2" id="W2k-qS-kSm"/>
                                         </constraints>
@@ -316,7 +316,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pwF-yg-LiT" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
-                                        <rect key="frame" x="298" y="226" width="298" height="2"/>
+                                        <rect key="frame" x="158" y="214" width="158" height="2"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="2" id="cVG-Ae-doS"/>
                                         </constraints>
@@ -327,7 +327,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JDd-6Q-H9v" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
-                                        <rect key="frame" x="299" y="0.0" width="2" height="113"/>
+                                        <rect key="frame" x="159" y="0.0" width="2" height="107"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="2" id="beu-gS-Jg6"/>
                                         </constraints>
@@ -338,7 +338,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nVQ-7L-lRC" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
-                                        <rect key="frame" x="295" y="225" width="2" height="225"/>
+                                        <rect key="frame" x="155" y="213" width="2" height="213"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="2" id="9yp-Al-OH5"/>
                                         </constraints>
@@ -349,7 +349,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.84997074795731109" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.84997074795731109" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="JDd-6Q-H9v" firstAttribute="centerX" secondItem="8qm-NL-L0v" secondAttribute="centerX" constant="2" id="2C5-DF-5tx"/>
                                     <constraint firstItem="nVQ-7L-lRC" firstAttribute="centerX" secondItem="8qm-NL-L0v" secondAttribute="centerX" constant="-2" id="3oO-9L-4uc"/>
@@ -366,7 +366,7 @@
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
-                                        <color key="value" red="1" green="0.0" blue="0.50196081400000003" alpha="0.0" colorSpace="calibratedRGB"/>
+                                        <color key="value" red="1" green="0.27515567063719093" blue="0.20392179232135965" alpha="0.3009967672413793" colorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
@@ -408,6 +408,7 @@
                         </connections>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="blBoundary" destination="L9s-Y9-WAh" id="ix1-O6-owj"/>
                         <outlet property="brBoundary" destination="isQ-uL-E2B" id="0Z5-xQ-BsA"/>

@@ -25,6 +25,11 @@
 		3F62933A1C148C78005BD240 /* HITUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293391C148C78005BD240 /* HITUITests.swift */; };
 		3F6293481C149830005BD240 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293471C149830005BD240 /* MainViewController.swift */; };
 		3F62934C1C1BABA2005BD240 /* AutoLayoutTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */; };
+		3F7B50491C603D40004EB27D /* MantraDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7B50481C603D40004EB27D /* MantraDataSource.swift */; };
+		3F7B504B1C603EE0004EB27D /* UserMantraDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7B504A1C603EE0004EB27D /* UserMantraDataManager.swift */; };
+		3F7B504D1C60524B004EB27D /* Mantra+CardAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7B504C1C60524B004EB27D /* Mantra+CardAnnotation.swift */; };
+		3F7B50511C605E13004EB27D /* UserMantraDataManager+UICollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7B50501C605E13004EB27D /* UserMantraDataManager+UICollectionViewDataSource.swift */; };
+		3F7B50531C6066BA004EB27D /* CustomCollisionBoundsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7B50521C6066BA004EB27D /* CustomCollisionBoundsCardView.swift */; };
 		3F8397D91C24F23C0002002E /* CardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F8397D81C24F23C0002002E /* CardView.xib */; };
 		3F8397DD1C251E720002002E /* XibDesignedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8397DC1C251E720002002E /* XibDesignedView.swift */; };
 		3F8397DF1C2522B70002002E /* CardTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8397DE1C2522B70002002E /* CardTableView.swift */; };
@@ -88,6 +93,11 @@
 		3F62933B1C148C78005BD240 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F6293471C149830005BD240 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoLayoutTestViewController.swift; sourceTree = "<group>"; };
+		3F7B50481C603D40004EB27D /* MantraDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MantraDataSource.swift; sourceTree = "<group>"; };
+		3F7B504A1C603EE0004EB27D /* UserMantraDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserMantraDataManager.swift; sourceTree = "<group>"; };
+		3F7B504C1C60524B004EB27D /* Mantra+CardAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mantra+CardAnnotation.swift"; sourceTree = "<group>"; };
+		3F7B50501C605E13004EB27D /* UserMantraDataManager+UICollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserMantraDataManager+UICollectionViewDataSource.swift"; sourceTree = "<group>"; };
+		3F7B50521C6066BA004EB27D /* CustomCollisionBoundsCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollisionBoundsCardView.swift; sourceTree = "<group>"; };
 		3F8397D81C24F23C0002002E /* CardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardView.xib; sourceTree = "<group>"; };
 		3F8397DC1C251E720002002E /* XibDesignedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XibDesignedView.swift; sourceTree = "<group>"; };
 		3F8397DE1C2522B70002002E /* CardTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTableView.swift; sourceTree = "<group>"; };
@@ -210,6 +220,10 @@
 			isa = PBXGroup;
 			children = (
 				3F16BB801C2CBB46000D4B7D /* Mantra.swift */,
+				3F7B504C1C60524B004EB27D /* Mantra+CardAnnotation.swift */,
+				3F7B50481C603D40004EB27D /* MantraDataSource.swift */,
+				3F7B504A1C603EE0004EB27D /* UserMantraDataManager.swift */,
+				3F7B50501C605E13004EB27D /* UserMantraDataManager+UICollectionViewDataSource.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -256,6 +270,7 @@
 				3FCA2D171C322EF500E27F64 /* CardCollectionViewCell.swift */,
 				3FCA2D1B1C40A87000E27F64 /* PlaceholderCollectionViewCell.swift */,
 				3FF21E2F1C2202CB0079C67F /* CardView.swift */,
+				3F7B50521C6066BA004EB27D /* CustomCollisionBoundsCardView.swift */,
 				3F8397D81C24F23C0002002E /* CardView.xib */,
 				3F8397DE1C2522B70002002E /* CardTableView.swift */,
 				3FF21E2B1C21F90C0079C67F /* CardTableView.xib */,
@@ -484,14 +499,19 @@
 				3FCA2D1A1C32441D00E27F64 /* CardFlowLayout.swift in Sources */,
 				3F16BB7F1C2BE459000D4B7D /* CardTableViewController.swift in Sources */,
 				3F16BB7D1C2BE3A1000D4B7D /* CardAnnotation.swift in Sources */,
+				3F7B50491C603D40004EB27D /* MantraDataSource.swift in Sources */,
 				3F16BB811C2CBB46000D4B7D /* Mantra.swift in Sources */,
 				3F0135B81C4F8177001DA4B7 /* PullableCardFlowLayout.swift in Sources */,
 				3FCA2D1C1C40A87000E27F64 /* PlaceholderCollectionViewCell.swift in Sources */,
 				3FDAE60D1C293BD0000634CF /* StatePlaceholderView.swift in Sources */,
 				3FCA2D181C322EF500E27F64 /* CardCollectionViewCell.swift in Sources */,
+				3F7B50531C6066BA004EB27D /* CustomCollisionBoundsCardView.swift in Sources */,
 				3F3137741C1E472E008D021D /* UIView+Doppelganger.swift in Sources */,
+				3F7B504B1C603EE0004EB27D /* UserMantraDataManager.swift in Sources */,
 				3F16BB871C2D1F5B000D4B7D /* AttachmentTestViewController.swift in Sources */,
+				3F7B504D1C60524B004EB27D /* Mantra+CardAnnotation.swift in Sources */,
 				3FCA2D111C2E372D00E27F64 /* UIColor+Helpers.swift in Sources */,
+				3F7B50511C605E13004EB27D /* UserMantraDataManager+UICollectionViewDataSource.swift in Sources */,
 				3F6293481C149830005BD240 /* MainViewController.swift in Sources */,
 				3F25F4591C53B6DB0093DDA5 /* CustomBoundsPlaceholderView.swift in Sources */,
 				3F62931A1C148C78005BD240 /* AppDelegate.swift in Sources */,

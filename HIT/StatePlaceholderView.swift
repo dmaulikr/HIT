@@ -33,18 +33,18 @@ import UIKit
         setNeedsDisplay()
     }
     
-//    #if !TARGET_INTERFACE_BUILDER
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        
-//        self.hidden = true
-//    }
-//    
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//        
-//        self.hidden = true
-//    }
-//    #endif
+    #if !TARGET_INTERFACE_BUILDER
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.hidden = true
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        self.hidden = true
+    }
+    #endif
 
 }

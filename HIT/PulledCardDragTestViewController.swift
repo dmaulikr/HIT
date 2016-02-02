@@ -117,6 +117,15 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     }()
     
     
+    // Data controller
+    
+    let dataSource: MantraDataSource = UserMantraDataManager.sharedManager
+    let mantrasInRetractedStack = [Mantra]()
+    
+    // Pulled Card View
+    var pulledCardView: CardView?
+    
+    
     // Guides for the collision boundaries which constrain card movement
     @IBOutlet weak var tlBoundary: StatePlaceholderView!
     @IBOutlet weak var blBoundary: StatePlaceholderView!
@@ -668,6 +677,10 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        pulledCardView = CardView()
+        pulledCardView?.annotation = dataSource.currentMantra
+        view.addSubview(pulledCardView!)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -677,12 +690,17 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         pulledCardPlaceholderView.clipsToBounds = true
     }
     
-    func setupCardBehaviors()
+    func setupPulledCardBehaviors()
     {
-        NSLayoutConstraint.deactivateConstraints(
-            [pulledCardPlaceholderHeightConstraint, pulledCardPlaceholderWidthConstraint,
-                pulledCardPlaceholderCenterXConstraint, pulledCardPlaceholderCenterYConstraint])
-        pulledCardPlaceholderView.translatesAutoresizingMaskIntoConstraints = true
+//        NSLayoutConstraint.deactivateConstraints(
+//            [pulledCardPlaceholderHeightConstraint, pulledCardPlaceholderWidthConstraint,
+//                pulledCardPlaceholderCenterXConstraint, pulledCardPlaceholderCenterYConstraint])
+//        pulledCardView.translatesAutoresizingMaskIntoConstraints = true
+        
+        guard let pulledCardView = pulledCardView else { return }
+        
+        pulledCardView.frame = pulledCardPlaceholderView.frame
+        print(pulledCardView.frame)
         
         let pathDiameter = 18
         let rectContainingBoundaryPath = CGRect(
@@ -692,22 +710,22 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
             height: pathDiameter)
         let customBoundaryPath = UIBezierPath(
             ovalInRect: rectContainingBoundaryPath)
-        pulledCardPlaceholderView.collisionBoundsType = .Path
-        pulledCardPlaceholderView.collisionBoundingPath = customBoundaryPath
+        pulledCardView.collisionBoundsType = .Path
+        pulledCardView.collisionBoundingPath = customBoundaryPath
         
-        let boundaryShapeLayer = CAShapeLayer()
-        boundaryShapeLayer.path = customBoundaryPath.CGPath
-        boundaryShapeLayer.fillColor = UIColor.blueColor().CGColor
-        boundaryShapeLayer.strokeColor = UIColor.orangeColor().CGColor
-        boundaryShapeLayer.frame = CGRect(
-            origin: CGPoint(
-                x: pulledCardPlaceholderView.bounds.width/2,
-                y: pulledCardPlaceholderView.bounds.height/2),
-            size: rectContainingBoundaryPath.size)
-        pulledCardPlaceholderView.layer.addSublayer(boundaryShapeLayer)
+//        let boundaryShapeLayer = CAShapeLayer()
+//        boundaryShapeLayer.path = customBoundaryPath.CGPath
+//        boundaryShapeLayer.fillColor = UIColor.blueColor().CGColor
+//        boundaryShapeLayer.strokeColor = UIColor.orangeColor().CGColor
+//        boundaryShapeLayer.frame = CGRect(
+//            origin: CGPoint(
+//                x: pulledCardView.bounds.width/2,
+//                y: pulledCardView.bounds.height/2),
+//            size: rectContainingBoundaryPath.size)
+//        pulledCardView.layer.addSublayer(boundaryShapeLayer)
         
         let laneCornerRadius: CGFloat = 5
-        let boundaryCollisionBehavior = UICollisionBehavior(items: [pulledCardPlaceholderView])
+        let boundaryCollisionBehavior = UICollisionBehavior(items: [pulledCardView])
         //            boundaryCollisionBehavior.translatesReferenceBoundsIntoBoundary = true
         boundaryCollisionBehavior.addBoundaryWithIdentifier("topleft",
             forPath: UIBezierPath(
@@ -727,17 +745,17 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
                 cornerRadius: laneCornerRadius))
         animator.addBehavior(boundaryCollisionBehavior)
         
-        pulledCardDynamicItemBehavior = UIDynamicItemBehavior(items: [pulledCardPlaceholderView])
+        pulledCardDynamicItemBehavior = UIDynamicItemBehavior(items: [pulledCardView])
         pulledCardDynamicItemBehavior.allowsRotation = false
         pulledCardDynamicItemBehavior.friction = 0
         pulledCardDynamicItemBehavior.resistance = 10.0
         pulledCardDynamicItemBehavior.elasticity = 0
         animator.addBehavior(pulledCardDynamicItemBehavior)
         
-        pulledCardRestingAnchorLocation = pulledCardPlaceholderView.center
+        pulledCardRestingAnchorLocation = pulledCardView.center
         
         pulledCardAttachmentBehavior = UIAttachmentBehavior(
-            item: pulledCardPlaceholderView,
+            item: pulledCardView,
             attachedToAnchor: pulledCardRestingAnchorLocation)
         pulledCardAttachmentBehavior?.length = 0
         animator.addBehavior(pulledCardAttachmentBehavior!)
@@ -819,7 +837,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     {
         if animator.behaviors.count == 0
         {
-            setupCardBehaviors()
+            setupPulledCardBehaviors()
             setupHintingSettingsIconBehaviors()
             setupHintingDeleteIconBehaviors()
             setupHintingShuffleIconBehaviors()
