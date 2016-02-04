@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10089" systemVersion="15A278b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10089"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PulledCardView" customModule="HIT" customModuleProvider="target">
+            <connections>
+                <outlet property="attachmentGuidelinesView" destination="uER-ei-lYc" id="O3o-D8-cro"/>
+                <outlet property="hintingDeleteIconCenterYConstraint" destination="Ydy-cC-vBg" id="Zip-xY-Rea"/>
+                <outlet property="hintingDeleteIconHeightConstraint" destination="uNK-0Y-n9A" id="mBH-IG-iFm"/>
+                <outlet property="hintingDeleteIconTrailingConstraint" destination="tkk-yw-Max" id="Hfw-b9-8rk"/>
+                <outlet property="hintingDeleteIconView" destination="OIh-lm-PIy" id="4Vn-dh-n8f"/>
+                <outlet property="hintingDeleteIconWidthConstraint" destination="bdX-7c-NXu" id="M4Q-UZ-gX3"/>
+                <outlet property="hintingDeleteTrackingSpanView" destination="Jy6-oC-XUz" id="S5e-ab-hff"/>
+                <outlet property="hintingEditIconBottomConstraint" destination="3JL-an-rHB" id="rAM-zx-VgS"/>
+                <outlet property="hintingEditIconCenterXConstraint" destination="iag-Nn-tC9" id="0b8-0R-mTy"/>
+                <outlet property="hintingEditIconHeightConstraint" destination="eqv-nZ-VOm" id="TFa-Bo-HWw"/>
+                <outlet property="hintingEditIconView" destination="pXd-jK-O7P" id="RgK-UW-sS7"/>
+                <outlet property="hintingEditIconWidthConstraint" destination="h4V-eV-kGB" id="4ch-DD-723"/>
+                <outlet property="hintingEditTrackingSpanView" destination="iYc-mU-abq" id="cVz-ja-j8s"/>
+                <outlet property="hintingSettingsIconCenterYConstraint" destination="fEW-pI-TRH" id="yLP-Bj-7cp"/>
+                <outlet property="hintingSettingsIconHeightConstraint" destination="AzX-c0-ual" id="6tu-Jr-Ftz"/>
+                <outlet property="hintingSettingsIconLeadingConstraint" destination="QTP-0F-PL8" id="7oh-6E-i69"/>
+                <outlet property="hintingSettingsIconView" destination="7qT-Jf-uKh" id="csX-4U-fug"/>
+                <outlet property="hintingSettingsIconWidthConstraint" destination="LqC-sb-5es" id="NgF-lx-x3N"/>
+                <outlet property="hintingSettingsTrackingSpanView" destination="VeT-ev-aCk" id="2gW-6c-laX"/>
+                <outlet property="hintingShuffleIconCenterXConstraint" destination="eE2-jC-ebI" id="h5h-VK-IO0"/>
+                <outlet property="hintingShuffleIconHeightConstraint" destination="kdN-JQ-Khe" id="Mah-F9-GR5"/>
+                <outlet property="hintingShuffleIconTopConstraint" destination="Q5r-l7-3Zu" id="Wxh-Ip-Qdo"/>
+                <outlet property="hintingShuffleIconView" destination="hnD-NS-NZl" id="6Z6-xA-kfg"/>
+                <outlet property="hintingShuffleIconWidthConstraint" destination="CLu-6c-aL1" id="NbA-Rq-uRm"/>
+                <outlet property="hintingShuffleTrackingSpanView" destination="2c5-K0-BYh" id="UQk-mO-Ent"/>
+                <outlet property="pulledCardPlaceholderView" destination="5z1-ah-28w" id="7WM-CF-M0t"/>
+                <outlet property="retractedCardStackPlaceholderView" destination="qi2-lw-ogB" id="13Y-gY-ZJC"/>
+                <outlet property="xibView" destination="cEe-2l-BbS" id="Owd-2g-KKU"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="cEe-2l-BbS">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uER-ei-lYc" userLabel="Attachment Guideline Collision Boundaries">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qfK-Q7-TZc" userLabel="Top Left Collision Boundary Placeholder" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                            <rect key="frame" x="-198" y="-344" width="376" height="668"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                    <color key="value" red="0.72998798080000005" green="0.72998798080000005" blue="0.72998798080000005" alpha="0.37020474139999998" colorSpace="calibratedRGB"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hsC-7K-VPm" userLabel="Bottom Left Collision Boundary Placeholder" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                            <rect key="frame" x="-198" y="344" width="376" height="667"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                    <color key="value" red="0.72998798080000005" green="0.72998798080000005" blue="0.72998798080000005" alpha="0.37020474139999998" colorSpace="calibratedRGB"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iP2-5t-GsB" userLabel="Bottom Right Collision Boundary Placeholder" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                            <rect key="frame" x="198" y="344" width="375" height="667"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                    <color key="value" red="0.72998798080000005" green="0.72998798080000005" blue="0.72998798080000005" alpha="0.37020474139999998" colorSpace="calibratedRGB"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UfS-ns-HGm" userLabel="Top Right Collision Boundary Placeholder" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                            <rect key="frame" x="198" y="-344" width="375" height="668"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                    <color key="value" red="0.72998798080000005" green="0.72998798080000005" blue="0.72998798080000005" alpha="0.37020474139999998" colorSpace="calibratedRGB"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="iP2-5t-GsB" firstAttribute="height" secondItem="uER-ei-lYc" secondAttribute="height" id="0dk-aU-0VL"/>
+                        <constraint firstItem="qfK-Q7-TZc" firstAttribute="centerX" secondItem="uER-ei-lYc" secondAttribute="leading" constant="-10" id="1vR-R9-Kfl"/>
+                        <constraint firstItem="UfS-ns-HGm" firstAttribute="centerY" secondItem="uER-ei-lYc" secondAttribute="top" constant="-10" id="20O-zk-ZLA"/>
+                        <constraint firstItem="hsC-7K-VPm" firstAttribute="width" secondItem="uER-ei-lYc" secondAttribute="width" id="5p6-Dg-aTc"/>
+                        <constraint firstItem="UfS-ns-HGm" firstAttribute="centerX" secondItem="uER-ei-lYc" secondAttribute="trailing" constant="10" id="5rP-hX-YWf"/>
+                        <constraint firstItem="UfS-ns-HGm" firstAttribute="width" secondItem="uER-ei-lYc" secondAttribute="width" id="8Bx-tI-1x4"/>
+                        <constraint firstItem="iP2-5t-GsB" firstAttribute="centerX" secondItem="uER-ei-lYc" secondAttribute="trailing" constant="10" id="D8y-E8-GY4"/>
+                        <constraint firstItem="iP2-5t-GsB" firstAttribute="centerY" secondItem="uER-ei-lYc" secondAttribute="bottom" constant="10" id="E6K-gi-4j6"/>
+                        <constraint firstItem="hsC-7K-VPm" firstAttribute="centerX" secondItem="uER-ei-lYc" secondAttribute="leading" constant="-10" id="KCw-6b-oVg"/>
+                        <constraint firstItem="hsC-7K-VPm" firstAttribute="height" secondItem="uER-ei-lYc" secondAttribute="height" id="Ojw-Lo-sI8"/>
+                        <constraint firstItem="iP2-5t-GsB" firstAttribute="width" secondItem="uER-ei-lYc" secondAttribute="width" id="VBC-FR-Ofd"/>
+                        <constraint firstItem="qfK-Q7-TZc" firstAttribute="width" secondItem="uER-ei-lYc" secondAttribute="width" id="aVz-P7-ve1"/>
+                        <constraint firstItem="qfK-Q7-TZc" firstAttribute="height" secondItem="uER-ei-lYc" secondAttribute="height" id="bFV-5k-xhw"/>
+                        <constraint firstItem="UfS-ns-HGm" firstAttribute="height" secondItem="uER-ei-lYc" secondAttribute="height" id="gbk-vr-cBs"/>
+                        <constraint firstItem="qfK-Q7-TZc" firstAttribute="centerY" secondItem="uER-ei-lYc" secondAttribute="top" constant="-10" id="sqh-H1-70X"/>
+                        <constraint firstItem="hsC-7K-VPm" firstAttribute="centerY" secondItem="uER-ei-lYc" secondAttribute="bottom" constant="10" id="wqS-Oh-4Ci"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OIh-lm-PIy" userLabel="Delete Hinting Icon View" customClass="HintingIconView" customModule="HIT" customModuleProvider="target">
+                    <rect key="frame" x="298" y="302" width="64" height="64"/>
+                    <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="64" id="bdX-7c-NXu"/>
+                        <constraint firstAttribute="height" constant="64" id="uNK-0Y-n9A"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="imageName" value="TrashIcon"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="dialProgress">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7qT-Jf-uKh" userLabel="Settings Hinting Icon View" customClass="HintingIconView" customModule="HIT" customModuleProvider="target">
+                    <rect key="frame" x="13" y="302" width="64" height="64"/>
+                    <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="AzX-c0-ual"/>
+                        <constraint firstAttribute="width" constant="64" id="LqC-sb-5es"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="imageName" value="SettingsIcon"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="dialProgress">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hnD-NS-NZl" userLabel="Shuffle Hinting Icon View" customClass="HintingIconView" customModule="HIT" customModuleProvider="target">
+                    <rect key="frame" x="156" y="93" width="64" height="64"/>
+                    <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="64" id="CLu-6c-aL1"/>
+                        <constraint firstAttribute="height" constant="64" id="kdN-JQ-Khe"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="imageName" value="ShuffleIcon"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="dialProgress">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pXd-jK-O7P" userLabel="Edit Hinting Icon View" customClass="HintingIconView" customModule="HIT" customModuleProvider="target">
+                    <rect key="frame" x="156" y="510" width="64" height="64"/>
+                    <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="eqv-nZ-VOm"/>
+                        <constraint firstAttribute="width" constant="64" id="h4V-eV-kGB"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="imageName" value="EditIcon"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="dialProgress">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5z1-ah-28w" userLabel="Pulled Card Placeholder View" customClass="CustomBoundsPlaceholderView" customModule="HIT" customModuleProvider="target">
+                    <rect key="frame" x="3" y="83" width="369" height="501"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VeT-ev-aCk" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="248" width="185" height="2"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="2" id="i6l-FX-miE"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                    <color key="value" red="0.61500566869999995" green="0.16892347390000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jy6-oC-XUz" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                            <rect key="frame" x="185" y="252" width="184" height="2"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="2" id="yAi-7w-FbQ"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                    <color key="value" red="1" green="0.0" blue="0.150029252" alpha="1" colorSpace="calibratedRGB"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2c5-K0-BYh" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                            <rect key="frame" x="186" y="0.0" width="2" height="126"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="2" id="M3m-Ur-0Wl"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                    <color key="value" red="1" green="0.58428266429999998" blue="0.25116547299999997" alpha="1" colorSpace="calibratedRGB"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iYc-mU-abq" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                            <rect key="frame" x="182" y="251" width="2" height="250"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="2" id="XoV-Ud-RmR"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                    <color key="value" red="0.91129202730000003" green="1" blue="0.14267571849999999" alpha="1" colorSpace="calibratedRGB"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.84997074800000005" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="iYc-mU-abq" secondAttribute="bottom" id="7zp-tp-4D4"/>
+                        <constraint firstItem="VeT-ev-aCk" firstAttribute="leading" secondItem="5z1-ah-28w" secondAttribute="leading" id="AUl-OC-mwn"/>
+                        <constraint firstItem="iYc-mU-abq" firstAttribute="height" secondItem="5z1-ah-28w" secondAttribute="height" multiplier="0.5" id="CQT-9G-6hK"/>
+                        <constraint firstItem="2c5-K0-BYh" firstAttribute="centerX" secondItem="5z1-ah-28w" secondAttribute="centerX" constant="2" id="EHe-ZH-jb7"/>
+                        <constraint firstItem="2c5-K0-BYh" firstAttribute="top" secondItem="5z1-ah-28w" secondAttribute="top" id="QZy-VS-J7R"/>
+                        <constraint firstItem="VeT-ev-aCk" firstAttribute="centerY" secondItem="5z1-ah-28w" secondAttribute="centerY" constant="-2" id="YBT-oY-KWv"/>
+                        <constraint firstItem="iYc-mU-abq" firstAttribute="centerX" secondItem="5z1-ah-28w" secondAttribute="centerX" constant="-2" id="ZzM-y0-y0F"/>
+                        <constraint firstAttribute="trailing" secondItem="Jy6-oC-XUz" secondAttribute="trailing" id="dI0-x3-rie"/>
+                        <constraint firstItem="Jy6-oC-XUz" firstAttribute="width" secondItem="5z1-ah-28w" secondAttribute="width" multiplier="0.5" id="e0g-5e-3GD"/>
+                        <constraint firstItem="VeT-ev-aCk" firstAttribute="width" secondItem="5z1-ah-28w" secondAttribute="width" multiplier="0.5" id="eEV-PC-gJ8"/>
+                        <constraint firstItem="Jy6-oC-XUz" firstAttribute="centerY" secondItem="5z1-ah-28w" secondAttribute="centerY" constant="2" id="myO-qm-NQh"/>
+                        <constraint firstItem="2c5-K0-BYh" firstAttribute="height" secondItem="5z1-ah-28w" secondAttribute="height" multiplier="0.25" id="oBn-GP-ZZK"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                            <color key="value" red="1" green="0.27515567060000001" blue="0.20392179229999999" alpha="0.30099676720000001" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qi2-lw-ogB" userLabel="Retracted Card Stack Placeholder View" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                    <rect key="frame" x="3" y="623" width="369" height="44"/>
+                    <color key="backgroundColor" red="0.91355104590000002" green="1" blue="0.91419956000000002" alpha="0.0" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="lGG-Jq-Q8r"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                            <color key="value" red="0.62716656000000004" green="1" blue="0.3763997207" alpha="0.50525323280000001" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="5z1-ah-28w" firstAttribute="height" secondItem="cEe-2l-BbS" secondAttribute="height" multiplier="0.75" id="0Ph-EI-4ve"/>
+                <constraint firstItem="5z1-ah-28w" firstAttribute="bottom" secondItem="pXd-jK-O7P" secondAttribute="bottom" constant="10" id="3JL-an-rHB"/>
+                <constraint firstItem="5z1-ah-28w" firstAttribute="centerX" secondItem="cEe-2l-BbS" secondAttribute="centerX" id="4tA-HZ-Pfh"/>
+                <constraint firstItem="uER-ei-lYc" firstAttribute="centerY" secondItem="cEe-2l-BbS" secondAttribute="centerY" id="H5h-ZF-38r"/>
+                <constraint firstItem="hnD-NS-NZl" firstAttribute="top" secondItem="5z1-ah-28w" secondAttribute="top" constant="10" id="Q5r-l7-3Zu"/>
+                <constraint firstItem="7qT-Jf-uKh" firstAttribute="leading" secondItem="5z1-ah-28w" secondAttribute="leading" constant="10" id="QTP-0F-PL8"/>
+                <constraint firstItem="5z1-ah-28w" firstAttribute="centerY" secondItem="cEe-2l-BbS" secondAttribute="centerY" id="Tq4-LE-uyG"/>
+                <constraint firstItem="uER-ei-lYc" firstAttribute="centerX" secondItem="cEe-2l-BbS" secondAttribute="centerX" id="Vsp-SP-4gE"/>
+                <constraint firstItem="OIh-lm-PIy" firstAttribute="centerY" secondItem="5z1-ah-28w" secondAttribute="centerY" id="Ydy-cC-vBg"/>
+                <constraint firstAttribute="bottom" secondItem="qi2-lw-ogB" secondAttribute="bottom" id="db4-UL-SvJ"/>
+                <constraint firstItem="hnD-NS-NZl" firstAttribute="centerX" secondItem="5z1-ah-28w" secondAttribute="centerX" id="eE2-jC-ebI"/>
+                <constraint firstItem="qi2-lw-ogB" firstAttribute="width" secondItem="cEe-2l-BbS" secondAttribute="width" constant="-6" id="egB-gN-2Oz"/>
+                <constraint firstItem="7qT-Jf-uKh" firstAttribute="centerY" secondItem="5z1-ah-28w" secondAttribute="centerY" id="fEW-pI-TRH"/>
+                <constraint firstItem="pXd-jK-O7P" firstAttribute="centerX" secondItem="5z1-ah-28w" secondAttribute="centerX" id="iag-Nn-tC9"/>
+                <constraint firstItem="uER-ei-lYc" firstAttribute="width" secondItem="cEe-2l-BbS" secondAttribute="width" id="k2r-gA-y9u"/>
+                <constraint firstItem="qi2-lw-ogB" firstAttribute="centerX" secondItem="cEe-2l-BbS" secondAttribute="centerX" id="s5K-RG-reM"/>
+                <constraint firstItem="uER-ei-lYc" firstAttribute="height" secondItem="cEe-2l-BbS" secondAttribute="height" id="tN4-bE-Wme"/>
+                <constraint firstItem="5z1-ah-28w" firstAttribute="trailing" secondItem="OIh-lm-PIy" secondAttribute="trailing" constant="10" id="tkk-yw-Max"/>
+                <constraint firstItem="5z1-ah-28w" firstAttribute="width" secondItem="cEe-2l-BbS" secondAttribute="width" constant="-6" id="zEA-Yo-VU0"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+        </view>
+    </objects>
+</document>
