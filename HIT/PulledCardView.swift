@@ -12,7 +12,7 @@ enum PulledCardViewState: StateMachineDataSource
 {
     case WaitingForData
     case ReloadData
-    case PositionViews
+    case LayoutViews
     
     case AtRest
     case TrackingPan(UIPanGestureRecognizer)
@@ -35,10 +35,12 @@ enum PulledCardViewState: StateMachineDataSource
     {
         switch (from, to)
         {
-        case (.WaitingForData, .ReloadData):    return .Redirect(.PositionViews)
-        case (_, .ReloadData):                  return .Redirect(.PositionViews)
-        case (.ReloadData, .PositionViews):     return .Redirect(.AtRest)
-        case (.PositionViews, .AtRest):         return .Continue
+        case (.WaitingForData, .ReloadData):    return .Redirect(.LayoutViews)
+        case (_, .ReloadData):                  return .Redirect(.LayoutViews)
+        case (.ReloadData, .LayoutViews):       return .Redirect(.AtRest)
+        case (.LayoutViews, .AtRest):           return .Continue
+            
+        case (.AtRest, .LayoutViews):           return .Redirect(.AtRest)
             
         case (.AtRest, .TrackingPan):           return .Continue
         case (.ReturningToRest, .AtRest):       return .Continue
@@ -115,6 +117,8 @@ enum PulledCardViewState: StateMachineDataSource
         return animator
     }()
     
+    var panGR: UIPanGestureRecognizer?
+    
     @IBOutlet weak var attachmentGuidelinesView: UIView!
     
     
@@ -123,6 +127,7 @@ enum PulledCardViewState: StateMachineDataSource
     var pulledCardRestingAnchorLocation: CGPoint!
     var pulledCardAttachmentBehavior: UIAttachmentBehavior!
     var pulledCardDynamicItemBehavior: UIDynamicItemBehavior!
+    var boundaryCollisionBehavior: UICollisionBehavior!
     
     
     // Hinting Settings Icon
@@ -241,17 +246,31 @@ enum PulledCardViewState: StateMachineDataSource
         
         switch (fromState, toState)
         {
+        case (.WaitingForData, .ReloadData):
+            print(".WaitingForData -> .ReloadData")
+            panGR = UIPanGestureRecognizer(target: self, action: "pannedInView:")
+            self.addGestureRecognizer(panGR!)
+            loadData()
             
         case (_, .ReloadData):
             print("_ -> .ReloadData")
             loadData()
             
-        case (.ReloadData, .PositionViews):
-            print(".ReloadData -> .PositionViews")
+        case (.ReloadData, .LayoutViews):
+            print(".ReloadData -> .LayoutViews")
+            layoutCards()
+            
+        case (.LayoutViews, .AtRest):
+            print(".LayoutViews -> .AtRest")
+            atRest()
+            
+        case (.AtRest, .LayoutViews):
+            print(".AtRest -> .LayoutViews")
             layoutCards()
             
         case (.AtRest, .TrackingPan(let panGR)):
             print(".AtRest -> .TrackingPan")
+            setupPulledCardBehaviors()
             updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         case (.TrackingPan, .TrackingPan(let panGR)):
@@ -268,7 +287,7 @@ enum PulledCardViewState: StateMachineDataSource
             
         case (.ReturningToRest, .AtRest):
             print(".ReturningToRest -> .AtRest")
-            break
+            atRest()
             
             
             // .HintingSettings cases
@@ -381,6 +400,38 @@ enum PulledCardViewState: StateMachineDataSource
         }
     }
     
+    func pannedInView(sender: UIPanGestureRecognizer)
+    {
+        if sender.state == .Began || sender.state == .Changed
+        {
+            if attachmentAxis == .Horizontal
+            {
+                if sender.translationInView(self).x >= 0 {
+                    machine.state = .HintingSettings(sender)
+                }
+                else if sender.translationInView(self).x < 0 {
+                    machine.state = .HintingDelete(sender)
+                }
+            }
+            else if attachmentAxis == .Vertical {
+                if sender.translationInView(self).y >= 0 {
+                    machine.state = .HintingShuffle(sender)
+                }
+                else if sender.translationInView(self).y < 0 {
+                    machine.state = .HintingEdit(sender)
+                }
+            }
+            else {
+                machine.state = .TrackingPan(sender)
+            }
+        }
+        else
+        {
+            machine.state = .ReturningToRest
+            print("\n")
+        }
+    }
+    
     private func loadData()
     {
         // remove cached views
@@ -408,12 +459,39 @@ enum PulledCardViewState: StateMachineDataSource
         machine.state = .AtRest
     }
     
+    override func updateConstraints() {
+        super.updateConstraints()
+        print("update constraints")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        print("layout subviews")
+        print("xibView.bounds = \(self.xibView.bounds)")
+    }
+    
     //
     //
     //
     //
     //
     //
+    
+    var pulledCardViewConstraints: [NSLayoutConstraint]?
+    
+    func atRest() {
+        if pulledCardAttachmentBehavior != nil {
+            animator.removeBehavior(boundaryCollisionBehavior)
+            animator.removeBehavior(pulledCardDynamicItemBehavior)
+            animator.removeBehavior(pulledCardAttachmentBehavior)
+            boundaryCollisionBehavior = nil
+            pulledCardDynamicItemBehavior = nil
+            pulledCardAttachmentBehavior = nil
+        }
+        
+        pulledCardView?.translatesAutoresizingMaskIntoConstraints = false
+        pulledCardViewConstraints = pulledCardView?.mirrorView(pulledCardPlaceholderView, byReplacingConstraints: [])
+    }
     
     func updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
     {
@@ -664,23 +742,20 @@ enum PulledCardViewState: StateMachineDataSource
     
     func layoutCards()
     {
-        setupPulledCardBehaviors()
+//        setupPulledCardBehaviors()
         setupHintingSettingsIconBehaviors()
         setupHintingDeleteIconBehaviors()
         setupHintingShuffleIconBehaviors()
         setupHintingEditIconBehaviors()
-        layoutCardStack()
+//        layoutCardStack()
     }
     
     func setupPulledCardBehaviors()
     {
-        //        NSLayoutConstraint.deactivateConstraints(
-        //            [pulledCardPlaceholderHeightConstraint, pulledCardPlaceholderWidthConstraint,
-        //                pulledCardPlaceholderCenterXConstraint, pulledCardPlaceholderCenterYConstraint])
-        //        pulledCardView.translatesAutoresizingMaskIntoConstraints = true
-        
         guard let pulledCardView = pulledCardView else { return }
         
+        pulledCardView.translatesAutoresizingMaskIntoConstraints = true
+        NSLayoutConstraint.deactivateConstraints(pulledCardViewConstraints!)
         pulledCardView.frame = pulledCardPlaceholderView.frame
         print(pulledCardView.frame)
         
@@ -708,7 +783,7 @@ enum PulledCardViewState: StateMachineDataSource
         
         let laneCornerRadius: CGFloat = 5
         
-        let boundaryCollisionBehavior = UICollisionBehavior(items: [pulledCardView])
+        boundaryCollisionBehavior = UICollisionBehavior(items: [pulledCardView])
         for (index, boundaryCollisionView) in attachmentGuidelinesView.subviews.enumerate()
         {
             boundaryCollisionBehavior.addBoundaryWithIdentifier("guideline \(index)",
@@ -716,22 +791,6 @@ enum PulledCardViewState: StateMachineDataSource
                     roundedRect: boundaryCollisionView.frame,
                     cornerRadius: laneCornerRadius))
         }
-//        boundaryCollisionBehavior.addBoundaryWithIdentifier("topleft",
-//            forPath: UIBezierPath(
-//                roundedRect: tlBoundary.frame,
-//                cornerRadius: laneCornerRadius))
-//        boundaryCollisionBehavior.addBoundaryWithIdentifier("bottomleft",
-//            forPath: UIBezierPath(
-//                roundedRect: blBoundary.frame,
-//                cornerRadius: laneCornerRadius))
-//        boundaryCollisionBehavior.addBoundaryWithIdentifier("bottomright",
-//            forPath: UIBezierPath(
-//                roundedRect: brBoundary.frame,
-//                cornerRadius: laneCornerRadius))
-//        boundaryCollisionBehavior.addBoundaryWithIdentifier("topright",
-//            forPath: UIBezierPath(
-//                roundedRect: trBoundary.frame,
-//                cornerRadius: laneCornerRadius))
         animator.addBehavior(boundaryCollisionBehavior)
         
         pulledCardDynamicItemBehavior = UIDynamicItemBehavior(items: [pulledCardView])
@@ -741,7 +800,7 @@ enum PulledCardViewState: StateMachineDataSource
         pulledCardDynamicItemBehavior.elasticity = 0
         animator.addBehavior(pulledCardDynamicItemBehavior)
         
-        pulledCardRestingAnchorLocation = pulledCardView.center
+        pulledCardRestingAnchorLocation = pulledCardPlaceholderView.center
         
         pulledCardAttachmentBehavior = UIAttachmentBehavior(
             item: pulledCardView,
@@ -752,6 +811,8 @@ enum PulledCardViewState: StateMachineDataSource
     
     func layoutCardStack()
     {
+        print("layout card stack, bounds = \(self.bounds), xibView.bounds = \(self.xibView.bounds)")
+        
         let gap: CGFloat = 10
         for (index, cardView) in cardsInStack.enumerate()
         {
@@ -759,9 +820,7 @@ enum PulledCardViewState: StateMachineDataSource
             cardView.frame.origin.y
                 = retractedCardStackPlaceholderView.frame.origin.y
                 + gap*CGFloat(index)
-            let cardColor = UIColor.randomColor()
-            cardView.cardTitleView.backgroundColor = cardColor
-            cardView.xibView.backgroundColor = cardColor
+            print("card stack view, frame = \(cardView.frame)")
         }
     }
     

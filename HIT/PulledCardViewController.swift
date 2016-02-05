@@ -24,6 +24,7 @@ class PulledCardViewController: UIViewController, PulledCardViewDelegate {
     let dataSource: MantraDataSource = UserMantraDataManager.sharedManager
     
     override func viewDidLayoutSubviews() {
+        print("viewDidLayoutSubviews, pulledCardView.frame: \(pulledCardView.frame)")
         if pulledCardView.delegate == nil {
             pulledCardView.delegate = self
         }
@@ -43,6 +44,9 @@ class PulledCardViewController: UIViewController, PulledCardViewDelegate {
             .map {
                 let card = CardView()
                 card.annotation = $0
+                let cardColor = UIColor.randomColor()
+                card.cardTitleView.backgroundColor = cardColor
+                card.xibView.backgroundColor = cardColor
                 return card
             }
     }

@@ -247,6 +247,7 @@
 		3FD7205F1C537E2900645463 /* Graveyard */ = {
 			isa = PBXGroup;
 			children = (
+				3F25F4581C53B6DB0093DDA5 /* CustomBoundsPlaceholderView.swift */,
 				3F8E8E351C4CE13B00FBAD96 /* CardTransitionLayout.swift */,
 				3FF21E2B1C21F90C0079C67F /* CardTableView.xib */,
 				3F8397DE1C2522B70002002E /* CardTableView.swift */,
@@ -282,7 +283,6 @@
 				3FF21E2F1C2202CB0079C67F /* CardView.swift */,
 				3F8397D81C24F23C0002002E /* CardView.xib */,
 				3FDAE60C1C293BD0000634CF /* StatePlaceholderView.swift */,
-				3F25F4581C53B6DB0093DDA5 /* CustomBoundsPlaceholderView.swift */,
 				3FA9E3351C57AE6D00634362 /* HintingIconView.swift */,
 				3FA9E3371C57C2D200634362 /* HintingIconView.xib */,
 				3FB00AEC1C57D40100756F07 /* DialView.swift */,

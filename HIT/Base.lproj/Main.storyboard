@@ -99,11 +99,11 @@
                         <viewControllerLayoutGuide type="bottom" id="iHC-WW-uFb"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Pon-1b-D6Z">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kyt-QQ-ilq" customClass="PulledCardView" customModule="HIT" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -115,6 +115,7 @@
                             <constraint firstItem="Kyt-QQ-ilq" firstAttribute="leading" secondItem="Pon-1b-D6Z" secondAttribute="leading" id="mc5-Lg-pSh"/>
                         </constraints>
                     </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="pulledCardView" destination="Kyt-QQ-ilq" id="2Oh-tc-ThN"/>
                     </connections>
