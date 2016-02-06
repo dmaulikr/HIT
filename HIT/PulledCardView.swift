@@ -273,19 +273,19 @@ enum PulledCardViewState: StateMachineDataSource
         case (.AtRest, .TrackingPan(let panGR)):
             print(".AtRest -> .TrackingPan")
             buildPulledCardBehaviors()
-            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
         case (.TrackingPan, .TrackingPan(let panGR)):
             print(".TrackingPan -> .TrackingPan")
-            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
         case (.TrackingPan, .ReturningToRest):
             print(".TrackingPan -> .ReturningToRest")
-            returnPulledCardAttachmentBehaviorToRestingLocation()
+            returnPulledCardPresentationToRestingState()
             
         case (.ReturningToRest, .TrackingPan(let panGR)):
             print(".ReturningToRest -> .TrackingPan")
-            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
         case (.ReturningToRest, .AtRest):
             print(".ReturningToRest -> .AtRest")
@@ -298,24 +298,24 @@ enum PulledCardViewState: StateMachineDataSource
             print(".TrackingPan -> .HintingSettings")
             displayHintingIconViewForState(toState)
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
-            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
         case (.HintingSettings, .HintingSettings(let panGR)):
             print(".HintingSettings -> .HintingSettings")
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
-            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
         case (.HintingSettings, .ReturningToRest):
             print(".HintingSettings -> .ReturningToRest")
-            returnHintingSettingsIconToRestingLocation()
-            returnPulledCardAttachmentBehaviorToRestingLocation()
+            returnHintingSettingsIconPresentationToRestingState()
+            returnPulledCardPresentationToRestingState()
             
         case (.HintingSettings, .HintingDelete(let panGR)):
             print(".HintingSettings -> .HintingDelete")
-            returnHintingSettingsIconToRestingLocation()
+            returnHintingSettingsIconPresentationToRestingState()
             displayHintingIconViewForState(toState)
             updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
-            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
             
             // .HintingDelete cases
@@ -324,24 +324,24 @@ enum PulledCardViewState: StateMachineDataSource
             print(".TrackingPan -> .HintingDelete")
             displayHintingIconViewForState(toState)
             updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
-            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
         case (.HintingDelete, .HintingDelete(let panGR)):
             print(".HintingDelete -> .HintingDelete")
             updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
-            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
         case (.HintingDelete, .ReturningToRest):
             print(".HintingDelete -> .ReturningToRest")
-            returnHintingDeleteIconToRestingLocation()
-            returnPulledCardAttachmentBehaviorToRestingLocation()
+            returnHintingDeleteIconPresentationToRestingState()
+            returnPulledCardPresentationToRestingState()
             
         case (.HintingDelete, .HintingSettings(let panGR)):
             print(".HintingSettings -> .HintingDelete")
-            returnHintingDeleteIconToRestingLocation()
+            returnHintingDeleteIconPresentationToRestingState()
             displayHintingIconViewForState(toState)
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
-            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
             
             // .HintingShuffle cases
@@ -350,24 +350,24 @@ enum PulledCardViewState: StateMachineDataSource
             print(".TrackingPan -> .HintingShuffle")
             displayHintingIconViewForState(toState)
             updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
-            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
         case (.HintingShuffle, .HintingShuffle(let panGR)):
             print(".HintingShuffle -> .HintingShuffle")
             updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
-            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
         case (.HintingShuffle, .ReturningToRest):
             print(".HintingShuffle -> .ReturningToRest")
-            returnHintingShuffleIconToRestingLocation()
-            returnPulledCardAttachmentBehaviorToRestingLocation()
+            returnHintingShuffleIconPresentationToRestingState()
+            returnPulledCardPresentationToRestingState()
             
         case (.HintingShuffle, .HintingEdit(let panGR)):
             print(".HintingSettings -> .HintingShuffle")
-            returnHintingShuffleIconToRestingLocation()
+            returnHintingShuffleIconPresentationToRestingState()
             displayHintingIconViewForState(toState)
             updateHintingEditIconPresentationWithPanGestureRecognizer(panGR)
-            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
             
             // .HintingEdit cases
@@ -376,24 +376,24 @@ enum PulledCardViewState: StateMachineDataSource
             print(".TrackingPan -> .HintingEdit")
             displayHintingIconViewForState(toState)
             updateHintingEditIconPresentationWithPanGestureRecognizer(panGR)
-            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
         case (.HintingEdit, .HintingEdit(let panGR)):
             print(".HintingEdit -> .HintingEdit")
             updateHintingEditIconPresentationWithPanGestureRecognizer(panGR)
-            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
         case (.HintingEdit, .ReturningToRest):
             print(".HintingEdit -> .ReturningToRest")
-            returnHintingEditIconToRestingLocation()
-            returnPulledCardAttachmentBehaviorToRestingLocation()
+            returnHintingEditIconPresentationToRestingState()
+            returnPulledCardPresentationToRestingState()
             
         case (.HintingEdit, .HintingShuffle(let panGR)):
             print(".HintingSettings -> .HintingShuffle")
-            returnHintingEditIconToRestingLocation()
+            returnHintingEditIconPresentationToRestingState()
             displayHintingIconViewForState(toState)
             updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
-            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
             
         default:
@@ -483,7 +483,12 @@ enum PulledCardViewState: StateMachineDataSource
     
     func atRest()
     {
+        print("atRest()")
         teardownPulledCardBehaviors()
+        teardownHintingSettingsIconBehaviors()
+        teardownHintingDeleteIconBehaviors()
+        teardownHintingShuffleIconBehaviors()
+        teardownHintingEditIconBehaviors()
     }
     
     func buildPulledCardBehaviors()
@@ -532,7 +537,7 @@ enum PulledCardViewState: StateMachineDataSource
         animator.addBehavior(pulledCardAttachmentBehavior!)
     }
     
-    func updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
+    func updatePulledCardPresentationWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
     {
         if attachmentAxis == nil
         {
@@ -551,7 +556,7 @@ enum PulledCardViewState: StateMachineDataSource
         pulledCardAttachmentBehavior?.frequency = 14.0
     }
     
-    func returnPulledCardAttachmentBehaviorToRestingLocation()
+    func returnPulledCardPresentationToRestingState()
     {
         pulledCardAttachmentBehavior?.anchorPoint = pulledCardRestingAnchorLocation
         pulledCardAttachmentBehavior?.damping = 1.0
@@ -634,7 +639,7 @@ enum PulledCardViewState: StateMachineDataSource
         }
     }
     
-    func returnHintingSettingsIconToRestingLocation()
+    func returnHintingSettingsIconPresentationToRestingState()
     {
         hintingSettingsIconView.dialProgress = 0
         if hintingSettingsIconTrackingAttachmentBehavior != nil
@@ -715,7 +720,7 @@ enum PulledCardViewState: StateMachineDataSource
         }
     }
     
-    func returnHintingDeleteIconToRestingLocation()
+    func returnHintingDeleteIconPresentationToRestingState()
     {
         hintingDeleteIconView.dialProgress = 0
         if hintingDeleteIconTrackingAttachmentBehavior != nil
@@ -797,7 +802,7 @@ enum PulledCardViewState: StateMachineDataSource
         }
     }
     
-    func returnHintingShuffleIconToRestingLocation()
+    func returnHintingShuffleIconPresentationToRestingState()
     {
         hintingShuffleIconView.dialProgress = 0
         if hintingShuffleIconTrackingAttachmentBehavior != nil
@@ -879,7 +884,7 @@ enum PulledCardViewState: StateMachineDataSource
         }
     }
     
-    func returnHintingEditIconToRestingLocation()
+    func returnHintingEditIconPresentationToRestingState()
     {
         hintingEditIconView.dialProgress = 0
         if hintingEditIconTrackingAttachmentBehavior != nil
