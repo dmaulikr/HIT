@@ -35,12 +35,14 @@ enum PulledCardViewState: StateMachineDataSource
     {
         switch (from, to)
         {
-        case (.WaitingForData, .ReloadData):    return .Redirect(.LayoutViews)
-        case (_, .ReloadData):                  return .Redirect(.LayoutViews)
-        case (.ReloadData, .LayoutViews):       return .Redirect(.AtRest)
-        case (.LayoutViews, .AtRest):           return .Continue
+        case (.WaitingForData, .ReloadData):    return .Redirect(.AtRest)
+        case (_, .ReloadData):                  return .Redirect(.AtRest)
+//        case (.ReloadData, .LayoutViews):       return .Redirect(.AtRest)
+//        case (.LayoutViews, .AtRest):           return .Continue
+        case (.ReloadData, .AtRest):            return .Continue
             
-        case (.AtRest, .LayoutViews):           return .Redirect(.AtRest)
+//        case (.AtRest, .LayoutViews):           return .Redirect(.AtRest)
+//        case (.AtRest, .ReloadData):            return .Redirect(.AtRest)
             
         case (.AtRest, .TrackingPan):           return .Continue
         case (.ReturningToRest, .AtRest):       return .Continue
@@ -253,20 +255,20 @@ enum PulledCardViewState: StateMachineDataSource
             loadData()
             
         case (_, .ReloadData):
-            print("_ -> .ReloadData")
+            print("_ (\(fromState)) -> .ReloadData")
             loadData()
             
-        case (.ReloadData, .LayoutViews):
-            print(".ReloadData -> .LayoutViews")
-            layoutCards()
+//        case (.ReloadData, .LayoutViews):
+//            print(".ReloadData -> .LayoutViews")
+//            layoutCards()
             
-        case (.LayoutViews, .AtRest):
-            print(".LayoutViews -> .AtRest")
+        case (.ReloadData, .AtRest):
+            print(".ReloadData -> .AtRest")
             atRest()
             
-        case (.AtRest, .LayoutViews):
-            print(".AtRest -> .LayoutViews")
-            layoutCards()
+//        case (.AtRest, .LayoutViews):
+//            print(".AtRest -> .LayoutViews")
+//            layoutCards()
             
         case (.AtRest, .TrackingPan(let panGR)):
             print(".AtRest -> .TrackingPan")
@@ -757,7 +759,6 @@ enum PulledCardViewState: StateMachineDataSource
         pulledCardView.translatesAutoresizingMaskIntoConstraints = true
         NSLayoutConstraint.deactivateConstraints(pulledCardViewConstraints!)
         pulledCardView.frame = pulledCardPlaceholderView.frame
-        print(pulledCardView.frame)
         
         let pathDiameter = 18
         let rectContainingBoundaryPath = CGRect(
@@ -770,19 +771,7 @@ enum PulledCardViewState: StateMachineDataSource
         pulledCardView.collisionBoundsType = .Path
         pulledCardView.collisionBoundingPath = customBoundaryPath
         
-        //        let boundaryShapeLayer = CAShapeLayer()
-        //        boundaryShapeLayer.path = customBoundaryPath.CGPath
-        //        boundaryShapeLayer.fillColor = UIColor.blueColor().CGColor
-        //        boundaryShapeLayer.strokeColor = UIColor.orangeColor().CGColor
-        //        boundaryShapeLayer.frame = CGRect(
-        //            origin: CGPoint(
-        //                x: pulledCardView.bounds.width/2,
-        //                y: pulledCardView.bounds.height/2),
-        //            size: rectContainingBoundaryPath.size)
-        //        pulledCardView.layer.addSublayer(boundaryShapeLayer)
-        
         let laneCornerRadius: CGFloat = 5
-        
         boundaryCollisionBehavior = UICollisionBehavior(items: [pulledCardView])
         for (index, boundaryCollisionView) in attachmentGuidelinesView.subviews.enumerate()
         {
