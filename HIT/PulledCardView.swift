@@ -272,20 +272,20 @@ enum PulledCardViewState: StateMachineDataSource
             
         case (.AtRest, .TrackingPan(let panGR)):
             print(".AtRest -> .TrackingPan")
-            setupPulledCardBehaviors()
-            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            buildPulledCardBehaviors()
+            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         case (.TrackingPan, .TrackingPan(let panGR)):
             print(".TrackingPan -> .TrackingPan")
-            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         case (.TrackingPan, .ReturningToRest):
             print(".TrackingPan -> .ReturningToRest")
-            returnCardAttachmentBehaviorToRestingLocation()
+            returnPulledCardAttachmentBehaviorToRestingLocation()
             
         case (.ReturningToRest, .TrackingPan(let panGR)):
             print(".ReturningToRest -> .TrackingPan")
-            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         case (.ReturningToRest, .AtRest):
             print(".ReturningToRest -> .AtRest")
@@ -298,24 +298,24 @@ enum PulledCardViewState: StateMachineDataSource
             print(".TrackingPan -> .HintingSettings")
             displayHintingIconViewForState(toState)
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
-            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         case (.HintingSettings, .HintingSettings(let panGR)):
             print(".HintingSettings -> .HintingSettings")
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
-            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         case (.HintingSettings, .ReturningToRest):
             print(".HintingSettings -> .ReturningToRest")
             returnHintingSettingsIconToRestingLocation()
-            returnCardAttachmentBehaviorToRestingLocation()
+            returnPulledCardAttachmentBehaviorToRestingLocation()
             
         case (.HintingSettings, .HintingDelete(let panGR)):
             print(".HintingSettings -> .HintingDelete")
             returnHintingSettingsIconToRestingLocation()
             displayHintingIconViewForState(toState)
             updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
-            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
             
             // .HintingDelete cases
@@ -324,24 +324,24 @@ enum PulledCardViewState: StateMachineDataSource
             print(".TrackingPan -> .HintingDelete")
             displayHintingIconViewForState(toState)
             updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
-            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         case (.HintingDelete, .HintingDelete(let panGR)):
             print(".HintingDelete -> .HintingDelete")
             updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
-            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         case (.HintingDelete, .ReturningToRest):
             print(".HintingDelete -> .ReturningToRest")
             returnHintingDeleteIconToRestingLocation()
-            returnCardAttachmentBehaviorToRestingLocation()
+            returnPulledCardAttachmentBehaviorToRestingLocation()
             
         case (.HintingDelete, .HintingSettings(let panGR)):
             print(".HintingSettings -> .HintingDelete")
             returnHintingDeleteIconToRestingLocation()
             displayHintingIconViewForState(toState)
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
-            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
             
             // .HintingShuffle cases
@@ -350,24 +350,24 @@ enum PulledCardViewState: StateMachineDataSource
             print(".TrackingPan -> .HintingShuffle")
             displayHintingIconViewForState(toState)
             updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
-            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         case (.HintingShuffle, .HintingShuffle(let panGR)):
             print(".HintingShuffle -> .HintingShuffle")
             updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
-            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         case (.HintingShuffle, .ReturningToRest):
             print(".HintingShuffle -> .ReturningToRest")
             returnHintingShuffleIconToRestingLocation()
-            returnCardAttachmentBehaviorToRestingLocation()
+            returnPulledCardAttachmentBehaviorToRestingLocation()
             
         case (.HintingShuffle, .HintingEdit(let panGR)):
             print(".HintingSettings -> .HintingShuffle")
             returnHintingShuffleIconToRestingLocation()
             displayHintingIconViewForState(toState)
             updateHintingEditIconPresentationWithPanGestureRecognizer(panGR)
-            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
             
             // .HintingEdit cases
@@ -376,24 +376,24 @@ enum PulledCardViewState: StateMachineDataSource
             print(".TrackingPan -> .HintingEdit")
             displayHintingIconViewForState(toState)
             updateHintingEditIconPresentationWithPanGestureRecognizer(panGR)
-            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         case (.HintingEdit, .HintingEdit(let panGR)):
             print(".HintingEdit -> .HintingEdit")
             updateHintingEditIconPresentationWithPanGestureRecognizer(panGR)
-            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
         case (.HintingEdit, .ReturningToRest):
             print(".HintingEdit -> .ReturningToRest")
             returnHintingEditIconToRestingLocation()
-            returnCardAttachmentBehaviorToRestingLocation()
+            returnPulledCardAttachmentBehaviorToRestingLocation()
             
         case (.HintingEdit, .HintingShuffle(let panGR)):
             print(".HintingSettings -> .HintingShuffle")
             returnHintingEditIconToRestingLocation()
             displayHintingIconViewForState(toState)
             updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
-            updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
+            updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR)
             
             
         default:
@@ -481,21 +481,58 @@ enum PulledCardViewState: StateMachineDataSource
     
     var pulledCardViewConstraints: [NSLayoutConstraint]?
     
-    func atRest() {
-        if pulledCardAttachmentBehavior != nil {
-            animator.removeBehavior(boundaryCollisionBehavior)
-            animator.removeBehavior(pulledCardDynamicItemBehavior)
-            animator.removeBehavior(pulledCardAttachmentBehavior)
-            boundaryCollisionBehavior = nil
-            pulledCardDynamicItemBehavior = nil
-            pulledCardAttachmentBehavior = nil
-        }
-        
-        pulledCardView?.translatesAutoresizingMaskIntoConstraints = false
-        pulledCardViewConstraints = pulledCardView?.mirrorView(pulledCardPlaceholderView, byReplacingConstraints: [])
+    func atRest()
+    {
+        teardownPulledCardBehaviors()
     }
     
-    func updateCardAttachmentBehaviorWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
+    func buildPulledCardBehaviors()
+    {
+        guard let pulledCardView = pulledCardView else { return }
+        
+        pulledCardView.translatesAutoresizingMaskIntoConstraints = true
+        NSLayoutConstraint.deactivateConstraints(pulledCardViewConstraints!)
+        pulledCardView.frame = pulledCardPlaceholderView.frame
+        
+        let pathDiameter = 18
+        let rectContainingBoundaryPath = CGRect(
+            x: -1*pathDiameter/2,
+            y: -1*pathDiameter/2,
+            width: pathDiameter,
+            height: pathDiameter)
+        let customBoundaryPath = UIBezierPath(
+            ovalInRect: rectContainingBoundaryPath)
+        pulledCardView.collisionBoundsType = .Path
+        pulledCardView.collisionBoundingPath = customBoundaryPath
+        
+        let laneCornerRadius: CGFloat = 5
+        boundaryCollisionBehavior = UICollisionBehavior(items: [pulledCardView])
+        for (index, boundaryCollisionView) in attachmentGuidelinesView.subviews.enumerate()
+        {
+            boundaryCollisionBehavior.addBoundaryWithIdentifier("guideline \(index)",
+                forPath: UIBezierPath(
+                    roundedRect: boundaryCollisionView.frame,
+                    cornerRadius: laneCornerRadius))
+        }
+        animator.addBehavior(boundaryCollisionBehavior)
+        
+        pulledCardDynamicItemBehavior = UIDynamicItemBehavior(items: [pulledCardView])
+        pulledCardDynamicItemBehavior.allowsRotation = false
+        pulledCardDynamicItemBehavior.friction = 0
+        pulledCardDynamicItemBehavior.resistance = 10.0
+        pulledCardDynamicItemBehavior.elasticity = 0
+        animator.addBehavior(pulledCardDynamicItemBehavior)
+        
+        pulledCardRestingAnchorLocation = pulledCardPlaceholderView.center
+        
+        pulledCardAttachmentBehavior = UIAttachmentBehavior(
+            item: pulledCardView,
+            attachedToAnchor: pulledCardRestingAnchorLocation)
+        pulledCardAttachmentBehavior?.length = 0
+        animator.addBehavior(pulledCardAttachmentBehavior!)
+    }
+    
+    func updatePulledCardAttachmentBehaviorWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
     {
         if attachmentAxis == nil
         {
@@ -514,12 +551,51 @@ enum PulledCardViewState: StateMachineDataSource
         pulledCardAttachmentBehavior?.frequency = 14.0
     }
     
-    func returnCardAttachmentBehaviorToRestingLocation()
+    func returnPulledCardAttachmentBehaviorToRestingLocation()
     {
         pulledCardAttachmentBehavior?.anchorPoint = pulledCardRestingAnchorLocation
         pulledCardAttachmentBehavior?.damping = 1.0
         pulledCardAttachmentBehavior?.frequency = 7.0
         attachmentAxis = nil
+    }
+    
+    func teardownPulledCardBehaviors()
+    {
+//        guard pulledCardAttachmentBehavior != nil else { return }
+        
+        if pulledCardAttachmentBehavior != nil {
+            animator.removeBehavior(boundaryCollisionBehavior)
+            animator.removeBehavior(pulledCardDynamicItemBehavior)
+            animator.removeBehavior(pulledCardAttachmentBehavior)
+            boundaryCollisionBehavior = nil
+            pulledCardDynamicItemBehavior = nil
+            pulledCardAttachmentBehavior = nil
+        }
+        
+        pulledCardView?.translatesAutoresizingMaskIntoConstraints = false
+        pulledCardViewConstraints = pulledCardView?.mirrorView(pulledCardPlaceholderView, byReplacingConstraints: [])
+    }
+    
+    
+    //
+    // .HintingSettings behaviors
+    
+    func buildHintingSettingsIconBehaviors()
+    {
+        NSLayoutConstraint.deactivateConstraints(
+            [hintingSettingsIconWidthConstraint, hintingSettingsIconHeightConstraint,
+                hintingSettingsIconLeadingConstraint, hintingSettingsIconCenterYConstraint])
+        hintingSettingsIconView.translatesAutoresizingMaskIntoConstraints = true
+        
+        let hintingSettingsIconRestingAttachmentBehavior =
+        UIAttachmentBehavior(item: hintingSettingsIconView,
+            attachedToAnchor: hintingSettingsIconView.center)
+        hintingSettingsIconRestingAttachmentBehavior.length = 0
+        hintingSettingsIconRestingAttachmentBehavior.damping = 1.0
+        hintingSettingsIconRestingAttachmentBehavior.frequency = 2.0
+        animator.addBehavior(hintingSettingsIconRestingAttachmentBehavior)
+        
+        hintingSettingsIconRestingAnchorLocation = hintingSettingsIconView.center
     }
     
     func updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
@@ -568,6 +644,42 @@ enum PulledCardViewState: StateMachineDataSource
         }
     }
     
+    func teardownHintingSettingsIconBehaviors()
+    {
+        if hintingSettingsIconTrackingAttachmentBehavior != nil
+        {
+            animator.removeBehavior(hintingSettingsIconTrackingAttachmentBehavior!)
+            hintingSettingsIconTrackingAttachmentBehavior = nil
+        }
+        
+        NSLayoutConstraint.activateConstraints(
+            [hintingSettingsIconWidthConstraint, hintingSettingsIconHeightConstraint,
+                hintingSettingsIconLeadingConstraint, hintingSettingsIconCenterYConstraint])
+        hintingSettingsIconView.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    
+    //
+    // .HintingDelete behaviors
+    
+    func buildHintingDeleteIconBehaviors()
+    {
+        NSLayoutConstraint.deactivateConstraints(
+            [hintingDeleteIconWidthConstraint, hintingDeleteIconHeightConstraint,
+                hintingDeleteIconTrailingConstraint, hintingDeleteIconCenterYConstraint])
+        hintingDeleteIconView.translatesAutoresizingMaskIntoConstraints = true
+        
+        let hintingDeleteIconRestingAttachmentBehavior =
+        UIAttachmentBehavior(item: hintingDeleteIconView,
+            attachedToAnchor: hintingDeleteIconView.center)
+        hintingDeleteIconRestingAttachmentBehavior.length = 0
+        hintingDeleteIconRestingAttachmentBehavior.damping = 1.0
+        hintingDeleteIconRestingAttachmentBehavior.frequency = 2.0
+        animator.addBehavior(hintingDeleteIconRestingAttachmentBehavior)
+        
+        hintingDeleteIconRestingAnchorLocation = hintingDeleteIconView.center
+    }
+    
     func updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
     {
         let translation = panGR.translationInView(self)
@@ -611,6 +723,42 @@ enum PulledCardViewState: StateMachineDataSource
             animator.removeBehavior(hintingDeleteIconTrackingAttachmentBehavior!)
             hintingDeleteIconTrackingAttachmentBehavior = nil
         }
+    }
+    
+    func teardownHintingDeleteIconBehaviors()
+    {
+        if hintingDeleteIconTrackingAttachmentBehavior != nil
+        {
+            animator.removeBehavior(hintingDeleteIconTrackingAttachmentBehavior!)
+            hintingDeleteIconTrackingAttachmentBehavior = nil
+        }
+        
+        NSLayoutConstraint.activateConstraints(
+            [hintingDeleteIconWidthConstraint, hintingDeleteIconHeightConstraint,
+                hintingDeleteIconTrailingConstraint, hintingDeleteIconCenterYConstraint])
+        hintingDeleteIconView.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    
+    //
+    // .HintingShuffle behaviors
+    
+    func buildHintingShuffleIconBehaviors()
+    {
+        NSLayoutConstraint.deactivateConstraints(
+            [hintingShuffleIconWidthConstraint, hintingShuffleIconHeightConstraint,
+                hintingShuffleIconCenterXConstraint, hintingShuffleIconTopConstraint])
+        hintingShuffleIconView.translatesAutoresizingMaskIntoConstraints = true
+        
+        let hintingShuffleIconRestingAttachmentBehavior =
+        UIAttachmentBehavior(item: hintingShuffleIconView,
+            attachedToAnchor: hintingShuffleIconView.center)
+        hintingShuffleIconRestingAttachmentBehavior.length = 0
+        hintingShuffleIconRestingAttachmentBehavior.damping = 1.0
+        hintingShuffleIconRestingAttachmentBehavior.frequency = 2.0
+        animator.addBehavior(hintingShuffleIconRestingAttachmentBehavior)
+        
+        hintingShuffleIconRestingAnchorLocation = hintingShuffleIconView.center
     }
     
     func updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
@@ -659,6 +807,42 @@ enum PulledCardViewState: StateMachineDataSource
         }
     }
     
+    func teardownHintingShuffleIconBehaviors()
+    {
+        if hintingShuffleIconTrackingAttachmentBehavior != nil
+        {
+            animator.removeBehavior(hintingShuffleIconTrackingAttachmentBehavior!)
+            hintingShuffleIconTrackingAttachmentBehavior = nil
+        }
+        
+        NSLayoutConstraint.activateConstraints(
+            [hintingShuffleIconWidthConstraint, hintingShuffleIconHeightConstraint,
+                hintingShuffleIconTopConstraint, hintingShuffleIconCenterXConstraint])
+        hintingShuffleIconView.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    
+    //
+    // .HintingEdit behaviors
+    
+    func buildHintingEditIconBehaviors()
+    {
+        NSLayoutConstraint.deactivateConstraints(
+            [hintingEditIconWidthConstraint, hintingEditIconHeightConstraint,
+                hintingEditIconCenterXConstraint, hintingEditIconBottomConstraint])
+        hintingEditIconView.translatesAutoresizingMaskIntoConstraints = true
+        
+        let hintingEditIconRestingAttachmentBehavior =
+        UIAttachmentBehavior(item: hintingEditIconView,
+            attachedToAnchor: hintingEditIconView.center)
+        hintingEditIconRestingAttachmentBehavior.length = 0
+        hintingEditIconRestingAttachmentBehavior.damping = 1.0
+        hintingEditIconRestingAttachmentBehavior.frequency = 2.0
+        animator.addBehavior(hintingEditIconRestingAttachmentBehavior)
+        
+        hintingEditIconRestingAnchorLocation = hintingEditIconView.center
+    }
+    
     func updateHintingEditIconPresentationWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
     {
         let translation = panGR.translationInView(self)
@@ -705,33 +889,80 @@ enum PulledCardViewState: StateMachineDataSource
         }
     }
     
+    func teardownHintingEditIconBehaviors()
+    {
+        if hintingEditIconTrackingAttachmentBehavior != nil
+        {
+            animator.removeBehavior(hintingEditIconTrackingAttachmentBehavior!)
+            hintingEditIconTrackingAttachmentBehavior = nil
+        }
+        
+        NSLayoutConstraint.activateConstraints(
+            [hintingEditIconWidthConstraint, hintingEditIconHeightConstraint,
+                hintingEditIconBottomConstraint, hintingEditIconCenterXConstraint])
+        hintingEditIconView.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    
+    //
+    //
+    //
+    
     func displayHintingIconViewForState(state: PulledCardViewState)
     {
         switch state
         {
         case .HintingSettings:
             hintingSettingsIconView.hidden = false
+            buildHintingSettingsIconBehaviors()
+            
             hintingDeleteIconView.hidden = true
+            teardownHintingDeleteIconBehaviors()
+            
             hintingShuffleIconView.hidden = true
+            teardownHintingShuffleIconBehaviors()
+            
             hintingEditIconView.hidden = true
+            teardownHintingEditIconBehaviors()
             
         case .HintingDelete:
             hintingSettingsIconView.hidden = true
+            teardownHintingSettingsIconBehaviors()
+            
             hintingDeleteIconView.hidden = false
+            buildHintingDeleteIconBehaviors()
+            
             hintingShuffleIconView.hidden = true
+            teardownHintingShuffleIconBehaviors()
+            
             hintingEditIconView.hidden = true
+            teardownHintingEditIconBehaviors()
             
         case .HintingShuffle:
             hintingSettingsIconView.hidden = true
+            teardownHintingSettingsIconBehaviors()
+            
             hintingDeleteIconView.hidden = true
+            teardownHintingDeleteIconBehaviors()
+            
             hintingShuffleIconView.hidden = false
+            buildHintingShuffleIconBehaviors()
+            
             hintingEditIconView.hidden = true
+            teardownHintingEditIconBehaviors()
             
         case .HintingEdit:
             hintingSettingsIconView.hidden = true
+            teardownHintingSettingsIconBehaviors()
+            
             hintingDeleteIconView.hidden = true
+            teardownHintingDeleteIconBehaviors()
+            
             hintingShuffleIconView.hidden = true
+            teardownHintingShuffleIconBehaviors()
+            
             hintingEditIconView.hidden = false
+            buildHintingEditIconBehaviors()
             
         default:
             break
@@ -745,57 +976,11 @@ enum PulledCardViewState: StateMachineDataSource
     func layoutCards()
     {
 //        setupPulledCardBehaviors()
-        setupHintingSettingsIconBehaviors()
-        setupHintingDeleteIconBehaviors()
-        setupHintingShuffleIconBehaviors()
-        setupHintingEditIconBehaviors()
+//        setupHintingSettingsIconBehaviors()
+//        setupHintingDeleteIconBehaviors()
+//        setupHintingShuffleIconBehaviors()
+//        setupHintingEditIconBehaviors()
 //        layoutCardStack()
-    }
-    
-    func setupPulledCardBehaviors()
-    {
-        guard let pulledCardView = pulledCardView else { return }
-        
-        pulledCardView.translatesAutoresizingMaskIntoConstraints = true
-        NSLayoutConstraint.deactivateConstraints(pulledCardViewConstraints!)
-        pulledCardView.frame = pulledCardPlaceholderView.frame
-        
-        let pathDiameter = 18
-        let rectContainingBoundaryPath = CGRect(
-            x: -1*pathDiameter/2,
-            y: -1*pathDiameter/2,
-            width: pathDiameter,
-            height: pathDiameter)
-        let customBoundaryPath = UIBezierPath(
-            ovalInRect: rectContainingBoundaryPath)
-        pulledCardView.collisionBoundsType = .Path
-        pulledCardView.collisionBoundingPath = customBoundaryPath
-        
-        let laneCornerRadius: CGFloat = 5
-        boundaryCollisionBehavior = UICollisionBehavior(items: [pulledCardView])
-        for (index, boundaryCollisionView) in attachmentGuidelinesView.subviews.enumerate()
-        {
-            boundaryCollisionBehavior.addBoundaryWithIdentifier("guideline \(index)",
-                forPath: UIBezierPath(
-                    roundedRect: boundaryCollisionView.frame,
-                    cornerRadius: laneCornerRadius))
-        }
-        animator.addBehavior(boundaryCollisionBehavior)
-        
-        pulledCardDynamicItemBehavior = UIDynamicItemBehavior(items: [pulledCardView])
-        pulledCardDynamicItemBehavior.allowsRotation = false
-        pulledCardDynamicItemBehavior.friction = 0
-        pulledCardDynamicItemBehavior.resistance = 10.0
-        pulledCardDynamicItemBehavior.elasticity = 0
-        animator.addBehavior(pulledCardDynamicItemBehavior)
-        
-        pulledCardRestingAnchorLocation = pulledCardPlaceholderView.center
-        
-        pulledCardAttachmentBehavior = UIAttachmentBehavior(
-            item: pulledCardView,
-            attachedToAnchor: pulledCardRestingAnchorLocation)
-        pulledCardAttachmentBehavior?.length = 0
-        animator.addBehavior(pulledCardAttachmentBehavior!)
     }
     
     func layoutCardStack()
@@ -811,78 +996,6 @@ enum PulledCardViewState: StateMachineDataSource
                 + gap*CGFloat(index)
             print("card stack view, frame = \(cardView.frame)")
         }
-    }
-    
-    func setupHintingSettingsIconBehaviors()
-    {
-        NSLayoutConstraint.deactivateConstraints(
-            [hintingSettingsIconWidthConstraint, hintingSettingsIconHeightConstraint,
-                hintingSettingsIconLeadingConstraint, hintingSettingsIconCenterYConstraint])
-        hintingSettingsIconView.translatesAutoresizingMaskIntoConstraints = true
-        
-        let hintingSettingsIconRestingAttachmentBehavior =
-        UIAttachmentBehavior(item: hintingSettingsIconView,
-            attachedToAnchor: hintingSettingsIconView.center)
-        hintingSettingsIconRestingAttachmentBehavior.length = 0
-        hintingSettingsIconRestingAttachmentBehavior.damping = 1.0
-        hintingSettingsIconRestingAttachmentBehavior.frequency = 2.0
-        animator.addBehavior(hintingSettingsIconRestingAttachmentBehavior)
-        
-        hintingSettingsIconRestingAnchorLocation = hintingSettingsIconView.center
-    }
-    
-    func setupHintingDeleteIconBehaviors()
-    {
-        NSLayoutConstraint.deactivateConstraints(
-            [hintingDeleteIconWidthConstraint, hintingDeleteIconHeightConstraint,
-                hintingDeleteIconTrailingConstraint, hintingDeleteIconCenterYConstraint])
-        hintingDeleteIconView.translatesAutoresizingMaskIntoConstraints = true
-        
-        let hintingDeleteIconRestingAttachmentBehavior =
-        UIAttachmentBehavior(item: hintingDeleteIconView,
-            attachedToAnchor: hintingDeleteIconView.center)
-        hintingDeleteIconRestingAttachmentBehavior.length = 0
-        hintingDeleteIconRestingAttachmentBehavior.damping = 1.0
-        hintingDeleteIconRestingAttachmentBehavior.frequency = 2.0
-        animator.addBehavior(hintingDeleteIconRestingAttachmentBehavior)
-        
-        hintingDeleteIconRestingAnchorLocation = hintingDeleteIconView.center
-    }
-    
-    func setupHintingShuffleIconBehaviors()
-    {
-        NSLayoutConstraint.deactivateConstraints(
-            [hintingShuffleIconWidthConstraint, hintingShuffleIconHeightConstraint,
-                hintingShuffleIconCenterXConstraint, hintingShuffleIconTopConstraint])
-        hintingShuffleIconView.translatesAutoresizingMaskIntoConstraints = true
-        
-        let hintingShuffleIconRestingAttachmentBehavior =
-        UIAttachmentBehavior(item: hintingShuffleIconView,
-            attachedToAnchor: hintingShuffleIconView.center)
-        hintingShuffleIconRestingAttachmentBehavior.length = 0
-        hintingShuffleIconRestingAttachmentBehavior.damping = 1.0
-        hintingShuffleIconRestingAttachmentBehavior.frequency = 2.0
-        animator.addBehavior(hintingShuffleIconRestingAttachmentBehavior)
-        
-        hintingShuffleIconRestingAnchorLocation = hintingShuffleIconView.center
-    }
-    
-    func setupHintingEditIconBehaviors()
-    {
-        NSLayoutConstraint.deactivateConstraints(
-            [hintingEditIconWidthConstraint, hintingEditIconHeightConstraint,
-                hintingEditIconCenterXConstraint, hintingEditIconBottomConstraint])
-        hintingEditIconView.translatesAutoresizingMaskIntoConstraints = true
-        
-        let hintingEditIconRestingAttachmentBehavior =
-        UIAttachmentBehavior(item: hintingEditIconView,
-            attachedToAnchor: hintingEditIconView.center)
-        hintingEditIconRestingAttachmentBehavior.length = 0
-        hintingEditIconRestingAttachmentBehavior.damping = 1.0
-        hintingEditIconRestingAttachmentBehavior.frequency = 2.0
-        animator.addBehavior(hintingEditIconRestingAttachmentBehavior)
-        
-        hintingEditIconRestingAnchorLocation = hintingEditIconView.center
     }
 
 }
