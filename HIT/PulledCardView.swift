@@ -102,15 +102,14 @@ enum PulledCardViewState: StateMachineDataSource
 
 @IBDesignable class PulledCardView: XibDesignedView, StateMachineDelegate, UIDynamicAnimatorDelegate
 {
-
+    //
+    // MARK: - Properties
+    
     @IBOutlet var delegate: PulledCardViewDelegate? {
         didSet {
             reloadData()
         }
     }
-    
-    
-    // MARK: - Properties
     
     lazy var animator: UIDynamicAnimator = {
         let animator = UIDynamicAnimator(referenceView: self)
@@ -120,100 +119,6 @@ enum PulledCardViewState: StateMachineDataSource
     }()
     
     var panGR: UIPanGestureRecognizer?
-    
-    @IBOutlet weak var attachmentGuidelinesView: UIView!
-    
-    
-    // Pulled Card Placeholder
-    @IBOutlet weak var pulledCardPlaceholderView: CustomBoundsPlaceholderView!
-    var pulledCardRestingAnchorLocation: CGPoint!
-    var pulledCardAttachmentBehavior: UIAttachmentBehavior!
-    var pulledCardDynamicItemBehavior: UIDynamicItemBehavior!
-    var boundaryCollisionBehavior: UICollisionBehavior!
-    
-    
-    // Hinting Settings Icon
-    @IBOutlet weak var hintingSettingsIconView: HintingIconView!
-    @IBOutlet var hintingSettingsIconWidthConstraint: NSLayoutConstraint!
-    @IBOutlet var hintingSettingsIconHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var hintingSettingsIconLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet var hintingSettingsIconCenterYConstraint: NSLayoutConstraint!
-    
-    private var hintingSettingsIconRestingAnchorLocation: CGPoint!
-    var hintingSettingsIconTrackingAttachmentBehavior: UIAttachmentBehavior?
-    
-    // Represents the width or range of the tracking gesture
-    // across which the UI state is set to .HintingSettings
-    @IBOutlet weak var hintingSettingsTrackingSpanView: StatePlaceholderView!
-    var hintingSettingsSpanWidth: CGFloat {
-        get {
-            return hintingSettingsTrackingSpanView.frame.width
-        }
-    }
-    
-    
-    // Hinting Delete Icon
-    @IBOutlet weak var hintingDeleteIconView: HintingIconView!
-    @IBOutlet var hintingDeleteIconWidthConstraint: NSLayoutConstraint!
-    @IBOutlet var hintingDeleteIconHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var hintingDeleteIconTrailingConstraint: NSLayoutConstraint!
-    @IBOutlet var hintingDeleteIconCenterYConstraint: NSLayoutConstraint!
-    
-    private var hintingDeleteIconRestingAnchorLocation: CGPoint!
-    var hintingDeleteIconTrackingAttachmentBehavior: UIAttachmentBehavior?
-    
-    // Represents the width or range of the tracking gesture
-    // across which the UI state is set to .HintingDelete
-    @IBOutlet weak var hintingDeleteTrackingSpanView: StatePlaceholderView!
-    var hintingDeleteSpanWidth: CGFloat {
-        get {
-            return hintingDeleteTrackingSpanView.frame.width
-        }
-    }
-    
-    
-    // Hinting Shuffle Icon
-    @IBOutlet weak var hintingShuffleIconView: HintingIconView!
-    @IBOutlet var hintingShuffleIconWidthConstraint: NSLayoutConstraint!
-    @IBOutlet var hintingShuffleIconHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var hintingShuffleIconCenterXConstraint: NSLayoutConstraint!
-    @IBOutlet var hintingShuffleIconTopConstraint: NSLayoutConstraint!
-    
-    private var hintingShuffleIconRestingAnchorLocation: CGPoint!
-    var hintingShuffleIconTrackingAttachmentBehavior: UIAttachmentBehavior?
-    
-    // Represents the width or range of the tracking gesture
-    // across which the UI state is set to .HintingShuffle
-    @IBOutlet weak var hintingShuffleTrackingSpanView: StatePlaceholderView!
-    var hintingShuffleSpanHeight: CGFloat {
-        get {
-            return hintingShuffleTrackingSpanView.frame.height
-        }
-    }
-    
-    
-    // Hinting Edit Icon
-    @IBOutlet weak var hintingEditIconView: HintingIconView!
-    @IBOutlet var hintingEditIconWidthConstraint: NSLayoutConstraint!
-    @IBOutlet var hintingEditIconHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var hintingEditIconCenterXConstraint: NSLayoutConstraint!
-    @IBOutlet var hintingEditIconBottomConstraint: NSLayoutConstraint!
-    
-    private var hintingEditIconRestingAnchorLocation: CGPoint!
-    var hintingEditIconTrackingAttachmentBehavior: UIAttachmentBehavior?
-    
-    // Represents the width or range of the tracking gesture
-    // across which the UI state is set to .HintingEdit
-    @IBOutlet weak var hintingEditTrackingSpanView: StatePlaceholderView!
-    var hintingEditSpanHeight: CGFloat {
-        get {
-            return hintingEditTrackingSpanView.frame.height
-        }
-    }
-    
-    
-    // Retracted Card Stack Placeholder View
-    @IBOutlet weak var retractedCardStackPlaceholderView: StatePlaceholderView!
 
 
     //
@@ -223,25 +128,6 @@ enum PulledCardViewState: StateMachineDataSource
     lazy var machine: StateMachine<PulledCardView> = {
         return StateMachine(initialState: .WaitingForData, delegate: self)
     }()
-    
-    enum Axis
-    {
-        case Horizontal, Vertical
-        
-        init?(translation: CGPoint)
-        {
-            if abs(translation.x) == abs(translation.y) { return nil }
-            
-            self = abs(translation.y) > abs(translation.x)
-                ? Axis.Vertical
-                : Axis.Horizontal
-        }
-    }
-    
-    var attachmentAxis: Axis?
-    
-    var pulledCardView: CardView?
-    var cardsInStack = [CardView]()
     
     func didTransitionFrom(fromState: StateType, toState: StateType)
     {
@@ -469,27 +355,40 @@ enum PulledCardViewState: StateMachineDataSource
     override func layoutSubviews() {
         super.layoutSubviews()
         print("layout subviews")
-        print("xibView.bounds = \(self.xibView.bounds)")
     }
     
-    //
-    //
-    //
+    
     //
     //
     //
     
+    
+    // MARK: - Pulled Card
+    
+    var pulledCardView: CardView?
+    @IBOutlet weak var pulledCardPlaceholderView: CustomBoundsPlaceholderView!
+    var pulledCardRestingAnchorLocation: CGPoint!
+    var pulledCardAttachmentBehavior: UIAttachmentBehavior!
+    var pulledCardDynamicItemBehavior: UIDynamicItemBehavior!
+    var boundaryCollisionBehavior: UICollisionBehavior!
+    @IBOutlet weak var attachmentGuidelinesView: UIView!
     var pulledCardViewConstraints: [NSLayoutConstraint]?
     
-    func atRest()
+    enum Axis
     {
-        print("atRest()")
-        teardownPulledCardBehaviors()
-        teardownHintingSettingsIconBehaviors()
-        teardownHintingDeleteIconBehaviors()
-        teardownHintingShuffleIconBehaviors()
-        teardownHintingEditIconBehaviors()
+        case Horizontal, Vertical
+        
+        init?(translation: CGPoint)
+        {
+            if abs(translation.x) == abs(translation.y) { return nil }
+            
+            self = abs(translation.y) > abs(translation.x)
+                ? Axis.Vertical
+                : Axis.Horizontal
+        }
     }
+    
+    var attachmentAxis: Axis?
     
     func buildPulledCardBehaviors()
     {
@@ -583,7 +482,26 @@ enum PulledCardViewState: StateMachineDataSource
     
     
     //
-    // .HintingSettings behaviors
+    // MARK: - .HintingSettings
+    
+    @IBOutlet weak var hintingSettingsIconView: HintingIconView!
+    @IBOutlet var hintingSettingsIconWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingSettingsIconHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingSettingsIconLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingSettingsIconCenterYConstraint: NSLayoutConstraint!
+    
+    private var hintingSettingsIconRestingAnchorLocation: CGPoint!
+    private var hintingSettingsIconRestingAttachmentBehavior: UIAttachmentBehavior?
+    private var hintingSettingsIconTrackingAttachmentBehavior: UIAttachmentBehavior?
+    
+    // Represents the width or range of the tracking gesture
+    // across which the UI state is set to .HintingSettings
+    @IBOutlet weak var hintingSettingsTrackingSpanView: StatePlaceholderView!
+    var hintingSettingsSpanWidth: CGFloat {
+        get {
+            return hintingSettingsTrackingSpanView.frame.width
+        }
+    }
     
     func buildHintingSettingsIconBehaviors()
     {
@@ -592,13 +510,13 @@ enum PulledCardViewState: StateMachineDataSource
                 hintingSettingsIconLeadingConstraint, hintingSettingsIconCenterYConstraint])
         hintingSettingsIconView.translatesAutoresizingMaskIntoConstraints = true
         
-        let hintingSettingsIconRestingAttachmentBehavior =
+        hintingSettingsIconRestingAttachmentBehavior =
         UIAttachmentBehavior(item: hintingSettingsIconView,
             attachedToAnchor: hintingSettingsIconView.center)
-        hintingSettingsIconRestingAttachmentBehavior.length = 0
-        hintingSettingsIconRestingAttachmentBehavior.damping = 1.0
-        hintingSettingsIconRestingAttachmentBehavior.frequency = 2.0
-        animator.addBehavior(hintingSettingsIconRestingAttachmentBehavior)
+        hintingSettingsIconRestingAttachmentBehavior!.length = 0
+        hintingSettingsIconRestingAttachmentBehavior!.damping = 1.0
+        hintingSettingsIconRestingAttachmentBehavior!.frequency = 2.0
+        animator.addBehavior(hintingSettingsIconRestingAttachmentBehavior!)
         
         hintingSettingsIconRestingAnchorLocation = hintingSettingsIconView.center
     }
@@ -657,6 +575,12 @@ enum PulledCardViewState: StateMachineDataSource
             hintingSettingsIconTrackingAttachmentBehavior = nil
         }
         
+        if hintingSettingsIconRestingAttachmentBehavior != nil
+        {
+            animator.removeBehavior(hintingSettingsIconRestingAttachmentBehavior!)
+            hintingSettingsIconRestingAttachmentBehavior = nil
+        }
+            
         NSLayoutConstraint.activateConstraints(
             [hintingSettingsIconWidthConstraint, hintingSettingsIconHeightConstraint,
                 hintingSettingsIconLeadingConstraint, hintingSettingsIconCenterYConstraint])
@@ -665,7 +589,26 @@ enum PulledCardViewState: StateMachineDataSource
     
     
     //
-    // .HintingDelete behaviors
+    // MARK: - .HintingDelete
+    
+    @IBOutlet weak var hintingDeleteIconView: HintingIconView!
+    @IBOutlet var hintingDeleteIconWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingDeleteIconHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingDeleteIconTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingDeleteIconCenterYConstraint: NSLayoutConstraint!
+    
+    private var hintingDeleteIconRestingAnchorLocation: CGPoint!
+    private var hintingDeleteIconRestingAttachmentBehavior: UIAttachmentBehavior?
+    private var hintingDeleteIconTrackingAttachmentBehavior: UIAttachmentBehavior?
+    
+    // Represents the width or range of the tracking gesture
+    // across which the UI state is set to .HintingDelete
+    @IBOutlet weak var hintingDeleteTrackingSpanView: StatePlaceholderView!
+    var hintingDeleteSpanWidth: CGFloat {
+        get {
+            return hintingDeleteTrackingSpanView.frame.width
+        }
+    }
     
     func buildHintingDeleteIconBehaviors()
     {
@@ -674,13 +617,13 @@ enum PulledCardViewState: StateMachineDataSource
                 hintingDeleteIconTrailingConstraint, hintingDeleteIconCenterYConstraint])
         hintingDeleteIconView.translatesAutoresizingMaskIntoConstraints = true
         
-        let hintingDeleteIconRestingAttachmentBehavior =
+        hintingDeleteIconRestingAttachmentBehavior =
         UIAttachmentBehavior(item: hintingDeleteIconView,
             attachedToAnchor: hintingDeleteIconView.center)
-        hintingDeleteIconRestingAttachmentBehavior.length = 0
-        hintingDeleteIconRestingAttachmentBehavior.damping = 1.0
-        hintingDeleteIconRestingAttachmentBehavior.frequency = 2.0
-        animator.addBehavior(hintingDeleteIconRestingAttachmentBehavior)
+        hintingDeleteIconRestingAttachmentBehavior!.length = 0
+        hintingDeleteIconRestingAttachmentBehavior!.damping = 1.0
+        hintingDeleteIconRestingAttachmentBehavior!.frequency = 2.0
+        animator.addBehavior(hintingDeleteIconRestingAttachmentBehavior!)
         
         hintingDeleteIconRestingAnchorLocation = hintingDeleteIconView.center
     }
@@ -738,6 +681,12 @@ enum PulledCardViewState: StateMachineDataSource
             hintingDeleteIconTrackingAttachmentBehavior = nil
         }
         
+        if hintingDeleteIconRestingAttachmentBehavior != nil
+        {
+            animator.removeBehavior(hintingDeleteIconRestingAttachmentBehavior!)
+            hintingDeleteIconRestingAttachmentBehavior = nil
+        }
+        
         NSLayoutConstraint.activateConstraints(
             [hintingDeleteIconWidthConstraint, hintingDeleteIconHeightConstraint,
                 hintingDeleteIconTrailingConstraint, hintingDeleteIconCenterYConstraint])
@@ -746,7 +695,26 @@ enum PulledCardViewState: StateMachineDataSource
     
     
     //
-    // .HintingShuffle behaviors
+    // MARK: - .HintingShuffle
+    
+    @IBOutlet weak var hintingShuffleIconView: HintingIconView!
+    @IBOutlet var hintingShuffleIconWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingShuffleIconHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingShuffleIconCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingShuffleIconTopConstraint: NSLayoutConstraint!
+    
+    private var hintingShuffleIconRestingAnchorLocation: CGPoint!
+    private var hintingShuffleIconRestingAttachmentBehavior: UIAttachmentBehavior?
+    private var hintingShuffleIconTrackingAttachmentBehavior: UIAttachmentBehavior?
+    
+    // Represents the width or range of the tracking gesture
+    // across which the UI state is set to .HintingShuffle
+    @IBOutlet weak var hintingShuffleTrackingSpanView: StatePlaceholderView!
+    var hintingShuffleSpanHeight: CGFloat {
+        get {
+            return hintingShuffleTrackingSpanView.frame.height
+        }
+    }
     
     func buildHintingShuffleIconBehaviors()
     {
@@ -755,13 +723,13 @@ enum PulledCardViewState: StateMachineDataSource
                 hintingShuffleIconCenterXConstraint, hintingShuffleIconTopConstraint])
         hintingShuffleIconView.translatesAutoresizingMaskIntoConstraints = true
         
-        let hintingShuffleIconRestingAttachmentBehavior =
+        hintingShuffleIconRestingAttachmentBehavior =
         UIAttachmentBehavior(item: hintingShuffleIconView,
             attachedToAnchor: hintingShuffleIconView.center)
-        hintingShuffleIconRestingAttachmentBehavior.length = 0
-        hintingShuffleIconRestingAttachmentBehavior.damping = 1.0
-        hintingShuffleIconRestingAttachmentBehavior.frequency = 2.0
-        animator.addBehavior(hintingShuffleIconRestingAttachmentBehavior)
+        hintingShuffleIconRestingAttachmentBehavior!.length = 0
+        hintingShuffleIconRestingAttachmentBehavior!.damping = 1.0
+        hintingShuffleIconRestingAttachmentBehavior!.frequency = 2.0
+        animator.addBehavior(hintingShuffleIconRestingAttachmentBehavior!)
         
         hintingShuffleIconRestingAnchorLocation = hintingShuffleIconView.center
     }
@@ -820,6 +788,12 @@ enum PulledCardViewState: StateMachineDataSource
             hintingShuffleIconTrackingAttachmentBehavior = nil
         }
         
+        if hintingShuffleIconRestingAttachmentBehavior != nil
+        {
+            animator.removeBehavior(hintingShuffleIconRestingAttachmentBehavior!)
+            hintingShuffleIconRestingAttachmentBehavior = nil
+        }
+        
         NSLayoutConstraint.activateConstraints(
             [hintingShuffleIconWidthConstraint, hintingShuffleIconHeightConstraint,
                 hintingShuffleIconTopConstraint, hintingShuffleIconCenterXConstraint])
@@ -828,7 +802,26 @@ enum PulledCardViewState: StateMachineDataSource
     
     
     //
-    // .HintingEdit behaviors
+    // MARK: - .HintingEdit
+    
+    @IBOutlet weak var hintingEditIconView: HintingIconView!
+    @IBOutlet var hintingEditIconWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingEditIconHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingEditIconCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet var hintingEditIconBottomConstraint: NSLayoutConstraint!
+    
+    private var hintingEditIconRestingAnchorLocation: CGPoint!
+    private var hintingEditIconRestingAttachmentBehavior: UIAttachmentBehavior?
+    private var hintingEditIconTrackingAttachmentBehavior: UIAttachmentBehavior?
+    
+    // Represents the width or range of the tracking gesture
+    // across which the UI state is set to .HintingEdit
+    @IBOutlet weak var hintingEditTrackingSpanView: StatePlaceholderView!
+    var hintingEditSpanHeight: CGFloat {
+        get {
+            return hintingEditTrackingSpanView.frame.height
+        }
+    }
     
     func buildHintingEditIconBehaviors()
     {
@@ -837,13 +830,13 @@ enum PulledCardViewState: StateMachineDataSource
                 hintingEditIconCenterXConstraint, hintingEditIconBottomConstraint])
         hintingEditIconView.translatesAutoresizingMaskIntoConstraints = true
         
-        let hintingEditIconRestingAttachmentBehavior =
+        hintingEditIconRestingAttachmentBehavior =
         UIAttachmentBehavior(item: hintingEditIconView,
             attachedToAnchor: hintingEditIconView.center)
-        hintingEditIconRestingAttachmentBehavior.length = 0
-        hintingEditIconRestingAttachmentBehavior.damping = 1.0
-        hintingEditIconRestingAttachmentBehavior.frequency = 2.0
-        animator.addBehavior(hintingEditIconRestingAttachmentBehavior)
+        hintingEditIconRestingAttachmentBehavior!.length = 0
+        hintingEditIconRestingAttachmentBehavior!.damping = 1.0
+        hintingEditIconRestingAttachmentBehavior!.frequency = 2.0
+        animator.addBehavior(hintingEditIconRestingAttachmentBehavior!)
         
         hintingEditIconRestingAnchorLocation = hintingEditIconView.center
     }
@@ -902,6 +895,12 @@ enum PulledCardViewState: StateMachineDataSource
             hintingEditIconTrackingAttachmentBehavior = nil
         }
         
+        if hintingEditIconRestingAttachmentBehavior != nil
+        {
+            animator.removeBehavior(hintingEditIconRestingAttachmentBehavior!)
+            hintingEditIconRestingAttachmentBehavior = nil
+        }
+        
         NSLayoutConstraint.activateConstraints(
             [hintingEditIconWidthConstraint, hintingEditIconHeightConstraint,
                 hintingEditIconBottomConstraint, hintingEditIconCenterXConstraint])
@@ -909,9 +908,8 @@ enum PulledCardViewState: StateMachineDataSource
     }
     
     
-    //
-    //
-    //
+    // 
+    // MARK: - Etc
     
     func displayHintingIconViewForState(state: PulledCardViewState)
     {
@@ -974,9 +972,20 @@ enum PulledCardViewState: StateMachineDataSource
         }
     }
     
-    //
-    //
-    //
+    func atRest()
+    {
+        print("atRest()")
+        teardownPulledCardBehaviors()
+        teardownHintingSettingsIconBehaviors()
+        teardownHintingDeleteIconBehaviors()
+        teardownHintingShuffleIconBehaviors()
+        teardownHintingEditIconBehaviors()
+    }
+    
+    // Retracted Card Stack Placeholder View
+    @IBOutlet weak var retractedCardStackPlaceholderView: StatePlaceholderView!
+    
+    var cardsInStack = [CardView]()
     
     func layoutCardStack()
     {
