@@ -12,7 +12,7 @@ enum PulledCardViewState: StateMachineDataSource
 {
     case WaitingForData
     case ReloadData
-    case LayoutViews
+    case ForceLayout
     
     case AtRest
     case TrackingPan(UIPanGestureRecognizer)
@@ -35,14 +35,10 @@ enum PulledCardViewState: StateMachineDataSource
     {
         switch (from, to)
         {
-        case (.WaitingForData, .ReloadData):    return .Redirect(.AtRest)
         case (_, .ReloadData):                  return .Redirect(.AtRest)
-//        case (.ReloadData, .LayoutViews):       return .Redirect(.AtRest)
-//        case (.LayoutViews, .AtRest):           return .Continue
+        case (_, .ForceLayout):                 return .Redirect(.AtRest)
+        case (.ForceLayout, .AtRest):           return .Continue
         case (.ReloadData, .AtRest):            return .Continue
-            
-//        case (.AtRest, .LayoutViews):           return .Redirect(.AtRest)
-//        case (.AtRest, .ReloadData):            return .Redirect(.AtRest)
             
         case (.AtRest, .TrackingPan):           return .Continue
         case (.ReturningToRest, .AtRest):       return .Continue
@@ -144,17 +140,13 @@ enum PulledCardViewState: StateMachineDataSource
             print("_ (\(fromState)) -> .ReloadData")
             loadData()
             
-//        case (.ReloadData, .LayoutViews):
-//            print(".ReloadData -> .LayoutViews")
-//            layoutCards()
+        case (.ForceLayout, .AtRest):
+            print(".ForceLayout -> .AtRest")
+            atRest()
             
         case (.ReloadData, .AtRest):
             print(".ReloadData -> .AtRest")
             atRest()
-            
-//        case (.AtRest, .LayoutViews):
-//            print(".AtRest -> .LayoutViews")
-//            layoutCards()
             
         case (.AtRest, .TrackingPan(let panGR)):
             print(".AtRest -> .TrackingPan")
@@ -352,9 +344,21 @@ enum PulledCardViewState: StateMachineDataSource
         print("update constraints")
     }
     
+    var previousBounds: CGRect?
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         print("layout subviews")
+        print("previousBounds = \(previousBounds), bounds = \(bounds)")
+        
+        if previousBounds != bounds
+        {
+            print("bounds aren't equal")
+            previousBounds = bounds
+            machine.state = .ForceLayout
+        }
+        
+        print("\n\n")
     }
     
     
@@ -738,9 +742,12 @@ enum PulledCardViewState: StateMachineDataSource
     {
         let translation = panGR.translationInView(self)
         
-        let trackingDelay
+        var trackingDelay
             = hintingShuffleIconHeightConstraint.constant
             + hintingShuffleIconTopConstraint.constant * 2
+        if trackingDelay > hintingShuffleSpanHeight {
+            trackingDelay = 0
+        }
         
         if translation.y > trackingDelay
         {
