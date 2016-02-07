@@ -110,7 +110,7 @@ enum PulledCardViewState: StateMachineDataSource
     lazy var animator: UIDynamicAnimator = {
         let animator = UIDynamicAnimator(referenceView: self)
         animator.delegate = self
-        //        animator.debugEnabled = true
+        animator.debugEnabled = true
         return animator
     }()
     
@@ -139,6 +139,9 @@ enum PulledCardViewState: StateMachineDataSource
         case (_, .ReloadData):
             print("_ (\(fromState)) -> .ReloadData")
             loadData()
+            
+        case (_, .ForceLayout):
+            print("_ (\(fromState)) -> .ForceLayout")
             
         case (.ForceLayout, .AtRest):
             print(".ForceLayout -> .AtRest")
@@ -282,6 +285,7 @@ enum PulledCardViewState: StateMachineDataSource
     
     func pannedInView(sender: UIPanGestureRecognizer)
     {
+        print(sender.state.rawValue)
         if sender.state == .Began || sender.state == .Changed
         {
             if attachmentAxis == .Horizontal
@@ -480,6 +484,8 @@ enum PulledCardViewState: StateMachineDataSource
             pulledCardAttachmentBehavior = nil
         }
         
+        attachmentAxis = nil
+        
         pulledCardView?.translatesAutoresizingMaskIntoConstraints = false
         pulledCardViewConstraints = pulledCardView?.mirrorView(pulledCardPlaceholderView, byReplacingConstraints: [])
     }
@@ -514,9 +520,11 @@ enum PulledCardViewState: StateMachineDataSource
                 hintingSettingsIconLeadingConstraint, hintingSettingsIconCenterYConstraint])
         hintingSettingsIconView.translatesAutoresizingMaskIntoConstraints = true
         
-        hintingSettingsIconRestingAttachmentBehavior =
-        UIAttachmentBehavior(item: hintingSettingsIconView,
-            attachedToAnchor: hintingSettingsIconView.center)
+        if hintingSettingsIconRestingAttachmentBehavior == nil {
+            hintingSettingsIconRestingAttachmentBehavior =
+                UIAttachmentBehavior(item: hintingSettingsIconView,
+                    attachedToAnchor: hintingSettingsIconView.center)
+        }
         hintingSettingsIconRestingAttachmentBehavior!.length = 0
         hintingSettingsIconRestingAttachmentBehavior!.damping = 1.0
         hintingSettingsIconRestingAttachmentBehavior!.frequency = 2.0
@@ -621,9 +629,11 @@ enum PulledCardViewState: StateMachineDataSource
                 hintingDeleteIconTrailingConstraint, hintingDeleteIconCenterYConstraint])
         hintingDeleteIconView.translatesAutoresizingMaskIntoConstraints = true
         
-        hintingDeleteIconRestingAttachmentBehavior =
-        UIAttachmentBehavior(item: hintingDeleteIconView,
-            attachedToAnchor: hintingDeleteIconView.center)
+        if hintingDeleteIconRestingAttachmentBehavior == nil {
+            hintingDeleteIconRestingAttachmentBehavior =
+                UIAttachmentBehavior(item: hintingDeleteIconView,
+                    attachedToAnchor: hintingDeleteIconView.center)
+        }
         hintingDeleteIconRestingAttachmentBehavior!.length = 0
         hintingDeleteIconRestingAttachmentBehavior!.damping = 1.0
         hintingDeleteIconRestingAttachmentBehavior!.frequency = 2.0
@@ -727,9 +737,11 @@ enum PulledCardViewState: StateMachineDataSource
                 hintingShuffleIconCenterXConstraint, hintingShuffleIconTopConstraint])
         hintingShuffleIconView.translatesAutoresizingMaskIntoConstraints = true
         
-        hintingShuffleIconRestingAttachmentBehavior =
-        UIAttachmentBehavior(item: hintingShuffleIconView,
-            attachedToAnchor: hintingShuffleIconView.center)
+        if hintingShuffleIconRestingAttachmentBehavior == nil {
+            hintingShuffleIconRestingAttachmentBehavior =
+                UIAttachmentBehavior(item: hintingShuffleIconView,
+                    attachedToAnchor: hintingShuffleIconView.center)
+        }
         hintingShuffleIconRestingAttachmentBehavior!.length = 0
         hintingShuffleIconRestingAttachmentBehavior!.damping = 1.0
         hintingShuffleIconRestingAttachmentBehavior!.frequency = 2.0
@@ -837,9 +849,11 @@ enum PulledCardViewState: StateMachineDataSource
                 hintingEditIconCenterXConstraint, hintingEditIconBottomConstraint])
         hintingEditIconView.translatesAutoresizingMaskIntoConstraints = true
         
-        hintingEditIconRestingAttachmentBehavior =
-        UIAttachmentBehavior(item: hintingEditIconView,
-            attachedToAnchor: hintingEditIconView.center)
+        if hintingEditIconRestingAttachmentBehavior == nil {
+            hintingEditIconRestingAttachmentBehavior =
+                UIAttachmentBehavior(item: hintingEditIconView,
+                    attachedToAnchor: hintingEditIconView.center)
+        }
         hintingEditIconRestingAttachmentBehavior!.length = 0
         hintingEditIconRestingAttachmentBehavior!.damping = 1.0
         hintingEditIconRestingAttachmentBehavior!.frequency = 2.0
