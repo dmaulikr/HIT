@@ -34,7 +34,12 @@ class PulledCardViewController: UIViewController, PulledCardViewDelegate {
     {
         let card = CardView()
         card.annotation = dataSource.currentMantra
-        return CardView()
+        let cardColor = UIColor.randomColor().colorWithAlphaComponent(0.2)
+        card.cardTitleView.backgroundColor = cardColor
+        card.xibView.backgroundColor = cardColor
+        return card
+        
+//        return nil
     }
     
     func cardsDisplayedInStack() -> [CardView]

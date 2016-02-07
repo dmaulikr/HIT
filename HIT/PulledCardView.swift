@@ -608,7 +608,7 @@ enum PulledCardViewState: StateMachineDataSource
         let translation = panGR.translationInView(self)
         
         let trackingDelay
-        = hintingSettingsIconWidthConstraint.constant
+            = hintingSettingsIconWidthConstraint.constant
             + hintingSettingsIconLeadingConstraint.constant * 2
         
         if translation.x > trackingDelay
@@ -690,7 +690,7 @@ enum PulledCardViewState: StateMachineDataSource
         let translation = panGR.translationInView(self)
         
         let trackingDelay
-        = hintingDeleteIconWidthConstraint.constant
+            = hintingDeleteIconWidthConstraint.constant
             + hintingDeleteIconTrailingConstraint.constant * 2
         
         if translation.x < -1*trackingDelay
@@ -771,7 +771,7 @@ enum PulledCardViewState: StateMachineDataSource
         let translation = panGR.translationInView(self)
         
         let trackingDelay
-        = hintingShuffleIconHeightConstraint.constant
+            = hintingShuffleIconHeightConstraint.constant
             + hintingShuffleIconTopConstraint.constant * 2
         
         if translation.y > trackingDelay
@@ -977,16 +977,6 @@ enum PulledCardViewState: StateMachineDataSource
     //
     //
     //
-    
-    func layoutCards()
-    {
-//        setupPulledCardBehaviors()
-//        setupHintingSettingsIconBehaviors()
-//        setupHintingDeleteIconBehaviors()
-//        setupHintingShuffleIconBehaviors()
-//        setupHintingEditIconBehaviors()
-//        layoutCardStack()
-    }
     
     func layoutCardStack()
     {
