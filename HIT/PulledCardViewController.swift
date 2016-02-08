@@ -30,28 +30,42 @@ class PulledCardViewController: UIViewController, PulledCardViewDelegate {
         }
     }
     
-    func pulledCard() -> CardView?
+    func pulledCard() -> TestCardView?
     {
-        let card = CardView()
-        card.annotation = dataSource.currentMantra
-        let cardColor = UIColor.randomColor().colorWithAlphaComponent(0.2)
-        card.cardTitleView.backgroundColor = cardColor
-        card.xibView.backgroundColor = cardColor
-        return card
+//        let card = CardView()
+//        card.annotation = dataSource.currentMantra
+//        let cardColor = UIColor.randomColor().colorWithAlphaComponent(0.2)
+//        card.cardTitleView.backgroundColor = cardColor
+//        card.xibView.backgroundColor = cardColor
+//        return card
         
 //        return nil
+        
+        let card = TestCardView()
+        let cardColor = UIColor.randomColor().colorWithAlphaComponent(0.2)
+        card.backgroundColor = cardColor
+        return card
     }
     
-    func cardsDisplayedInStack() -> [CardView]
+    func cardsDisplayedInStack() -> [TestCardView]
     {
+//        return (1..<5)
+//            .map { dataSource.mantraWithId($0)! }
+//            .map {
+//                let card = CardView()
+//                card.annotation = $0
+//                let cardColor = UIColor.randomColor()
+//                card.cardTitleView.backgroundColor = cardColor
+//                card.xibView.backgroundColor = cardColor
+//                return card
+//            }
+        
         return (1..<5)
             .map { dataSource.mantraWithId($0)! }
-            .map {
-                let card = CardView()
-                card.annotation = $0
+            .map { mantra in
+                let card = TestCardView()
                 let cardColor = UIColor.randomColor()
-                card.cardTitleView.backgroundColor = cardColor
-                card.xibView.backgroundColor = cardColor
+                card.backgroundColor = cardColor
                 return card
             }
     }

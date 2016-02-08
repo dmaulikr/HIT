@@ -17,6 +17,7 @@
 		3F25F4591C53B6DB0093DDA5 /* CustomBoundsPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F25F4581C53B6DB0093DDA5 /* CustomBoundsPlaceholderView.swift */; };
 		3F25F45D1C53EE390093DDA5 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F25F45C1C53EE390093DDA5 /* StateMachine.swift */; };
 		3F3137741C1E472E008D021D /* UIView+Doppelganger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3137731C1E472E008D021D /* UIView+Doppelganger.swift */; };
+		3F56FE451C6726C00018A0BE /* TestCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F56FE441C6726C00018A0BE /* TestCardView.swift */; };
 		3F62931A1C148C78005BD240 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293191C148C78005BD240 /* AppDelegate.swift */; };
 		3F62931F1C148C78005BD240 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F62931D1C148C78005BD240 /* Main.storyboard */; };
 		3F6293211C148C78005BD240 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F6293201C148C78005BD240 /* Assets.xcassets */; };
@@ -81,6 +82,7 @@
 		3F25F4581C53B6DB0093DDA5 /* CustomBoundsPlaceholderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomBoundsPlaceholderView.swift; sourceTree = "<group>"; };
 		3F25F45C1C53EE390093DDA5 /* StateMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateMachine.swift; sourceTree = "<group>"; };
 		3F3137731C1E472E008D021D /* UIView+Doppelganger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Doppelganger.swift"; sourceTree = "<group>"; };
+		3F56FE441C6726C00018A0BE /* TestCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCardView.swift; sourceTree = "<group>"; };
 		3F6293161C148C78005BD240 /* HIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HIT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F6293191C148C78005BD240 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F62931E1C148C78005BD240 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 				3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */,
 				3F6293471C149830005BD240 /* MainViewController.swift */,
 				3FCA2D151C322AD400E27F64 /* CardCollectionViewController.swift */,
+				3F56FE441C6726C00018A0BE /* TestCardView.swift */,
 			);
 			name = "UI Experiments";
 			sourceTree = "<group>";
@@ -510,6 +513,7 @@
 				3F7B50491C603D40004EB27D /* MantraDataSource.swift in Sources */,
 				3F16BB811C2CBB46000D4B7D /* Mantra.swift in Sources */,
 				3F0135B81C4F8177001DA4B7 /* PullableCardFlowLayout.swift in Sources */,
+				3F56FE451C6726C00018A0BE /* TestCardView.swift in Sources */,
 				3FCA2D1C1C40A87000E27F64 /* PlaceholderCollectionViewCell.swift in Sources */,
 				3FDAE60D1C293BD0000634CF /* StatePlaceholderView.swift in Sources */,
 				3FCA2D181C322EF500E27F64 /* CardCollectionViewCell.swift in Sources */,

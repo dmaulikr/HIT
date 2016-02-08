@@ -35,6 +35,7 @@ enum PulledCardViewState: StateMachineDataSource
     {
         switch (from, to)
         {
+//        case (.WaitingForData, .ReloadData):    return .Redirect(.AtRest)
         case (_, .ReloadData):                  return .Redirect(.AtRest)
         case (_, .ForceLayout):                 return .Redirect(.AtRest)
         case (.ForceLayout, .AtRest):           return .Continue
@@ -50,40 +51,44 @@ enum PulledCardViewState: StateMachineDataSource
             
             
         case (.TrackingPan,     .HintingSettings):  return .Continue
-        case (.TrackingPan,     .ConfirmSettings):  return .Continue
         case (.HintingSettings, .HintingSettings):  return .Continue
-        case (.HintingSettings, .ConfirmSettings):  return .Continue
-        case (.ConfirmSettings, .ConfirmSettings):  return .Continue
-        case (.ConfirmSettings, .HintingSettings):  return .Continue
         case (.HintingSettings, .ReturningToRest):  return .Continue
         case (.HintingSettings, .HintingDelete):    return .Continue
             
+//        case (.TrackingPan,     .ConfirmSettings):  return .Continue
+//        case (.HintingSettings, .ConfirmSettings):  return .Continue
+//        case (.ConfirmSettings, .ConfirmSettings):  return .Continue
+//        case (.ConfirmSettings, .HintingSettings):  return .Continue
+            
         case (.TrackingPan,     .HintingDelete):    return .Continue
-        case (.TrackingPan,     .ConfirmDelete):    return .Continue
         case (.HintingDelete,   .HintingDelete):    return .Continue
-        case (.HintingDelete,   .ConfirmDelete):    return .Continue
-        case (.ConfirmDelete,   .ConfirmDelete):    return .Continue
-        case (.ConfirmDelete,   .HintingDelete):    return .Continue
         case (.HintingDelete,   .ReturningToRest):  return .Continue
         case (.HintingDelete,   .HintingSettings):  return .Continue
             
+//        case (.TrackingPan,     .ConfirmDelete):    return .Continue
+//        case (.HintingDelete,   .ConfirmDelete):    return .Continue
+//        case (.ConfirmDelete,   .ConfirmDelete):    return .Continue
+//        case (.ConfirmDelete,   .HintingDelete):    return .Continue
+            
         case (.TrackingPan,     .HintingShuffle):    return .Continue
-        case (.TrackingPan,     .ConfirmShuffle):    return .Continue
         case (.HintingShuffle,  .HintingShuffle):    return .Continue
-        case (.HintingShuffle,  .ConfirmShuffle):    return .Continue
-        case (.ConfirmShuffle,  .ConfirmShuffle):    return .Continue
-        case (.ConfirmShuffle,  .HintingShuffle):    return .Continue
         case (.HintingShuffle,  .ReturningToRest):  return .Continue
         case (.HintingShuffle,  .HintingEdit):      return .Continue
             
+//        case (.TrackingPan,     .ConfirmShuffle):    return .Continue
+//        case (.HintingShuffle,  .ConfirmShuffle):    return .Continue
+//        case (.ConfirmShuffle,  .ConfirmShuffle):    return .Continue
+//        case (.ConfirmShuffle,  .HintingShuffle):    return .Continue
+            
         case (.TrackingPan,     .HintingEdit):      return .Continue
-        case (.TrackingPan,     .ConfirmEdit):      return .Continue
         case (.HintingEdit,     .HintingEdit):      return .Continue
-        case (.HintingEdit,     .ConfirmEdit):      return .Continue
-        case (.ConfirmEdit,     .ConfirmEdit):      return .Continue
-        case (.ConfirmEdit,     .HintingEdit):      return .Continue
         case (.HintingEdit,     .ReturningToRest):  return .Continue
         case (.HintingEdit,     .HintingShuffle):   return .Continue
+            
+//        case (.TrackingPan,     .ConfirmEdit):      return .Continue
+//        case (.HintingEdit,     .ConfirmEdit):      return .Continue
+//        case (.ConfirmEdit,     .ConfirmEdit):      return .Continue
+//        case (.ConfirmEdit,     .HintingEdit):      return .Continue
             
         default:
             return .Abort
@@ -92,8 +97,8 @@ enum PulledCardViewState: StateMachineDataSource
 }
 
 @objc protocol PulledCardViewDelegate {
-    func pulledCard() -> CardView?
-    func cardsDisplayedInStack() -> [CardView]
+    func pulledCard() -> TestCardView?
+    func cardsDisplayedInStack() -> [TestCardView]
 }
 
 @IBDesignable class PulledCardView: XibDesignedView, StateMachineDelegate, UIDynamicAnimatorDelegate
@@ -110,7 +115,7 @@ enum PulledCardViewState: StateMachineDataSource
     lazy var animator: UIDynamicAnimator = {
         let animator = UIDynamicAnimator(referenceView: self)
         animator.delegate = self
-        animator.debugEnabled = true
+//        animator.debugEnabled = true
         return animator
     }()
     
@@ -149,7 +154,7 @@ enum PulledCardViewState: StateMachineDataSource
             
         case (.ReloadData, .AtRest):
             print(".ReloadData -> .AtRest")
-            atRest()
+//            atRest()
             
         case (.AtRest, .TrackingPan(let panGR)):
             print(".AtRest -> .TrackingPan")
@@ -325,6 +330,9 @@ enum PulledCardViewState: StateMachineDataSource
         pulledCardView = delegate?.pulledCard()
         if let pulledCardView = pulledCardView {
             addSubview(pulledCardView)
+            pulledCardView.translatesAutoresizingMaskIntoConstraints = false
+            pulledCardViewConstraints = pulledCardView.mirrorView(pulledCardPlaceholderView,
+                byReplacingConstraints: [])
         }
         
         cardsInStack = delegate?.cardsDisplayedInStack() ?? []
@@ -373,7 +381,7 @@ enum PulledCardViewState: StateMachineDataSource
     
     // MARK: - Pulled Card
     
-    var pulledCardView: CardView?
+    var pulledCardView: TestCardView?
     @IBOutlet weak var pulledCardPlaceholderView: CustomBoundsPlaceholderView!
     var pulledCardRestingAnchorLocation: CGPoint!
     var pulledCardAttachmentBehavior: UIAttachmentBehavior!
@@ -402,9 +410,11 @@ enum PulledCardViewState: StateMachineDataSource
     {
         guard let pulledCardView = pulledCardView else { return }
         
-        pulledCardView.translatesAutoresizingMaskIntoConstraints = true
+//        print("pcvc: \(pulledCardViewConstraints)")
         NSLayoutConstraint.deactivateConstraints(pulledCardViewConstraints!)
-        pulledCardView.frame = pulledCardPlaceholderView.frame
+//        pulledCardViewConstraints = nil
+        pulledCardView.translatesAutoresizingMaskIntoConstraints = true
+        setNeedsLayout()
         
         let pathDiameter = 18
         let rectContainingBoundaryPath = CGRect(
@@ -487,7 +497,9 @@ enum PulledCardViewState: StateMachineDataSource
         attachmentAxis = nil
         
         pulledCardView?.translatesAutoresizingMaskIntoConstraints = false
-        pulledCardViewConstraints = pulledCardView?.mirrorView(pulledCardPlaceholderView, byReplacingConstraints: [])
+        pulledCardViewConstraints = pulledCardView?.mirrorView(pulledCardPlaceholderView,
+            byReplacingConstraints: pulledCardViewConstraints ?? [])
+        setNeedsLayout()
     }
     
     
@@ -1006,7 +1018,7 @@ enum PulledCardViewState: StateMachineDataSource
     // Retracted Card Stack Placeholder View
     @IBOutlet weak var retractedCardStackPlaceholderView: StatePlaceholderView!
     
-    var cardsInStack = [CardView]()
+    var cardsInStack = [TestCardView]()
     
     func layoutCardStack()
     {
