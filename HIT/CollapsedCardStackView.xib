@@ -7,9 +7,10 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PulledCardView" customModule="HIT" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CollapsedCardStackView" customModule="HIT" customModuleProvider="target">
             <connections>
                 <outlet property="attachmentGuidelinesView" destination="uER-ei-lYc" id="O3o-D8-cro"/>
+                <outlet property="collapsedCardStackPlaceholderView" destination="qi2-lw-ogB" id="ScF-tw-PN2"/>
                 <outlet property="hintingDeleteIconCenterYConstraint" destination="Ydy-cC-vBg" id="Zip-xY-Rea"/>
                 <outlet property="hintingDeleteIconHeightConstraint" destination="uNK-0Y-n9A" id="mBH-IG-iFm"/>
                 <outlet property="hintingDeleteIconTrailingConstraint" destination="tkk-yw-Max" id="Hfw-b9-8rk"/>
@@ -35,7 +36,6 @@
                 <outlet property="hintingShuffleIconWidthConstraint" destination="CLu-6c-aL1" id="NbA-Rq-uRm"/>
                 <outlet property="hintingShuffleTrackingSpanView" destination="2c5-K0-BYh" id="UQk-mO-Ent"/>
                 <outlet property="pulledCardPlaceholderView" destination="5z1-ah-28w" id="7WM-CF-M0t"/>
-                <outlet property="retractedCardStackPlaceholderView" destination="qi2-lw-ogB" id="13Y-gY-ZJC"/>
                 <outlet property="xibView" destination="cEe-2l-BbS" id="Owd-2g-KKU"/>
             </connections>
         </placeholder>
@@ -229,7 +229,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qi2-lw-ogB" userLabel="Retracted Card Stack Placeholder View" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qi2-lw-ogB" userLabel="Collapsed Card Stack Placeholder View" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
                     <rect key="frame" x="3" y="623" width="369" height="44"/>
                     <color key="backgroundColor" red="0.91355104590000002" green="1" blue="0.91419956000000002" alpha="0.0" colorSpace="calibratedRGB"/>
                     <constraints>

@@ -1,5 +1,5 @@
 //
-//  PulledCardView.swift
+//  CollapsedCardStackView.swift
 //  HIT
 //
 //  Created by Nathan Melehan on 2/2/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum PulledCardViewState: StateMachineDataSource
+enum CollapsedCardStackViewState: StateMachineDataSource
 {
     case WaitingForData
     case ReloadData
@@ -31,7 +31,7 @@ enum PulledCardViewState: StateMachineDataSource
     case ConfirmShuffle(UIPanGestureRecognizer)
     
     
-    func shouldTransitionFrom(from: PulledCardViewState, to: PulledCardViewState) -> Should<PulledCardViewState>
+    func shouldTransitionFrom(from: CollapsedCardStackViewState, to: CollapsedCardStackViewState) -> Should<CollapsedCardStackViewState>
     {
         switch (from, to)
         {
@@ -96,17 +96,17 @@ enum PulledCardViewState: StateMachineDataSource
     }
 }
 
-@objc protocol PulledCardViewDelegate {
+@objc protocol CollapsedCardStackViewDelegate {
     func pulledCard() -> TestCardView?
     func cardsDisplayedInStack() -> [TestCardView]
 }
 
-@IBDesignable class PulledCardView: XibDesignedView, StateMachineDelegate, UIDynamicAnimatorDelegate
+@IBDesignable class CollapsedCardStackView: XibDesignedView, StateMachineDelegate, UIDynamicAnimatorDelegate
 {
     //
     // MARK: - Properties
     
-    @IBOutlet var delegate: PulledCardViewDelegate? {
+    @IBOutlet var delegate: CollapsedCardStackViewDelegate? {
         didSet {
             reloadData()
         }
@@ -125,8 +125,8 @@ enum PulledCardViewState: StateMachineDataSource
     //
     // MARK: - State
     
-    typealias StateType = PulledCardViewState
-    lazy var machine: StateMachine<PulledCardView> = {
+    typealias StateType = CollapsedCardStackViewState
+    lazy var machine: StateMachine<CollapsedCardStackView> = {
         return StateMachine(initialState: .WaitingForData, delegate: self)
     }()
     
@@ -944,7 +944,7 @@ enum PulledCardViewState: StateMachineDataSource
     // 
     // MARK: - Etc
     
-    func displayHintingIconViewForState(state: PulledCardViewState)
+    func displayHintingIconViewForState(state: CollapsedCardStackViewState)
     {
         switch state
         {
@@ -1016,7 +1016,7 @@ enum PulledCardViewState: StateMachineDataSource
     }
     
     // Retracted Card Stack Placeholder View
-    @IBOutlet weak var retractedCardStackPlaceholderView: StatePlaceholderView!
+    @IBOutlet weak var collapsedCardStackPlaceholderView: StatePlaceholderView!
     
     var cardsInStack = [TestCardView]()
     
@@ -1029,7 +1029,7 @@ enum PulledCardViewState: StateMachineDataSource
         {
             cardView.frame = pulledCardPlaceholderView.frame
             cardView.frame.origin.y
-                = retractedCardStackPlaceholderView.frame.origin.y
+                = collapsedCardStackPlaceholderView.frame.origin.y
                 + gap*CGFloat(index)
             print("card stack view, frame = \(cardView.frame)")
         }

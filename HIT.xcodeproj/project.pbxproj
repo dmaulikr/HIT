@@ -30,9 +30,9 @@
 		3F7B504B1C603EE0004EB27D /* UserMantraDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7B504A1C603EE0004EB27D /* UserMantraDataManager.swift */; };
 		3F7B504D1C60524B004EB27D /* Mantra+CardAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7B504C1C60524B004EB27D /* Mantra+CardAnnotation.swift */; };
 		3F7B50511C605E13004EB27D /* UserMantraDataManager+UICollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7B50501C605E13004EB27D /* UserMantraDataManager+UICollectionViewDataSource.swift */; };
-		3F7B50551C608758004EB27D /* PulledCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7B50541C608758004EB27D /* PulledCardView.swift */; };
-		3F7B50571C60878D004EB27D /* PulledCardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F7B50561C60878D004EB27D /* PulledCardView.xib */; };
-		3F7B50591C612FDA004EB27D /* PulledCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7B50581C612FDA004EB27D /* PulledCardViewController.swift */; };
+		3F7B50551C608758004EB27D /* CollapsedCardStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7B50541C608758004EB27D /* CollapsedCardStackView.swift */; };
+		3F7B50571C60878D004EB27D /* CollapsedCardStackView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F7B50561C60878D004EB27D /* CollapsedCardStackView.xib */; };
+		3F7B50591C612FDA004EB27D /* CollapsedCardStackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7B50581C612FDA004EB27D /* CollapsedCardStackViewController.swift */; };
 		3F8397D91C24F23C0002002E /* CardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F8397D81C24F23C0002002E /* CardView.xib */; };
 		3F8397DD1C251E720002002E /* XibDesignedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8397DC1C251E720002002E /* XibDesignedView.swift */; };
 		3F8397DF1C2522B70002002E /* CardTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8397DE1C2522B70002002E /* CardTableView.swift */; };
@@ -101,9 +101,9 @@
 		3F7B504A1C603EE0004EB27D /* UserMantraDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserMantraDataManager.swift; sourceTree = "<group>"; };
 		3F7B504C1C60524B004EB27D /* Mantra+CardAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mantra+CardAnnotation.swift"; sourceTree = "<group>"; };
 		3F7B50501C605E13004EB27D /* UserMantraDataManager+UICollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserMantraDataManager+UICollectionViewDataSource.swift"; sourceTree = "<group>"; };
-		3F7B50541C608758004EB27D /* PulledCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulledCardView.swift; sourceTree = "<group>"; };
-		3F7B50561C60878D004EB27D /* PulledCardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PulledCardView.xib; sourceTree = "<group>"; };
-		3F7B50581C612FDA004EB27D /* PulledCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulledCardViewController.swift; sourceTree = "<group>"; };
+		3F7B50541C608758004EB27D /* CollapsedCardStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollapsedCardStackView.swift; sourceTree = "<group>"; };
+		3F7B50561C60878D004EB27D /* CollapsedCardStackView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollapsedCardStackView.xib; sourceTree = "<group>"; };
+		3F7B50581C612FDA004EB27D /* CollapsedCardStackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollapsedCardStackViewController.swift; sourceTree = "<group>"; };
 		3F8397D81C24F23C0002002E /* CardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardView.xib; sourceTree = "<group>"; };
 		3F8397DC1C251E720002002E /* XibDesignedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XibDesignedView.swift; sourceTree = "<group>"; };
 		3F8397DE1C2522B70002002E /* CardTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTableView.swift; sourceTree = "<group>"; };
@@ -181,7 +181,7 @@
 			children = (
 				3F6293191C148C78005BD240 /* AppDelegate.swift */,
 				3F62931D1C148C78005BD240 /* Main.storyboard */,
-				3F7B50581C612FDA004EB27D /* PulledCardViewController.swift */,
+				3F7B50581C612FDA004EB27D /* CollapsedCardStackViewController.swift */,
 				3FCA2D121C31A62000E27F64 /* UI Experiments */,
 				3FCA2D131C31A64400E27F64 /* Model */,
 				3FF21E311C2203500079C67F /* Views */,
@@ -279,8 +279,8 @@
 		3FF21E311C2203500079C67F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				3F7B50541C608758004EB27D /* PulledCardView.swift */,
-				3F7B50561C60878D004EB27D /* PulledCardView.xib */,
+				3F7B50541C608758004EB27D /* CollapsedCardStackView.swift */,
+				3F7B50561C60878D004EB27D /* CollapsedCardStackView.xib */,
 				3FCA2D191C32441D00E27F64 /* CardFlowLayout.swift */,
 				3FCA2D171C322EF500E27F64 /* CardCollectionViewCell.swift */,
 				3FF21E2F1C2202CB0079C67F /* CardView.swift */,
@@ -424,7 +424,7 @@
 				3F6293211C148C78005BD240 /* Assets.xcassets in Resources */,
 				3F8397D91C24F23C0002002E /* CardView.xib in Resources */,
 				3F62931F1C148C78005BD240 /* Main.storyboard in Resources */,
-				3F7B50571C60878D004EB27D /* PulledCardView.xib in Resources */,
+				3F7B50571C60878D004EB27D /* CollapsedCardStackView.xib in Resources */,
 				3FA9E3381C57C2D200634362 /* HintingIconView.xib in Resources */,
 				3FF21E2C1C21F90C0079C67F /* CardTableView.xib in Resources */,
 			);
@@ -501,7 +501,7 @@
 			files = (
 				3F8397DD1C251E720002002E /* XibDesignedView.swift in Sources */,
 				3FF21E301C2202CB0079C67F /* CardView.swift in Sources */,
-				3F7B50551C608758004EB27D /* PulledCardView.swift in Sources */,
+				3F7B50551C608758004EB27D /* CollapsedCardStackView.swift in Sources */,
 				3FF21E351C24EDCD0079C67F /* NSLayoutConstraint+Helpers.swift in Sources */,
 				3FCA2D161C322AD400E27F64 /* CardCollectionViewController.swift in Sources */,
 				3F8E8E361C4CE13B00FBAD96 /* CardTransitionLayout.swift in Sources */,
@@ -522,7 +522,7 @@
 				3F16BB871C2D1F5B000D4B7D /* AttachmentTestViewController.swift in Sources */,
 				3F7B504D1C60524B004EB27D /* Mantra+CardAnnotation.swift in Sources */,
 				3FCA2D111C2E372D00E27F64 /* UIColor+Helpers.swift in Sources */,
-				3F7B50591C612FDA004EB27D /* PulledCardViewController.swift in Sources */,
+				3F7B50591C612FDA004EB27D /* CollapsedCardStackViewController.swift in Sources */,
 				3F7B50511C605E13004EB27D /* UserMantraDataManager+UICollectionViewDataSource.swift in Sources */,
 				3F6293481C149830005BD240 /* MainViewController.swift in Sources */,
 				3F25F4591C53B6DB0093DDA5 /* CustomBoundsPlaceholderView.swift in Sources */,

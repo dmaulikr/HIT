@@ -8,9 +8,9 @@
 
 import UIKit
 
-class PulledCardViewController: UIViewController, PulledCardViewDelegate {
+class CollapsedCardStackViewController: UIViewController, CollapsedCardStackViewDelegate {
 
-    @IBOutlet weak var pulledCardView: PulledCardView!
+    @IBOutlet weak var collapsedCardStackView: CollapsedCardStackView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,9 +24,9 @@ class PulledCardViewController: UIViewController, PulledCardViewDelegate {
     let dataSource: MantraDataSource = UserMantraDataManager.sharedManager
     
     override func viewDidLayoutSubviews() {
-        print("viewDidLayoutSubviews, pulledCardView.frame: \(pulledCardView.frame)")
-        if pulledCardView.delegate == nil {
-            pulledCardView.delegate = self
+        print("viewDidLayoutSubviews, collapsedCardStackView.frame: \(collapsedCardStackView.frame)")
+        if collapsedCardStackView.delegate == nil {
+            collapsedCardStackView.delegate = self
         }
     }
     
