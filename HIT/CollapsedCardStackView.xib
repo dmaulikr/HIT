@@ -137,7 +137,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hnD-NS-NZl" userLabel="Shuffle Hinting Icon View" customClass="HintingIconView" customModule="HIT" customModuleProvider="target">
-                    <rect key="frame" x="156" y="93" width="64" height="64"/>
+                    <rect key="frame" x="156" y="84" width="64" height="64"/>
                     <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                     <accessibility key="accessibilityConfiguration" identifier="Shuffle Hinting Icon View"/>
                     <constraints>
@@ -152,7 +152,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pXd-jK-O7P" userLabel="Edit Hinting Icon View" customClass="HintingIconView" customModule="HIT" customModuleProvider="target">
-                    <rect key="frame" x="156" y="510" width="64" height="64"/>
+                    <rect key="frame" x="156" y="519" width="64" height="64"/>
                     <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                     <accessibility key="accessibilityConfiguration" identifier="Edit Hinting Icon View"/>
                     <constraints>
@@ -167,10 +167,10 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5z1-ah-28w" userLabel="Pulled Card Placeholder View" customClass="CustomBoundsPlaceholderView" customModule="HIT" customModuleProvider="target">
-                    <rect key="frame" x="3" y="83" width="369" height="501"/>
+                    <rect key="frame" x="3" y="74" width="369" height="519"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VeT-ev-aCk" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="248" width="185" height="2"/>
+                            <rect key="frame" x="0.0" y="257" width="185" height="2"/>
                             <accessibility key="accessibilityConfiguration" identifier="Hinting Settings Tracking Span View"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="2" id="i6l-FX-miE"/>
@@ -182,7 +182,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jy6-oC-XUz" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
-                            <rect key="frame" x="185" y="252" width="184" height="2"/>
+                            <rect key="frame" x="185" y="261" width="184" height="2"/>
                             <accessibility key="accessibilityConfiguration" identifier="Hinting Delete Tracking Span View"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="2" id="yAi-7w-FbQ"/>
@@ -194,7 +194,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2c5-K0-BYh" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
-                            <rect key="frame" x="186" y="0.0" width="2" height="126"/>
+                            <rect key="frame" x="186" y="0.0" width="2" height="130"/>
                             <accessibility key="accessibilityConfiguration" identifier="Hinting Shuffle Tracking Span View"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="2" id="M3m-Ur-0Wl"/>
@@ -206,7 +206,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iYc-mU-abq" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
-                            <rect key="frame" x="182" y="251" width="2" height="250"/>
+                            <rect key="frame" x="182" y="260" width="2" height="259"/>
                             <accessibility key="accessibilityConfiguration" identifier="Hinting Edit Tracking Span View"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="2" id="XoV-Ud-RmR"/>
@@ -241,7 +241,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qi2-lw-ogB" userLabel="First Collapsed Card Placeholder View" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
-                    <rect key="frame" x="3" y="613" width="369" height="501"/>
+                    <rect key="frame" x="3" y="613" width="369" height="519"/>
                     <color key="backgroundColor" red="0.91355104590000002" green="1" blue="0.91419956000000002" alpha="0.0" colorSpace="calibratedRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="Collapsed Card Stack Placeholder View"/>
                     <userDefinedRuntimeAttributes>
@@ -251,7 +251,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2m9-F9-nuT" userLabel="Second Collapsed Card Placeholder View" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
-                    <rect key="frame" x="3" y="623" width="369" height="501"/>
+                    <rect key="frame" x="3" y="623" width="369" height="519"/>
                     <color key="backgroundColor" red="0.91355104590000002" green="1" blue="0.91419956000000002" alpha="0.0" colorSpace="calibratedRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="Collapsed Card Stack Placeholder View"/>
                     <userDefinedRuntimeAttributes>
@@ -264,14 +264,13 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="5z1-ah-28w" firstAttribute="height" secondItem="cEe-2l-BbS" secondAttribute="height" multiplier="0.75" id="0Ph-EI-4ve"/>
                 <constraint firstItem="5z1-ah-28w" firstAttribute="bottom" secondItem="pXd-jK-O7P" secondAttribute="bottom" constant="10" id="3JL-an-rHB"/>
                 <constraint firstItem="5z1-ah-28w" firstAttribute="centerX" secondItem="cEe-2l-BbS" secondAttribute="centerX" id="4tA-HZ-Pfh"/>
                 <constraint firstItem="qi2-lw-ogB" firstAttribute="height" secondItem="5z1-ah-28w" secondAttribute="height" id="6d0-Ep-S4u"/>
+                <constraint firstAttribute="bottom" secondItem="5z1-ah-28w" secondAttribute="bottom" constant="74" id="8um-NO-eRW"/>
                 <constraint firstItem="uER-ei-lYc" firstAttribute="centerY" secondItem="cEe-2l-BbS" secondAttribute="centerY" id="H5h-ZF-38r"/>
                 <constraint firstItem="hnD-NS-NZl" firstAttribute="top" secondItem="5z1-ah-28w" secondAttribute="top" constant="10" id="Q5r-l7-3Zu"/>
                 <constraint firstItem="7qT-Jf-uKh" firstAttribute="leading" secondItem="5z1-ah-28w" secondAttribute="leading" constant="10" id="QTP-0F-PL8"/>
-                <constraint firstItem="5z1-ah-28w" firstAttribute="centerY" secondItem="cEe-2l-BbS" secondAttribute="centerY" id="Tq4-LE-uyG"/>
                 <constraint firstItem="uER-ei-lYc" firstAttribute="centerX" secondItem="cEe-2l-BbS" secondAttribute="centerX" id="Vsp-SP-4gE"/>
                 <constraint firstItem="qi2-lw-ogB" firstAttribute="width" secondItem="5z1-ah-28w" secondAttribute="width" id="XhW-bV-wah"/>
                 <constraint firstItem="OIh-lm-PIy" firstAttribute="centerY" secondItem="5z1-ah-28w" secondAttribute="centerY" id="Ydy-cC-vBg"/>
@@ -284,6 +283,7 @@
                 <constraint firstItem="pXd-jK-O7P" firstAttribute="centerX" secondItem="5z1-ah-28w" secondAttribute="centerX" id="iag-Nn-tC9"/>
                 <constraint firstItem="2m9-F9-nuT" firstAttribute="width" secondItem="qi2-lw-ogB" secondAttribute="width" id="jJt-CT-bXj"/>
                 <constraint firstItem="uER-ei-lYc" firstAttribute="width" secondItem="cEe-2l-BbS" secondAttribute="width" id="k2r-gA-y9u"/>
+                <constraint firstItem="5z1-ah-28w" firstAttribute="top" secondItem="cEe-2l-BbS" secondAttribute="top" constant="74" id="oc2-oo-CjK"/>
                 <constraint firstItem="qi2-lw-ogB" firstAttribute="centerX" secondItem="cEe-2l-BbS" secondAttribute="centerX" id="s5K-RG-reM"/>
                 <constraint firstItem="uER-ei-lYc" firstAttribute="height" secondItem="cEe-2l-BbS" secondAttribute="height" id="tN4-bE-Wme"/>
                 <constraint firstItem="5z1-ah-28w" firstAttribute="trailing" secondItem="OIh-lm-PIy" secondAttribute="trailing" constant="10" id="tkk-yw-Max"/>
