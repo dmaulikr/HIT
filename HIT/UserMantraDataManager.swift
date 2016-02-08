@@ -8,13 +8,13 @@
 
 import Foundation
 
-class UserMantraDataManager: MantraDataSource
+@objc class UserMantraDataManager: NSObject, MantraDataSource
 {
     static let sharedManager = UserMantraDataManager()
     
     var idCounter = 1
     
-    init() {
+    override init() {
         for i in 0..<100 {
             userMantras[i] = Mantra(id: i, name: "Mantra \(i)")
         }

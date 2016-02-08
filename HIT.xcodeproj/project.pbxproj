@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		3E9860209EE0B99121A6F0EE /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1857E2202B0672F8B5E3D30D /* libPods.a */; };
 		3F0135B81C4F8177001DA4B7 /* PullableCardFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0135B71C4F8177001DA4B7 /* PullableCardFlowLayout.swift */; };
+		3F11CF981C685D8D0048D0EB /* StackableCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F11CF971C685D8D0048D0EB /* StackableCard.swift */; };
+		3F11CF9A1C68641F0048D0EB /* CollapsedCardStackViewDelegate+DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F11CF991C68641F0048D0EB /* CollapsedCardStackViewDelegate+DataSource.swift */; };
+		3F11CF9C1C6889290048D0EB /* UserMantraDataManager+CollapsedCardStackViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F11CF9B1C6889290048D0EB /* UserMantraDataManager+CollapsedCardStackViewDataSource.swift */; };
 		3F16BB7D1C2BE3A1000D4B7D /* CardAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16BB7C1C2BE3A1000D4B7D /* CardAnnotation.swift */; };
 		3F16BB7F1C2BE459000D4B7D /* CardTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16BB7E1C2BE459000D4B7D /* CardTableViewController.swift */; };
 		3F16BB811C2CBB46000D4B7D /* Mantra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16BB801C2CBB46000D4B7D /* Mantra.swift */; };
@@ -74,6 +77,9 @@
 /* Begin PBXFileReference section */
 		1857E2202B0672F8B5E3D30D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F0135B71C4F8177001DA4B7 /* PullableCardFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullableCardFlowLayout.swift; sourceTree = "<group>"; };
+		3F11CF971C685D8D0048D0EB /* StackableCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackableCard.swift; sourceTree = "<group>"; };
+		3F11CF991C68641F0048D0EB /* CollapsedCardStackViewDelegate+DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CollapsedCardStackViewDelegate+DataSource.swift"; sourceTree = "<group>"; };
+		3F11CF9B1C6889290048D0EB /* UserMantraDataManager+CollapsedCardStackViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserMantraDataManager+CollapsedCardStackViewDataSource.swift"; sourceTree = "<group>"; };
 		3F16BB7C1C2BE3A1000D4B7D /* CardAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardAnnotation.swift; sourceTree = "<group>"; };
 		3F16BB7E1C2BE459000D4B7D /* CardTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTableViewController.swift; sourceTree = "<group>"; };
 		3F16BB801C2CBB46000D4B7D /* Mantra.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mantra.swift; sourceTree = "<group>"; };
@@ -231,6 +237,7 @@
 				3F7B504C1C60524B004EB27D /* Mantra+CardAnnotation.swift */,
 				3F7B50481C603D40004EB27D /* MantraDataSource.swift */,
 				3F7B504A1C603EE0004EB27D /* UserMantraDataManager.swift */,
+				3F11CF9B1C6889290048D0EB /* UserMantraDataManager+CollapsedCardStackViewDataSource.swift */,
 				3F7B50501C605E13004EB27D /* UserMantraDataManager+UICollectionViewDataSource.swift */,
 			);
 			name = Model;
@@ -279,6 +286,7 @@
 		3FF21E311C2203500079C67F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3F11CF991C68641F0048D0EB /* CollapsedCardStackViewDelegate+DataSource.swift */,
 				3F7B50541C608758004EB27D /* CollapsedCardStackView.swift */,
 				3F7B50561C60878D004EB27D /* CollapsedCardStackView.xib */,
 				3FCA2D191C32441D00E27F64 /* CardFlowLayout.swift */,
@@ -289,6 +297,7 @@
 				3FA9E3351C57AE6D00634362 /* HintingIconView.swift */,
 				3FA9E3371C57C2D200634362 /* HintingIconView.xib */,
 				3FB00AEC1C57D40100756F07 /* DialView.swift */,
+				3F11CF971C685D8D0048D0EB /* StackableCard.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -507,7 +516,9 @@
 				3F8E8E361C4CE13B00FBAD96 /* CardTransitionLayout.swift in Sources */,
 				3FA3900F1C48E1D30099FB17 /* CollectionViewPulledCardFlowLayout.swift in Sources */,
 				3FB00AED1C57D40100756F07 /* DialView.swift in Sources */,
+				3F11CF9C1C6889290048D0EB /* UserMantraDataManager+CollapsedCardStackViewDataSource.swift in Sources */,
 				3FCA2D1A1C32441D00E27F64 /* CardFlowLayout.swift in Sources */,
+				3F11CF9A1C68641F0048D0EB /* CollapsedCardStackViewDelegate+DataSource.swift in Sources */,
 				3F16BB7F1C2BE459000D4B7D /* CardTableViewController.swift in Sources */,
 				3F16BB7D1C2BE3A1000D4B7D /* CardAnnotation.swift in Sources */,
 				3F7B50491C603D40004EB27D /* MantraDataSource.swift in Sources */,
@@ -517,6 +528,7 @@
 				3FCA2D1C1C40A87000E27F64 /* PlaceholderCollectionViewCell.swift in Sources */,
 				3FDAE60D1C293BD0000634CF /* StatePlaceholderView.swift in Sources */,
 				3FCA2D181C322EF500E27F64 /* CardCollectionViewCell.swift in Sources */,
+				3F11CF981C685D8D0048D0EB /* StackableCard.swift in Sources */,
 				3F3137741C1E472E008D021D /* UIView+Doppelganger.swift in Sources */,
 				3F7B504B1C603EE0004EB27D /* UserMantraDataManager.swift in Sources */,
 				3F16BB871C2D1F5B000D4B7D /* AttachmentTestViewController.swift in Sources */,

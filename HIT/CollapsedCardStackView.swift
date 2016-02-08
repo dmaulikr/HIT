@@ -95,17 +95,18 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     }
 }
 
-@objc protocol CollapsedCardStackViewDelegate {
-    func pulledCard() -> TestCardView?
-    func cardsDisplayedInStack() -> [TestCardView]
-}
-
 @IBDesignable class CollapsedCardStackView: XibDesignedView, StateMachineDelegate, UIDynamicAnimatorDelegate
 {
     //
     // MARK: - Properties
     
     @IBOutlet var delegate: CollapsedCardStackViewDelegate? {
+        didSet {
+            machine.state = .ForceLayout
+        }
+    }
+    
+    @IBOutlet var dataSource: CollapsedCardStackViewDataSource? {
         didSet {
             reloadData()
         }
@@ -908,8 +909,12 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     private func loadData()
     {
-        pulledCardView = delegate?.pulledCard()
-        if let pulledCardView = pulledCardView {
+        guard let dataSource = dataSource else { return }
+        
+        let pulledCard = dataSource.pulledCard()
+        pulledCardView = dataSource.cardViewForItem(pulledCard)
+        if let pulledCardView = pulledCardView
+        {
             pulledCardView.accessibilityIdentifier = "Pulled Card View"
             addSubview(pulledCardView)
             pulledCardView.translatesAutoresizingMaskIntoConstraints = false
@@ -917,10 +922,21 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                 byReplacingConstraints: [])
         }
         
-        cardsInStack = delegate?.cardsDisplayedInStack() ?? []
+        
+        
+        
+        
+//        cardsInStack = dataSource.cardsDisplayedInStack() ?? []
+        
         let gap = collapsedCardStackGapConstraint.constant
-        for (index, cardView) in cardsInStack.enumerate()
+        
+        let cardAtTopOfStack = dataSource.cardAtTopOfStack()
+        let cardsInStackRange = (cardAtTopOfStack..<cardAtTopOfStack + dataSource.numberOfItemsToDisplayInStack())
+        
+        for (index, card) in cardsInStackRange.enumerate()
         {
+            let cardView = dataSource.cardViewForItem(card)
+            
             addSubview(cardView)
             
             let widthConstraint = NSLayoutConstraint.pinItem(
