@@ -42,7 +42,7 @@ class CollapsedCardStackViewController: UIViewController, CollapsedCardStackView
 //        return nil
         
         let card = TestCardView()
-        let cardColor = UIColor.randomColor().colorWithAlphaComponent(0.2)
+        let cardColor = UIColor.randomColor().colorWithAlphaComponent(1.0)
         card.backgroundColor = cardColor
         return card
     }

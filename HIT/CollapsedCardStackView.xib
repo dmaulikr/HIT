@@ -10,7 +10,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CollapsedCardStackView" customModule="HIT" customModuleProvider="target">
             <connections>
                 <outlet property="attachmentGuidelinesView" destination="uER-ei-lYc" id="O3o-D8-cro"/>
-                <outlet property="collapsedCardStackPlaceholderView" destination="qi2-lw-ogB" id="ScF-tw-PN2"/>
+                <outlet property="collapsedCardStackGapConstraint" destination="hsC-Fa-Pvr" id="8mU-t4-0Oe"/>
+                <outlet property="firstCollapsedCardPlaceholderView" destination="qi2-lw-ogB" id="zc8-ys-cwk"/>
                 <outlet property="hintingDeleteIconCenterYConstraint" destination="Ydy-cC-vBg" id="Zip-xY-Rea"/>
                 <outlet property="hintingDeleteIconHeightConstraint" destination="uNK-0Y-n9A" id="mBH-IG-iFm"/>
                 <outlet property="hintingDeleteIconTrailingConstraint" destination="tkk-yw-Max" id="Hfw-b9-8rk"/>
@@ -239,16 +240,23 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qi2-lw-ogB" userLabel="Collapsed Card Stack Placeholder View" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
-                    <rect key="frame" x="3" y="623" width="369" height="44"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qi2-lw-ogB" userLabel="First Collapsed Card Placeholder View" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                    <rect key="frame" x="3" y="613" width="369" height="501"/>
                     <color key="backgroundColor" red="0.91355104590000002" green="1" blue="0.91419956000000002" alpha="0.0" colorSpace="calibratedRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="Collapsed Card Stack Placeholder View"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="lGG-Jq-Q8r"/>
-                    </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
                             <color key="value" red="0.62716656000000004" green="1" blue="0.3763997207" alpha="0.50525323280000001" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2m9-F9-nuT" userLabel="Second Collapsed Card Placeholder View" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                    <rect key="frame" x="3" y="623" width="369" height="501"/>
+                    <color key="backgroundColor" red="0.91355104590000002" green="1" blue="0.91419956000000002" alpha="0.0" colorSpace="calibratedRGB"/>
+                    <accessibility key="accessibilityConfiguration" identifier="Collapsed Card Stack Placeholder View"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                            <color key="value" red="0.026287371231079715" green="1" blue="0.8796765636276469" alpha="0.50525323280000001" colorSpace="calibratedRGB"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
@@ -259,17 +267,22 @@
                 <constraint firstItem="5z1-ah-28w" firstAttribute="height" secondItem="cEe-2l-BbS" secondAttribute="height" multiplier="0.75" id="0Ph-EI-4ve"/>
                 <constraint firstItem="5z1-ah-28w" firstAttribute="bottom" secondItem="pXd-jK-O7P" secondAttribute="bottom" constant="10" id="3JL-an-rHB"/>
                 <constraint firstItem="5z1-ah-28w" firstAttribute="centerX" secondItem="cEe-2l-BbS" secondAttribute="centerX" id="4tA-HZ-Pfh"/>
+                <constraint firstItem="qi2-lw-ogB" firstAttribute="height" secondItem="5z1-ah-28w" secondAttribute="height" id="6d0-Ep-S4u"/>
                 <constraint firstItem="uER-ei-lYc" firstAttribute="centerY" secondItem="cEe-2l-BbS" secondAttribute="centerY" id="H5h-ZF-38r"/>
                 <constraint firstItem="hnD-NS-NZl" firstAttribute="top" secondItem="5z1-ah-28w" secondAttribute="top" constant="10" id="Q5r-l7-3Zu"/>
                 <constraint firstItem="7qT-Jf-uKh" firstAttribute="leading" secondItem="5z1-ah-28w" secondAttribute="leading" constant="10" id="QTP-0F-PL8"/>
                 <constraint firstItem="5z1-ah-28w" firstAttribute="centerY" secondItem="cEe-2l-BbS" secondAttribute="centerY" id="Tq4-LE-uyG"/>
                 <constraint firstItem="uER-ei-lYc" firstAttribute="centerX" secondItem="cEe-2l-BbS" secondAttribute="centerX" id="Vsp-SP-4gE"/>
+                <constraint firstItem="qi2-lw-ogB" firstAttribute="width" secondItem="5z1-ah-28w" secondAttribute="width" id="XhW-bV-wah"/>
                 <constraint firstItem="OIh-lm-PIy" firstAttribute="centerY" secondItem="5z1-ah-28w" secondAttribute="centerY" id="Ydy-cC-vBg"/>
-                <constraint firstAttribute="bottom" secondItem="qi2-lw-ogB" secondAttribute="bottom" id="db4-UL-SvJ"/>
+                <constraint firstItem="2m9-F9-nuT" firstAttribute="height" secondItem="qi2-lw-ogB" secondAttribute="height" id="csO-st-bs6"/>
+                <constraint firstItem="2m9-F9-nuT" firstAttribute="centerX" secondItem="qi2-lw-ogB" secondAttribute="centerX" id="dPq-cM-0G0"/>
+                <constraint firstAttribute="bottom" secondItem="qi2-lw-ogB" secondAttribute="top" constant="54" id="db4-UL-SvJ"/>
                 <constraint firstItem="hnD-NS-NZl" firstAttribute="centerX" secondItem="5z1-ah-28w" secondAttribute="centerX" id="eE2-jC-ebI"/>
-                <constraint firstItem="qi2-lw-ogB" firstAttribute="width" secondItem="cEe-2l-BbS" secondAttribute="width" constant="-6" id="egB-gN-2Oz"/>
                 <constraint firstItem="7qT-Jf-uKh" firstAttribute="centerY" secondItem="5z1-ah-28w" secondAttribute="centerY" id="fEW-pI-TRH"/>
+                <constraint firstItem="2m9-F9-nuT" firstAttribute="top" secondItem="qi2-lw-ogB" secondAttribute="top" constant="10" id="hsC-Fa-Pvr"/>
                 <constraint firstItem="pXd-jK-O7P" firstAttribute="centerX" secondItem="5z1-ah-28w" secondAttribute="centerX" id="iag-Nn-tC9"/>
+                <constraint firstItem="2m9-F9-nuT" firstAttribute="width" secondItem="qi2-lw-ogB" secondAttribute="width" id="jJt-CT-bXj"/>
                 <constraint firstItem="uER-ei-lYc" firstAttribute="width" secondItem="cEe-2l-BbS" secondAttribute="width" id="k2r-gA-y9u"/>
                 <constraint firstItem="qi2-lw-ogB" firstAttribute="centerX" secondItem="cEe-2l-BbS" secondAttribute="centerX" id="s5K-RG-reM"/>
                 <constraint firstItem="uER-ei-lYc" firstAttribute="height" secondItem="cEe-2l-BbS" secondAttribute="height" id="tN4-bE-Wme"/>

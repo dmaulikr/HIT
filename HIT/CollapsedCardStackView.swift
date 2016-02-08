@@ -35,7 +35,6 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     {
         switch (from, to)
         {
-//        case (.WaitingForData, .ReloadData):    return .Redirect(.AtRest)
         case (_, .ReloadData):                  return .Redirect(.AtRest)
         case (_, .ForceLayout):                 return .Redirect(.AtRest)
         case (.ForceLayout, .AtRest):           return .Continue
@@ -147,6 +146,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             
         case (_, .ForceLayout):
             print("_ (\(fromState)) -> .ForceLayout")
+            break
             
         case (.ForceLayout, .AtRest):
             print(".ForceLayout -> .AtRest")
@@ -154,7 +154,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             
         case (.ReloadData, .AtRest):
             print(".ReloadData -> .AtRest")
-//            teardownAllDynamicAnimation()
+            break
             
         case (.AtRest, .TrackingPan(let panGR)):
             print(".AtRest -> .TrackingPan")
@@ -320,28 +320,6 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         }
     }
     
-    private func loadData()
-    {
-        // remove cached views
-        // add new views from delegate
-        // set behaviors
-        
-        pulledCardView = delegate?.pulledCard()
-        if let pulledCardView = pulledCardView {
-            pulledCardView.accessibilityIdentifier = "Pulled Card View"
-            addSubview(pulledCardView)
-            pulledCardView.translatesAutoresizingMaskIntoConstraints = false
-            pulledCardViewConstraints = pulledCardView.mirrorView(pulledCardPlaceholderView,
-                byReplacingConstraints: [])
-        }
-        
-        cardsInStack = delegate?.cardsDisplayedInStack() ?? []
-        for card in cardsInStack
-        {
-            addSubview(card)
-        }
-    }
-    
     func reloadData()
     {
         machine.state = .ReloadData
@@ -353,7 +331,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     override func updateConstraints() {
         super.updateConstraints()
-//        print("update constraints")
+        print("update constraints")
     }
     
     var previousBounds: CGRect?
@@ -361,7 +339,6 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     override func layoutSubviews() {
         super.layoutSubviews()
         print("layout subviews")
-//        print("previousBounds = \(previousBounds), bounds = \(bounds)")
         
         if previousBounds != bounds
         {
@@ -369,8 +346,6 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             previousBounds = bounds
             machine.state = .ForceLayout
         }
-        
-//        print("\n\n")
     }
     
     
@@ -495,6 +470,14 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             byReplacingConstraints: pulledCardViewConstraints ?? [])
         setNeedsLayout()
     }
+    
+    
+    //
+    // MARK: - Collapsed Card Stack
+    
+    var cardsInStack = [TestCardView]()
+    @IBOutlet weak var firstCollapsedCardPlaceholderView: StatePlaceholderView!
+    @IBOutlet weak var collapsedCardStackGapConstraint: NSLayoutConstraint!
     
     
     //
@@ -923,6 +906,53 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     // 
     // MARK: - Etc
     
+    private func loadData()
+    {
+        pulledCardView = delegate?.pulledCard()
+        if let pulledCardView = pulledCardView {
+            pulledCardView.accessibilityIdentifier = "Pulled Card View"
+            addSubview(pulledCardView)
+            pulledCardView.translatesAutoresizingMaskIntoConstraints = false
+            pulledCardViewConstraints = pulledCardView.mirrorView(pulledCardPlaceholderView,
+                byReplacingConstraints: [])
+        }
+        
+        cardsInStack = delegate?.cardsDisplayedInStack() ?? []
+        let gap = collapsedCardStackGapConstraint.constant
+        for (index, cardView) in cardsInStack.enumerate()
+        {
+            addSubview(cardView)
+            
+            let widthConstraint = NSLayoutConstraint.pinItem(
+                cardView, toItem: firstCollapsedCardPlaceholderView, withAttribute: .Width)
+            let heightConstraint = NSLayoutConstraint.pinItem(
+                cardView, toItem: firstCollapsedCardPlaceholderView, withAttribute: .Height)
+            let centerXConstraint = NSLayoutConstraint.pinItem(
+                cardView, toItem: firstCollapsedCardPlaceholderView, withAttribute: .CenterX)
+            let topConstraint = NSLayoutConstraint(
+                item: cardView,
+                attribute: .Top,
+                relatedBy: .Equal,
+                toItem: firstCollapsedCardPlaceholderView,
+                attribute: .Top,
+                multiplier: 1.0,
+                constant: gap*CGFloat(index))
+            
+            cardView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activateConstraints([widthConstraint, heightConstraint,
+                centerXConstraint, topConstraint])
+        }
+    }
+    
+    func teardownAllDynamicAnimation()
+    {
+        teardownPulledCardDynamicAnimation()
+        teardownHintingSettingsIconDynamicAnimation()
+        teardownHintingDeleteIconDynamicAnimation()
+        teardownHintingShuffleIconDynamicAnimation()
+        teardownHintingEditIconDynamicAnimation()
+    }
+    
     func buildHintingIconViewDynamicAnimationForViewState(state: CollapsedCardStackViewState)
     {
         switch state
@@ -983,34 +1013,4 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             break
         }
     }
-    
-    func teardownAllDynamicAnimation()
-    {
-        teardownPulledCardDynamicAnimation()
-        teardownHintingSettingsIconDynamicAnimation()
-        teardownHintingDeleteIconDynamicAnimation()
-        teardownHintingShuffleIconDynamicAnimation()
-        teardownHintingEditIconDynamicAnimation()
-    }
-    
-    // Retracted Card Stack Placeholder View
-    @IBOutlet weak var collapsedCardStackPlaceholderView: StatePlaceholderView!
-    
-    var cardsInStack = [TestCardView]()
-    
-    func layoutCardStack()
-    {
-//        print("layout card stack, bounds = \(self.bounds), xibView.bounds = \(self.xibView.bounds)")
-        
-        let gap: CGFloat = 10
-        for (index, cardView) in cardsInStack.enumerate()
-        {
-            cardView.frame = pulledCardPlaceholderView.frame
-            cardView.frame.origin.y
-                = collapsedCardStackPlaceholderView.frame.origin.y
-                + gap*CGFloat(index)
-//            print("card stack view, frame = \(cardView.frame)")
-        }
-    }
-
 }
