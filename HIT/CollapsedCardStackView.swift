@@ -290,7 +290,6 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     func pannedInView(sender: UIPanGestureRecognizer)
     {
-        print(sender.state.rawValue)
         if sender.state == .Began || sender.state == .Changed
         {
             if attachmentAxis == .Horizontal
@@ -329,6 +328,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         
         pulledCardView = delegate?.pulledCard()
         if let pulledCardView = pulledCardView {
+            pulledCardView.accessibilityIdentifier = "Pulled Card View"
             addSubview(pulledCardView)
             pulledCardView.translatesAutoresizingMaskIntoConstraints = false
             pulledCardViewConstraints = pulledCardView.mirrorView(pulledCardPlaceholderView,
@@ -353,7 +353,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     override func updateConstraints() {
         super.updateConstraints()
-        print("update constraints")
+//        print("update constraints")
     }
     
     var previousBounds: CGRect?
@@ -361,7 +361,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     override func layoutSubviews() {
         super.layoutSubviews()
         print("layout subviews")
-        print("previousBounds = \(previousBounds), bounds = \(bounds)")
+//        print("previousBounds = \(previousBounds), bounds = \(bounds)")
         
         if previousBounds != bounds
         {
@@ -370,7 +370,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             machine.state = .ForceLayout
         }
         
-        print("\n\n")
+//        print("\n\n")
     }
     
     
@@ -460,8 +460,6 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         {
             let translation = panGR.translationInView(self)
             attachmentAxis = Axis(translation: translation)
-            print(attachmentAxis)
-            print(translation)
         }
         
         let translation = panGR.translationInView(self)
@@ -604,11 +602,11 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             animator.removeBehavior(hintingSettingsIconRestingAttachmentBehavior!)
             hintingSettingsIconRestingAttachmentBehavior = nil
         }
-            
+        
+        hintingSettingsIconView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activateConstraints(
             [hintingSettingsIconWidthConstraint, hintingSettingsIconHeightConstraint,
                 hintingSettingsIconLeadingConstraint, hintingSettingsIconCenterYConstraint])
-        hintingSettingsIconView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     
@@ -713,10 +711,10 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             hintingDeleteIconRestingAttachmentBehavior = nil
         }
         
+        hintingDeleteIconView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activateConstraints(
             [hintingDeleteIconWidthConstraint, hintingDeleteIconHeightConstraint,
                 hintingDeleteIconTrailingConstraint, hintingDeleteIconCenterYConstraint])
-        hintingDeleteIconView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     
@@ -825,10 +823,11 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             hintingShuffleIconRestingAttachmentBehavior = nil
         }
         
+        
+        hintingShuffleIconView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activateConstraints(
             [hintingShuffleIconWidthConstraint, hintingShuffleIconHeightConstraint,
                 hintingShuffleIconTopConstraint, hintingShuffleIconCenterXConstraint])
-        hintingShuffleIconView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     
@@ -934,10 +933,10 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             hintingEditIconRestingAttachmentBehavior = nil
         }
         
+        hintingEditIconView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activateConstraints(
             [hintingEditIconWidthConstraint, hintingEditIconHeightConstraint,
                 hintingEditIconBottomConstraint, hintingEditIconCenterXConstraint])
-        hintingEditIconView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     
@@ -1007,7 +1006,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     func atRest()
     {
-        print("atRest()")
+//        print("atRest()")
         teardownPulledCardBehaviors()
         teardownHintingSettingsIconBehaviors()
         teardownHintingDeleteIconBehaviors()
@@ -1022,7 +1021,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     func layoutCardStack()
     {
-        print("layout card stack, bounds = \(self.bounds), xibView.bounds = \(self.xibView.bounds)")
+//        print("layout card stack, bounds = \(self.bounds), xibView.bounds = \(self.xibView.bounds)")
         
         let gap: CGFloat = 10
         for (index, cardView) in cardsInStack.enumerate()
@@ -1031,7 +1030,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             cardView.frame.origin.y
                 = collapsedCardStackPlaceholderView.frame.origin.y
                 + gap*CGFloat(index)
-            print("card stack view, frame = \(cardView.frame)")
+//            print("card stack view, frame = \(cardView.frame)")
         }
     }
 
