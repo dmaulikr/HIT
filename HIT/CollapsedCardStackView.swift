@@ -150,15 +150,15 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             
         case (.ForceLayout, .AtRest):
             print(".ForceLayout -> .AtRest")
-            atRest()
+            teardownAllDynamicAnimation()
             
         case (.ReloadData, .AtRest):
             print(".ReloadData -> .AtRest")
-//            atRest()
+//            teardownAllDynamicAnimation()
             
         case (.AtRest, .TrackingPan(let panGR)):
             print(".AtRest -> .TrackingPan")
-            buildPulledCardBehaviors()
+            buildPulledCardDynamicAnimation()
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
         case (.TrackingPan, .TrackingPan(let panGR)):
@@ -175,14 +175,14 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             
         case (.ReturningToRest, .AtRest):
             print(".ReturningToRest -> .AtRest")
-            atRest()
+            teardownAllDynamicAnimation()
             
             
             // .HintingSettings cases
             
         case (.TrackingPan, .HintingSettings(let panGR)):
             print(".TrackingPan -> .HintingSettings")
-            displayHintingIconViewForState(toState)
+            buildHintingIconViewDynamicAnimationForViewState(toState)
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
@@ -199,7 +199,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         case (.HintingSettings, .HintingDelete(let panGR)):
             print(".HintingSettings -> .HintingDelete")
             returnHintingSettingsIconPresentationToRestingState()
-            displayHintingIconViewForState(toState)
+            buildHintingIconViewDynamicAnimationForViewState(toState)
             updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
@@ -208,7 +208,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             
         case (.TrackingPan, .HintingDelete(let panGR)):
             print(".TrackingPan -> .HintingDelete")
-            displayHintingIconViewForState(toState)
+            buildHintingIconViewDynamicAnimationForViewState(toState)
             updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
@@ -225,7 +225,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         case (.HintingDelete, .HintingSettings(let panGR)):
             print(".HintingSettings -> .HintingDelete")
             returnHintingDeleteIconPresentationToRestingState()
-            displayHintingIconViewForState(toState)
+            buildHintingIconViewDynamicAnimationForViewState(toState)
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
@@ -234,7 +234,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             
         case (.TrackingPan, .HintingShuffle(let panGR)):
             print(".TrackingPan -> .HintingShuffle")
-            displayHintingIconViewForState(toState)
+            buildHintingIconViewDynamicAnimationForViewState(toState)
             updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
@@ -251,7 +251,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         case (.HintingShuffle, .HintingEdit(let panGR)):
             print(".HintingSettings -> .HintingShuffle")
             returnHintingShuffleIconPresentationToRestingState()
-            displayHintingIconViewForState(toState)
+            buildHintingIconViewDynamicAnimationForViewState(toState)
             updateHintingEditIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
@@ -260,7 +260,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             
         case (.TrackingPan, .HintingEdit(let panGR)):
             print(".TrackingPan -> .HintingEdit")
-            displayHintingIconViewForState(toState)
+            buildHintingIconViewDynamicAnimationForViewState(toState)
             updateHintingEditIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
@@ -277,7 +277,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         case (.HintingEdit, .HintingShuffle(let panGR)):
             print(".HintingSettings -> .HintingShuffle")
             returnHintingEditIconPresentationToRestingState()
-            displayHintingIconViewForState(toState)
+            buildHintingIconViewDynamicAnimationForViewState(toState)
             updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
@@ -406,13 +406,11 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     var attachmentAxis: Axis?
     
-    func buildPulledCardBehaviors()
+    func buildPulledCardDynamicAnimation()
     {
         guard let pulledCardView = pulledCardView else { return }
         
-//        print("pcvc: \(pulledCardViewConstraints)")
         NSLayoutConstraint.deactivateConstraints(pulledCardViewConstraints!)
-//        pulledCardViewConstraints = nil
         pulledCardView.translatesAutoresizingMaskIntoConstraints = true
         setNeedsLayout()
         
@@ -479,10 +477,8 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         attachmentAxis = nil
     }
     
-    func teardownPulledCardBehaviors()
+    func teardownPulledCardDynamicAnimation()
     {
-//        guard pulledCardAttachmentBehavior != nil else { return }
-        
         if pulledCardAttachmentBehavior != nil {
             animator.removeBehavior(boundaryCollisionBehavior)
             animator.removeBehavior(pulledCardDynamicItemBehavior)
@@ -523,7 +519,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         }
     }
     
-    func buildHintingSettingsIconBehaviors()
+    func buildHintingSettingsIconDynamicAnimation()
     {
         NSLayoutConstraint.deactivateConstraints(
             [hintingSettingsIconWidthConstraint, hintingSettingsIconHeightConstraint,
@@ -589,13 +585,9 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         }
     }
     
-    func teardownHintingSettingsIconBehaviors()
+    func teardownHintingSettingsIconDynamicAnimation()
     {
-        if hintingSettingsIconTrackingAttachmentBehavior != nil
-        {
-            animator.removeBehavior(hintingSettingsIconTrackingAttachmentBehavior!)
-            hintingSettingsIconTrackingAttachmentBehavior = nil
-        }
+        returnHintingSettingsIconPresentationToRestingState()
         
         if hintingSettingsIconRestingAttachmentBehavior != nil
         {
@@ -632,7 +624,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         }
     }
     
-    func buildHintingDeleteIconBehaviors()
+    func buildHintingDeleteIconDynamicAnimation()
     {
         NSLayoutConstraint.deactivateConstraints(
             [hintingDeleteIconWidthConstraint, hintingDeleteIconHeightConstraint,
@@ -697,13 +689,9 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         }
     }
     
-    func teardownHintingDeleteIconBehaviors()
+    func teardownHintingDeleteIconDynamicAnimation()
     {
-        if hintingDeleteIconTrackingAttachmentBehavior != nil
-        {
-            animator.removeBehavior(hintingDeleteIconTrackingAttachmentBehavior!)
-            hintingDeleteIconTrackingAttachmentBehavior = nil
-        }
+        returnHintingDeleteIconPresentationToRestingState()
         
         if hintingDeleteIconRestingAttachmentBehavior != nil
         {
@@ -740,7 +728,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         }
     }
     
-    func buildHintingShuffleIconBehaviors()
+    func buildHintingShuffleIconDynamicAnimation()
     {
         NSLayoutConstraint.deactivateConstraints(
             [hintingShuffleIconWidthConstraint, hintingShuffleIconHeightConstraint,
@@ -809,13 +797,9 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         }
     }
     
-    func teardownHintingShuffleIconBehaviors()
+    func teardownHintingShuffleIconDynamicAnimation()
     {
-        if hintingShuffleIconTrackingAttachmentBehavior != nil
-        {
-            animator.removeBehavior(hintingShuffleIconTrackingAttachmentBehavior!)
-            hintingShuffleIconTrackingAttachmentBehavior = nil
-        }
+        returnHintingShuffleIconPresentationToRestingState()
         
         if hintingShuffleIconRestingAttachmentBehavior != nil
         {
@@ -853,7 +837,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         }
     }
     
-    func buildHintingEditIconBehaviors()
+    func buildHintingEditIconDynamicAnimation()
     {
         NSLayoutConstraint.deactivateConstraints(
             [hintingEditIconWidthConstraint, hintingEditIconHeightConstraint,
@@ -919,13 +903,9 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         }
     }
     
-    func teardownHintingEditIconBehaviors()
+    func teardownHintingEditIconDynamicAnimation()
     {
-        if hintingEditIconTrackingAttachmentBehavior != nil
-        {
-            animator.removeBehavior(hintingEditIconTrackingAttachmentBehavior!)
-            hintingEditIconTrackingAttachmentBehavior = nil
-        }
+        returnHintingEditIconPresentationToRestingState()
         
         if hintingEditIconRestingAttachmentBehavior != nil
         {
@@ -943,75 +923,74 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     // 
     // MARK: - Etc
     
-    func displayHintingIconViewForState(state: CollapsedCardStackViewState)
+    func buildHintingIconViewDynamicAnimationForViewState(state: CollapsedCardStackViewState)
     {
         switch state
         {
         case .HintingSettings:
             hintingSettingsIconView.hidden = false
-            buildHintingSettingsIconBehaviors()
+            buildHintingSettingsIconDynamicAnimation()
             
             hintingDeleteIconView.hidden = true
-            teardownHintingDeleteIconBehaviors()
+            teardownHintingDeleteIconDynamicAnimation()
             
             hintingShuffleIconView.hidden = true
-            teardownHintingShuffleIconBehaviors()
+            teardownHintingShuffleIconDynamicAnimation()
             
             hintingEditIconView.hidden = true
-            teardownHintingEditIconBehaviors()
+            teardownHintingEditIconDynamicAnimation()
             
         case .HintingDelete:
             hintingSettingsIconView.hidden = true
-            teardownHintingSettingsIconBehaviors()
+            teardownHintingSettingsIconDynamicAnimation()
             
             hintingDeleteIconView.hidden = false
-            buildHintingDeleteIconBehaviors()
+            buildHintingDeleteIconDynamicAnimation()
             
             hintingShuffleIconView.hidden = true
-            teardownHintingShuffleIconBehaviors()
+            teardownHintingShuffleIconDynamicAnimation()
             
             hintingEditIconView.hidden = true
-            teardownHintingEditIconBehaviors()
+            teardownHintingEditIconDynamicAnimation()
             
         case .HintingShuffle:
             hintingSettingsIconView.hidden = true
-            teardownHintingSettingsIconBehaviors()
+            teardownHintingSettingsIconDynamicAnimation()
             
             hintingDeleteIconView.hidden = true
-            teardownHintingDeleteIconBehaviors()
+            teardownHintingDeleteIconDynamicAnimation()
             
             hintingShuffleIconView.hidden = false
-            buildHintingShuffleIconBehaviors()
+            buildHintingShuffleIconDynamicAnimation()
             
             hintingEditIconView.hidden = true
-            teardownHintingEditIconBehaviors()
+            teardownHintingEditIconDynamicAnimation()
             
         case .HintingEdit:
             hintingSettingsIconView.hidden = true
-            teardownHintingSettingsIconBehaviors()
+            teardownHintingSettingsIconDynamicAnimation()
             
             hintingDeleteIconView.hidden = true
-            teardownHintingDeleteIconBehaviors()
+            teardownHintingDeleteIconDynamicAnimation()
             
             hintingShuffleIconView.hidden = true
-            teardownHintingShuffleIconBehaviors()
+            teardownHintingShuffleIconDynamicAnimation()
             
             hintingEditIconView.hidden = false
-            buildHintingEditIconBehaviors()
+            buildHintingEditIconDynamicAnimation()
             
         default:
             break
         }
     }
     
-    func atRest()
+    func teardownAllDynamicAnimation()
     {
-//        print("atRest()")
-        teardownPulledCardBehaviors()
-        teardownHintingSettingsIconBehaviors()
-        teardownHintingDeleteIconBehaviors()
-        teardownHintingShuffleIconBehaviors()
-        teardownHintingEditIconBehaviors()
+        teardownPulledCardDynamicAnimation()
+        teardownHintingSettingsIconDynamicAnimation()
+        teardownHintingDeleteIconDynamicAnimation()
+        teardownHintingShuffleIconDynamicAnimation()
+        teardownHintingEditIconDynamicAnimation()
     }
     
     // Retracted Card Stack Placeholder View
