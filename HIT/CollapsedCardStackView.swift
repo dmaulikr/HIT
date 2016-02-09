@@ -102,7 +102,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     @IBOutlet var delegate: CollapsedCardStackViewDelegate? {
         didSet {
-            machine.state = .ForceLayout
+            reloadData()
         }
     }
     
@@ -907,12 +907,42 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     // 
     // MARK: - Etc
     
+    var pulledCard: Int?
+    var cardAtTopOfStack: Int?
+    var cardViewsInStack = [Int: TestCardView]()
+    
+    private func topConstantForCard(card: Int) -> CGFloat?
+    {
+        guard   let cardAtTopOfStack = cardAtTopOfStack
+                where card != pulledCard
+                else
+        {
+            return nil
+        }
+        
+        var indexOffset = card - cardAtTopOfStack
+        if card > pulledCard && pulledCard >= cardAtTopOfStack
+        {
+            switch machine.state {
+            case .HintingShuffle:
+                break
+                
+            default:
+                indexOffset -= 1
+            }
+        }
+        
+        return CGFloat(indexOffset) * collapsedCardStackGapConstraint.constant
+    }
+    
     private func loadData()
     {
-        guard let dataSource = dataSource else { return }
+        guard   let dataSource = dataSource,
+                let delegate = delegate
+                else { return }
         
-        let pulledCard = dataSource.pulledCard()
-        pulledCardView = dataSource.cardViewForItem(pulledCard)
+        pulledCard = delegate.pulledCard()
+        pulledCardView = dataSource.cardViewForItem(pulledCard!)
         if let pulledCardView = pulledCardView
         {
             pulledCardView.accessibilityIdentifier = "Pulled Card View"
@@ -922,22 +952,28 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                 byReplacingConstraints: [])
         }
         
+        cardAtTopOfStack = delegate.cardAtTopOfStack()
+        let cardsInStackRange = (cardAtTopOfStack!..<cardAtTopOfStack! + delegate.numberOfItemsToDisplayInStack())
         
-        
-        
-        
-//        cardsInStack = dataSource.cardsDisplayedInStack() ?? []
-        
-        let gap = collapsedCardStackGapConstraint.constant
-        
-        let cardAtTopOfStack = dataSource.cardAtTopOfStack()
-        let cardsInStackRange = (cardAtTopOfStack..<cardAtTopOfStack + dataSource.numberOfItemsToDisplayInStack())
-        
-        for (index, card) in cardsInStackRange.enumerate()
+        for card in cardsInStackRange
         {
+            if card == pulledCard { continue }
+            
             let cardView = dataSource.cardViewForItem(card)
             
-            addSubview(cardView)
+            if let pulledCardView = pulledCardView
+            {
+                if card < pulledCard {
+                    insertSubview(cardView, belowSubview: pulledCardView)
+                }
+                else {
+                    insertSubview(cardView, aboveSubview: pulledCardView)
+                }
+            }
+            else
+            {
+                addSubview(cardView)
+            }
             
             let widthConstraint = NSLayoutConstraint.pinItem(
                 cardView, toItem: firstCollapsedCardPlaceholderView, withAttribute: .Width)
@@ -952,7 +988,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                 toItem: firstCollapsedCardPlaceholderView,
                 attribute: .Top,
                 multiplier: 1.0,
-                constant: gap*CGFloat(index))
+                constant: topConstantForCard(card)!)
             
             cardView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activateConstraints([widthConstraint, heightConstraint,

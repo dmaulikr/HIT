@@ -11,9 +11,6 @@ import Foundation
 @objc protocol CollapsedCardStackViewDataSource
 {
     func numberOfItems() -> Int
-    func pulledCard() -> Int
-    func cardAtTopOfStack() -> Int
-    func numberOfItemsToDisplayInStack() -> Int
     
     func cardViewForItem(item: Int) -> TestCardView
     
@@ -22,6 +19,10 @@ import Foundation
 
 @objc protocol CollapsedCardStackViewDelegate
 {
+    func pulledCard() -> Int
+    func cardAtTopOfStack() -> Int
+    func numberOfItemsToDisplayInStack() -> Int
+    
     optional func shouldDeletePulledCard() -> Bool
     optional func shouldShowSettings() -> Bool
     optional func shouldShufflePulledCard() -> Bool

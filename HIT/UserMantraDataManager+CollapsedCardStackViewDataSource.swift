@@ -15,21 +15,6 @@ extension UserMantraDataManager: CollapsedCardStackViewDataSource
         return mantras.count
     }
     
-    func pulledCard() -> Int
-    {
-        return 10
-    }
-    
-    func cardAtTopOfStack() -> Int
-    {
-        return 5
-    }
-    
-    func numberOfItemsToDisplayInStack() -> Int
-    {
-        return 4
-    }
-    
     func cardViewForItem(item: Int) -> TestCardView
     {
         let cardView = TestCardView()

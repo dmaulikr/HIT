@@ -30,4 +30,22 @@ class CollapsedCardStackViewController: UIViewController, CollapsedCardStackView
             collapsedCardStackView.delegate = self
         }
     }
+    
+    
+    
+    
+    func pulledCard() -> Int
+    {
+        return 7
+    }
+    
+    func cardAtTopOfStack() -> Int
+    {
+        return 5
+    }
+    
+    func numberOfItemsToDisplayInStack() -> Int
+    {
+        return 4
+    }
 }
