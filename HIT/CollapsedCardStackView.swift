@@ -238,6 +238,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             buildHintingIconViewDynamicAnimationForViewState(toState)
             updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            updateTopConstraintsOfCardsInStack()
             
         case (.HintingShuffle, .HintingShuffle(let panGR)):
             print(".HintingShuffle -> .HintingShuffle")
@@ -248,6 +249,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             print(".HintingShuffle -> .ReturningToRest")
             returnHintingShuffleIconPresentationToRestingState()
             returnPulledCardPresentationToRestingState()
+            updateTopConstraintsOfCardsInStack()
             
         case (.HintingShuffle, .HintingEdit(let panGR)):
             print(".HintingSettings -> .HintingShuffle")
@@ -255,6 +257,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             buildHintingIconViewDynamicAnimationForViewState(toState)
             updateHintingEditIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            updateTopConstraintsOfCardsInStack()
             
             
             // .HintingEdit cases
@@ -281,6 +284,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             buildHintingIconViewDynamicAnimationForViewState(toState)
             updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            updateTopConstraintsOfCardsInStack()
             
             
         default:
@@ -910,6 +914,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     var pulledCard: Int?
     var cardAtTopOfStack: Int?
     var cardViewsInStack = [Int: TestCardView]()
+    var topConstraintsOfCardsInStack = [Int: NSLayoutConstraint]()
     
     private func topConstantForCard(card: Int) -> CGFloat?
     {
@@ -933,6 +938,15 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         }
         
         return CGFloat(indexOffset) * collapsedCardStackGapConstraint.constant
+    }
+    
+    func updateTopConstraintsOfCardsInStack() {
+        for (card, constraint) in topConstraintsOfCardsInStack
+        {
+            let newTopConstant = topConstantForCard(card)!
+            topConstraintsOfCardsInStack[card]
+                = NSLayoutConstraint.updateConstraint(constraint, withNewConstant: newTopConstant)
+        }
     }
     
     private func loadData()
@@ -967,7 +981,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                     insertSubview(cardView, belowSubview: pulledCardView)
                 }
                 else {
-                    insertSubview(cardView, aboveSubview: pulledCardView)
+                    addSubview(cardView)
                 }
             }
             else
@@ -993,6 +1007,9 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             cardView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activateConstraints([widthConstraint, heightConstraint,
                 centerXConstraint, topConstraint])
+            
+            cardViewsInStack[card] = cardView
+            topConstraintsOfCardsInStack[card] = topConstraint
         }
     }
     
