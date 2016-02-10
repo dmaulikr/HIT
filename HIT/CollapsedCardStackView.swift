@@ -512,11 +512,17 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         return CGFloat(indexOffset) * collapsedCardStackGapConstraint.constant
     }
     
-    func updateTopConstraintsOfCardsInStack() {
-        for (card, constraint) in topConstraintsOfCardsInStack
-        {
-            let newTopConstant = topConstantForCard(card)!
-            constraint.constant = newTopConstant
+    func updateTopConstraintsOfCardsInStack()
+    {
+        layoutIfNeeded()
+        
+        UIView.animateWithDuration(0.25) {
+            for (card, constraint) in self.topConstraintsOfCardsInStack
+            {
+                let newTopConstant = self.topConstantForCard(card)!
+                constraint.constant = newTopConstant
+            }
+            self.layoutIfNeeded()
         }
     }
     
