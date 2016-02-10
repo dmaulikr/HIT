@@ -23,9 +23,10 @@ class CollapsedCardStackViewController: UIViewController, CollapsedCardStackView
     
     let dataSource: UserMantraDataManager = UserMantraDataManager.sharedManager
     
-    override func viewDidLayoutSubviews() {
-//        print("viewDidLayoutSubviews, collapsedCardStackView.frame: \(collapsedCardStackView.frame)")
-        if collapsedCardStackView.delegate == nil {
+    override func viewDidLayoutSubviews()
+    {
+        if collapsedCardStackView.delegate == nil
+        {
             collapsedCardStackView.dataSource = dataSource
             collapsedCardStackView.delegate = self
         }
