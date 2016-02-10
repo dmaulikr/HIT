@@ -516,8 +516,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         for (card, constraint) in topConstraintsOfCardsInStack
         {
             let newTopConstant = topConstantForCard(card)!
-            topConstraintsOfCardsInStack[card]
-                = NSLayoutConstraint.updateConstraint(constraint, withNewConstant: newTopConstant)
+            constraint.constant = newTopConstant
         }
     }
     
