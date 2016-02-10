@@ -516,13 +516,20 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     {
         layoutIfNeeded()
         
-        UIView.animateWithDuration(0.25) {
-            for (card, constraint) in self.topConstraintsOfCardsInStack
-            {
+        let loopIndexAndCardPairs: EnumerateSequence<[Int]>
+        switch machine.state {
+        case .HintingShuffle:
+            loopIndexAndCardPairs = self.topConstraintsOfCardsInStack.keys.sort().reverse().enumerate()
+        default:
+            loopIndexAndCardPairs = self.topConstraintsOfCardsInStack.keys.sort().enumerate()
+        }
+        for (loopIndex, card) in loopIndexAndCardPairs
+        {
+            UIView.animateWithDuration(0.2 + Double(loopIndex)*0.15) {
                 let newTopConstant = self.topConstantForCard(card)!
-                constraint.constant = newTopConstant
+                self.topConstraintsOfCardsInStack[card]?.constant = newTopConstant
+                self.layoutIfNeeded()
             }
-            self.layoutIfNeeded()
         }
     }
     
