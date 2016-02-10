@@ -361,6 +361,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     // MARK: - Pulled Card
     
+    var pulledCard: Int?
     var pulledCardView: TestCardView?
     @IBOutlet weak var pulledCardPlaceholderView: CustomBoundsPlaceholderView!
     var pulledCardRestingAnchorLocation: CGPoint!
@@ -480,9 +481,45 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     //
     // MARK: - Collapsed Card Stack
     
-    var cardsInStack = [TestCardView]()
     @IBOutlet weak var firstCollapsedCardPlaceholderView: StatePlaceholderView!
     @IBOutlet weak var collapsedCardStackGapConstraint: NSLayoutConstraint!
+    
+    var cardAtTopOfStack: Int?
+    var cardViewsInStack = [Int: TestCardView]()
+    var topConstraintsOfCardsInStack = [Int: NSLayoutConstraint]()
+    
+    private func topConstantForCard(card: Int) -> CGFloat?
+    {
+        guard   let cardAtTopOfStack = cardAtTopOfStack
+            where card != pulledCard
+            else
+        {
+            return nil
+        }
+        
+        var indexOffset = card - cardAtTopOfStack
+        if card > pulledCard && pulledCard >= cardAtTopOfStack
+        {
+            switch machine.state {
+            case .HintingShuffle:
+                break
+                
+            default:
+                indexOffset -= 1
+            }
+        }
+        
+        return CGFloat(indexOffset) * collapsedCardStackGapConstraint.constant
+    }
+    
+    func updateTopConstraintsOfCardsInStack() {
+        for (card, constraint) in topConstraintsOfCardsInStack
+        {
+            let newTopConstant = topConstantForCard(card)!
+            topConstraintsOfCardsInStack[card]
+                = NSLayoutConstraint.updateConstraint(constraint, withNewConstant: newTopConstant)
+        }
+    }
     
     
     //
@@ -911,44 +948,6 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     // 
     // MARK: - Etc
     
-    var pulledCard: Int?
-    var cardAtTopOfStack: Int?
-    var cardViewsInStack = [Int: TestCardView]()
-    var topConstraintsOfCardsInStack = [Int: NSLayoutConstraint]()
-    
-    private func topConstantForCard(card: Int) -> CGFloat?
-    {
-        guard   let cardAtTopOfStack = cardAtTopOfStack
-                where card != pulledCard
-                else
-        {
-            return nil
-        }
-        
-        var indexOffset = card - cardAtTopOfStack
-        if card > pulledCard && pulledCard >= cardAtTopOfStack
-        {
-            switch machine.state {
-            case .HintingShuffle:
-                break
-                
-            default:
-                indexOffset -= 1
-            }
-        }
-        
-        return CGFloat(indexOffset) * collapsedCardStackGapConstraint.constant
-    }
-    
-    func updateTopConstraintsOfCardsInStack() {
-        for (card, constraint) in topConstraintsOfCardsInStack
-        {
-            let newTopConstant = topConstantForCard(card)!
-            topConstraintsOfCardsInStack[card]
-                = NSLayoutConstraint.updateConstraint(constraint, withNewConstant: newTopConstant)
-        }
-    }
-    
     private func loadData()
     {
         guard   let dataSource = dataSource,
@@ -1020,6 +1019,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         teardownHintingDeleteIconDynamicAnimation()
         teardownHintingShuffleIconDynamicAnimation()
         teardownHintingEditIconDynamicAnimation()
+        updateTopConstraintsOfCardsInStack()
     }
     
     func buildHintingIconViewDynamicAnimationForViewState(state: CollapsedCardStackViewState)

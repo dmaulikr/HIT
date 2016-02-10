@@ -46,6 +46,6 @@ class CollapsedCardStackViewController: UIViewController, CollapsedCardStackView
     
     func numberOfItemsToDisplayInStack() -> Int
     {
-        return 4
+        return 5
     }
 }
