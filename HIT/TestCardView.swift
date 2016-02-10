@@ -17,9 +17,48 @@ class TestCardView: UIView
         }
     }
     
-    var mantraLabel: UILabel = UILabel()
+    let cornerRadius: CGFloat = 3
     
-    func buildLabel() {
+    var shadowView = UIView()
+    var backgroundView = UIView()
+    var mantraLabel = UILabel()
+    
+    func buildShadowView()
+    {
+        addSubview(shadowView)
+        shadowView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.pinItem(shadowView, toItem: self, withAttribute: .CenterX).active = true
+        
+        let widthConstraint = NSLayoutConstraint.pinItem(shadowView, toItem: self, withAttribute: .Width)
+        widthConstraint.constant = 0
+        widthConstraint.active = true
+        
+        let centerYConstraint = NSLayoutConstraint.pinItem(shadowView, toItem: self, withAttribute: .CenterY)
+        centerYConstraint.constant = -2
+        centerYConstraint.active = true
+        
+        NSLayoutConstraint.pinItem(shadowView, toItem: self, withAttribute: .Height).active = true
+        
+        shadowView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.1)
+        shadowView.layer.cornerRadius = cornerRadius + 2
+    }
+    
+    func buildBackgroundView()
+    {
+        addSubview(backgroundView)
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.pinItem(backgroundView, toItem: self, withAttribute: .Leading).active = true
+        NSLayoutConstraint.pinItem(backgroundView, toItem: self, withAttribute: .Trailing).active = true
+        NSLayoutConstraint.pinItem(backgroundView, toItem: self, withAttribute: .Top).active = true
+        NSLayoutConstraint.pinItem(backgroundView, toItem: self, withAttribute: .Bottom).active = true
+        
+        backgroundView.layer.cornerRadius = cornerRadius
+    }
+    
+    func buildLabel()
+    {        
         addSubview(mantraLabel)
         mantraLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -46,12 +85,16 @@ class TestCardView: UIView
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        buildShadowView()
+        buildBackgroundView()
         buildLabel()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
+        buildShadowView()
+        buildBackgroundView()
         buildLabel()
     }
     

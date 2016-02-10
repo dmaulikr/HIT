@@ -19,7 +19,7 @@ extension UserMantraDataManager: CollapsedCardStackViewDataSource
     {
         let cardView = TestCardView()
         let cardColor = UIColor.randomColor().colorWithAlphaComponent(1.0)
-        cardView.backgroundColor = cardColor
+        cardView.backgroundView.backgroundColor = cardColor
         cardView.mantra = mantraWithId(item)
         return cardView
     }
