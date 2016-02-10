@@ -54,7 +54,19 @@ import UIKit
             return dialView.shapeLayer.strokeEnd
         }
         set {
-            dialView.shapeLayer.strokeEnd = max(min(newValue, 1), 0)
+            let cappedValue = max(min(newValue, 1), 0)
+            
+            let dialCompletionGap: CGFloat = 0.1
+            let gapStart = 1 - dialCompletionGap
+            let interpretedValue: CGFloat
+            switch cappedValue
+            {
+            case 0..<gapStart: interpretedValue = cappedValue
+            case gapStart..<1.0: interpretedValue = gapStart
+            default: interpretedValue = 1
+            }
+            
+            dialView.shapeLayer.strokeEnd = interpretedValue
         }
     }
     

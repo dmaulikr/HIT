@@ -30,7 +30,7 @@ import UIKit
         }
     }
     
-    @IBInspectable var dialColor: CGColor = UIColor.blueColor().CGColor {
+    @IBInspectable var dialColor: CGColor = UIColor.blackColor().CGColor {
         didSet {
             setupDialPath()
         }
