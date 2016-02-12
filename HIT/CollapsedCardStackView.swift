@@ -491,39 +491,74 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     private func topConstantForCard(card: Int) -> CGFloat?
     {
         guard   let cardAtTopOfStack = cardAtTopOfStack
-            where card != pulledCard
-            else
+                where card != pulledCard
+                else
         {
             return nil
         }
         
-        var indexOffset = card - cardAtTopOfStack
-        if card > pulledCard && pulledCard >= cardAtTopOfStack
+        var indexOffset: CGFloat = CGFloat(card - cardAtTopOfStack)
+        if pulledCard >= cardAtTopOfStack
         {
-            switch machine.state {
-            case .HintingShuffle:
-                break
-                
-            default:
-                indexOffset -= 1
+            // Handles shifting cards above and below the pulled card
+            // when the view is in the .HintingShuffle state
+            if card > pulledCard {
+                switch machine.state {
+                case .HintingShuffle:
+                    break
+                    
+                default:
+                    indexOffset -= 1
+                }
+            }
+            else {
+                switch machine.state {
+                case .HintingShuffle:
+                    indexOffset -= 0.1
+                    
+                default:
+                    break
+                }
             }
         }
         
-        return CGFloat(indexOffset) * collapsedCardStackGapConstraint.constant
+        return indexOffset * collapsedCardStackGapConstraint.constant
     }
     
     func updateTopConstraintsOfCardsInStack()
     {
+        guard let pulledCard = pulledCard else { return }
+        
         layoutIfNeeded()
         
-        let loopIndexAndCardPairs: EnumerateSequence<[Int]>
-        switch machine.state {
+        var cardIndexesBeforePulledCard
+            = self.topConstraintsOfCardsInStack.keys
+            .filter { $0 < pulledCard }
+            .sort()
+        
+        var cardIndexesAfterPulledCard
+            = self.topConstraintsOfCardsInStack.keys
+            .filter { $0 > pulledCard }
+            .sort()
+        
+        switch machine.state
+        {
         case .HintingShuffle:
-            loopIndexAndCardPairs = self.topConstraintsOfCardsInStack.keys.sort().reverse().enumerate()
+            cardIndexesAfterPulledCard = cardIndexesAfterPulledCard.reverse()
         default:
-            loopIndexAndCardPairs = self.topConstraintsOfCardsInStack.keys.sort().enumerate()
+            cardIndexesBeforePulledCard = cardIndexesBeforePulledCard.reverse()
         }
-        for (loopIndex, card) in loopIndexAndCardPairs
+        
+        for (loopIndex, card) in cardIndexesBeforePulledCard.enumerate()
+        {
+            UIView.animateWithDuration(0.2 + Double(loopIndex)*0.15) {
+                let newTopConstant = self.topConstantForCard(card)!
+                self.topConstraintsOfCardsInStack[card]?.constant = newTopConstant
+                self.layoutIfNeeded()
+            }
+        }
+        
+        for (loopIndex, card) in cardIndexesAfterPulledCard.enumerate()
         {
             UIView.animateWithDuration(0.2 + Double(loopIndex)*0.15) {
                 let newTopConstant = self.topConstantForCard(card)!

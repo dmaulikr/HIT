@@ -37,7 +37,7 @@ class CollapsedCardStackViewController: UIViewController, CollapsedCardStackView
     
     func pulledCard() -> Int
     {
-        return 6
+        return 7
     }
     
     func cardAtTopOfStack() -> Int
