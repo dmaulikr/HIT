@@ -34,11 +34,13 @@ class TestCardView: UIView
         widthConstraint.constant = 0
         widthConstraint.active = true
         
-        let centerYConstraint = NSLayoutConstraint.pinItem(shadowView, toItem: self, withAttribute: .CenterY)
-        centerYConstraint.constant = -2
-        centerYConstraint.active = true
+        let topConstraint = NSLayoutConstraint.pinItem(shadowView, toItem: self, withAttribute: .Top)
+        topConstraint.constant = -2
+        topConstraint.active = true
         
-        NSLayoutConstraint.pinItem(shadowView, toItem: self, withAttribute: .Height).active = true
+        let heightConstraint = NSLayoutConstraint.pinItem(shadowView, toItem: self, withAttribute: .Height)
+        heightConstraint.constant = 3.5
+        heightConstraint.active = true
         
         shadowView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.1)
         shadowView.layer.cornerRadius = cornerRadius + 2
