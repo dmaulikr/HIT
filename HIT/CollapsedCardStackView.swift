@@ -29,6 +29,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     case HintingShuffle(UIPanGestureRecognizer)
     case ConfirmShuffle(UIPanGestureRecognizer)
+    case ExecuteShuffle
     
     
     func shouldTransitionFrom(from: CollapsedCardStackViewState, to: CollapsedCardStackViewState) -> Should<CollapsedCardStackViewState>
@@ -54,40 +55,31 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         case (.HintingSettings, .ReturningToRest):  return .Continue
         case (.HintingSettings, .HintingDelete):    return .Continue
             
-//        case (.TrackingPan,     .ConfirmSettings):  return .Continue
-//        case (.HintingSettings, .ConfirmSettings):  return .Continue
-//        case (.ConfirmSettings, .ConfirmSettings):  return .Continue
-//        case (.ConfirmSettings, .HintingSettings):  return .Continue
             
         case (.TrackingPan,     .HintingDelete):    return .Continue
         case (.HintingDelete,   .HintingDelete):    return .Continue
         case (.HintingDelete,   .ReturningToRest):  return .Continue
         case (.HintingDelete,   .HintingSettings):  return .Continue
-            
-//        case (.TrackingPan,     .ConfirmDelete):    return .Continue
-//        case (.HintingDelete,   .ConfirmDelete):    return .Continue
-//        case (.ConfirmDelete,   .ConfirmDelete):    return .Continue
-//        case (.ConfirmDelete,   .HintingDelete):    return .Continue
+
             
         case (.TrackingPan,     .HintingShuffle):    return .Continue
         case (.HintingShuffle,  .HintingShuffle):    return .Continue
+            
+        case (.HintingShuffle,  .ConfirmShuffle):    return .Continue
+        case (.ConfirmShuffle,  .ConfirmShuffle):    return .Continue
+        case (.ConfirmShuffle,  .HintingShuffle):    return .Continue
+        case (.ConfirmShuffle,  .ExecuteShuffle):    return .Redirect(.ReturningToRest)
+        case (.ExecuteShuffle,  .ReturningToRest):   return .Continue
+            
         case (.HintingShuffle,  .ReturningToRest):  return .Continue
         case (.HintingShuffle,  .HintingEdit):      return .Continue
             
-//        case (.TrackingPan,     .ConfirmShuffle):    return .Continue
-//        case (.HintingShuffle,  .ConfirmShuffle):    return .Continue
-//        case (.ConfirmShuffle,  .ConfirmShuffle):    return .Continue
-//        case (.ConfirmShuffle,  .HintingShuffle):    return .Continue
             
         case (.TrackingPan,     .HintingEdit):      return .Continue
         case (.HintingEdit,     .HintingEdit):      return .Continue
         case (.HintingEdit,     .ReturningToRest):  return .Continue
         case (.HintingEdit,     .HintingShuffle):   return .Continue
-            
-//        case (.TrackingPan,     .ConfirmEdit):      return .Continue
-//        case (.HintingEdit,     .ConfirmEdit):      return .Continue
-//        case (.ConfirmEdit,     .ConfirmEdit):      return .Continue
-//        case (.ConfirmEdit,     .HintingEdit):      return .Continue
+
             
         default:
             return .Abort
@@ -245,6 +237,32 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
+            
+        case (.HintingShuffle,  .ConfirmShuffle(let panGR)):
+            print(".HintingShuffle -> .ConfirmShuffle")
+            updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            
+        case (.ConfirmShuffle,  .ConfirmShuffle(let panGR)):
+            print(".ConfirmShuffle -> .ConfirmShuffle")
+            updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            
+        case (.ConfirmShuffle,  .HintingShuffle(let panGR)):
+            print(".ConfirmShuffle -> .HintingShuffle")
+            updateHintingShuffleIconPresentationWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            
+        case (.ConfirmShuffle,  .ExecuteShuffle):
+            print(".ConfirmShuffle -> .ExecuteShuffle")
+            
+        case (.ExecuteShuffle,  .ReturningToRest):
+            print(".ExecuteShuffle -> .ReturningToRest")
+            returnHintingShuffleIconPresentationToRestingState()
+            returnPulledCardPresentationToRestingState()
+            updateTopConstraintsOfCardsInStack()
+            
+            
         case (.HintingShuffle, .ReturningToRest):
             print(".HintingShuffle -> .ReturningToRest")
             returnHintingShuffleIconPresentationToRestingState()
@@ -307,8 +325,16 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                 }
             }
             else if attachmentAxis == .Vertical {
-                if sender.translationInView(self).y >= 0 {
-                    machine.state = .HintingShuffle(sender)
+                if sender.translationInView(self).y >= 0
+                {
+                    if sender.translationInView(self).y >= hintingShuffleSpanHeight
+                    {
+                        machine.state = .ConfirmShuffle(sender)
+                    }
+                    else
+                    {
+                        machine.state = .HintingShuffle(sender)
+                    }
                 }
                 else if sender.translationInView(self).y < 0 {
                     machine.state = .HintingEdit(sender)
@@ -320,7 +346,13 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         }
         else
         {
-            machine.state = .ReturningToRest
+            switch machine.state
+            {
+            case .ConfirmShuffle:
+                machine.state = .ExecuteShuffle
+            default:
+                machine.state = .ReturningToRest
+            }
             print("\n")
         }
     }
