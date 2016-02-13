@@ -517,19 +517,33 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     @IBOutlet weak var collapsedCardStackGapConstraint: NSLayoutConstraint!
     
     var cardAtTopOfStack: Int?
-    var cardViewsInStack = [Int: TestCardView]()
-    var topConstraintsOfCardsInStack = [Int: NSLayoutConstraint]()
+    
+    typealias StackedCardViewConstraints =
+        (centerX: NSLayoutConstraint, top: NSLayoutConstraint,
+        width: NSLayoutConstraint, height: NSLayoutConstraint)
+    
+    typealias CardViewConstraintPair = (cardView: TestCardView, constraints: StackedCardViewConstraints?)
+    
+    var cardsInStack = [Int: CardViewConstraintPair]()
+//    var cardViewsInStack = [Int: TestCardView]()
+//    var topConstraintsOfCardsInStack = [Int: NSLayoutConstraint]()
     
     private func topConstantForCard(card: Int) -> CGFloat?
     {
-        guard   let cardAtTopOfStack = cardAtTopOfStack
-                where card != pulledCard
-                else
+        guard let cardAtTopOfStack = cardAtTopOfStack else
         {
             return nil
         }
         
         var indexOffset: CGFloat = CGFloat(card - cardAtTopOfStack)
+        
+        guard   let pulledCard = pulledCard
+                where card != pulledCard
+                else
+        {
+            return indexOffset * collapsedCardStackGapConstraint.constant
+        }
+    
         if pulledCard >= cardAtTopOfStack
         {
             // Handles shifting cards above and below the pulled card
@@ -564,12 +578,12 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         layoutIfNeeded()
         
         var cardIndexesBeforePulledCard
-            = self.topConstraintsOfCardsInStack.keys
+            = self.cardsInStack.keys
             .filter { $0 < pulledCard }
             .sort()
         
         var cardIndexesAfterPulledCard
-            = self.topConstraintsOfCardsInStack.keys
+            = self.cardsInStack.keys
             .filter { $0 > pulledCard }
             .sort()
         
@@ -585,7 +599,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         {
             UIView.animateWithDuration(0.2 + Double(loopIndex)*0.15) {
                 let newTopConstant = self.topConstantForCard(card)!
-                self.topConstraintsOfCardsInStack[card]?.constant = newTopConstant
+                self.cardsInStack[card]?.constraints?.top.constant = newTopConstant
                 self.layoutIfNeeded()
             }
         }
@@ -594,7 +608,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         {
             UIView.animateWithDuration(0.2 + Double(loopIndex)*0.15) {
                 let newTopConstant = self.topConstantForCard(card)!
-                self.topConstraintsOfCardsInStack[card]?.constant = newTopConstant
+                self.cardsInStack[card]?.constraints?.top.constant = newTopConstant
                 self.layoutIfNeeded()
             }
         }
@@ -918,6 +932,30 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                 hintingShuffleIconTopConstraint, hintingShuffleIconCenterXConstraint])
     }
     
+    func shufflePulledCard()
+    {
+//        guard pulledCard != nil else { return }
+//        
+//        delegate?.collapsedCardStackViewWillShuffle?(self)
+//        let nextPulledCard = delegate?.pulledCard()
+//        
+//        if cardsIn
+//        
+//        // Determine if old pulled card will end up in card stack
+//        let restingPosition: CGPoint
+//        
+//        if pulledCard < cardAtTopOfStack! {
+//            restingPosition = firstCollapsedCardPlaceholderView.center
+//        }
+//        else if pulledCard > cardAtTopOfStack
+        
+        // Determine final resting position of old pulled card
+        // Attach behavior for card to resting position
+        // Set a new pulled card, ensure it's different from old one
+        // Build attachment behavior for new pulled card
+        // Set initial position of new pulled card
+    }
+    
     
     //
     // MARK: - .HintingEdit
@@ -1027,6 +1065,29 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     // 
     // MARK: - Etc
     
+    func stackingConstraintsForCardView(cardView: TestCardView, atCardIndex cardIndex: Int)
+        -> StackedCardViewConstraints?
+    {
+        guard let topConstant = topConstantForCard(cardIndex) else { return nil }
+        
+        let widthConstraint = NSLayoutConstraint.pinItem(
+            cardView, toItem: firstCollapsedCardPlaceholderView, withAttribute: .Width)
+        let heightConstraint = NSLayoutConstraint.pinItem(
+            cardView, toItem: firstCollapsedCardPlaceholderView, withAttribute: .Height)
+        let centerXConstraint = NSLayoutConstraint.pinItem(
+            cardView, toItem: firstCollapsedCardPlaceholderView, withAttribute: .CenterX)
+        let topConstraint = NSLayoutConstraint(
+            item: cardView,
+            attribute: .Top,
+            relatedBy: .Equal,
+            toItem: firstCollapsedCardPlaceholderView,
+            attribute: .Top,
+            multiplier: 1.0,
+            constant: topConstant)
+        
+        return (centerX: centerXConstraint, top: topConstraint, width: widthConstraint, height: heightConstraint)
+    }
+    
     private func loadData()
     {
         guard   let dataSource = dataSource,
@@ -1067,27 +1128,16 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                 addSubview(cardView)
             }
             
-            let widthConstraint = NSLayoutConstraint.pinItem(
-                cardView, toItem: firstCollapsedCardPlaceholderView, withAttribute: .Width)
-            let heightConstraint = NSLayoutConstraint.pinItem(
-                cardView, toItem: firstCollapsedCardPlaceholderView, withAttribute: .Height)
-            let centerXConstraint = NSLayoutConstraint.pinItem(
-                cardView, toItem: firstCollapsedCardPlaceholderView, withAttribute: .CenterX)
-            let topConstraint = NSLayoutConstraint(
-                item: cardView,
-                attribute: .Top,
-                relatedBy: .Equal,
-                toItem: firstCollapsedCardPlaceholderView,
-                attribute: .Top,
-                multiplier: 1.0,
-                constant: topConstantForCard(card)!)
+            let constraints = stackingConstraintsForCardView(cardView, atCardIndex: card)!
             
             cardView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activateConstraints([widthConstraint, heightConstraint,
-                centerXConstraint, topConstraint])
+            NSLayoutConstraint.activateConstraints(
+                [constraints.centerX, constraints.top,
+                constraints.width, constraints.height])
             
-            cardViewsInStack[card] = cardView
-            topConstraintsOfCardsInStack[card] = topConstraint
+            cardsInStack[card] = (cardView, constraints)
+//            cardViewsInStack[card] = cardView
+//            topConstraintsOfCardsInStack[card] = topConstraint
         }
     }
     
