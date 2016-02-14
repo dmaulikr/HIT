@@ -260,8 +260,8 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         case (.ExecuteShuffle,  .ReturningToRest):
             print(".ExecuteShuffle -> .ReturningToRest")
             returnHintingShuffleIconPresentationToRestingState()
-            returnPulledCardPresentationToRestingState()
-            updateConstraintsOfCardsInStack()
+//            returnPulledCardPresentationToRestingState()
+//            updateConstraintsOfCardsInStack()
             
             
         case (.HintingShuffle, .ReturningToRest):
@@ -462,7 +462,8 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         pulledCardAttachmentBehavior = UIAttachmentBehavior(
             item: pulledCardView,
             attachedToAnchor: pulledCardRestingAnchorLocation)
-        pulledCardAttachmentBehavior?.length = 0
+        pulledCardAttachmentBehavior.length = 0
+        pulledCardAttachmentBehavior.damping = 1.0
         animator.addBehavior(pulledCardAttachmentBehavior!)
     }
     
@@ -952,7 +953,6 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         {
             let cardConstraintPair = cardsInStack[nextPulledCard]!
             cardsInStack.removeValueForKey(nextPulledCard)
-            print("cardsInStack after removing value for key \(nextPulledCard): \(cardsInStack)")
             pulledCard = nextPulledCard
             pulledCardView = cardConstraintPair.cardView
             if let oldConstraints = cardConstraintPair.constraints {
@@ -962,16 +962,25 @@ enum CollapsedCardStackViewState: StateMachineDataSource
 
             }
             buildPulledCardDynamicAnimation()
+            pulledCardAttachmentBehavior.frequency = 3.0
+            
+            updateConstraintsOfCardsInStack()
             
             animator.removeBehavior(oldAttachmentBehavior)
             animator.removeBehavior(oldDynamicItemBehavior)
             animator.removeBehavior(oldCollisionBehavior)
             
-            oldPulledCardView.translatesAutoresizingMaskIntoConstraints = false
+            
             let newConstraints = stackingConstraintsForCardView(oldPulledCardView, atCardIndex: oldPulledCard)!
-            NSLayoutConstraint.activateConstraints([newConstraints.top, newConstraints.centerX, newConstraints.width, newConstraints.height])
+            layoutIfNeeded()
+            UIView.animateWithDuration(0.25) {
+                oldPulledCardView.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activateConstraints([newConstraints.top, newConstraints.centerX, newConstraints.width, newConstraints.height])
+                self.layoutIfNeeded()
+            }
             cardsInStack[oldPulledCard] = (oldPulledCardView, newConstraints)
-            updateConstraintsOfCardsInStack()
+            
+            attachmentAxis = nil
         }
         
         // Determine if old pulled card will end up in card stack

@@ -38,9 +38,16 @@ class CollapsedCardStackViewController: UIViewController, CollapsedCardStackView
     
     func pulledCard() -> Int
     {
-        let randomCard = GKRandomSource.sharedRandom().nextIntWithUpperBound(5) + 5
-        print("randomCard: \(randomCard)")
-        return randomCard
+        if let currentCard = collapsedCardStackView.pulledCard {
+            let nextCard = (currentCard - 5 + 1)%5 + 5
+            print("next card: \(nextCard)")
+            return nextCard
+        }
+        else {
+            let randomCard = GKRandomSource.sharedRandom().nextIntWithUpperBound(5) + 5
+            print("randomCard: \(randomCard)")
+            return randomCard
+        }
     }
     
     func cardAtTopOfStack() -> Int
