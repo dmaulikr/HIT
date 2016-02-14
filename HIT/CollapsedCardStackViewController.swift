@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GameKit
 
 class CollapsedCardStackViewController: UIViewController, CollapsedCardStackViewDelegate {
 
@@ -37,7 +38,9 @@ class CollapsedCardStackViewController: UIViewController, CollapsedCardStackView
     
     func pulledCard() -> Int
     {
-        return 7
+        let randomCard = GKRandomSource.sharedRandom().nextIntWithUpperBound(5) + 5
+        print("randomCard: \(randomCard)")
+        return randomCard
     }
     
     func cardAtTopOfStack() -> Int
