@@ -945,7 +945,8 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                 let oldPulledCardView = pulledCardView,
                 let oldAttachmentBehavior = pulledCardAttachmentBehavior,
                 let oldDynamicItemBehavior = pulledCardDynamicItemBehavior,
-                let oldCollisionBehavior = boundaryCollisionBehavior
+                let oldCollisionBehavior = boundaryCollisionBehavior,
+                let rangeOfCardsInCollapsedStack = rangeOfCardsInCollapsedStack
                 else { return }
         
         delegate?.collapsedCardStackViewWillShuffle?(self)
@@ -971,8 +972,10 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             
             updateConstraintsOfCardsInStack()
             attachmentAxis = nil
+        }
         
-        
+        if rangeOfCardsInCollapsedStack.swiftRange().contains(oldPulledCard)
+        {
             animator.removeBehavior(oldAttachmentBehavior)
             animator.removeBehavior(oldDynamicItemBehavior)
             animator.removeBehavior(oldCollisionBehavior)
