@@ -20,8 +20,7 @@ import Foundation
 @objc protocol CollapsedCardStackViewDelegate
 {
     func pulledCard() -> Int
-    func cardAtTopOfStack() -> Int
-    func numberOfItemsToDisplayInStack() -> Int
+    func rangeOfCardsInCollapsedStack() -> NSRange
     
     optional func shouldDeletePulledCard() -> Bool
     optional func shouldShowSettings() -> Bool

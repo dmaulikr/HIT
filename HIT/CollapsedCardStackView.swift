@@ -518,7 +518,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     @IBOutlet weak var firstCollapsedCardPlaceholderView: StatePlaceholderView!
     @IBOutlet weak var collapsedCardStackGapConstraint: NSLayoutConstraint!
     
-    var cardAtTopOfStack: Int?
+    var rangeOfCardsInCollapsedStack: NSRange?
     
     typealias StackedCardViewConstraints =
         (centerX: NSLayoutConstraint, top: NSLayoutConstraint,
@@ -527,17 +527,17 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     typealias CardViewConstraintPair = (cardView: TestCardView, constraints: StackedCardViewConstraints?)
     
     var cardsInStack = [Int: CardViewConstraintPair]()
-//    var cardViewsInStack = [Int: TestCardView]()
-//    var topConstraintsOfCardsInStack = [Int: NSLayoutConstraint]()
     
     private func topConstantForCard(card: Int) -> CGFloat?
     {
-        guard let cardAtTopOfStack = cardAtTopOfStack else
+        guard let rangeOfCardsInCollapsedStack = rangeOfCardsInCollapsedStack else
         {
             return nil
         }
         
-        var indexOffset: CGFloat = CGFloat(card - cardAtTopOfStack)
+        let firstCardInCollapsedStack = rangeOfCardsInCollapsedStack.location
+        
+        var indexOffset: CGFloat = CGFloat(card - firstCardInCollapsedStack)
         
         guard   let pulledCard = pulledCard
                 where card != pulledCard
@@ -546,7 +546,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             return indexOffset * collapsedCardStackGapConstraint.constant
         }
     
-        if pulledCard >= cardAtTopOfStack
+        if pulledCard >= firstCardInCollapsedStack
         {
             // Handles shifting cards above and below the pulled card
             // when the view is in the .HintingShuffle state
@@ -934,6 +934,11 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                 hintingShuffleIconTopConstraint, hintingShuffleIconCenterXConstraint])
     }
     
+//    typealias CardViewBehaviorSet
+//        = (attachment: UIAttachmentBehavior, collision: UICollisionBehavior, dynamicItem: UIDynamicItemBehavior)
+    typealias CardViewAndBehaviorSetPair = (cardView: TestCardView, behaviors: [UIDynamicBehavior])
+    var pulledCardsTransitioningToCollapsedState = [Int : CardViewAndBehaviorSetPair]()
+    
     func shufflePulledCard()
     {
         guard   let oldPulledCard = pulledCard,
@@ -955,20 +960,25 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             cardsInStack.removeValueForKey(nextPulledCard)
             pulledCard = nextPulledCard
             pulledCardView = cardConstraintPair.cardView
-            if let oldConstraints = cardConstraintPair.constraints {
+            if let oldConstraints = cardConstraintPair.constraints
+            {
                 NSLayoutConstraint.deactivateConstraints([oldConstraints.top, oldConstraints.centerX,
                     oldConstraints.width, oldConstraints.height])
                 pulledCardView?.translatesAutoresizingMaskIntoConstraints = true
-
             }
             buildPulledCardDynamicAnimation()
             pulledCardAttachmentBehavior.frequency = 3.0
             
             updateConstraintsOfCardsInStack()
-            
+            attachmentAxis = nil
+        
+        
             animator.removeBehavior(oldAttachmentBehavior)
             animator.removeBehavior(oldDynamicItemBehavior)
             animator.removeBehavior(oldCollisionBehavior)
+            
+            pulledCardsTransitioningToCollapsedState[oldPulledCard]
+                = (cardView: oldPulledCardView, behaviors: [oldAttachmentBehavior, oldDynamicItemBehavior, oldCollisionBehavior])
             
             
             let newConstraints = stackingConstraintsForCardView(oldPulledCardView, atCardIndex: oldPulledCard)!
@@ -979,17 +989,15 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                 self.layoutIfNeeded()
             }
             cardsInStack[oldPulledCard] = (oldPulledCardView, newConstraints)
-            
-            attachmentAxis = nil
         }
         
         // Determine if old pulled card will end up in card stack
 //        let restingPosition: CGPoint
 //        
-//        if pulledCard < cardAtTopOfStack! {
+//        if pulledCard < firstCardInCollapsedStack! {
 //            restingPosition = firstCollapsedCardPlaceholderView.center
 //        }
-//        else if pulledCard > cardAtTopOfStack
+//        else if pulledCard > firstCardInCollapsedStack
         
         // Determine final resting position of old pulled card
         // Attach behavior for card to resting position
@@ -1147,10 +1155,11 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                 byReplacingConstraints: [])
         }
         
-        cardAtTopOfStack = delegate.cardAtTopOfStack()
-        let cardsInStackRange = (cardAtTopOfStack!..<cardAtTopOfStack! + delegate.numberOfItemsToDisplayInStack())
+        rangeOfCardsInCollapsedStack = delegate.rangeOfCardsInCollapsedStack()
+        print(rangeOfCardsInCollapsedStack!)
+        print(rangeOfCardsInCollapsedStack!.swiftRange())
         
-        for card in cardsInStackRange
+        for card in rangeOfCardsInCollapsedStack!.swiftRange()
         {
             if card == pulledCard { continue }
             
@@ -1178,8 +1187,6 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                 constraints.width, constraints.height])
             
             cardsInStack[card] = (cardView, constraints)
-//            cardViewsInStack[card] = cardView
-//            topConstraintsOfCardsInStack[card] = topConstraint
         }
     }
     

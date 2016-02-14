@@ -50,13 +50,8 @@ class CollapsedCardStackViewController: UIViewController, CollapsedCardStackView
         }
     }
     
-    func cardAtTopOfStack() -> Int
+    func rangeOfCardsInCollapsedStack() -> NSRange
     {
-        return 5
-    }
-    
-    func numberOfItemsToDisplayInStack() -> Int
-    {
-        return 5
+        return NSMakeRange(5, 5)
     }
 }

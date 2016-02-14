@@ -251,7 +251,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2m9-F9-nuT" userLabel="Second Collapsed Card Placeholder View" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
-                    <rect key="frame" x="3" y="623" width="369" height="519"/>
+                    <rect key="frame" x="3" y="620" width="369" height="519"/>
                     <color key="backgroundColor" red="0.91355104590000002" green="1" blue="0.91419956000000002" alpha="0.0" colorSpace="calibratedRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="Collapsed Card Stack Placeholder View"/>
                     <userDefinedRuntimeAttributes>
@@ -279,7 +279,7 @@
                 <constraint firstAttribute="bottom" secondItem="qi2-lw-ogB" secondAttribute="top" constant="54" id="db4-UL-SvJ"/>
                 <constraint firstItem="hnD-NS-NZl" firstAttribute="centerX" secondItem="5z1-ah-28w" secondAttribute="centerX" id="eE2-jC-ebI"/>
                 <constraint firstItem="7qT-Jf-uKh" firstAttribute="centerY" secondItem="5z1-ah-28w" secondAttribute="centerY" id="fEW-pI-TRH"/>
-                <constraint firstItem="2m9-F9-nuT" firstAttribute="top" secondItem="qi2-lw-ogB" secondAttribute="top" constant="10" id="hsC-Fa-Pvr"/>
+                <constraint firstItem="2m9-F9-nuT" firstAttribute="top" secondItem="qi2-lw-ogB" secondAttribute="top" constant="7" id="hsC-Fa-Pvr"/>
                 <constraint firstItem="pXd-jK-O7P" firstAttribute="centerX" secondItem="5z1-ah-28w" secondAttribute="centerX" id="iag-Nn-tC9"/>
                 <constraint firstItem="2m9-F9-nuT" firstAttribute="width" secondItem="qi2-lw-ogB" secondAttribute="width" id="jJt-CT-bXj"/>
                 <constraint firstItem="uER-ei-lYc" firstAttribute="width" secondItem="cEe-2l-BbS" secondAttribute="width" id="k2r-gA-y9u"/>
