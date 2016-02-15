@@ -34,4 +34,5 @@ import Foundation
     
     optional func collapsedCardStackViewWillShuffle(ccsv: CollapsedCardStackView)
     optional func collapsedCardStackViewDidShuffle(ccsv: CollapsedCardStackView)
+    optional func collapsedCardStackViewDidFailToShuffle(ccsv: CollapsedCardStackView)
 }
