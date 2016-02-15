@@ -38,16 +38,9 @@ class CollapsedCardStackViewController: UIViewController, CollapsedCardStackView
     
     func pulledCard() -> Int
     {
-        if let currentCard = collapsedCardStackView.pulledCard {
-            let nextCard = currentCard - 1
-            print("next card: \(nextCard)")
-            return nextCard
-        }
-        else {
-            let randomCard = GKRandomSource.sharedRandom().nextIntWithUpperBound(5) + 40
-            print("randomCard: \(randomCard)")
-            return randomCard
-        }
+        let randomCard = GKRandomSource.sharedRandom().nextIntWithUpperBound(15) + 33
+        print("randomCard: \(randomCard)")
+        return randomCard
     }
     
     func rangeOfCardsInCollapsedStack() -> NSRange
