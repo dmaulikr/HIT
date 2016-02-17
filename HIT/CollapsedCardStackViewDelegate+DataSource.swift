@@ -12,7 +12,7 @@ import Foundation
 {
     func numberOfItems() -> Int
     
-    func cardViewForItem(item: Int) -> TestCardView
+    func cardViewForItem(item: Int) -> CardView
     
     func commitDeletionForItem(item: Int)
 }

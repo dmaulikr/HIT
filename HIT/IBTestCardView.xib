@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10072.1"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardView" customModule="HIT" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="IBTestCardView" customModule="HIT" customModuleProvider="target">
             <connections>
                 <outlet property="cardTitleView" destination="Ob9-pW-fwV" id="hKt-N9-jG6"/>
                 <outlet property="cardTitleViewInitialCenterXConstraint" destination="3Wl-yA-iRZ" id="U81-x0-0L6"/>

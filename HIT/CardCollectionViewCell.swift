@@ -10,7 +10,7 @@ import UIKit
 
 @IBDesignable class CardCollectionViewCell: UICollectionViewCell {
     
-    var cardView: CardView!
+    var cardView: IBTestCardView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,7 +28,7 @@ import UIKit
         self.contentView.layer.cornerRadius = 3
         self.contentView.clipsToBounds = true
         
-        cardView = CardView()
+        cardView = IBTestCardView()
         self.contentView.addSubview(cardView)
         
         // pin cardView to self

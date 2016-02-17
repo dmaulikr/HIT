@@ -84,7 +84,7 @@ class AutoLayoutTestViewController: UIViewController, UIDynamicAnimatorDelegate 
     //
     // MARK: - Outlets
     
-    @IBOutlet weak var theView: CardView!
+    @IBOutlet weak var theView: IBTestCardView!
     @IBOutlet weak var startStateView: UIView!
     @IBOutlet weak var endStateView: UIView!
     

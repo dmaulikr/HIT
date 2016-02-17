@@ -395,14 +395,14 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     // MARK: - Pulled Card
     
     var pulledCard: Int?
-    var pulledCardView: TestCardView?
+    var pulledCardViewWrapper: CCSVCardViewWrapper?
     @IBOutlet weak var pulledCardPlaceholderView: CustomBoundsPlaceholderView!
     var pulledCardRestingAnchorLocation: CGPoint!
     var pulledCardAttachmentBehavior: UIAttachmentBehavior!
     var pulledCardDynamicItemBehavior: UIDynamicItemBehavior!
     var boundaryCollisionBehavior: UICollisionBehavior!
     @IBOutlet weak var attachmentGuidelinesView: UIView!
-    var pulledCardViewConstraints: [NSLayoutConstraint]?
+    var pulledCardViewWrapperConstraints: [NSLayoutConstraint]?
     
     enum Axis
     {
@@ -422,13 +422,13 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     func buildPulledCardDynamicAnimation()
     {
-        guard let pulledCardView = pulledCardView else { return }
+        guard let pulledCardViewWrapper = pulledCardViewWrapper else { return }
         
-        if pulledCardViewConstraints != nil
+        if pulledCardViewWrapperConstraints != nil
         {
-            NSLayoutConstraint.deactivateConstraints(pulledCardViewConstraints!)
-            pulledCardView.translatesAutoresizingMaskIntoConstraints = true
-            pulledCardViewConstraints = nil
+            NSLayoutConstraint.deactivateConstraints(pulledCardViewWrapperConstraints!)
+            pulledCardViewWrapper.translatesAutoresizingMaskIntoConstraints = true
+            pulledCardViewWrapperConstraints = nil
         }
         
         let pathDiameter = 18
@@ -439,11 +439,11 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             height: pathDiameter)
         let customBoundaryPath = UIBezierPath(
             ovalInRect: rectContainingBoundaryPath)
-        pulledCardView.collisionBoundsType = .Path
-        pulledCardView.collisionBoundingPath = customBoundaryPath
+        pulledCardViewWrapper.collisionBoundsType = .Path
+        pulledCardViewWrapper.collisionBoundingPath = customBoundaryPath
         
         let laneCornerRadius: CGFloat = 5
-        boundaryCollisionBehavior = UICollisionBehavior(items: [pulledCardView])
+        boundaryCollisionBehavior = UICollisionBehavior(items: [pulledCardViewWrapper])
         for (index, boundaryCollisionView) in attachmentGuidelinesView.subviews.enumerate()
         {
             boundaryCollisionBehavior.addBoundaryWithIdentifier("guideline \(index)",
@@ -453,7 +453,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         }
         animator.addBehavior(boundaryCollisionBehavior)
         
-        pulledCardDynamicItemBehavior = UIDynamicItemBehavior(items: [pulledCardView])
+        pulledCardDynamicItemBehavior = UIDynamicItemBehavior(items: [pulledCardViewWrapper])
         pulledCardDynamicItemBehavior.allowsRotation = false
         pulledCardDynamicItemBehavior.friction = 0
         pulledCardDynamicItemBehavior.resistance = 10.0
@@ -463,7 +463,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         pulledCardRestingAnchorLocation = pulledCardPlaceholderView.center
         
         pulledCardAttachmentBehavior = UIAttachmentBehavior(
-            item: pulledCardView,
+            item: pulledCardViewWrapper,
             attachedToAnchor: pulledCardRestingAnchorLocation)
         pulledCardAttachmentBehavior.length = 0
         pulledCardAttachmentBehavior.damping = 1.0
@@ -508,10 +508,10 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         
         attachmentAxis = nil
         
-        if pulledCardViewConstraints == nil
+        if pulledCardViewWrapperConstraints == nil
         {
-            pulledCardView?.translatesAutoresizingMaskIntoConstraints = false
-            pulledCardViewConstraints = pulledCardView?.mirrorView(pulledCardPlaceholderView,
+            pulledCardViewWrapper?.translatesAutoresizingMaskIntoConstraints = false
+            pulledCardViewWrapperConstraints = pulledCardViewWrapper?.mirrorView(pulledCardPlaceholderView,
                 byReplacingConstraints: [])
         }
 //        setNeedsLayout()
@@ -526,13 +526,13 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     var rangeOfCardsInCollapsedStack: NSRange?
     
-    typealias StackedCardViewConstraints =
+    typealias StackedCardViewConstraintSet =
         (centerX: NSLayoutConstraint, top: NSLayoutConstraint,
         width: NSLayoutConstraint, height: NSLayoutConstraint)
     
-    typealias CardViewConstraintPair = (cardView: TestCardView, constraints: StackedCardViewConstraints?)
+    typealias CardViewAndConstraintSetPair = (cardViewWrapper: CCSVCardViewWrapper, constraints: StackedCardViewConstraintSet?)
     
-    var cardsInStack = [Int: CardViewConstraintPair]()
+    var cardsInStack = [Int: CardViewAndConstraintSetPair]()
     
     private func topConstantForCard(card: Int) -> CGFloat?
     {
@@ -603,19 +603,19 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     }
     
     
-    func stackingConstraintsForCardView(cardView: TestCardView, atCardIndex cardIndex: Int)
-        -> StackedCardViewConstraints?
+    func stackingConstraintsForCardViewWrapper(cardViewWrapper: CCSVCardViewWrapper, atCardIndex cardIndex: Int)
+        -> StackedCardViewConstraintSet?
     {
         guard let topConstant = topConstantForCard(cardIndex) else { return nil }
         
         let widthConstraint = NSLayoutConstraint.pinItem(
-            cardView, toItem: firstCollapsedCardPlaceholderView, withAttribute: .Width)
+            cardViewWrapper, toItem: firstCollapsedCardPlaceholderView, withAttribute: .Width)
         let heightConstraint = NSLayoutConstraint.pinItem(
-            cardView, toItem: firstCollapsedCardPlaceholderView, withAttribute: .Height)
+            cardViewWrapper, toItem: firstCollapsedCardPlaceholderView, withAttribute: .Height)
         let centerXConstraint = NSLayoutConstraint.pinItem(
-            cardView, toItem: firstCollapsedCardPlaceholderView, withAttribute: .CenterX)
+            cardViewWrapper, toItem: firstCollapsedCardPlaceholderView, withAttribute: .CenterX)
         let topConstraint = NSLayoutConstraint(
-            item: cardView,
+            item: cardViewWrapper,
             attribute: .Top,
             relatedBy: .Equal,
             toItem: firstCollapsedCardPlaceholderView,
@@ -628,16 +628,16 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     func teardownCollapsingPulledCardDynamicAnimation(cardIndex: Int)
     {
-        guard   let cardViewAndBehaviorSetPair = pulledCardsDynamicallyAnimatingToCollapsedState[cardIndex],
+        guard   let cardViewWrapperAndBehaviorSetPair = pulledCardsDynamicallyAnimatingToCollapsedState[cardIndex],
                 let rangeOfCardsInCollapsedStack = rangeOfCardsInCollapsedStack
                 else { return }
         
-        cardViewAndBehaviorSetPair.behaviors.forEach { animator.removeBehavior($0) }
+        cardViewWrapperAndBehaviorSetPair.behaviors.forEach { animator.removeBehavior($0) }
         
-        let cardView = cardViewAndBehaviorSetPair.cardView
-        let constraints = stackingConstraintsForCardView(cardView, atCardIndex: cardIndex)!
+        let cardViewWrapper = cardViewWrapperAndBehaviorSetPair.cardViewWrapper
+        let constraints = stackingConstraintsForCardViewWrapper(cardViewWrapper, atCardIndex: cardIndex)!
         let animationBlock = {
-            cardView.translatesAutoresizingMaskIntoConstraints = false
+            cardViewWrapper.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activateConstraints([constraints.top, constraints.centerX, constraints.width, constraints.height])
             self.layoutIfNeeded()
         }
@@ -645,13 +645,13 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         if rangeOfCardsInCollapsedStack.swiftRange().contains(cardIndex)
         {
             UIView.animateWithDuration(0.25, animations: animationBlock)
-            cardsInStack[cardIndex] = (cardView, constraints)
+            cardsInStack[cardIndex] = (cardViewWrapper, constraints)
         }
         else
         {
             UIView.animateWithDuration(0.25, animations: animationBlock,
                 completion: { (finished) in
-                    cardViewAndBehaviorSetPair.cardView.removeFromSuperview()
+                    cardViewWrapperAndBehaviorSetPair.cardViewWrapper.removeFromSuperview()
             })
         }
         
@@ -1030,8 +1030,8 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                 hintingShuffleIconTopConstraint, hintingShuffleIconCenterXConstraint])
     }
    
-    typealias CardViewAndBehaviorSetPair = (cardView: TestCardView, behaviors: [UIDynamicBehavior])
-    var pulledCardsDynamicallyAnimatingToCollapsedState = [Int : CardViewAndBehaviorSetPair]()
+    typealias CardViewWrapperAndBehaviorSetPair = (cardViewWrapper: CCSVCardViewWrapper, behaviors: [UIDynamicBehavior])
+    var pulledCardsDynamicallyAnimatingToCollapsedState = [Int : CardViewWrapperAndBehaviorSetPair]()
     
     func pullCard(cardIndex: Int)
     {
@@ -1043,28 +1043,29 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         {
             let cardConstraintPair = cardsInStack[cardIndex]!
             cardsInStack.removeValueForKey(cardIndex)
-            pulledCardView = cardConstraintPair.cardView
+            pulledCardViewWrapper = cardConstraintPair.cardViewWrapper
             if let oldConstraints = cardConstraintPair.constraints
             {
                 NSLayoutConstraint.deactivateConstraints([oldConstraints.top, oldConstraints.centerX,
                     oldConstraints.width, oldConstraints.height])
-                pulledCardView?.translatesAutoresizingMaskIntoConstraints = true
+                pulledCardViewWrapper?.translatesAutoresizingMaskIntoConstraints = true
             }
         }
         else
         {
-            pulledCardView = dataSource.cardViewForItem(cardIndex)
-            pulledCardView!.frame = firstCollapsedCardPlaceholderView.frame
-            pulledCardView!.frame.origin.y += topConstantForCard(cardIndex)!
+            pulledCardViewWrapper = CCSVCardViewWrapper
+                .wrapperWithCardView(dataSource.cardViewForItem(cardIndex))
+            pulledCardViewWrapper!.frame = firstCollapsedCardPlaceholderView.frame
+            pulledCardViewWrapper!.frame.origin.y += topConstantForCard(cardIndex)!
             
             if  let firstCardInStack = cardsInStack.keys.sort().first
                 where cardIndex < firstCardInStack
             {
-                insertSubview(pulledCardView!, belowSubview: cardsInStack[firstCardInStack]!.cardView)
+                insertSubview(pulledCardViewWrapper!, belowSubview: cardsInStack[firstCardInStack]!.cardViewWrapper)
             }
             else
             {
-                addSubview(pulledCardView!)
+                addSubview(pulledCardViewWrapper!)
             }
         }
         
@@ -1079,7 +1080,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     {
         guard   let delegate = delegate,
                 let oldPulledCard = pulledCard,
-                let oldPulledCardView = pulledCardView,
+                let oldPulledCardViewWrapper = pulledCardViewWrapper,
                 let oldAttachmentBehavior = pulledCardAttachmentBehavior,
                 let oldDynamicItemBehavior = pulledCardDynamicItemBehavior,
                 let oldCollisionBehavior = boundaryCollisionBehavior
@@ -1115,7 +1116,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         animator.removeBehavior(oldCollisionBehavior)
         
         pulledCardsDynamicallyAnimatingToCollapsedState[oldPulledCard]
-            = (cardView: oldPulledCardView, behaviors: [oldAttachmentBehavior, oldDynamicItemBehavior])
+            = (cardViewWrapper: oldPulledCardViewWrapper, behaviors: [oldAttachmentBehavior, oldDynamicItemBehavior])
         
         var restingPosition = firstCollapsedCardPlaceholderView.center
         restingPosition.y += topConstantForCard(oldPulledCard)!
@@ -1123,7 +1124,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         oldAttachmentBehavior.anchorPoint = restingPosition
         oldAttachmentBehavior.frequency = 3.0
         oldAttachmentBehavior.action = {
-            if oldPulledCardView.center.y >= restingPosition.y {
+            if oldPulledCardViewWrapper.center.y >= restingPosition.y {
                 self.teardownCollapsingPulledCardDynamicAnimation(oldPulledCard)
             }
         }
@@ -1247,13 +1248,14 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                 else { return }
         
         pulledCard = delegate.pulledCard()
-        pulledCardView = dataSource.cardViewForItem(pulledCard!)
-        if let pulledCardView = pulledCardView
+        pulledCardViewWrapper = CCSVCardViewWrapper
+            .wrapperWithCardView(dataSource.cardViewForItem(pulledCard!))
+        if let pulledCardViewWrapper = pulledCardViewWrapper
         {
-            pulledCardView.accessibilityIdentifier = "Pulled Card View"
-            addSubview(pulledCardView)
-            pulledCardView.translatesAutoresizingMaskIntoConstraints = false
-            pulledCardViewConstraints = pulledCardView.mirrorView(pulledCardPlaceholderView,
+            pulledCardViewWrapper.accessibilityIdentifier = "Pulled Card View"
+            addSubview(pulledCardViewWrapper)
+            pulledCardViewWrapper.translatesAutoresizingMaskIntoConstraints = false
+            pulledCardViewWrapperConstraints = pulledCardViewWrapper.mirrorView(pulledCardPlaceholderView,
                 byReplacingConstraints: [])
         }
         
@@ -1263,30 +1265,31 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         {
             if card == pulledCard { continue }
             
-            let cardView = dataSource.cardViewForItem(card)
+            let cardViewWrapper = CCSVCardViewWrapper
+                .wrapperWithCardView(dataSource.cardViewForItem(card))
             
-            if let pulledCardView = pulledCardView
+            if let pulledCardViewWrapper = pulledCardViewWrapper
             {
                 if card < pulledCard {
-                    insertSubview(cardView, belowSubview: pulledCardView)
+                    insertSubview(cardViewWrapper, belowSubview: pulledCardViewWrapper)
                 }
                 else {
-                    addSubview(cardView)
+                    addSubview(cardViewWrapper)
                 }
             }
             else
             {
-                addSubview(cardView)
+                addSubview(cardViewWrapper)
             }
             
-            let constraints = stackingConstraintsForCardView(cardView, atCardIndex: card)!
+            let constraints = stackingConstraintsForCardViewWrapper(cardViewWrapper, atCardIndex: card)!
             
-            cardView.translatesAutoresizingMaskIntoConstraints = false
+            cardViewWrapper.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activateConstraints(
                 [constraints.centerX, constraints.top,
                 constraints.width, constraints.height])
             
-            cardsInStack[card] = (cardView, constraints)
+            cardsInStack[card] = (cardViewWrapper, constraints)
         }
     }
     
@@ -1359,5 +1362,34 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         default:
             break
         }
+    }
+}
+
+class CCSVCardViewWrapper: CustomCollisionBoundsView
+{
+    var cardView: CardView? {
+        willSet {
+            if cardView != nil {
+                cardView!.removeFromSuperview()
+            }
+        }
+        didSet {
+            if cardView != nil {
+                print("set contraints on wrapper")
+                addSubview(cardView!)
+                cardView?.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.pinItem(cardView!, toItem: self, withAttribute: .Width).active = true
+                NSLayoutConstraint.pinItem(cardView!, toItem: self, withAttribute: .Height).active = true
+                NSLayoutConstraint.pinItem(cardView!, toItem: self, withAttribute: .CenterX).active = true
+                NSLayoutConstraint.pinItem(cardView!, toItem: self, withAttribute: .CenterY).active = true
+            }
+        }
+    }
+    
+    class func wrapperWithCardView(cardView: CardView) -> CCSVCardViewWrapper
+    {
+        let wrapper = CCSVCardViewWrapper()
+        wrapper.cardView = cardView
+        return wrapper
     }
 }

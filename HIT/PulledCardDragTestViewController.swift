@@ -123,7 +123,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     var mantrasInRetractedStack = [Mantra]()
     
     // Pulled Card View
-    var pulledCardView: CardView?
+    var pulledCardView: IBTestCardView?
     
     
     // Guides for the collision boundaries which constrain card movement
@@ -683,7 +683,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        pulledCardView = CardView()
+        pulledCardView = IBTestCardView()
         pulledCardView?.annotation = dataSource.currentMantra
 //        print(pulledCardView?.translatesAutoresizingMaskIntoConstraints)
         view.addSubview(pulledCardView!)
@@ -774,7 +774,7 @@ class PulledCardDragTestViewController: UIViewController, UIDynamicAnimatorDeleg
         let gap: CGFloat = 10
         for (index, mantra) in mantrasInRetractedStack.enumerate()
         {
-            let cardView = CardView()
+            let cardView = IBTestCardView()
             cardView.annotation = mantra
             cardView.frame = pulledCardPlaceholderView.frame
             cardView.frame.origin.y

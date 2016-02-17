@@ -31,7 +31,7 @@ protocol CardTableViewDelegate
     //
     // MARK: - Properties
     
-    var cardViews = [CardView]()
+    var cardViews = [IBTestCardView]()
     
     var delegate: CardTableViewDelegate? {
         didSet {
@@ -128,13 +128,13 @@ protocol CardTableViewDelegate
         for cardView in cardViews {
             cardView.removeFromSuperview()
         }
-        cardViews = [CardView]()
+        cardViews = [IBTestCardView]()
         
         if let delegate = delegate
         {
             for index in 0..<delegate.numberOfCardsInCardTableView(self)
             {
-                let cardView = CardView()
+                let cardView = IBTestCardView()
                 cardView.annotation = delegate.cardTableView(self, annotationAtIndex: index)
                 cardViews.append(cardView)
                 cardView.translatesAutoresizingMaskIntoConstraints = false
