@@ -34,8 +34,6 @@ class CollapsedCardStackViewController: UIViewController, CollapsedCardStackView
     }
     
     
-    
-    
     func pulledCard() -> Int
     {
         let randomCard = GKRandomSource.sharedRandom().nextIntWithUpperBound(15) + 33
