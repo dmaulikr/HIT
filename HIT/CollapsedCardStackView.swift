@@ -702,34 +702,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         
         layoutIfNeeded()
         
-        var cardIndexesBeforePulledCard
-            = self.cardsInStack.keys
-            .filter { $0 < pulledCard }
-            .sort()
-        
-        var cardIndexesAfterPulledCard
-            = self.cardsInStack.keys
-            .filter { $0 > pulledCard }
-            .sort()
-        
-        switch machine.state
-        {
-        case .HintingShuffle:
-            cardIndexesAfterPulledCard = cardIndexesAfterPulledCard.reverse()
-        default:
-            cardIndexesBeforePulledCard = cardIndexesBeforePulledCard.reverse()
-        }
-        
-        for (loopIndex, card) in cardIndexesBeforePulledCard.enumerate()
-        {
-            UIView.animateWithDuration(0.2 + Double(loopIndex)*0.15) {
-                let newTopConstant = self.topConstantForCard(card)!
-                self.cardsInStack[card]?.constraints?.top.constant = newTopConstant
-                self.layoutIfNeeded()
-            }
-        }
-        
-        for (loopIndex, card) in cardIndexesAfterPulledCard.enumerate()
+        for (loopIndex, card) in cardsInStack.keys.sort().enumerate()
         {
             UIView.animateWithDuration(0.2 + Double(loopIndex)*0.15) {
                 let newTopConstant = self.topConstantForCard(card)!
