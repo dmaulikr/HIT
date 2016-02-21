@@ -776,29 +776,53 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         }
     }
     
-//    func setRangeOfCardsInCollapsedStack(newRange: NSRange, animated: Bool)
-//    {
+    func setRangeOfCardsInCollapsedStack(newRange: NSRange, animated: Bool)
+    {
+        print("setting range to: \(newRange)")
+        
+        guard let dataSource = dataSource else { return }
+        
+        
+        // find and insert new ones that aren't already on screen
+        var cardsOnScreen
+            = Array(cardsInStack.keys)
+            + Array(pulledCardsDynamicallyAnimatingToCollapsedState.keys)
+        if let pulledCard = pulledCard { cardsOnScreen.append(pulledCard) }
+        
+        let cardsToAdd = newRange.swiftRange().filter { !cardsOnScreen.contains($0) }
+        for card in cardsToAdd
+        {
+            let cardViewWrapper = CCSVCardViewWrapper
+                .wrapperWithCardView(dataSource.cardViewForItem(card))
+            insertCardViewInSubviews(cardViewWrapper, atCardIndex: card)
+            
+            let constraints = stackingConstraintsForCardViewWrapper(cardViewWrapper, atCardIndex: card)!
+            cardViewWrapper.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activateConstraints(
+                [constraints.centerX, constraints.top,
+                    constraints.width, constraints.height])
+            
+            cardsInStack[card] = (cardViewWrapper, constraints)
+        }
+        
+        
 //        let oldRange = rangeOfCardsInCollapsedStack
-//        rangeOfCardsInCollapsedStack = newRange
-//        
-//        let cardsToRemove = cardsInStack.filter { (card, viewAndConstraintSetPair) -> Bool in
-//            return !newRange.swiftRange().contains(card)
-//        }
-//        
-//        
-//        // remove old ones
-//        for (card, viewAndConstraintSetPair) in cardsToRemove
-//        {
-//            
-//        }
-//        cardsToRemove.forEach { (card, _) -> () in cardsInStack.removeValueForKey(card) }
-//        
-//        
-//        // find and insert new ones that aren't already on screen
-//        // filter cardsInStack for matches
-//        // filter pulledCardsDynamicallyAnimatingToCollapsedState for matches
-//        
-//    }
+        rangeOfCardsInCollapsedStack = newRange
+        
+        let cardsToRemove = cardsInStack.filter { (card, viewAndConstraintSetPair) -> Bool in
+            return !newRange.swiftRange().contains(card)
+        }
+        
+        // remove old ones
+        for (card, viewAndConstraintSetPair) in cardsToRemove
+        {
+            viewAndConstraintSetPair.cardViewWrapper.removeFromSuperview()
+            cardsInStack.removeValueForKey(card)
+        }
+        
+        
+        updatePresentationOfCardsInStack()
+    }
     
     
     //

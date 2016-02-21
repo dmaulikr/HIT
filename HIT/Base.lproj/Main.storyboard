@@ -106,13 +106,22 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Cs-e7-tch">
+                                <rect key="frame" x="95" y="20" width="131" height="30"/>
+                                <state key="normal" title="Set Random Range"/>
+                                <connections>
+                                    <action selector="setRandomRangeButtonPressed" destination="w4s-kb-mg9" eventType="touchUpInside" id="ioD-MI-lgk"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Kyt-QQ-ilq" secondAttribute="trailing" id="B5w-fF-0R3"/>
+                            <constraint firstItem="2Cs-e7-tch" firstAttribute="centerX" secondItem="Pon-1b-D6Z" secondAttribute="centerX" id="Kwm-bH-UXd"/>
                             <constraint firstItem="Kyt-QQ-ilq" firstAttribute="top" secondItem="Pon-1b-D6Z" secondAttribute="top" id="Z47-pi-E0J"/>
                             <constraint firstItem="iHC-WW-uFb" firstAttribute="top" secondItem="Kyt-QQ-ilq" secondAttribute="bottom" id="jh3-wF-c8h"/>
                             <constraint firstItem="Kyt-QQ-ilq" firstAttribute="leading" secondItem="Pon-1b-D6Z" secondAttribute="leading" id="mc5-Lg-pSh"/>
+                            <constraint firstItem="2Cs-e7-tch" firstAttribute="top" secondItem="iDk-Ku-xAB" secondAttribute="bottom" id="rvv-Ou-hKF"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
