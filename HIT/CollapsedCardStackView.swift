@@ -23,6 +23,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     case HintingDelete(UIPanGestureRecognizer)
     case ConfirmDelete(UIPanGestureRecognizer)
+    case ExecuteDelete
     
     case HintingSettings(UIPanGestureRecognizer)
     case ConfirmSettings(UIPanGestureRecognizer)
@@ -58,6 +59,13 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             
         case (.TrackingPan,     .HintingDelete):    return .Continue
         case (.HintingDelete,   .HintingDelete):    return .Continue
+            
+        case (.HintingDelete,  .ConfirmDelete):    return .Continue
+        case (.ConfirmDelete,  .ConfirmDelete):    return .Continue
+        case (.ConfirmDelete,  .HintingDelete):    return .Continue
+        case (.ConfirmDelete,  .ExecuteDelete):    return .Redirect(.ReturningToRest)
+        case (.ExecuteDelete,  .ReturningToRest):   return .Continue
+            
         case (.HintingDelete,   .ReturningToRest):  return .Continue
         case (.HintingDelete,   .HintingSettings):  return .Continue
 
@@ -115,7 +123,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
 
 
     //
-    // MARK: - State
+    // MARK: - State transition effects and causes
     
     typealias StateType = CollapsedCardStackViewState
     lazy var machine: StateMachine<CollapsedCardStackView> = {
@@ -196,8 +204,8 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
-            
-            // .HintingDelete cases
+    
+            // MARK: Delete cases
             
         case (.TrackingPan, .HintingDelete(let panGR)):
             print(".TrackingPan -> .HintingDelete")
@@ -209,6 +217,31 @@ enum CollapsedCardStackViewState: StateMachineDataSource
 //            print(".HintingDelete -> .HintingDelete")
             updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            
+        case (.HintingDelete,  .ConfirmDelete(let panGR)):
+            print(".HintingDelete -> .ConfirmDelete")
+            updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            
+        case (.ConfirmDelete,  .ConfirmDelete(let panGR)):
+            //            print(".ConfirmDelete -> .ConfirmDelete")
+            updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            
+        case (.ConfirmDelete,  .HintingDelete(let panGR)):
+            print(".ConfirmDelete -> .HintingDelete")
+            updateHintingDeleteIconPresentationWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            
+        case (.ConfirmDelete,  .ExecuteDelete):
+            print(".ConfirmDelete -> .ExecuteDelete")
+            deletePulledCard()
+            
+        case (.ExecuteDelete,  .ReturningToRest):
+            print(".ExecuteDelete -> .ReturningToRest")
+            returnHintingDeleteIconPresentationToRestingState()
+            //            returnPulledCardPresentationToRestingState()
+            //            updatePresentationOfCardsInStack()
             
         case (.HintingDelete, .ReturningToRest):
             print(".HintingDelete -> .ReturningToRest")
@@ -223,7 +256,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
             
-            // .HintingShuffle cases
+            // MARK: Shuffle cases
             
         case (.TrackingPan, .HintingShuffle(let panGR)):
             print(".TrackingPan -> .HintingShuffle")
@@ -321,8 +354,16 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                 if sender.translationInView(self).x >= 0 {
                     machine.state = .HintingSettings(sender)
                 }
-                else if sender.translationInView(self).x < 0 {
-                    machine.state = .HintingDelete(sender)
+                else if sender.translationInView(self).x < 0
+                {
+                    if sender.translationInView(self).x <= -1*hintingDeleteSpanWidth
+                    {
+                        machine.state = .ConfirmDelete(sender)
+                    }
+                    else
+                    {
+                        machine.state = .HintingDelete(sender)
+                    }
                 }
             }
             else if attachmentAxis == .Vertical {
@@ -337,7 +378,8 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                         machine.state = .HintingShuffle(sender)
                     }
                 }
-                else if sender.translationInView(self).y < 0 {
+                else if sender.translationInView(self).y < 0
+                {
                     machine.state = .HintingEdit(sender)
                 }
             }
@@ -349,6 +391,8 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         {
             switch machine.state
             {
+            case .ConfirmDelete:
+                machine.state = .ExecuteDelete
             case .ConfirmShuffle:
                 machine.state = .ExecuteShuffle
             default:
@@ -898,7 +942,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     
     //
-    // MARK: - .HintingSettings
+    // MARK: - Settings view states, behaviors, and properties
     
     @IBOutlet weak var hintingSettingsIconView: HintingIconView!
     @IBOutlet var hintingSettingsIconWidthConstraint: NSLayoutConstraint!
@@ -1003,7 +1047,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     
     //
-    // MARK: - .HintingDelete
+    // MARK: - Deletion view states, behaviors, and properties
     
     @IBOutlet weak var hintingDeleteIconView: HintingIconView!
     @IBOutlet var hintingDeleteIconWidthConstraint: NSLayoutConstraint!
@@ -1105,9 +1149,33 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                 hintingDeleteIconTrailingConstraint, hintingDeleteIconCenterYConstraint])
     }
     
+    func deletePulledCard()
+    {
+        print("deletePulledCard")
+        
+        // Animate pulled card off screen
+        var deletionLocation = pulledCardRestingAnchorLocation!
+        deletionLocation.x = self.bounds.width * 1.6
+        pulledCardAttachmentBehavior.anchorPoint = deletionLocation
+        pulledCardAttachmentBehavior.frequency = 2.5
+        pulledCardAttachmentBehavior.action = {
+            if self.pulledCardViewWrapper!.frame.origin.x > self.bounds.width {
+                self.pullCard(self.pulledCard!+1, animated: true)
+            }
+        }
+        
+        
+        // shift up card index values for all cards on screen that follow the deleted card
+        // pull a new card
+//        pullCard(pulledCard!+1, animated: true)
+        
+        
+        // set a new range for the stack
+    }
+    
     
     //
-    // MARK: - .HintingShuffle
+    // MARK: - Shuffle view states, behaviors, and properties
     
     @IBOutlet weak var hintingShuffleIconView: HintingIconView!
     @IBOutlet var hintingShuffleIconWidthConstraint: NSLayoutConstraint!
@@ -1272,7 +1340,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     
     //
-    // MARK: - .HintingEdit
+    // MARK: - Edit view states, behaviors, and properties
     
     @IBOutlet weak var hintingEditIconView: HintingIconView!
     @IBOutlet var hintingEditIconWidthConstraint: NSLayoutConstraint!
