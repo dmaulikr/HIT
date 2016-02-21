@@ -699,7 +699,10 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     {
         layoutIfNeeded()
         
-        for (loopIndex, card) in cardsInStack.keys.sort().enumerate()
+        let cardsThatHaveMoved = cardsInStack.keys
+            .filter { self.cardsInStack[$0]!.constraints!.top.constant != self.topConstantForCard($0)! }
+        
+        for (loopIndex, card) in cardsThatHaveMoved.sort().enumerate()
         {
             UIView.animateWithDuration(0.2 + Double(loopIndex)*0.15) {
                 let newTopConstant = self.topConstantForCard(card)!
