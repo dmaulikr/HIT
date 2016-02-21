@@ -39,7 +39,7 @@ class CollapsedCardStackViewController: UIViewController, CollapsedCardStackView
     {
         let randomCard = GKRandomSource.sharedRandom().nextIntWithUpperBound(15)
         range = NSMakeRange(randomCard, 5)
-        collapsedCardStackView.setRangeOfCardsInCollapsedStack(range, animated: false)
+        collapsedCardStackView.setRangeOfCardsInCollapsedStack(range, animated: true)
     }
     
     var currentPulledCard = GKRandomSource.sharedRandom().nextIntWithUpperBound(5)
