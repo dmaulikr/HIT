@@ -574,10 +574,11 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         
         guard let rangeOfCardsInCollapsedStack = rangeOfCardsInCollapsedStack else
         {
-            return nil
+            return self.bounds.size.height - firstCollapsedCardPlaceholderView.frame.origin.y
         }
         
-        if card >= rangeOfCardsInCollapsedStack.swiftRange().endIndex
+//        if card >= rangeOfCardsInCollapsedStack.swiftRange().endIndex
+        if !rangeOfCardsInCollapsedStack.swiftRange().contains(card)
         {
             // if the card follows the range, then position the card
             // just offscreen past the bottom edge
@@ -805,8 +806,6 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             cardsInStack[card] = (cardViewWrapper, constraints)
         }
         
-        
-//        let oldRange = rangeOfCardsInCollapsedStack
         rangeOfCardsInCollapsedStack = newRange
         
         let cardsToRemove = cardsInStack.filter { (card, viewAndConstraintSetPair) -> Bool in
@@ -1325,24 +1324,26 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                 byReplacingConstraints: [])
         }
         
-        rangeOfCardsInCollapsedStack = delegate.rangeOfCardsInCollapsedStack()
+        setRangeOfCardsInCollapsedStack(delegate.rangeOfCardsInCollapsedStack(), animated: false)
         
-        for card in rangeOfCardsInCollapsedStack!.swiftRange()
-        {
-            if card == pulledCard { continue }
-            
-            let cardViewWrapper = CCSVCardViewWrapper
-                .wrapperWithCardView(dataSource.cardViewForItem(card))
-            insertCardViewInSubviews(cardViewWrapper, atCardIndex: card)
-            
-            let constraints = stackingConstraintsForCardViewWrapper(cardViewWrapper, atCardIndex: card)!
-            cardViewWrapper.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activateConstraints(
-                [constraints.centerX, constraints.top,
-                constraints.width, constraints.height])
-            
-            cardsInStack[card] = (cardViewWrapper, constraints)
-        }
+//        rangeOfCardsInCollapsedStack = delegate.rangeOfCardsInCollapsedStack()
+//        
+//        for card in rangeOfCardsInCollapsedStack!.swiftRange()
+//        {
+//            if card == pulledCard { continue }
+//            
+//            let cardViewWrapper = CCSVCardViewWrapper
+//                .wrapperWithCardView(dataSource.cardViewForItem(card))
+//            insertCardViewInSubviews(cardViewWrapper, atCardIndex: card)
+//            
+//            let constraints = stackingConstraintsForCardViewWrapper(cardViewWrapper, atCardIndex: card)!
+//            cardViewWrapper.translatesAutoresizingMaskIntoConstraints = false
+//            NSLayoutConstraint.activateConstraints(
+//                [constraints.centerX, constraints.top,
+//                constraints.width, constraints.height])
+//            
+//            cardsInStack[card] = (cardViewWrapper, constraints)
+//        }
     }
     
     func teardownAllDynamicAnimation()
