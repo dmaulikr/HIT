@@ -697,9 +697,6 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     func updatePresentationOfCardsInStack()
     {
-        guard   let pulledCard = pulledCard
-                else { return }
-        
         layoutIfNeeded()
         
         for (loopIndex, card) in cardsInStack.keys.sort().enumerate()
@@ -779,18 +776,38 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             cardsInStack[card] = (cardViewWrapper, constraints)
         }
         
+        
+        
         rangeOfCardsInCollapsedStack = newRange
         
-        let cardsToRemove = cardsInStack.filter { (card, viewAndConstraintSetPair) -> Bool in
-            return !newRange.swiftRange().contains(card)
-        }
+        
         
         // remove old ones
-        for (card, viewAndConstraintSetPair) in cardsToRemove
+        let cardsToRemove = cardsInStack.keys
+            .filter({ !newRange.swiftRange().contains($0) })
+            .sort()
+    
+        self.layoutIfNeeded()
+        for (loopIndex, card) in cardsToRemove.reverse().enumerate()
         {
-            viewAndConstraintSetPair.cardViewWrapper.removeFromSuperview()
+            let viewAndConstraintSetPair = cardsInStack[card]!
+            let cardViewWrapper = viewAndConstraintSetPair.cardViewWrapper
+            let constraints = viewAndConstraintSetPair.constraints!
+            
+            let animationBlock = {
+                constraints.top.constant = self.topConstantForCard(card)!
+                self.layoutIfNeeded()
+            }
+            
+            UIView.animateWithDuration(0.2 + Double(loopIndex)*0.15,
+                animations: animationBlock,
+                completion: { (finished) in
+                    cardViewWrapper.removeFromSuperview()
+            })
             cardsInStack.removeValueForKey(card)
         }
+        
+        
         
         
         updatePresentationOfCardsInStack()
