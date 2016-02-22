@@ -751,7 +751,7 @@ import UIKit
         layoutIfNeeded()
         for (loopIndex, card) in cardsThatHaveMoved.sort().enumerate()
         {
-            UIView.animateWithDuration(0.4/* + Double(loopIndex)*0.15*/) {
+            UIView.animateWithDuration(0.4 + Double(loopIndex)*0.1) {
                 let newTopConstant = self.topConstantForCard(card)
                 self.cardsInStack[card]?.constraints.top.constant = newTopConstant
                 self.layoutIfNeeded()

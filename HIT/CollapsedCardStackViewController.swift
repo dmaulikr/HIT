@@ -77,6 +77,6 @@ class CollapsedCardStackViewController: UIViewController, CollapsedCardStackView
     }
     
     func shouldShufflePulledCard() -> Bool {
-        return false
+        return true
     }
 }
