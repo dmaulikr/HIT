@@ -12,6 +12,9 @@ enum CollapsedCardStackViewState: StateMachineDataSource
 {
     case WaitingForData
     case ReloadData
+    
+    case NoData
+    
     case ForceLayout
     
     case AtRest
@@ -23,6 +26,8 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     
     case HintingDelete(UIPanGestureRecognizer)
     case ConfirmDelete(UIPanGestureRecognizer)
+    
+    // The view's state for the duration of the deletion animation.
     case ExecuteDelete
     
     case HintingSettings(UIPanGestureRecognizer)
@@ -38,7 +43,15 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         switch (from, to)
         {
         case (_, .ReloadData):                  return .Redirect(.AtRest)
+            
+        case (.ExecuteDelete, .ForceLayout):
+            // E.g. User rotates device while pulled card
+            // is animating off screen to deletion location.
+            return .Redirect(.ExecuteDelete)
+            
         case (_, .ForceLayout):                 return .Redirect(.AtRest)
+            
+        case (.ForceLayout, .ExecuteDelete):    return .Continue
         case (.ForceLayout, .AtRest):           return .Continue
         case (.ReloadData, .AtRest):            return .Continue
             
@@ -63,8 +76,26 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         case (.HintingDelete,  .ConfirmDelete):    return .Continue
         case (.ConfirmDelete,  .ConfirmDelete):    return .Continue
         case (.ConfirmDelete,  .HintingDelete):    return .Continue
-        case (.ConfirmDelete,  .ExecuteDelete):    return .Redirect(.ReturningToRest)
-        case (.ExecuteDelete,  .ReturningToRest):   return .Continue
+        case (.ConfirmDelete,  .ExecuteDelete):    return .Continue
+            
+        case (.ExecuteDelete,  .ReturningToRest):
+            // Pulled card has animated off screen, and a 
+            // new card has been pulled from the stack which animates
+            // into resting position.
+            return .Continue
+            
+        case (.ExecuteDelete,  .AtRest):
+            // Pulled card was animating off screen, but 
+            // a bounds change occurred during the animation.
+            // As a result, a ForceLayout cycle was initiated,
+            // and at the end a new card was pulled from the stack
+            // without being animated into its resting position.
+            return .Continue
+            
+        case (.ExecuteDelete,  .NoData):
+            // Pulled card was removed from view,
+            // and there were no other cards to pull from the stack.
+            return .Continue
             
         case (.HintingDelete,   .ReturningToRest):  return .Continue
         case (.HintingDelete,   .HintingSettings):  return .Continue
@@ -148,6 +179,10 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         case (_, .ForceLayout):
             print("_ (\(fromState)) -> .ForceLayout")
             break
+            
+        case (.ForceLayout, .ExecuteDelete):
+            print(".ForceLayout -> .ExecuteDelete")
+            teardownAllDynamicAnimation()
             
         case (.ForceLayout, .AtRest):
             print(".ForceLayout -> .AtRest")
@@ -240,8 +275,9 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         case (.ExecuteDelete,  .ReturningToRest):
             print(".ExecuteDelete -> .ReturningToRest")
             returnHintingDeleteIconPresentationToRestingState()
-            //            returnPulledCardPresentationToRestingState()
-            //            updatePresentationOfCardsInStack()
+            
+        case (.ExecuteDelete,  .AtRest):
+            print(".ExecuteDelete -> .AtRest")
             
         case (.HintingDelete, .ReturningToRest):
             print(".HintingDelete -> .ReturningToRest")
@@ -293,8 +329,6 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         case (.ExecuteShuffle,  .ReturningToRest):
             print(".ExecuteShuffle -> .ReturningToRest")
             returnHintingShuffleIconPresentationToRestingState()
-//            returnPulledCardPresentationToRestingState()
-//            updatePresentationOfCardsInStack()
             
             
         case (.HintingShuffle, .ReturningToRest):
@@ -747,7 +781,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     typealias CardViewWrapperAndBehaviorSetPair = (cardViewWrapper: CCSVCardViewWrapper, behaviors: [UIDynamicBehavior])
     var pulledCardsDynamicallyAnimatingToCollapsedState = [Int : CardViewWrapperAndBehaviorSetPair]()
     
-    func teardownCollapsingPulledCardDynamicAnimation(cardIndex: Int, animated: Bool)
+    func teardownPulledCardCollapsingDynamicAnimation(cardIndex: Int, animated: Bool)
     {
         guard   let cardViewWrapperAndBehaviorSetPair = pulledCardsDynamicallyAnimatingToCollapsedState[cardIndex],
                 let rangeOfCardsInCollapsedStack = rangeOfCardsInCollapsedStack
@@ -792,8 +826,6 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                     cardViewWrapper.removeFromSuperview()
             })
         }
-        
-//        pulledCardsDynamicallyAnimatingToCollapsedState.removeValueForKey(cardIndex)
     }
     
     func updatePresentationOfCardsInStack(animated animated: Bool)
@@ -808,7 +840,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             
             for cardIndex in pulledCardsDynamicallyAnimatingToCollapsedState.keys
             {
-                teardownCollapsingPulledCardDynamicAnimation(cardIndex, animated: animated)
+                teardownPulledCardCollapsingDynamicAnimation(cardIndex, animated: animated)
             }
         }
         
@@ -1149,28 +1181,85 @@ enum CollapsedCardStackViewState: StateMachineDataSource
                 hintingDeleteIconTrailingConstraint, hintingDeleteIconCenterYConstraint])
     }
     
+    
+    var pulledCardDynamicallyAnimatingToDeletedState: (Int, CardViewWrapperAndBehaviorSetPair)?
+    
+    func teardownPulledCardDeletionDynamicAnimation(animated animated: Bool)
+    {
+        guard   let card = pulledCardDynamicallyAnimatingToDeletedState?.0,
+                let cardViewWrapperAndBehaviorSetPair = pulledCardDynamicallyAnimatingToDeletedState?.1
+                else
+        {
+            return
+        }
+        
+        pulledCardDynamicallyAnimatingToDeletedState = nil
+        
+        cardViewWrapperAndBehaviorSetPair.behaviors.forEach { animator.removeBehavior($0) }
+        cardViewWrapperAndBehaviorSetPair.cardViewWrapper.removeFromSuperview()
+        
+        pullCard(card+1, animated: animated)
+        
+        if animated {
+            machine.state = .ReturningToRest
+        }
+        else {
+            machine.state = .AtRest
+        }
+    }
+    
     func deletePulledCard()
     {
         print("deletePulledCard")
         
+        
+        
+        guard   let delegate = delegate,
+                let oldPulledCard = pulledCard,
+                let oldPulledCardViewWrapper = pulledCardViewWrapper,
+                let oldAttachmentBehavior = pulledCardAttachmentBehavior,
+                let oldDynamicItemBehavior = pulledCardDynamicItemBehavior,
+                let oldCollisionBehavior = boundaryCollisionBehavior
+                else { return }
+        
+        
+        
+        animator.removeBehavior(oldCollisionBehavior)
+        let cardViewAndBehaviorSetPair
+            = (cardViewWrapper: oldPulledCardViewWrapper,
+                behaviors: [oldAttachmentBehavior, oldDynamicItemBehavior])
+        
+        pulledCardDynamicallyAnimatingToDeletedState
+            = (oldPulledCard, cardViewAndBehaviorSetPair)
+        
+        
         // Animate pulled card off screen
         var deletionLocation = pulledCardRestingAnchorLocation!
         deletionLocation.x = self.bounds.width * 1.6
-        pulledCardAttachmentBehavior.anchorPoint = deletionLocation
-        pulledCardAttachmentBehavior.frequency = 2.5
-        pulledCardAttachmentBehavior.action = {
-            if self.pulledCardViewWrapper!.frame.origin.x > self.bounds.width {
-                self.pullCard(self.pulledCard!+1, animated: true)
+        oldAttachmentBehavior.anchorPoint = deletionLocation
+        oldAttachmentBehavior.frequency = 1.0
+        oldAttachmentBehavior.action = {
+            if oldPulledCardViewWrapper.frame.origin.x > self.bounds.width {
+                self.teardownPulledCardDeletionDynamicAnimation(animated: true)
             }
         }
         
         
+        
+//        delegate.collapsedCardStackViewDidShuffle?(self)
+        
+        
+        
+        
+        
+        
+        
         // shift up card index values for all cards on screen that follow the deleted card
         // pull a new card
-//        pullCard(pulledCard!+1, animated: true)
         
         
         // set a new range for the stack
+        
     }
     
     
@@ -1319,6 +1408,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         // periodically hang/freeze; I think that's because the previous
         // pulled card and next pulled card collide and 
         // block each other's movement
+        
         animator.removeBehavior(oldCollisionBehavior)
         
         pulledCardsDynamicallyAnimatingToCollapsedState[oldPulledCard]
@@ -1331,7 +1421,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         oldAttachmentBehavior.frequency = 3.0
         oldAttachmentBehavior.action = {
             if oldPulledCardViewWrapper.center.y >= restingPosition.y {
-                self.teardownCollapsingPulledCardDynamicAnimation(oldPulledCard, animated: true)
+                self.teardownPulledCardCollapsingDynamicAnimation(oldPulledCard, animated: true)
             }
         }
         
@@ -1466,6 +1556,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         teardownHintingShuffleIconDynamicAnimation()
         teardownHintingEditIconDynamicAnimation()
         updatePresentationOfCardsInStack(animated: false)
+        teardownPulledCardDeletionDynamicAnimation(animated: false)
     }
     
     func buildHintingIconViewDynamicAnimationForViewState(state: CollapsedCardStackViewState)
