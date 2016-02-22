@@ -1117,12 +1117,18 @@ import UIKit
         {
             newRange = NSMakeRange(0, totalNumberOfCardsInCollection)
         }
-        else if rangeOfCardsInCollapsedStack.swiftRange().endIndex >= totalNumberOfCardsInCollection
+        else if rangeOfCardsInCollapsedStack.swiftRange().endIndex > totalNumberOfCardsInCollection
         {
             let oldRange = rangeOfCardsInCollapsedStack
             newRange = NSMakeRange(
                 totalNumberOfCardsInCollection - oldRange.length,
                 oldRange.length)
+        }
+        else if deletedCardIndex < rangeOfCardsInCollapsedStack.location
+        {
+            newRange = NSMakeRange(
+                rangeOfCardsInCollapsedStack.location - 1,
+                rangeOfCardsInCollapsedStack.length)
         }
         else
         {
