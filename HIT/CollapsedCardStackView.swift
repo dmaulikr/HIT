@@ -156,6 +156,9 @@ import UIKit
             print(".ConfirmDelete -> .ExecuteDelete")
             deletePulledCard()
             
+        case (.ExecuteDelete,  .NoData):
+            print(".ExecuteDelete -> .NoData")
+            
         case (.ExecuteDelete,  .ReturningToRest):
             print(".ExecuteDelete -> .ReturningToRest")
             returnHintingDeleteIconPresentationToRestingState()

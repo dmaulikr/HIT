@@ -20,12 +20,13 @@ extension UserMantraDataManager: CollapsedCardStackViewDataSource
         let cardView = TestCardView()
         let cardColor = UIColor.randomColor()//.colorWithAlphaComponent(0.25)
         cardView.backgroundView.backgroundColor = cardColor
-        cardView.mantra = mantraWithId(item)
+        cardView.mantra = mantras[item]
         return cardView
     }
     
     func commitDeletionForItem(item: Int)
     {
-        userMantras.removeValueForKey(item)
+        let mantra = mantras[item]
+        userMantras.removeValueForKey(mantra.id)
     }
 }
