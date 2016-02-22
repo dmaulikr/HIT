@@ -290,7 +290,11 @@ import UIKit
             else if attachmentAxis == .Vertical {
                 if sender.translationInView(self).y >= 0
                 {
-                    if sender.translationInView(self).y >= hintingShuffleSpanHeight
+                    if !shouldShuffle()
+                    {
+                        machine.state = .TrackingPan(sender)
+                    }
+                    else if sender.translationInView(self).y >= hintingShuffleSpanHeight
                     {
                         machine.state = .ConfirmShuffle(sender)
                     }
@@ -885,6 +889,21 @@ import UIKit
         get {
             return hintingSettingsTrackingSpanView.frame.width
         }
+    }
+    
+    func shouldShuffle() -> Bool
+    {
+        if totalNumberOfCardsInCollection <= 1
+        {
+            return false
+        }
+        
+        if let shouldShuffle = delegate?.shouldShufflePulledCard?()
+        {
+            return shouldShuffle
+        }
+        
+        return true
     }
     
     func buildHintingSettingsIconDynamicAnimation()
