@@ -709,12 +709,12 @@ import UIKit
         layoutIfNeeded()
         if rangeOfCardsInCollapsedStack.swiftRange().contains(cardIndex)
         {
-            UIView.animateWithDuration(0.25, animations: animationBlock)
+            UIView.animateWithDuration(0.4, animations: animationBlock)
             cardsInStack[cardIndex] = (cardViewWrapper, constraints)
         }
         else
         {
-            UIView.animateWithDuration(0.25, animations: animationBlock,
+            UIView.animateWithDuration(0.4, animations: animationBlock,
                 completion: { (finished) in
                     cardViewWrapper.removeFromSuperview()
             })
@@ -791,8 +791,6 @@ import UIKit
     
     func setRangeOfCardsInCollapsedStack(newRange: NSRange, animated: Bool)
     {
-        print("setting range to: \(newRange)")
-        
         guard let dataSource = dataSource else { return }
         
         
@@ -1183,8 +1181,6 @@ import UIKit
     
     func deletePulledCard()
     {
-        print("deletePulledCard")
-        
         guard   let oldPulledCard = pulledCard,
                 let oldPulledCardViewWrapper = pulledCardViewWrapper,
                 let oldAttachmentBehavior = pulledCardAttachmentBehavior,
