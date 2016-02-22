@@ -28,37 +28,51 @@ class CollapsedCardStackViewController: UIViewController, CollapsedCardStackView
     {
         if collapsedCardStackView.delegate == nil
         {
+            range = randomRange()
             collapsedCardStackView.dataSource = dataSource
             collapsedCardStackView.delegate = self
         }
     }
     
-    var range = NSMakeRange(0, 5)
+    var rangeLength: Int {
+        get {
+            return min(5, dataSource.numberOfItems())
+        }
+    }
+    var range: NSRange?
+    
+    func randomRange() -> NSRange
+    {
+        let randomCard = GKRandomSource.sharedRandom().nextIntWithUpperBound(
+            dataSource.numberOfItems() - rangeLength)
+        return NSMakeRange(randomCard, rangeLength)
+    }
     
     @IBAction func setRandomRangeButtonPressed()
     {
-        let randomCard = GKRandomSource.sharedRandom().nextIntWithUpperBound(5)
-        range = NSMakeRange(randomCard, 5)
-//        print(collapsedCardStackView)
-        collapsedCardStackView.setRangeOfCardsInCollapsedStack(range, animated: true)
+        range = randomRange()
+        collapsedCardStackView.setRangeOfCardsInCollapsedStack(range!, animated: true)
     }
     
     var currentPulledCard = GKRandomSource.sharedRandom().nextIntWithUpperBound(5)
     
     func pulledCard() -> Int
     {
-//        var randomCard = currentPulledCard
-//        while currentPulledCard == randomCard {
-//            randomCard = GKRandomSource.sharedRandom().nextIntWithUpperBound(5) + range.location
-//        }
-//        print("randomCard: \(randomCard)")
-//        currentPulledCard = randomCard
-//        return randomCard
-        return 0
+        if dataSource.numberOfItems() == 1 {
+            return 0
+        }
+        
+        var randomCard = currentPulledCard
+        while currentPulledCard == randomCard {
+            randomCard = GKRandomSource.sharedRandom().nextIntWithUpperBound(dataSource.numberOfItems())
+        }
+        print("randomCard: \(randomCard)")
+        currentPulledCard = randomCard
+        return randomCard
     }
     
     func rangeOfCardsInCollapsedStack() -> NSRange
     {
-        return range
+        return range!
     }
 }

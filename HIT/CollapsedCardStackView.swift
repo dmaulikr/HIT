@@ -576,6 +576,11 @@ import UIKit
     
     var cardsInStack = [Int: CardViewAndConstraintSetPair]()
     
+    private func topConstantForOffscreenCard() -> CGFloat
+    {
+        return self.bounds.size.height - firstCollapsedCardPlaceholderView.frame.origin.y
+    }
+    
     private func topConstantForCard(card: Int) -> CGFloat
     {
         // Returns vertical spacing/offset from the placeholder view
@@ -586,7 +591,7 @@ import UIKit
             // if the card is outside of the range, then position the card
             // just offscreen past the bottom edge
             
-            return self.bounds.size.height - firstCollapsedCardPlaceholderView.frame.origin.y
+            return topConstantForOffscreenCard()
         }
         
         let firstCardInCollapsedStack = rangeOfCardsInCollapsedStack.location
@@ -742,7 +747,7 @@ import UIKit
         layoutIfNeeded()
         for (loopIndex, card) in cardsThatHaveMoved.sort().enumerate()
         {
-            UIView.animateWithDuration(0.2 + Double(loopIndex)*0.15) {
+            UIView.animateWithDuration(0.4/* + Double(loopIndex)*0.15*/) {
                 let newTopConstant = self.topConstantForCard(card)
                 self.cardsInStack[card]?.constraints.top.constant = newTopConstant
                 self.layoutIfNeeded()
@@ -788,12 +793,14 @@ import UIKit
         
         
         // find and insert new ones that aren't already on screen
-        var cardsOnScreen
+        
+        var cardIndexesOnScreen
             = Array(cardsInStack.keys)
             + Array(pulledCardsDynamicallyAnimatingToCollapsedState.keys)
-        if let pulledCard = pulledCard { cardsOnScreen.append(pulledCard) }
-        
-        let cardsToAdd = newRange.swiftRange().filter { !cardsOnScreen.contains($0) }
+        if let pulledCard = pulledCard {
+            cardIndexesOnScreen.append(pulledCard)
+        }
+        let cardsToAdd = newRange.swiftRange().filter { !cardIndexesOnScreen.contains($0) }
         for card in cardsToAdd
         {
             let cardViewWrapper = CCSVCardViewWrapper
@@ -801,6 +808,7 @@ import UIKit
             insertCardViewInSubviews(cardViewWrapper, atCardIndex: card)
             
             let constraints = stackingConstraintsForCardViewWrapper(cardViewWrapper, atCardIndex: card)
+            constraints.top.constant = topConstantForOffscreenCard()
             cardViewWrapper.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activateConstraints(
                 [constraints.centerX, constraints.top,
