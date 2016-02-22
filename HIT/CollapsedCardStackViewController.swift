@@ -37,8 +37,9 @@ class CollapsedCardStackViewController: UIViewController, CollapsedCardStackView
     
     @IBAction func setRandomRangeButtonPressed()
     {
-        let randomCard = GKRandomSource.sharedRandom().nextIntWithUpperBound(15)
+        let randomCard = GKRandomSource.sharedRandom().nextIntWithUpperBound(5)
         range = NSMakeRange(randomCard, 5)
+//        print(collapsedCardStackView)
         collapsedCardStackView.setRangeOfCardsInCollapsedStack(range, animated: true)
     }
     

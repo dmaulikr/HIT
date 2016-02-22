@@ -562,7 +562,8 @@ import UIKit
     @IBOutlet weak var firstCollapsedCardPlaceholderView: StatePlaceholderView!
     @IBOutlet weak var collapsedCardStackGapConstraint: NSLayoutConstraint!
     
-    var rangeOfCardsInCollapsedStack: NSRange?
+    var totalNumberOfCardsInCollection = 0
+    var rangeOfCardsInCollapsedStack = NSMakeRange(0, 0)
     
     typealias StackedCardViewConstraintSet =
         (centerX: NSLayoutConstraint, top: NSLayoutConstraint,
@@ -576,11 +577,6 @@ import UIKit
     {
         // Returns vertical spacing/offset from the placeholder view
         // of the first card in the collapsed stack
-        
-        guard let rangeOfCardsInCollapsedStack = rangeOfCardsInCollapsedStack else
-        {
-            return self.bounds.size.height - firstCollapsedCardPlaceholderView.frame.origin.y
-        }
         
         guard rangeOfCardsInCollapsedStack.swiftRange().contains(card) else
         {
@@ -669,8 +665,7 @@ import UIKit
     
     func teardownPulledCardCollapsingDynamicAnimation(cardIndex: Int, animated: Bool)
     {
-        guard   let cardViewWrapperAndBehaviorSetPair = pulledCardsDynamicallyAnimatingToCollapsedState[cardIndex],
-                let rangeOfCardsInCollapsedStack = rangeOfCardsInCollapsedStack
+        guard   let cardViewWrapperAndBehaviorSetPair = pulledCardsDynamicallyAnimatingToCollapsedState[cardIndex]
                 else { return }
         
         pulledCardsDynamicallyAnimatingToCollapsedState.removeValueForKey(cardIndex)
@@ -1070,6 +1065,69 @@ import UIKit
     
     var pulledCardDynamicallyAnimatingToDeletedState: (Int, CardViewWrapperAndBehaviorSetPair)?
     
+    func shiftCardIndexesFollowingDeletedCard(deletedCardIndex: Int)
+    {
+        let cardsInStackFollowingDeletedCard
+            = cardsInStack.keys.filter({ $0 > deletedCardIndex }).sort()
+        for cardIndex in cardsInStackFollowingDeletedCard
+        {
+            cardsInStack[cardIndex - 1] = cardsInStack.removeValueForKey(cardIndex)
+        }
+        
+        let collapsingCardsFollowingDeletedCard
+            = pulledCardsDynamicallyAnimatingToCollapsedState
+                .keys.filter({ $0 > deletedCardIndex }).sort()
+        for cardIndex in collapsingCardsFollowingDeletedCard
+        {
+            pulledCardsDynamicallyAnimatingToCollapsedState[cardIndex - 1]
+                = pulledCardsDynamicallyAnimatingToCollapsedState.removeValueForKey(cardIndex)
+        }
+    }
+    
+    func pullNextCardAndAdjustRange(deletedCardIndex: Int, animated: Bool)
+    {
+        totalNumberOfCardsInCollection -= 1
+        shiftCardIndexesFollowingDeletedCard(deletedCardIndex)
+        
+        guard totalNumberOfCardsInCollection > 0 else
+        {
+            machine.state = .NoData
+            return
+        }
+        
+        
+        let nextCard = deletedCardIndex < totalNumberOfCardsInCollection
+            ? deletedCardIndex
+            : totalNumberOfCardsInCollection - 1
+        pullCard(nextCard, animated: animated)
+        
+        let newRange: NSRange
+        if rangeOfCardsInCollapsedStack.length >= totalNumberOfCardsInCollection
+        {
+            newRange = NSMakeRange(0, totalNumberOfCardsInCollection)
+        }
+        else if rangeOfCardsInCollapsedStack.swiftRange().endIndex >= totalNumberOfCardsInCollection
+        {
+            let oldRange = rangeOfCardsInCollapsedStack
+            newRange = NSMakeRange(
+                totalNumberOfCardsInCollection - oldRange.length,
+                oldRange.length)
+        }
+        else
+        {
+            newRange = rangeOfCardsInCollapsedStack
+        }
+        setRangeOfCardsInCollapsedStack(newRange, animated: animated)
+        
+        
+        if animated {
+            machine.state = .ReturningToRest
+        }
+        else {
+            machine.state = .AtRest
+        }
+    }
+    
     func teardownPulledCardDeletionDynamicAnimation(animated animated: Bool)
     {
         guard   let card = pulledCardDynamicallyAnimatingToDeletedState?.0,
@@ -1084,31 +1142,26 @@ import UIKit
         cardViewWrapperAndBehaviorSetPair.behaviors.forEach { animator.removeBehavior($0) }
         cardViewWrapperAndBehaviorSetPair.cardViewWrapper.removeFromSuperview()
         
-        pullCard(card+1, animated: animated)
-        
-        if animated {
-            machine.state = .ReturningToRest
-        }
-        else {
-            machine.state = .AtRest
-        }
+        pullNextCardAndAdjustRange(card, animated: animated)
     }
     
     func deletePulledCard()
     {
         print("deletePulledCard")
         
-        
-        
-        guard   let delegate = delegate,
-                let oldPulledCard = pulledCard,
+        guard   let oldPulledCard = pulledCard,
                 let oldPulledCardViewWrapper = pulledCardViewWrapper,
                 let oldAttachmentBehavior = pulledCardAttachmentBehavior,
                 let oldDynamicItemBehavior = pulledCardDynamicItemBehavior,
                 let oldCollisionBehavior = boundaryCollisionBehavior
                 else { return }
         
-        
+        pulledCard = nil
+        pulledCardViewWrapper = nil
+        pulledCardAttachmentBehavior = nil
+        pulledCardDynamicItemBehavior = nil
+        boundaryCollisionBehavior = nil
+        dataSource?.commitDeletionForItem(oldPulledCard)
         
         animator.removeBehavior(oldCollisionBehavior)
         let cardViewAndBehaviorSetPair
@@ -1123,7 +1176,7 @@ import UIKit
         var deletionLocation = pulledCardRestingAnchorLocation
         deletionLocation.x = self.bounds.width * 1.6
         oldAttachmentBehavior.anchorPoint = deletionLocation
-        oldAttachmentBehavior.frequency = 1.0
+        oldAttachmentBehavior.frequency = 2.5
         oldAttachmentBehavior.action = {
             if oldPulledCardViewWrapper.frame.origin.x > self.bounds.width {
                 self.teardownPulledCardDeletionDynamicAnimation(animated: true)
@@ -1408,10 +1461,11 @@ import UIKit
     
     private func loadData()
     {
-        guard   let _ = dataSource,
+        guard   let dataSource = dataSource,
                 let delegate = delegate
                 else { return }
         
+        totalNumberOfCardsInCollection = dataSource.numberOfItems()
         pullCard(delegate.pulledCard(), animated: false)
         setRangeOfCardsInCollapsedStack(delegate.rangeOfCardsInCollapsedStack(),
             animated: false)
@@ -1500,7 +1554,6 @@ class CCSVCardViewWrapper: CustomCollisionBoundsView
         }
         didSet {
             if cardView != nil {
-                print("set contraints on wrapper")
                 addSubview(cardView!)
                 cardView?.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.pinItem(cardView!, toItem: self, withAttribute: .Width).active = true

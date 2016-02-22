@@ -20,7 +20,7 @@ struct Mantra
     
     var id: Int {
         get {
-            return self.id
+            return _id
         }
     }
     var name: String {

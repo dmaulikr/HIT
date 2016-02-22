@@ -15,11 +15,11 @@ import Foundation
     var idCounter = 1
     
     override init() {
-        for i in 0..<100 {
+        for i in 0..<10 {
             userMantras[i] = Mantra(id: i, name: "Mantra \(i)")
         }
         
-        idCounter = 100
+        idCounter = 10
         
         currentUserMantra = userMantras[0]
     }

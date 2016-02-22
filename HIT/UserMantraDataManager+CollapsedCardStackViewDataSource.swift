@@ -26,6 +26,6 @@ extension UserMantraDataManager: CollapsedCardStackViewDataSource
     
     func commitDeletionForItem(item: Int)
     {
-        
+        userMantras.removeValueForKey(item)
     }
 }
