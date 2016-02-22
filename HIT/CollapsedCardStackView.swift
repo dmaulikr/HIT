@@ -355,7 +355,11 @@ import UIKit
     var pulledCard: Int?
     var pulledCardViewWrapper: CCSVCardViewWrapper?
     @IBOutlet weak var pulledCardPlaceholderView: CustomBoundsPlaceholderView!
-    var pulledCardRestingAnchorLocation: CGPoint!
+    var pulledCardRestingAnchorLocation: CGPoint {
+        get {
+            return pulledCardPlaceholderView.center
+        }
+    }
     var pulledCardAttachmentBehavior: UIAttachmentBehavior!
     var pulledCardDynamicItemBehavior: UIDynamicItemBehavior!
     var boundaryCollisionBehavior: UICollisionBehavior!
@@ -417,8 +421,6 @@ import UIKit
         pulledCardDynamicItemBehavior.resistance = 10.0
         pulledCardDynamicItemBehavior.elasticity = 0
         animator.addBehavior(pulledCardDynamicItemBehavior)
-        
-        pulledCardRestingAnchorLocation = pulledCardPlaceholderView.center
         
         pulledCardAttachmentBehavior = UIAttachmentBehavior(
             item: pulledCardViewWrapper,
@@ -1118,7 +1120,7 @@ import UIKit
         
         
         // Animate pulled card off screen
-        var deletionLocation = pulledCardRestingAnchorLocation!
+        var deletionLocation = pulledCardRestingAnchorLocation
         deletionLocation.x = self.bounds.width * 1.6
         oldAttachmentBehavior.anchorPoint = deletionLocation
         oldAttachmentBehavior.frequency = 1.0
@@ -1127,23 +1129,6 @@ import UIKit
                 self.teardownPulledCardDeletionDynamicAnimation(animated: true)
             }
         }
-        
-        
-        
-//        delegate.collapsedCardStackViewDidShuffle?(self)
-        
-        
-        
-        
-        
-        
-        
-        // shift up card index values for all cards on screen that follow the deleted card
-        // pull a new card
-        
-        
-        // set a new range for the stack
-        
     }
     
     
