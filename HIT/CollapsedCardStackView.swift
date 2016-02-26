@@ -132,7 +132,8 @@ import UIKit
             
         case (.ConfirmSettings,  .ExecuteSettings):
             print(".ConfirmSettings -> .ExecuteSettings")
-//            deletePulledCard()
+            returnHintingSettingsIconPresentationToRestingState()
+            returnPulledCardPresentationToSettingsState()
             
         case (.HintingSettings, .ReturningToRest):
             print(".HintingSettings -> .ReturningToRest")
@@ -365,7 +366,13 @@ import UIKit
     }
     
     func dynamicAnimatorDidPause(animator: UIDynamicAnimator) {
-        machine.state = .AtRest
+        switch machine.state
+        {
+        case .ReturningToRest:
+            machine.state = .AtRest
+        default:
+            break
+        }
     }
     
     override func updateConstraints() {
@@ -910,6 +917,11 @@ import UIKit
     // MARK: - Settings view states, behaviors, and properties
     
     @IBOutlet weak var settingsCardPlaceholderView: StatePlaceholderView!
+    var pulledCardSettingsAnchorLocation: CGPoint {
+        get {
+            return settingsCardPlaceholderView.center
+        }
+    }
     @IBOutlet weak var hintingSettingsIconView: HintingIconView!
     @IBOutlet var hintingSettingsIconWidthConstraint: NSLayoutConstraint!
     @IBOutlet var hintingSettingsIconHeightConstraint: NSLayoutConstraint!
@@ -1024,6 +1036,14 @@ import UIKit
         NSLayoutConstraint.activateConstraints(
             [hintingSettingsIconWidthConstraint, hintingSettingsIconHeightConstraint,
                 hintingSettingsIconLeadingConstraint, hintingSettingsIconCenterYConstraint])
+    }
+    
+    func returnPulledCardPresentationToSettingsState()
+    {
+        pulledCardAttachmentBehavior?.anchorPoint = pulledCardSettingsAnchorLocation
+        pulledCardAttachmentBehavior?.damping = 1.0
+        pulledCardAttachmentBehavior?.frequency = 7.0
+        attachmentAxis = nil
     }
     
     
