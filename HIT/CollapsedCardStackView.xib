@@ -37,6 +37,7 @@
                 <outlet property="hintingShuffleIconWidthConstraint" destination="CLu-6c-aL1" id="NbA-Rq-uRm"/>
                 <outlet property="hintingShuffleTrackingSpanView" destination="2c5-K0-BYh" id="UQk-mO-Ent"/>
                 <outlet property="pulledCardPlaceholderView" destination="5z1-ah-28w" id="7WM-CF-M0t"/>
+                <outlet property="settingsCardPlaceholderView" destination="LeB-19-n7N" id="MMJ-14-Hll"/>
                 <outlet property="xibView" destination="cEe-2l-BbS" id="Owd-2g-KKU"/>
             </connections>
         </placeholder>
@@ -166,6 +167,15 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LeB-19-n7N" userLabel="Settings Card Placeholder" customClass="StatePlaceholderView" customModule="HIT" customModuleProvider="target">
+                    <rect key="frame" x="331" y="74" width="369" height="519"/>
+                    <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                            <color key="value" red="1" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5z1-ah-28w" userLabel="Pulled Card Placeholder View" customClass="CustomBoundsPlaceholderView" customModule="HIT" customModuleProvider="target">
                     <rect key="frame" x="3" y="74" width="369" height="519"/>
                     <subviews>
@@ -267,10 +277,14 @@
                 <constraint firstItem="5z1-ah-28w" firstAttribute="bottom" secondItem="pXd-jK-O7P" secondAttribute="bottom" constant="10" id="3JL-an-rHB"/>
                 <constraint firstItem="5z1-ah-28w" firstAttribute="centerX" secondItem="cEe-2l-BbS" secondAttribute="centerX" id="4tA-HZ-Pfh"/>
                 <constraint firstItem="qi2-lw-ogB" firstAttribute="height" secondItem="5z1-ah-28w" secondAttribute="height" id="6d0-Ep-S4u"/>
+                <constraint firstItem="LeB-19-n7N" firstAttribute="height" secondItem="5z1-ah-28w" secondAttribute="height" id="7Ly-Q7-PMB"/>
                 <constraint firstAttribute="bottom" secondItem="5z1-ah-28w" secondAttribute="bottom" constant="74" id="8um-NO-eRW"/>
+                <constraint firstItem="LeB-19-n7N" firstAttribute="centerY" secondItem="5z1-ah-28w" secondAttribute="centerY" id="9v7-H7-X5d"/>
+                <constraint firstItem="LeB-19-n7N" firstAttribute="width" secondItem="5z1-ah-28w" secondAttribute="width" id="Cc3-OW-ckI"/>
                 <constraint firstItem="uER-ei-lYc" firstAttribute="centerY" secondItem="cEe-2l-BbS" secondAttribute="centerY" id="H5h-ZF-38r"/>
                 <constraint firstItem="hnD-NS-NZl" firstAttribute="top" secondItem="5z1-ah-28w" secondAttribute="top" constant="10" id="Q5r-l7-3Zu"/>
                 <constraint firstItem="7qT-Jf-uKh" firstAttribute="leading" secondItem="5z1-ah-28w" secondAttribute="leading" constant="10" id="QTP-0F-PL8"/>
+                <constraint firstAttribute="trailing" secondItem="LeB-19-n7N" secondAttribute="leading" constant="44" id="RB5-xO-rC2"/>
                 <constraint firstItem="uER-ei-lYc" firstAttribute="centerX" secondItem="cEe-2l-BbS" secondAttribute="centerX" id="Vsp-SP-4gE"/>
                 <constraint firstItem="qi2-lw-ogB" firstAttribute="width" secondItem="5z1-ah-28w" secondAttribute="width" id="XhW-bV-wah"/>
                 <constraint firstItem="OIh-lm-PIy" firstAttribute="centerY" secondItem="5z1-ah-28w" secondAttribute="centerY" id="Ydy-cC-vBg"/>

@@ -64,6 +64,10 @@ import UIKit
             print("_ (\(fromState)) -> .ForceLayout")
             break
             
+        case (.ForceLayout, .ExecuteSettings):
+            print(".ForceLayout -> .ExecuteSettings")
+            teardownAllDynamicAnimation()
+            
         case (.ForceLayout, .ExecuteDelete):
             print(".ForceLayout -> .ExecuteDelete")
             teardownAllDynamicAnimation()
@@ -98,7 +102,7 @@ import UIKit
             teardownAllDynamicAnimation()
             
             
-            // .HintingSettings cases
+            // MARK: Settings cases
             
         case (.TrackingPan, .HintingSettings(let panGR)):
             print(".TrackingPan -> .HintingSettings")
@@ -110,6 +114,25 @@ import UIKit
 //            print(".HintingSettings -> .HintingSettings")
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            
+        case (.HintingSettings,  .ConfirmSettings(let panGR)):
+            print(".HintingSettings -> .ConfirmSettings")
+            updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            
+        case (.ConfirmSettings,  .ConfirmSettings(let panGR)):
+            //            print(".ConfirmSettings -> .ConfirmSettings")
+            updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            
+        case (.ConfirmSettings,  .HintingSettings(let panGR)):
+            print(".ConfirmSettings -> .HintingSettings")
+            updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
+            updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            
+        case (.ConfirmSettings,  .ExecuteSettings):
+            print(".ConfirmSettings -> .ExecuteSettings")
+//            deletePulledCard()
             
         case (.HintingSettings, .ReturningToRest):
             print(".HintingSettings -> .ReturningToRest")
@@ -273,7 +296,14 @@ import UIKit
             if attachmentAxis == .Horizontal
             {
                 if sender.translationInView(self).x >= 0 {
-                    machine.state = .HintingSettings(sender)
+                    if sender.translationInView(self).x >= hintingSettingsSpanWidth
+                    {
+                        machine.state = .ConfirmSettings(sender)
+                    }
+                    else
+                    {
+                        machine.state = .HintingSettings(sender)
+                    }
                 }
                 else if sender.translationInView(self).x < 0
                 {
@@ -316,6 +346,8 @@ import UIKit
         {
             switch machine.state
             {
+            case .ConfirmSettings:
+                machine.state = .ExecuteSettings
             case .ConfirmDelete:
                 machine.state = .ExecuteDelete
             case .ConfirmShuffle:
@@ -478,8 +510,15 @@ import UIKit
         if pulledCardViewWrapperConstraints == nil
         {
             pulledCardViewWrapper?.translatesAutoresizingMaskIntoConstraints = false
-            pulledCardViewWrapperConstraints = pulledCardViewWrapper?.mirrorView(pulledCardPlaceholderView,
-                byReplacingConstraints: [])
+            
+            switch machine.state {
+            case .ExecuteSettings:
+                pulledCardViewWrapperConstraints = pulledCardViewWrapper?.mirrorView(settingsCardPlaceholderView,
+                    byReplacingConstraints: [])
+            default:
+                pulledCardViewWrapperConstraints = pulledCardViewWrapper?.mirrorView(pulledCardPlaceholderView,
+                    byReplacingConstraints: [])
+            }
         }
     }
     
@@ -870,6 +909,7 @@ import UIKit
     //
     // MARK: - Settings view states, behaviors, and properties
     
+    @IBOutlet weak var settingsCardPlaceholderView: StatePlaceholderView!
     @IBOutlet weak var hintingSettingsIconView: HintingIconView!
     @IBOutlet var hintingSettingsIconWidthConstraint: NSLayoutConstraint!
     @IBOutlet var hintingSettingsIconHeightConstraint: NSLayoutConstraint!

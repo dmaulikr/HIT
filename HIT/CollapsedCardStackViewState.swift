@@ -33,6 +33,11 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     case HintingSettings(UIPanGestureRecognizer)
     case ConfirmSettings(UIPanGestureRecognizer)
     
+    // The view's state while the app's settings panel is being displayed.
+    // The settings panel view is not part of this view. Instead, the view's
+    // delegate is responsible for displaying it.
+    case ExecuteSettings
+    
     case HintingShuffle(UIPanGestureRecognizer)
     case ConfirmShuffle(UIPanGestureRecognizer)
     case ExecuteShuffle
@@ -44,6 +49,12 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         {
         case (_, .ReloadData):                  return .Redirect(.AtRest)
             
+        case (.ExecuteSettings, .ForceLayout):
+            // E.g. User rotates device while pulled card
+            // is animating to settings location or while at rest
+            // at the settings location
+            return .Redirect(.ExecuteSettings)
+            
         case (.ExecuteDelete, .ForceLayout):
             // E.g. User rotates device while pulled card
             // is animating off screen to deletion location.
@@ -51,6 +62,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
             
         case (_, .ForceLayout):                 return .Redirect(.AtRest)
             
+        case (.ForceLayout, .ExecuteSettings):    return .Continue
         case (.ForceLayout, .ExecuteDelete):    return .Continue
         case (.ForceLayout, .AtRest):           return .Continue
         case (.ReloadData, .AtRest):            return .Continue
@@ -68,6 +80,10 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         case (.HintingSettings, .HintingSettings):  return .Continue
         case (.HintingSettings, .ReturningToRest):  return .Continue
         case (.HintingSettings, .HintingDelete):    return .Continue
+        case (.HintingSettings,  .ConfirmSettings):    return .Continue
+        case (.ConfirmSettings,  .ConfirmSettings):    return .Continue
+        case (.ConfirmSettings,  .HintingSettings):    return .Continue
+        case (.ConfirmSettings,  .ExecuteSettings):    return .Continue
             
             
         case (.TrackingPan,     .HintingDelete):    return .Continue
