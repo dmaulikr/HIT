@@ -134,6 +134,7 @@ import UIKit
             print(".ConfirmSettings -> .ExecuteSettings")
             returnHintingSettingsIconPresentationToRestingState()
             returnPulledCardPresentationToSettingsState()
+            delegate?.collapsedCardStackViewDidPromptSettingsView?(self)
             
         case (.HintingSettings, .ReturningToRest):
             print(".HintingSettings -> .ReturningToRest")

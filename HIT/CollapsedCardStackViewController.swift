@@ -9,7 +9,11 @@
 import UIKit
 import GameKit
 
-class CollapsedCardStackViewController: UIViewController, CollapsedCardStackViewDelegate {
+class   CollapsedCardStackViewController:
+        UIViewController,
+        CollapsedCardStackViewDelegate,
+        UIViewControllerTransitioningDelegate
+{
 
     @IBOutlet weak var collapsedCardStackView: CollapsedCardStackView!
     
@@ -79,4 +83,10 @@ class CollapsedCardStackViewController: UIViewController, CollapsedCardStackView
     func shouldShufflePulledCard() -> Bool {
         return true
     }
+    
+    func collapsedCardStackViewDidPromptSettingsView(ccsv: CollapsedCardStackView) {
+        performSegueWithIdentifier("Show Settings", sender: self)
+    }
+    
+    
 }

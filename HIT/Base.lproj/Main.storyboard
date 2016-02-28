@@ -4,6 +4,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10072.1"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -127,11 +128,63 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="collapsedCardStackView" destination="Kyt-QQ-ilq" id="Be4-Ac-H1T"/>
+                        <segue destination="aBP-xM-hSG" kind="presentation" identifier="Show Settings" id="4jf-8E-0Q2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lvW-8N-3TO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1513" y="2318"/>
+            <point key="canvasLocation" x="1839" y="2408"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="l09-Ys-yCh">
+            <objects>
+                <viewController modalPresentationStyle="overFullScreen" id="aBP-xM-hSG" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ETp-xd-IJU"/>
+                        <viewControllerLayoutGuide type="bottom" id="yPX-B8-AO8"/>
+                    </layoutGuides>
+                    <view key="view" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="lny-vM-Deu">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GL1-yE-gXs">
+                                <rect key="frame" x="0.0" y="77" width="240" height="415"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kqq-bJ-SDw">
+                                        <rect key="frame" x="88" y="197" width="64" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="0.58428266429999998" blue="0.25116547299999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="kqq-bJ-SDw" firstAttribute="centerY" secondItem="GL1-yE-gXs" secondAttribute="centerY" id="Jld-vI-vZb"/>
+                                    <constraint firstAttribute="height" constant="415" id="MsJ-Ua-6Fi"/>
+                                    <constraint firstItem="kqq-bJ-SDw" firstAttribute="centerX" secondItem="GL1-yE-gXs" secondAttribute="centerX" id="vYf-6L-JWt"/>
+                                    <constraint firstAttribute="width" constant="240" id="xw7-J9-cmk"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt; Back" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DJu-Dq-Zc8">
+                                <rect key="frame" x="16" y="48" width="53" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="leadingMargin" secondItem="DJu-Dq-Zc8" secondAttribute="leading" id="6On-ra-4wQ"/>
+                            <constraint firstItem="GL1-yE-gXs" firstAttribute="leading" secondItem="lny-vM-Deu" secondAttribute="leading" id="BdZ-gW-1Ck"/>
+                            <constraint firstItem="GL1-yE-gXs" firstAttribute="centerY" secondItem="lny-vM-Deu" secondAttribute="centerY" id="PWf-Oi-9GT"/>
+                            <constraint firstItem="GL1-yE-gXs" firstAttribute="top" secondItem="DJu-Dq-Zc8" secondAttribute="bottom" constant="8" id="ZCz-QA-zbF"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DIZ-Tb-lDM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2397" y="2408"/>
         </scene>
         <!--Card Collection View Controller-->
         <scene sceneID="QQk-aO-Eza">
@@ -473,7 +526,7 @@
                     </connections>
                 </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2184" y="2276"/>
+            <point key="canvasLocation" x="2747" y="1545"/>
         </scene>
     </scenes>
 </document>

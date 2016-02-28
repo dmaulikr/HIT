@@ -32,6 +32,8 @@ import Foundation
     optional func didHintShuffle()
     optional func didHintEdit()
     
+    optional func collapsedCardStackViewDidPromptSettingsView(ccsv: CollapsedCardStackView)
+    
     optional func collapsedCardStackViewWillShuffle(ccsv: CollapsedCardStackView)
     optional func collapsedCardStackViewDidShuffle(ccsv: CollapsedCardStackView)
     optional func collapsedCardStackViewDidFailToShuffle(ccsv: CollapsedCardStackView)
