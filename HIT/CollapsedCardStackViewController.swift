@@ -17,11 +17,28 @@ class   CollapsedCardStackViewController:
 
     @IBOutlet weak var collapsedCardStackView: CollapsedCardStackView!
     
-    override func viewDidLoad() {
+    // MARK: - View lifecycle
+    
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
+    {
+        super.prepareForSegue(segue, sender: sender)
+        
+        switch segue.identifier ?? ""
+        {
+        case "Show Settings":
+            let settingsVC = segue.destinationViewController
+            settingsVC.transitioningDelegate = self
+            
+        default: break
+        }
     }
     
     // Data controller
@@ -60,6 +77,8 @@ class   CollapsedCardStackViewController:
     
     var currentPulledCard = GKRandomSource.sharedRandom().nextIntWithUpperBound(5)
     
+    // MARK: - CollapsedCardStackViewDelegate
+    
     func pulledCard() -> Int
     {
         if dataSource.numberOfItems() == 1 {
@@ -84,9 +103,51 @@ class   CollapsedCardStackViewController:
         return true
     }
     
-    func collapsedCardStackViewDidPromptSettingsView(ccsv: CollapsedCardStackView) {
+//    func collapsedCardStackViewDidPromptSettingsView(ccsv: CollapsedCardStackView) {
+//        performSegueWithIdentifier("Show Settings", sender: self)
+//    }
+    
+    // MARK: - Settings transition
+    
+    var settingsTransitionController = SettingsTransitionController()
+    
+    func animationControllerForPresentedController(
+        presented: UIViewController,
+        presentingController presenting: UIViewController,
+        sourceController source: UIViewController)
+        
+        -> UIViewControllerAnimatedTransitioning?
+    {
+        return settingsTransitionController
+    }
+    
+    func interactionControllerForPresentation(animator: UIViewControllerAnimatedTransitioning)
+        -> UIViewControllerInteractiveTransitioning?
+    {
+        return settingsTransitionController
+    }
+    
+    func collapsedCardStackViewDidBeginSettingsPresentation(
+        ccsv: CollapsedCardStackView,
+        presentationProgress: CGFloat)
+    {
+        print("delegate.didBegin: \(presentationProgress)")
+        settingsTransitionController = SettingsTransitionController()
+        settingsTransitionController.transitionProgress = presentationProgress
         performSegueWithIdentifier("Show Settings", sender: self)
     }
     
+    func collapsedCardStackViewDidUpdateSettingsPresentation(
+        ccsv: CollapsedCardStackView,
+        presentationProgress: CGFloat)
+    {
+        print("delegate.didUpdate: \(presentationProgress)")
+        settingsTransitionController.transitionProgress = presentationProgress
+    }
     
+    func collapsedCardStackViewDidDismissSettingsPresentation(ccsv: CollapsedCardStackView)
+    {
+        print("delegate.didDismiss")
+        settingsTransitionController.cancelTransition()
+    }
 }

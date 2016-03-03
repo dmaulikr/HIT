@@ -119,22 +119,28 @@ import UIKit
             print(".HintingSettings -> .ConfirmSettings")
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            delegate?.collapsedCardStackViewDidBeginSettingsPresentation?(self,
+                presentationProgress: settingsPresentationProgress())
             
         case (.ConfirmSettings,  .ConfirmSettings(let panGR)):
             //            print(".ConfirmSettings -> .ConfirmSettings")
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            delegate?.collapsedCardStackViewDidUpdateSettingsPresentation?(self,
+                presentationProgress: settingsPresentationProgress())
             
         case (.ConfirmSettings,  .HintingSettings(let panGR)):
             print(".ConfirmSettings -> .HintingSettings")
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            delegate?.collapsedCardStackViewDidDismissSettingsPresentation?(self)
             
         case (.ConfirmSettings,  .ExecuteSettings):
             print(".ConfirmSettings -> .ExecuteSettings")
             returnHintingSettingsIconPresentationToRestingState()
             returnPulledCardPresentationToSettingsState()
-            delegate?.collapsedCardStackViewDidPromptSettingsView?(self)
+            delegate?.collapsedCardStackViewDidUpdateSettingsPresentation?(self,
+                presentationProgress: 1.0)
             
         case (.HintingSettings, .ReturningToRest):
             print(".HintingSettings -> .ReturningToRest")
@@ -942,19 +948,28 @@ import UIKit
         }
     }
     
-    func shouldShuffle() -> Bool
+    func shouldPresentSettings() -> Bool
     {
-        if totalNumberOfCardsInCollection <= 1
+        if let presentSettings = delegate?.collapsedCardStackViewShouldPresentSettings?(self)
         {
-            return false
-        }
-        
-        if let shouldShuffle = delegate?.shouldShufflePulledCard?()
-        {
-            return shouldShuffle
+            return presentSettings
         }
         
         return true
+    }
+    
+    func settingsPresentationProgress() -> CGFloat
+    {
+        let x = pulledCardPlaceholderView.frame.origin.x + hintingSettingsSpanWidth
+        
+        var presentationProgress
+            = (pulledCardViewWrapper!.frame.origin.x - x)
+            / (settingsCardPlaceholderView.frame.origin.x - x)
+        presentationProgress = max(min(presentationProgress, 1), 0)
+        
+//        print(presentationProgress)
+        
+        return presentationProgress
     }
     
     func buildHintingSettingsIconDynamicAnimation()
@@ -1298,6 +1313,21 @@ import UIKit
         get {
             return hintingShuffleTrackingSpanView.frame.height
         }
+    }
+    
+    func shouldShuffle() -> Bool
+    {
+        if totalNumberOfCardsInCollection <= 1
+        {
+            return false
+        }
+        
+        if let shouldShuffle = delegate?.shouldShufflePulledCard?()
+        {
+            return shouldShuffle
+        }
+        
+        return true
     }
     
     func buildHintingShuffleIconDynamicAnimation()

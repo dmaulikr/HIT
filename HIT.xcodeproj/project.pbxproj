@@ -24,6 +24,7 @@
 		3F25F4591C53B6DB0093DDA5 /* CustomBoundsPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F25F4581C53B6DB0093DDA5 /* CustomBoundsPlaceholderView.swift */; };
 		3F25F45D1C53EE390093DDA5 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F25F45C1C53EE390093DDA5 /* StateMachine.swift */; };
 		3F3137741C1E472E008D021D /* UIView+Doppelganger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3137731C1E472E008D021D /* UIView+Doppelganger.swift */; };
+		3F5101001C8425090045CA97 /* SettingsTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5100FF1C8425090045CA97 /* SettingsTransitionController.swift */; };
 		3F56FE451C6726C00018A0BE /* TestCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F56FE441C6726C00018A0BE /* TestCardView.swift */; };
 		3F62931A1C148C78005BD240 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293191C148C78005BD240 /* AppDelegate.swift */; };
 		3F62931F1C148C78005BD240 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F62931D1C148C78005BD240 /* Main.storyboard */; };
@@ -96,6 +97,7 @@
 		3F25F4581C53B6DB0093DDA5 /* CustomBoundsPlaceholderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomBoundsPlaceholderView.swift; sourceTree = "<group>"; };
 		3F25F45C1C53EE390093DDA5 /* StateMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateMachine.swift; sourceTree = "<group>"; };
 		3F3137731C1E472E008D021D /* UIView+Doppelganger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Doppelganger.swift"; sourceTree = "<group>"; };
+		3F5100FF1C8425090045CA97 /* SettingsTransitionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTransitionController.swift; sourceTree = "<group>"; };
 		3F56FE441C6726C00018A0BE /* TestCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCardView.swift; sourceTree = "<group>"; };
 		3F6293161C148C78005BD240 /* HIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HIT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F6293191C148C78005BD240 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -168,6 +170,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F5100FD1C8424360045CA97 /* Collapsed View */ = {
+			isa = PBXGroup;
+			children = (
+				3F11CF991C68641F0048D0EB /* CollapsedCardStackViewDelegate+DataSource.swift */,
+				3F11CFA31C7AAFF70048D0EB /* CollapsedCardStackViewState.swift */,
+				3F7B50541C608758004EB27D /* CollapsedCardStackView.swift */,
+				3F7B50561C60878D004EB27D /* CollapsedCardStackView.xib */,
+			);
+			name = "Collapsed View";
+			sourceTree = "<group>";
+		};
+		3F5100FE1C8424BF0045CA97 /* Collection View */ = {
+			isa = PBXGroup;
+			children = (
+				3FCA2D191C32441D00E27F64 /* CardFlowLayout.swift */,
+				3FCA2D171C322EF500E27F64 /* CardCollectionViewCell.swift */,
+			);
+			name = "Collection View";
+			sourceTree = "<group>";
+		};
 		3F62930D1C148C77005BD240 = {
 			isa = PBXGroup;
 			children = (
@@ -296,12 +318,9 @@
 		3FF21E311C2203500079C67F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				3F11CF991C68641F0048D0EB /* CollapsedCardStackViewDelegate+DataSource.swift */,
-				3F11CFA31C7AAFF70048D0EB /* CollapsedCardStackViewState.swift */,
-				3F7B50541C608758004EB27D /* CollapsedCardStackView.swift */,
-				3F7B50561C60878D004EB27D /* CollapsedCardStackView.xib */,
-				3FCA2D191C32441D00E27F64 /* CardFlowLayout.swift */,
-				3FCA2D171C322EF500E27F64 /* CardCollectionViewCell.swift */,
+				3F5100FD1C8424360045CA97 /* Collapsed View */,
+				3F5100FE1C8424BF0045CA97 /* Collection View */,
+				3F5100FF1C8425090045CA97 /* SettingsTransitionController.swift */,
 				3FF21E2F1C2202CB0079C67F /* IBTestCardView.swift */,
 				3F8397D81C24F23C0002002E /* IBTestCardView.xib */,
 				3FDAE60C1C293BD0000634CF /* StatePlaceholderView.swift */,
@@ -533,6 +552,7 @@
 				3FCA2D1A1C32441D00E27F64 /* CardFlowLayout.swift in Sources */,
 				3F11CF9A1C68641F0048D0EB /* CollapsedCardStackViewDelegate+DataSource.swift in Sources */,
 				3F16BB7F1C2BE459000D4B7D /* CardTableViewController.swift in Sources */,
+				3F5101001C8425090045CA97 /* SettingsTransitionController.swift in Sources */,
 				3F16BB7D1C2BE3A1000D4B7D /* CardAnnotation.swift in Sources */,
 				3F7B50491C603D40004EB27D /* MantraDataSource.swift in Sources */,
 				3F16BB811C2CBB46000D4B7D /* Mantra.swift in Sources */,
