@@ -142,7 +142,14 @@ class   CollapsedCardStackViewController:
         presentationProgress: CGFloat)
     {
         print("delegate.didUpdate: \(presentationProgress)")
-        settingsTransitionController.transitionProgress = presentationProgress
+        if presentationProgress == 1
+        {
+            print("finish transition")
+            settingsTransitionController.finishTransition()
+        }
+        else {
+            settingsTransitionController.transitionProgress = presentationProgress
+        }
     }
     
     func collapsedCardStackViewDidDismissSettingsPresentation(ccsv: CollapsedCardStackView)

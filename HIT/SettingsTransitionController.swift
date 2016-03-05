@@ -70,12 +70,21 @@ class SettingsTransitionController: NSObject,
         self.transitionContext = transitionContext
         
         let containerView = transitionContext.containerView()
+        let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
+            as! CollapsedCardStackViewController
+        let ccsv = fromVC.collapsedCardStackView
+        ccsv.removeFromSuperview()
+        
+        
         let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
-//        let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
-        
-//        containerView?.addSubview(fromVC!.view)
         containerView?.addSubview(toVC!.view)
+
+        toVC!.view.addSubview(ccsv)
+        NSLayoutConstraint.pinItem(ccsv, toItem: toVC!.view, withAttribute: .Left).active = true
+        NSLayoutConstraint.pinItem(ccsv, toItem: toVC!.view, withAttribute: .Right).active = true
+        NSLayoutConstraint.pinItem(ccsv, toItem: toVC!.view, withAttribute: .Top).active = true
+        NSLayoutConstraint.pinItem(ccsv, toItem: toVC!.view, withAttribute: .Bottom).active = true
         
-        toVC?.view.alpha = 0.0
+//        toVC?.view.alpha = 0.0
     }
 }

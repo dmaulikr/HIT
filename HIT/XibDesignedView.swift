@@ -29,6 +29,7 @@ class XibDesignedView: UIView {
         let nibName = NSStringFromClass(self.dynamicType)
             .componentsSeparatedByString(".").last!
         NSBundle(forClass: self.dynamicType).loadNibNamed(nibName, owner: self, options: nil)
+        self.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.0)
         self.addSubview(self.xibView)
         
         // pin xibView to self
