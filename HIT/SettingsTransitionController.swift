@@ -34,6 +34,7 @@ class SettingsTransitionController: NSObject,
     {
         guard transitionContext != nil else { return }
         
+        
         transitionContext?.updateInteractiveTransition(1.0)
         let toView = transitionContext?.viewForKey(UITransitionContextToViewKey)
         toView?.alpha = 1.0
@@ -45,6 +46,20 @@ class SettingsTransitionController: NSObject,
     {
         guard transitionContext != nil else { return }
         
+        // Add CollapsedCardStackView back to original VC
+        if let ccsv = transitionContext?.containerView()?.subviews
+            .filter ({ return ($0 as? CollapsedCardStackView) != nil }).first
+        {
+            let fromView = transitionContext?
+                .viewControllerForKey(UITransitionContextFromViewControllerKey)?
+                .view
+            fromView?.addSubview(ccsv)
+            NSLayoutConstraint.pinItem(ccsv, toItem: fromView!, withAttribute: .Left).active = true
+            NSLayoutConstraint.pinItem(ccsv, toItem: fromView!, withAttribute: .Right).active = true
+            NSLayoutConstraint.pinItem(ccsv, toItem: fromView!, withAttribute: .Top).active = true
+            NSLayoutConstraint.pinItem(ccsv, toItem: fromView!, withAttribute: .Bottom).active = true
+        }
+        
         transitionContext?.updateInteractiveTransition(0.0)
         let toView = transitionContext?.viewForKey(UITransitionContextToViewKey)
         toView?.alpha = 0.0
@@ -54,7 +69,7 @@ class SettingsTransitionController: NSObject,
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning)
     {
-        
+        // nothing here!
     }
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?)
@@ -73,18 +88,18 @@ class SettingsTransitionController: NSObject,
         let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
             as! CollapsedCardStackViewController
         let ccsv = fromVC.collapsedCardStackView
-        ccsv.removeFromSuperview()
+//        ccsv.removeFromSuperview()
         
         
         let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
         containerView?.addSubview(toVC!.view)
 
-        toVC!.view.addSubview(ccsv)
-        NSLayoutConstraint.pinItem(ccsv, toItem: toVC!.view, withAttribute: .Left).active = true
-        NSLayoutConstraint.pinItem(ccsv, toItem: toVC!.view, withAttribute: .Right).active = true
-        NSLayoutConstraint.pinItem(ccsv, toItem: toVC!.view, withAttribute: .Top).active = true
-        NSLayoutConstraint.pinItem(ccsv, toItem: toVC!.view, withAttribute: .Bottom).active = true
+        containerView!.addSubview(ccsv)
+        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Left).active = true
+        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Right).active = true
+        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Top).active = true
+        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Bottom).active = true
         
-//        toVC?.view.alpha = 0.0
+        toVC?.view.alpha = 0.0
     }
 }
