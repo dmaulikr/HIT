@@ -34,6 +34,7 @@
 		3F62933A1C148C78005BD240 /* HITUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293391C148C78005BD240 /* HITUITests.swift */; };
 		3F6293481C149830005BD240 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6293471C149830005BD240 /* MainViewController.swift */; };
 		3F62934C1C1BABA2005BD240 /* AutoLayoutTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */; };
+		3F6CC76F1C8D33F800EF9158 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6CC76E1C8D33F800EF9158 /* SettingsViewController.swift */; };
 		3F7B50491C603D40004EB27D /* MantraDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7B50481C603D40004EB27D /* MantraDataSource.swift */; };
 		3F7B504B1C603EE0004EB27D /* UserMantraDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7B504A1C603EE0004EB27D /* UserMantraDataManager.swift */; };
 		3F7B504D1C60524B004EB27D /* Mantra+CardAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7B504C1C60524B004EB27D /* Mantra+CardAnnotation.swift */; };
@@ -113,6 +114,7 @@
 		3F62933B1C148C78005BD240 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F6293471C149830005BD240 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		3F62934B1C1BABA1005BD240 /* AutoLayoutTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoLayoutTestViewController.swift; sourceTree = "<group>"; };
+		3F6CC76E1C8D33F800EF9158 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		3F7B50481C603D40004EB27D /* MantraDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MantraDataSource.swift; sourceTree = "<group>"; };
 		3F7B504A1C603EE0004EB27D /* UserMantraDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserMantraDataManager.swift; sourceTree = "<group>"; };
 		3F7B504C1C60524B004EB27D /* Mantra+CardAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mantra+CardAnnotation.swift"; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 				3F6293191C148C78005BD240 /* AppDelegate.swift */,
 				3F62931D1C148C78005BD240 /* Main.storyboard */,
 				3F7B50581C612FDA004EB27D /* CollapsedCardStackViewController.swift */,
+				3F6CC76E1C8D33F800EF9158 /* SettingsViewController.swift */,
 				3FCA2D121C31A62000E27F64 /* UI Experiments */,
 				3FCA2D131C31A64400E27F64 /* Model */,
 				3FF21E311C2203500079C67F /* Views */,
@@ -574,6 +577,7 @@
 				3F25F4591C53B6DB0093DDA5 /* CustomBoundsPlaceholderView.swift in Sources */,
 				3F62931A1C148C78005BD240 /* AppDelegate.swift in Sources */,
 				3FCA2D1E1C433F9500E27F64 /* NSIndexPath+Helpers.swift in Sources */,
+				3F6CC76F1C8D33F800EF9158 /* SettingsViewController.swift in Sources */,
 				3F11CF9E1C7136F60048D0EB /* NSRange+Helpers.swift in Sources */,
 				3F25F45D1C53EE390093DDA5 /* StateMachine.swift in Sources */,
 				3FB53DBF1C4CB1E60003D94A /* CollectionViewPulledCardLayout.swift in Sources */,

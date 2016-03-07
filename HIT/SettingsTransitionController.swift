@@ -115,19 +115,19 @@ class SettingsTransitionController: NSObject,
             
         case (.StartPresentation, .ContinuePresentation):
             print(".StartPresentation, .ContinuePresentation")
-            updateTransition()
+            updatePresentation()
             
         case (.ContinuePresentation, .ContinuePresentation):
             print(".ContinuePresentation, .ContinuePresentation")
-            updateTransition()
+            updatePresentation()
             
         case (.ContinuePresentation, .CancelPresentation):
             print(".ContinuePresentation, .CancelPresentation")
-            cancelTransition()
+            cancelPresentation()
             
         case (.ContinuePresentation, .FinishPresentation):
             print(".ContinuePresentation, .FinishPresentation")
-            finishTransition()
+            finishPresentation()
             
             
         case (.WillDismiss, .StartDismissal):
@@ -171,27 +171,57 @@ class SettingsTransitionController: NSObject,
         }
     }
     
-    // MARK: - Updating transitions
     
+    // MARK: - Updating presentation
     
-    func updateTransition()
+    func setupPresentation(transitionContext: UIViewControllerContextTransitioning)
+    {
+        self.transitionContext = transitionContext
+        
+        let containerView = transitionContext.containerView()
+        let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
+            as! CollapsedCardStackViewController
+        let ccsv = fromVC.collapsedCardStackView
+        //        ccsv.removeFromSuperview()
+        
+        let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
+        containerView?.addSubview(toVC!.view)
+        
+        containerView!.addSubview(ccsv)
+        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Left).active = true
+        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Right).active = true
+        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Top).active = true
+        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Bottom).active = true
+        
+        toVC?.view.alpha = transitionProgress
+    }
+    
+    func updatePresentation()
     {
         transitionContext!.updateInteractiveTransition(transitionProgress)
         let toView = transitionContext!.viewForKey(UITransitionContextToViewKey)
         toView!.alpha = transitionProgress
     }
     
-    func finishTransition()
+    func finishPresentation()
     {
+        ccsvFromContainerView()?.userInteractionEnabled = false
+        
         transitionContext?.finishInteractiveTransition()
         transitionContext?.completeTransition(true)
     }
     
-    func cancelTransition()
+    func ccsvFromContainerView() -> CollapsedCardStackView?
+    {
+        let ccsv = transitionContext?.containerView()?.subviews
+            .filter ({ return ($0 as? CollapsedCardStackView) != nil }).first
+        return ccsv as? CollapsedCardStackView
+    }
+    
+    func cancelPresentation()
     {
         // Add CollapsedCardStackView back to original VC
-        if let ccsv = transitionContext?.containerView()?.subviews
-            .filter ({ return ($0 as? CollapsedCardStackView) != nil }).first
+        if let ccsv = ccsvFromContainerView()
         {
             let fromView = transitionContext?
                 .viewControllerForKey(UITransitionContextFromViewControllerKey)?
@@ -205,29 +235,6 @@ class SettingsTransitionController: NSObject,
         
         transitionContext?.cancelInteractiveTransition()
         transitionContext?.completeTransition(false)
-    }
-    
-    func setupPresentation(transitionContext: UIViewControllerContextTransitioning)
-    {
-        self.transitionContext = transitionContext
-        
-        let containerView = transitionContext.containerView()
-        let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
-            as! CollapsedCardStackViewController
-        let ccsv = fromVC.collapsedCardStackView
-        //        ccsv.removeFromSuperview()
-        
-        
-        let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
-        containerView?.addSubview(toVC!.view)
-        
-        containerView!.addSubview(ccsv)
-        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Left).active = true
-        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Right).active = true
-        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Top).active = true
-        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Bottom).active = true
-        
-        toVC?.view.alpha = transitionProgress
     }
     
     

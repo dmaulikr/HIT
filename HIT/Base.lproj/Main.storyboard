@@ -135,10 +135,10 @@
             </objects>
             <point key="canvasLocation" x="1839" y="2408"/>
         </scene>
-        <!--View Controller-->
+        <!--Settings View Controller-->
         <scene sceneID="l09-Ys-yCh">
             <objects>
-                <viewController modalPresentationStyle="overFullScreen" id="aBP-xM-hSG" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="overFullScreen" id="aBP-xM-hSG" customClass="SettingsViewController" customModule="HIT" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ETp-xd-IJU"/>
                         <viewControllerLayoutGuide type="bottom" id="yPX-B8-AO8"/>
@@ -165,19 +165,20 @@
                                     <constraint firstAttribute="width" constant="240" id="xw7-J9-cmk"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt; Back" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DJu-Dq-Zc8">
-                                <rect key="frame" x="16" y="48" width="53" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hXb-lY-JsQ">
+                                <rect key="frame" x="20" y="39" width="34" height="30"/>
+                                <state key="normal" title="Back"/>
+                                <connections>
+                                    <action selector="backPressed:" destination="aBP-xM-hSG" eventType="touchUpInside" id="KKO-kX-cle"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="leadingMargin" secondItem="DJu-Dq-Zc8" secondAttribute="leading" id="6On-ra-4wQ"/>
+                            <constraint firstItem="GL1-yE-gXs" firstAttribute="top" secondItem="hXb-lY-JsQ" secondAttribute="bottom" constant="8" id="AeK-iy-hPw"/>
                             <constraint firstItem="GL1-yE-gXs" firstAttribute="leading" secondItem="lny-vM-Deu" secondAttribute="leading" id="BdZ-gW-1Ck"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="hXb-lY-JsQ" secondAttribute="leading" id="NtT-JX-Mwb"/>
                             <constraint firstItem="GL1-yE-gXs" firstAttribute="centerY" secondItem="lny-vM-Deu" secondAttribute="centerY" id="PWf-Oi-9GT"/>
-                            <constraint firstItem="GL1-yE-gXs" firstAttribute="top" secondItem="DJu-Dq-Zc8" secondAttribute="bottom" constant="8" id="ZCz-QA-zbF"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
