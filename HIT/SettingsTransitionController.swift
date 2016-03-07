@@ -34,11 +34,11 @@ enum SettingsTransitionControllerState: StateMachineDataSource
         switch (from, to)
         {
         case (.Uninitialized, .WillPresent):
-            return .Continue
-        case (.Uninitialized, .WillDismiss):
+            // Determines transition's path at initialization
             return .Continue
             
         case (.WillPresent, .StartPresentation):
+            // startInteractiveTransition() was called.
             return .Continue
             
         case (.StartPresentation, .ContinuePresentation(let newProgress)) where newProgress <= 0:
@@ -52,18 +52,33 @@ enum SettingsTransitionControllerState: StateMachineDataSource
             return .Redirect(.FinishPresentation)
             
         case (.StartPresentation, .ContinuePresentation):
+            // Card is moving inside presentation interval.
             return .Continue
+            
         case (.ContinuePresentation, .ContinuePresentation(let progress)) where progress <= 0:
+            // Card has moved back to initial position for presentation.
+            // The transition gets cancelled at this point.
             return .Redirect(.CancelPresentation)
+            
         case (.ContinuePresentation, .ContinuePresentation(let progress)) where progress >= 1:
+            // Card has moved to final position for presentation.
+            // The transition gets finished at this point.
             return .Redirect(.FinishPresentation)
+            
         case (.ContinuePresentation, .ContinuePresentation):
+            // Card is moving inside presentation interval.
             return .Continue
+            
         case (.ContinuePresentation, .CancelPresentation):
             return .Continue
+            
         case (.ContinuePresentation, .FinishPresentation):
             return .Continue
             
+            
+        case (.Uninitialized, .WillDismiss):
+            // Determines transition's path at initialization
+            return .Continue
         case (.WillDismiss, .StartDismissal):
             return .Redirect(.ContinueDismissal(1))
         case (.StartDismissal, .ContinueDismissal):
@@ -217,14 +232,15 @@ class SettingsTransitionController: NSObject,
         NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Top).active = true
         NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Bottom).active = true
         
-        toVC?.view.alpha = transitionProgress
+//        toVC?.view.alpha = transitionProgress
+        toVC?.view.alpha = 0
     }
     
     func updatePresentation()
     {
         transitionContext!.updateInteractiveTransition(transitionProgress)
-        let toView = transitionContext!.viewForKey(UITransitionContextToViewKey)
-        toView!.alpha = transitionProgress
+//        let toView = transitionContext!.viewForKey(UITransitionContextToViewKey)
+//        toView!.alpha = transitionProgress
     }
     
     func finishPresentation()
@@ -269,23 +285,6 @@ class SettingsTransitionController: NSObject,
         self.transitionContext = transitionContext
         
         ccsvFromContainerView()?.dismissSettings()
-        
-//        let containerView = transitionContext.containerView()
-//        let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
-//            as! CollapsedCardStackViewController
-//        let ccsv = fromVC.collapsedCardStackView
-//        //        ccsv.removeFromSuperview()
-//        
-//        let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
-//        containerView?.addSubview(toVC!.view)
-//        
-//        containerView!.addSubview(ccsv)
-//        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Left).active = true
-//        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Right).active = true
-//        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Top).active = true
-//        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Bottom).active = true
-//        
-//        toVC?.view.alpha = transitionProgress
     }
     
     func updateDismissal()

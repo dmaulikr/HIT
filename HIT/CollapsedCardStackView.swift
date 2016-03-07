@@ -82,7 +82,7 @@ import UIKit
             
         case (.AtRest, .TrackingPan(let panGR)):
             print(".AtRest -> .TrackingPan")
-            buildPulledCardDynamicAnimation()
+//            buildPulledCardDynamicAnimation()
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
         case (.TrackingPan, .TrackingPan(let panGR)):
@@ -133,7 +133,7 @@ import UIKit
             print(".ConfirmSettings -> .HintingSettings")
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
-            delegate?.collapsedCardStackViewDidDismissSettingsPresentation?(self)
+            delegate?.collapsedCardStackViewDidCancelSettingsPresentation?(self)
             
         case (.ConfirmSettings,  .ExecuteSettings):
             print(".ConfirmSettings -> .ExecuteSettings")
@@ -499,9 +499,11 @@ import UIKit
         let newAnchor = CGPoint(
             x: pulledCardRestingAnchorLocation.x + (attachmentAxis == .Horizontal ? translation.x : 0),
             y: pulledCardRestingAnchorLocation.y + (attachmentAxis == .Vertical ? translation.y : 0))
-        pulledCardAttachmentBehavior?.anchorPoint = newAnchor
-        pulledCardAttachmentBehavior?.damping = 1.0
-        pulledCardAttachmentBehavior?.frequency = 14.0
+//        pulledCardAttachmentBehavior?.anchorPoint = newAnchor
+//        pulledCardAttachmentBehavior?.damping = 1.0
+//        pulledCardAttachmentBehavior?.frequency = 14.0
+        
+        pulledCardViewWrapper!.center = newAnchor
     }
     
     func returnPulledCardPresentationToRestingState()

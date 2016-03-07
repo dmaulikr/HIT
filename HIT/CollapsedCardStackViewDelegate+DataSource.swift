@@ -37,7 +37,7 @@ import Foundation
     optional func collapsedCardStackViewShouldPresentSettings(ccsv: CollapsedCardStackView) -> Bool
     optional func collapsedCardStackViewDidBeginSettingsPresentation(ccsv: CollapsedCardStackView, presentationProgress: CGFloat)
     optional func collapsedCardStackViewDidUpdateSettingsPresentation(ccsv: CollapsedCardStackView, presentationProgress: CGFloat)
-    optional func collapsedCardStackViewDidDismissSettingsPresentation(ccsv: CollapsedCardStackView)
+    optional func collapsedCardStackViewDidCancelSettingsPresentation(ccsv: CollapsedCardStackView)
     
     optional func collapsedCardStackViewWillShuffle(ccsv: CollapsedCardStackView)
     optional func collapsedCardStackViewDidShuffle(ccsv: CollapsedCardStackView)

@@ -157,7 +157,7 @@ class   CollapsedCardStackViewController:
         settingsTransitionController.transitionProgress = presentationProgress
     }
     
-    func collapsedCardStackViewDidDismissSettingsPresentation(ccsv: CollapsedCardStackView)
+    func collapsedCardStackViewDidCancelSettingsPresentation(ccsv: CollapsedCardStackView)
     {
         print("delegate.didDismiss")
         settingsTransitionController.transitionProgress = 0
