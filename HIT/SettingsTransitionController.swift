@@ -54,9 +54,9 @@ enum SettingsTransitionControllerState: StateMachineDataSource
             return .Continue
             
         case (.WillDismiss, .StartDismissal):
-            return .Continue
+            return .Redirect(.ContinueDismissal(1))
         case (.StartDismissal, .ContinueDismissal):
-            return .Continue
+            return .Redirect(.FinishDismissal)
         case (.ContinueDismissal, .ContinueDismissal(let progress)) where progress <= 0:
             return .Redirect(.CancelDismissal)
         case (.ContinueDismissal, .ContinueDismissal(let progress)) where progress >= 1:
@@ -130,20 +130,25 @@ class SettingsTransitionController: NSObject,
             finishPresentation()
             
             
-        case (.WillDismiss, .StartDismissal):
+        case (.WillDismiss, .StartDismissal(let transitionContext)):
             print(".WillDismiss, .StartDismissal")
+            setupDismissal(transitionContext)
             
         case (.StartDismissal, .ContinueDismissal):
             print(".StartDismissal, .ContinueDismissal")
+            updateDismissal()
             
         case (.ContinueDismissal, .ContinueDismissal):
             print(".ContinueDismissal, .ContinueDismissal")
+            updateDismissal()
             
         case (.ContinueDismissal, .CancelDismissal):
             print(".ContinueDismissal, .CancelDismissal")
+            cancelDismissal()
             
         case (.ContinueDismissal, .FinishDismissal):
             print(".ContinueDismissal, .FinishDismissal")
+            finishDismissal()
             
             
         default:
@@ -153,7 +158,15 @@ class SettingsTransitionController: NSObject,
     
     func startInteractiveTransition(transitionContext: UIViewControllerContextTransitioning)
     {
-        machine.state = .StartPresentation(transitionContext)
+        switch machine.state
+        {
+        case .WillPresent:
+            machine.state = .StartPresentation(transitionContext)
+        case .WillDismiss:
+            machine.state = .StartDismissal(transitionContext)
+        default:
+            break
+        }
     }
     
     var transitionProgress: CGFloat = 0 {
@@ -172,7 +185,7 @@ class SettingsTransitionController: NSObject,
     }
     
     
-    // MARK: - Updating presentation
+    // MARK: - Managing presentation
     
     func setupPresentation(transitionContext: UIViewControllerContextTransitioning)
     {
@@ -233,6 +246,67 @@ class SettingsTransitionController: NSObject,
             NSLayoutConstraint.pinItem(ccsv, toItem: fromView!, withAttribute: .Bottom).active = true
         }
         
+        transitionContext?.cancelInteractiveTransition()
+        transitionContext?.completeTransition(false)
+    }
+    
+    
+    // MARK: - Managing dismissal
+    
+    func setupDismissal(transitionContext: UIViewControllerContextTransitioning)
+    {
+        self.transitionContext = transitionContext
+        
+        ccsvFromContainerView()?.dismissSettings()
+        
+//        let containerView = transitionContext.containerView()
+//        let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
+//            as! CollapsedCardStackViewController
+//        let ccsv = fromVC.collapsedCardStackView
+//        //        ccsv.removeFromSuperview()
+//        
+//        let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
+//        containerView?.addSubview(toVC!.view)
+//        
+//        containerView!.addSubview(ccsv)
+//        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Left).active = true
+//        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Right).active = true
+//        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Top).active = true
+//        NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Bottom).active = true
+//        
+//        toVC?.view.alpha = transitionProgress
+    }
+    
+    func updateDismissal()
+    {
+        transitionContext!.updateInteractiveTransition(transitionProgress)
+//        let toView = transitionContext!.viewForKey(UITransitionContextToViewKey)
+//        toView!.alpha = transitionProgress
+    }
+    
+    func finishDismissal()
+    {
+        // Add CollapsedCardStackView back to original VC
+        if let ccsv = ccsvFromContainerView()
+        {
+            ccsv.userInteractionEnabled = true
+            
+            let toView = transitionContext?
+                .viewControllerForKey(UITransitionContextToViewControllerKey)?
+                .view
+            toView?.addSubview(ccsv)
+            NSLayoutConstraint.pinItem(ccsv, toItem: toView!, withAttribute: .Left).active = true
+            NSLayoutConstraint.pinItem(ccsv, toItem: toView!, withAttribute: .Right).active = true
+            NSLayoutConstraint.pinItem(ccsv, toItem: toView!, withAttribute: .Top).active = true
+            NSLayoutConstraint.pinItem(ccsv, toItem: toView!, withAttribute: .Bottom).active = true
+        }
+        
+        transitionContext?.finishInteractiveTransition()
+        transitionContext?.completeTransition(true)
+    }
+    
+    func cancelDismissal()
+    {
         transitionContext?.cancelInteractiveTransition()
         transitionContext?.completeTransition(false)
     }

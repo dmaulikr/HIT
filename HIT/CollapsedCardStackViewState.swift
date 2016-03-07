@@ -84,6 +84,7 @@ enum CollapsedCardStackViewState: StateMachineDataSource
         case (.ConfirmSettings,  .ConfirmSettings):    return .Continue
         case (.ConfirmSettings,  .HintingSettings):    return .Continue
         case (.ConfirmSettings,  .ExecuteSettings):    return .Continue
+        case (.ExecuteSettings, .ReturningToRest): return .Continue
             
             
         case (.TrackingPan,     .HintingDelete):    return .Continue

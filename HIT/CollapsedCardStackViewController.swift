@@ -24,7 +24,6 @@ class   CollapsedCardStackViewController:
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
@@ -103,10 +102,6 @@ class   CollapsedCardStackViewController:
         return true
     }
     
-//    func collapsedCardStackViewDidPromptSettingsView(ccsv: CollapsedCardStackView) {
-//        performSegueWithIdentifier("Show Settings", sender: self)
-//    }
-    
     // MARK: - Settings transition
     
     var settingsTransitionController = SettingsTransitionController(presenting: true)
@@ -118,12 +113,29 @@ class   CollapsedCardStackViewController:
         
         -> UIViewControllerAnimatedTransitioning?
     {
+        print("ccsvc: (presentation) animation controller requested")
         return settingsTransitionController
     }
     
     func interactionControllerForPresentation(animator: UIViewControllerAnimatedTransitioning)
         -> UIViewControllerInteractiveTransitioning?
     {
+        print("ccsvc: (presentation) interaction controller requested")
+        return settingsTransitionController
+    }
+    
+    func animationControllerForDismissedController(dismissed: UIViewController)
+        -> UIViewControllerAnimatedTransitioning?
+    {
+        print("ccsvc: (dismissal) animation controller requested")
+        settingsTransitionController = SettingsTransitionController(presenting: false)
+        return settingsTransitionController
+    }
+    
+    func interactionControllerForDismissal(animator: UIViewControllerAnimatedTransitioning)
+        -> UIViewControllerInteractiveTransitioning? {
+            
+        print("ccsvc: (dismissal) interaction controller requested")
         return settingsTransitionController
     }
     

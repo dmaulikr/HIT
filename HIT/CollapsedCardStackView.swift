@@ -142,6 +142,10 @@ import UIKit
             delegate?.collapsedCardStackViewDidUpdateSettingsPresentation?(self,
                 presentationProgress: 1.0)
             
+        case (.ExecuteSettings, .ReturningToRest):
+            print(".ExecuteSettings -> .ReturningToRest")
+            returnPulledCardPresentationToRestingState()
+            
         case (.HintingSettings, .ReturningToRest):
             print(".HintingSettings -> .ReturningToRest")
             returnHintingSettingsIconPresentationToRestingState()
@@ -956,6 +960,11 @@ import UIKit
         }
         
         return true
+    }
+    
+    func dismissSettings()
+    {
+        machine.state = .ReturningToRest
     }
     
     func settingsPresentationProgress() -> CGFloat
