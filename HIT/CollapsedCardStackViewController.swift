@@ -109,7 +109,7 @@ class   CollapsedCardStackViewController:
     
     // MARK: - Settings transition
     
-    var settingsTransitionController = SettingsTransitionController()
+    var settingsTransitionController = SettingsTransitionController(presenting: true)
     
     func animationControllerForPresentedController(
         presented: UIViewController,
@@ -132,7 +132,7 @@ class   CollapsedCardStackViewController:
         presentationProgress: CGFloat)
     {
         print("delegate.didBegin: \(presentationProgress)")
-        settingsTransitionController = SettingsTransitionController()
+        settingsTransitionController = SettingsTransitionController(presenting: true)
         settingsTransitionController.transitionProgress = presentationProgress
         performSegueWithIdentifier("Show Settings", sender: self)
     }
@@ -142,19 +142,12 @@ class   CollapsedCardStackViewController:
         presentationProgress: CGFloat)
     {
         print("delegate.didUpdate: \(presentationProgress)")
-        if presentationProgress == 1
-        {
-            print("finish transition")
-            settingsTransitionController.finishTransition()
-        }
-        else {
-            settingsTransitionController.transitionProgress = presentationProgress
-        }
+        settingsTransitionController.transitionProgress = presentationProgress
     }
     
     func collapsedCardStackViewDidDismissSettingsPresentation(ccsv: CollapsedCardStackView)
     {
         print("delegate.didDismiss")
-        settingsTransitionController.cancelTransition()
+        settingsTransitionController.transitionProgress = 0
     }
 }
