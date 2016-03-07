@@ -46,6 +46,11 @@ enum SettingsTransitionControllerState: StateMachineDataSource
             // This condition prevents the animation from prematurely canceling.
             return .Abort
             
+        case (.StartPresentation, .ContinuePresentation(let newProgress)) where newProgress >= 1:
+            // Sometimes the user drags quickly enough to immediately 
+            // finish the presentation.
+            return .Redirect(.FinishPresentation)
+            
         case (.StartPresentation, .ContinuePresentation):
             return .Continue
         case (.ContinuePresentation, .ContinuePresentation(let progress)) where progress <= 0:
