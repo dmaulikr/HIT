@@ -40,6 +40,12 @@ enum SettingsTransitionControllerState: StateMachineDataSource
             
         case (.WillPresent, .StartPresentation):
             return .Continue
+            
+        case (.StartPresentation, .ContinuePresentation(let newProgress)) where newProgress <= 0:
+            // Sometimes the animation pauses at zero progress at the outset.
+            // This condition prevents the animation from prematurely canceling.
+            return .Abort
+            
         case (.StartPresentation, .ContinuePresentation):
             return .Continue
         case (.ContinuePresentation, .ContinuePresentation(let progress)) where progress <= 0:
