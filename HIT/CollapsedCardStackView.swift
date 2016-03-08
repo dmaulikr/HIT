@@ -120,9 +120,16 @@ import UIKit
             print(".AtRest -> .ExecuteSettings")
             returnPulledCardPresentationToSettingsState()
             
+            
+            
+            
         case (.TrackingPan, .HintingSettings(let panGR)):
             print(".TrackingPan -> .HintingSettings")
 //            buildHintingIconViewDynamicAnimationForViewState(toState)
+            
+            delegate?.collapsedCardStackViewDidBeginSettingsPresentation?(self,
+                presentationProgress: settingsPresentationProgress())
+//            buildPulledCardDynamicAnimation()
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
@@ -130,12 +137,16 @@ import UIKit
 //            print(".HintingSettings -> .HintingSettings")
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
+            delegate?.collapsedCardStackViewDidUpdateSettingsPresentation?(self,
+                presentationProgress: settingsPresentationProgress())
             
         case (.HintingSettings,  .ConfirmSettings(let panGR)):
             print(".HintingSettings -> .ConfirmSettings")
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
-            delegate?.collapsedCardStackViewDidBeginSettingsPresentation?(self,
+//            delegate?.collapsedCardStackViewDidBeginSettingsPresentation?(self,
+            //                presentationProgress: settingsPresentationProgress())
+            delegate?.collapsedCardStackViewDidUpdateSettingsPresentation?(self,
                 presentationProgress: settingsPresentationProgress())
             
         case (.ConfirmSettings,  .ConfirmSettings(let panGR)):
@@ -149,7 +160,7 @@ import UIKit
             print(".ConfirmSettings -> .HintingSettings")
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
-            delegate?.collapsedCardStackViewDidCancelSettingsPresentation?(self)
+//            delegate?.collapsedCardStackViewDidCancelSettingsPresentation?(self)
             
         case (.ConfirmSettings,  .ExecuteSettings):
             print(".ConfirmSettings -> .ExecuteSettings")
@@ -166,6 +177,8 @@ import UIKit
             print(".HintingSettings -> .ReturningToRest")
             returnHintingSettingsIconPresentationToRestingState()
             returnPulledCardPresentationToRestingState()
+            
+            delegate?.collapsedCardStackViewDidCancelSettingsPresentation?(self)
             
         case (.HintingSettings, .HintingDelete(let panGR)):
             print(".HintingSettings -> .HintingDelete")
@@ -518,8 +531,6 @@ import UIKit
         pulledCardAttachmentBehavior?.anchorPoint = newAnchor
         pulledCardAttachmentBehavior?.damping = 1.0
         pulledCardAttachmentBehavior?.frequency = 6.0
-        
-//        pulledCardViewWrapper!.center = newAnchor
     }
     
     func returnPulledCardPresentationToRestingState()
@@ -987,6 +998,7 @@ import UIKit
     
     func settingsPresentationProgress() -> CGFloat
     {
+        let hintingSettingsSpanWidth:CGFloat = 0
         let x = pulledCardPlaceholderView.frame.origin.x + hintingSettingsSpanWidth
         
         var presentationProgress
@@ -1088,28 +1100,28 @@ import UIKit
         pulledCardAttachmentBehavior?.anchorPoint = pulledCardSettingsAnchorLocation
         pulledCardAttachmentBehavior?.damping = 1.0
         pulledCardAttachmentBehavior?.frequency = 2.0
-        pulledCardAttachmentBehavior.action = {
-            let newTranslation = self.pulledCardViewWrapper!.center.x - self.pulledCardRestingAnchorLocation.x
-            
-            let settingsDistance = self.pulledCardSettingsAnchorLocation.x - self.pulledCardRestingAnchorLocation.x
-            
-            if self.translation < self.hintingSettingsSpanWidth && newTranslation > self.hintingSettingsSpanWidth
-            {
-                self.delegate?.collapsedCardStackViewDidBeginSettingsPresentation?(self, presentationProgress: self.settingsPresentationProgress())
-            }
-            else if newTranslation > self.hintingSettingsSpanWidth
-            {
-                self.delegate?.collapsedCardStackViewDidUpdateSettingsPresentation?(self, presentationProgress: self.settingsPresentationProgress())
-            }
-            
-            
-            if self.translation < settingsDistance && newTranslation >= settingsDistance
-            {
-                self.pulledCardAttachmentBehavior = nil
-            }
-            
-            self.translation = newTranslation
-        }
+//        pulledCardAttachmentBehavior.action = {
+//            let newTranslation = self.pulledCardViewWrapper!.center.x - self.pulledCardRestingAnchorLocation.x
+//            
+//            let settingsDistance = self.pulledCardSettingsAnchorLocation.x - self.pulledCardRestingAnchorLocation.x
+//            
+//            if self.translation < self.hintingSettingsSpanWidth && newTranslation > self.hintingSettingsSpanWidth
+//            {
+//                self.delegate?.collapsedCardStackViewDidBeginSettingsPresentation?(self, presentationProgress: self.settingsPresentationProgress())
+//            }
+//            else if newTranslation > self.hintingSettingsSpanWidth
+//            {
+//                self.delegate?.collapsedCardStackViewDidUpdateSettingsPresentation?(self, presentationProgress: self.settingsPresentationProgress())
+//            }
+//            
+//            
+//            if self.translation < settingsDistance && newTranslation >= settingsDistance
+//            {
+//                self.pulledCardAttachmentBehavior = nil
+//            }
+//            
+//            self.translation = newTranslation
+//        }
         attachmentAxis = nil
     }
     
