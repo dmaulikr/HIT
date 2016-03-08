@@ -24,6 +24,13 @@ class   CollapsedCardStackViewController:
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        let panGR = UIPanGestureRecognizer(target: self, action: "pannedInView:")
+        self.view.addGestureRecognizer(panGR)
+    }
+    
+    func pannedInView(panGR: UIPanGestureRecognizer)
+    {
+        self.collapsedCardStackView.pannedInView(panGR)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)

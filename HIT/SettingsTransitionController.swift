@@ -222,17 +222,20 @@ class SettingsTransitionController: NSObject,
             as! CollapsedCardStackViewController
         let ccsv = fromVC.collapsedCardStackView
         //        ccsv.removeFromSuperview()
+        let ccsvFrame = ccsv.frame
         
         let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
         containerView?.addSubview(toVC!.view)
         
         containerView!.addSubview(ccsv)
+//        ccsv.translatesAutoresizingMaskIntoConstraints = true
+//        ccsv.frame = ccsvFrame
         NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Left).active = true
         NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Right).active = true
         NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Top).active = true
         NSLayoutConstraint.pinItem(ccsv, toItem: containerView!, withAttribute: .Bottom).active = true
         
-//        toVC?.view.alpha = transitionProgress
+        toVC?.view.alpha = transitionProgress
         toVC?.view.alpha = 0
     }
     
@@ -246,6 +249,10 @@ class SettingsTransitionController: NSObject,
     func finishPresentation()
     {
         ccsvFromContainerView()?.userInteractionEnabled = false
+        
+        
+        let toView = transitionContext!.viewForKey(UITransitionContextToViewKey)
+        toView!.alpha = transitionProgress
         
         transitionContext?.finishInteractiveTransition()
         transitionContext?.completeTransition(true)
@@ -283,7 +290,7 @@ class SettingsTransitionController: NSObject,
     func setupDismissal(transitionContext: UIViewControllerContextTransitioning)
     {
         self.transitionContext = transitionContext
-        
+        print("setupDismissal")
         ccsvFromContainerView()?.dismissSettings()
     }
     

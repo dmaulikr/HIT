@@ -47,6 +47,9 @@ enum CollapsedCardStackViewState: StateMachineDataSource
     {
         switch (from, to)
         {
+        case (.AtRest, .ExecuteSettings): return .Continue
+        case (.ReturningToRest, .ExecuteSettings): return .Continue
+            
         case (_, .ReloadData):                  return .Redirect(.AtRest)
             
         case (.ExecuteSettings, .ForceLayout):

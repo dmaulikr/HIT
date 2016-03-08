@@ -45,6 +45,11 @@ import UIKit
         return StateMachine(initialState: .WaitingForData, delegate: self)
     }()
     
+    func tapped(sender: UITapGestureRecognizer)
+    {
+        machine.state = .ExecuteSettings
+    }
+    
     func didTransitionFrom(fromState: StateType, toState: StateType)
     {
         
@@ -52,8 +57,10 @@ import UIKit
         {
         case (.WaitingForData, .ReloadData):
             print(".WaitingForData -> .ReloadData")
-            panGR = UIPanGestureRecognizer(target: self, action: "pannedInView:")
-            self.addGestureRecognizer(panGR!)
+//            panGR = UIPanGestureRecognizer(target: self, action: "pannedInView:")
+//            self.addGestureRecognizer(panGR!)
+            let tapGR = UITapGestureRecognizer(target: self, action: "tapped:")
+            self.addGestureRecognizer(tapGR)
             loadData()
             
         case (_, .ReloadData):
@@ -82,7 +89,7 @@ import UIKit
             
         case (.AtRest, .TrackingPan(let panGR)):
             print(".AtRest -> .TrackingPan")
-//            buildPulledCardDynamicAnimation()
+            buildPulledCardDynamicAnimation()
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
         case (.TrackingPan, .TrackingPan(let panGR)):
@@ -104,9 +111,18 @@ import UIKit
             
             // MARK: Settings cases
             
+        case (.AtRest, .ExecuteSettings):
+            print(".AtRest -> .ExecuteSettings")
+            buildPulledCardDynamicAnimation()
+            returnPulledCardPresentationToSettingsState()
+            
+        case (.ReturningToRest, .ExecuteSettings):
+            print(".AtRest -> .ExecuteSettings")
+            returnPulledCardPresentationToSettingsState()
+            
         case (.TrackingPan, .HintingSettings(let panGR)):
             print(".TrackingPan -> .HintingSettings")
-            buildHintingIconViewDynamicAnimationForViewState(toState)
+//            buildHintingIconViewDynamicAnimationForViewState(toState)
             updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR)
             updatePulledCardPresentationWithPanGestureRecognizer(panGR)
             
@@ -499,11 +515,11 @@ import UIKit
         let newAnchor = CGPoint(
             x: pulledCardRestingAnchorLocation.x + (attachmentAxis == .Horizontal ? translation.x : 0),
             y: pulledCardRestingAnchorLocation.y + (attachmentAxis == .Vertical ? translation.y : 0))
-//        pulledCardAttachmentBehavior?.anchorPoint = newAnchor
-//        pulledCardAttachmentBehavior?.damping = 1.0
-//        pulledCardAttachmentBehavior?.frequency = 14.0
+        pulledCardAttachmentBehavior?.anchorPoint = newAnchor
+        pulledCardAttachmentBehavior?.damping = 1.0
+        pulledCardAttachmentBehavior?.frequency = 6.0
         
-        pulledCardViewWrapper!.center = newAnchor
+//        pulledCardViewWrapper!.center = newAnchor
     }
     
     func returnPulledCardPresentationToRestingState()
@@ -1005,38 +1021,38 @@ import UIKit
     
     func updateHintingSettingsIconPresentationWithPanGestureRecognizer(panGR: UIPanGestureRecognizer)
     {
-        let translation = panGR.translationInView(self)
-        
-        let trackingDelay
-            = hintingSettingsIconWidthConstraint.constant
-            + hintingSettingsIconLeadingConstraint.constant * 2
-        
-        if translation.x > trackingDelay
-        {
-            hintingSettingsIconView.dialProgress
-                = (translation.x - trackingDelay)
-                / (hintingSettingsSpanWidth - trackingDelay)
-            
-            if hintingSettingsIconTrackingAttachmentBehavior == nil
-            {
-                hintingSettingsIconTrackingAttachmentBehavior
-                    = UIAttachmentBehavior(item: hintingSettingsIconView,
-                        attachedToAnchor: hintingSettingsIconRestingAnchorLocation)
-                hintingSettingsIconTrackingAttachmentBehavior!.length = 0
-                hintingSettingsIconTrackingAttachmentBehavior!.damping = 1.0
-                hintingSettingsIconTrackingAttachmentBehavior!.frequency = 1.5
-                animator.addBehavior(hintingSettingsIconTrackingAttachmentBehavior!)
-            }
-            
-            let newAnchor = CGPoint(
-                x: hintingSettingsIconRestingAnchorLocation.x + translation.x - trackingDelay,
-                y: hintingSettingsIconRestingAnchorLocation.y)
-            hintingSettingsIconTrackingAttachmentBehavior?.anchorPoint = newAnchor
-        }
-        else
-        {
-            hintingSettingsIconView.dialProgress = 0
-        }
+//        let translation = panGR.translationInView(self)
+//        
+//        let trackingDelay
+//            = hintingSettingsIconWidthConstraint.constant
+//            + hintingSettingsIconLeadingConstraint.constant * 2
+//        
+//        if translation.x > trackingDelay
+//        {
+////            hintingSettingsIconView.dialProgress
+////                = (translation.x - trackingDelay)
+////                / (hintingSettingsSpanWidth - trackingDelay)
+//            
+//            if hintingSettingsIconTrackingAttachmentBehavior == nil
+//            {
+//                hintingSettingsIconTrackingAttachmentBehavior
+//                    = UIAttachmentBehavior(item: hintingSettingsIconView,
+//                        attachedToAnchor: hintingSettingsIconRestingAnchorLocation)
+//                hintingSettingsIconTrackingAttachmentBehavior!.length = 0
+//                hintingSettingsIconTrackingAttachmentBehavior!.damping = 1.0
+//                hintingSettingsIconTrackingAttachmentBehavior!.frequency = 1.5
+//                animator.addBehavior(hintingSettingsIconTrackingAttachmentBehavior!)
+//            }
+//            
+//            let newAnchor = CGPoint(
+//                x: hintingSettingsIconRestingAnchorLocation.x + translation.x - trackingDelay,
+//                y: hintingSettingsIconRestingAnchorLocation.y)
+//            hintingSettingsIconTrackingAttachmentBehavior?.anchorPoint = newAnchor
+//        }
+//        else
+//        {
+//            hintingSettingsIconView.dialProgress = 0
+//        }
     }
     
     func returnHintingSettingsIconPresentationToRestingState()
@@ -1065,11 +1081,35 @@ import UIKit
                 hintingSettingsIconLeadingConstraint, hintingSettingsIconCenterYConstraint])
     }
     
+    var translation: CGFloat = 0
+    
     func returnPulledCardPresentationToSettingsState()
     {
         pulledCardAttachmentBehavior?.anchorPoint = pulledCardSettingsAnchorLocation
         pulledCardAttachmentBehavior?.damping = 1.0
-        pulledCardAttachmentBehavior?.frequency = 7.0
+        pulledCardAttachmentBehavior?.frequency = 2.0
+        pulledCardAttachmentBehavior.action = {
+            let newTranslation = self.pulledCardViewWrapper!.center.x - self.pulledCardRestingAnchorLocation.x
+            
+            let settingsDistance = self.pulledCardSettingsAnchorLocation.x - self.pulledCardRestingAnchorLocation.x
+            
+            if self.translation < self.hintingSettingsSpanWidth && newTranslation > self.hintingSettingsSpanWidth
+            {
+                self.delegate?.collapsedCardStackViewDidBeginSettingsPresentation?(self, presentationProgress: self.settingsPresentationProgress())
+            }
+            else if newTranslation > self.hintingSettingsSpanWidth
+            {
+                self.delegate?.collapsedCardStackViewDidUpdateSettingsPresentation?(self, presentationProgress: self.settingsPresentationProgress())
+            }
+            
+            
+            if self.translation < settingsDistance && newTranslation >= settingsDistance
+            {
+                self.pulledCardAttachmentBehavior = nil
+            }
+            
+            self.translation = newTranslation
+        }
         attachmentAxis = nil
     }
     
