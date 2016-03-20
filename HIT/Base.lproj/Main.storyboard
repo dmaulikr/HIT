@@ -138,7 +138,7 @@
         <!--Settings View Controller-->
         <scene sceneID="l09-Ys-yCh">
             <objects>
-                <viewController modalPresentationStyle="overFullScreen" id="aBP-xM-hSG" customClass="SettingsViewController" customModule="HIT" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="aBP-xM-hSG" customClass="SettingsViewController" customModule="HIT" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ETp-xd-IJU"/>
                         <viewControllerLayoutGuide type="bottom" id="yPX-B8-AO8"/>

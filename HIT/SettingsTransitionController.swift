@@ -221,13 +221,12 @@ class SettingsTransitionController: NSObject,
         let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
             as! CollapsedCardStackViewController
         let ccsv = fromVC.collapsedCardStackView
+        containerView?.addSubview(fromVC.view)
         
         let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
-//        containerView?.addSubview(toVC!.view)
-        fromVC.view.insertSubview(toVC!.view, belowSubview: ccsv)
+        containerView?.addSubview(toVC!.view)
+//        fromVC.view.insertSubview(toVC!.view, belowSubview: ccsv)
         
-        let view = UIView(frame: CGRectZero)
-        containerView?.addSubview(view)
         
 //        containerView!.addSubview(ccsv)
 //        ccsv.translatesAutoresizingMaskIntoConstraints = true
@@ -259,7 +258,7 @@ class SettingsTransitionController: NSObject,
         let toView = transitionContext!.viewForKey(UITransitionContextToViewKey)
         toView!.alpha = transitionProgress
         
-        transitionContext?.containerView()?.userInteractionEnabled = false
+//        transitionContext?.containerView()?.userInteractionEnabled = false
         
         transitionContext?.finishInteractiveTransition()
         transitionContext?.completeTransition(true)
